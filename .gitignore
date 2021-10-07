@@ -1,0 +1,6 @@
+debug.log
+__pycache__
+CMakeLists.txt.user
+script/chromedriver.exe
+script/config.txt
+script/IST

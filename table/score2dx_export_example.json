@@ -1,0 +1,31 @@
+{
+    "metadata": {
+        "id": "5483-7391",
+        "playStyle": "DoublePlay",
+        "lastDateTime": "",
+        "dateTimeType": "<iidxme|scriptUpdateDate|official>",
+        "scoreVersion": "SINOBUZ (empty if across versions)"
+    },
+    "data": {
+        "1st&substream": {
+            "5.1.1.": {
+                "2013-11-13 00:00" : {
+                    "play": 0,
+                    "score": {
+                        "_comment": "[score, pgreat, great, miss, clear, djLevel]",
+                        "N": [
+                            "0"
+                            "0",
+                            "0",
+                            "---",
+                            "FULLCOMBO CLEAR",
+                            "---"
+                        ]
+                    }
+                },
+                "2019-10-16 00:00": {
+                }
+            }
+        }
+    }
+}

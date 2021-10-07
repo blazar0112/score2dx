@@ -1,0 +1,5 @@
+@PACKAGE_INIT@
+
+set(score2dx_VERSION "@PROJECT_VERSION@")
+include("${CMAKE_CURRENT_LIST_DIR}/score2dx-targets.cmake")
+check_required_components("@PROJECT_NAME@")
