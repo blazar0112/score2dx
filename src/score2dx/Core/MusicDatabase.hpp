@@ -8,6 +8,8 @@
 namespace score2dx
 {
 
+const std::string Official1stSubVersionName = "1st&substream";
+
 class MusicDatabase
 {
 public:
@@ -40,11 +42,21 @@ public:
         FindDbTitle(const std::string &title)
         const;
 
-    //! @brief Find {VersionIndex, MusicIndex} from officialVersionName and dbTitle.
-    //! @note Because official combines database version '1st style' and 'substream' to '1st&substream'.
-    //! To know which version title belongs and what's music index, need search version musics in DB.
+    //! @brief Find VersionIndex of dbTitle belong to official combined version '1st&substream'.
+    //! @return 0 (1st style) or 1 (substream) or nullopt (not found).
+        std::optional<std::size_t>
+        Find1stSubVersionIndex(const std::string &dbTitle)
+        const;
+
+    //! @brief Find music index in version musics.
+        std::optional<std::size_t>
+        FindMusicIndex(std::size_t versionIndex, const std::string &dbTitle)
+        const;
+
+    //! @brief Find Pair of {VersionIndex, MusicIndex} by versionName, and dbTitle.
+    //! versionName can be Official1stSubVersionName.
         std::pair<std::size_t, std::size_t>
-        FindIndexes(const std::string &officialVersionName, const std::string &dbTitle)
+        FindIndexes(const std::string &versionName, const std::string &dbTitle)
         const;
 
         MusicInfo
@@ -64,11 +76,12 @@ private:
 
     //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
     std::vector<std::vector<std::string>> mAllTimeMusics;
-
-    //! @brief Find music index in version musics.
-        std::optional<std::size_t>
-        FindMusicIndex(std::size_t versionIndex, const std::string &dbTitle)
-        const;
+    //! @brief Cache all 00 and 01 musics to lookup version index.
+    //! Map of {DbTitle Version="00" or "01", versionIndex}.
+    std::map<std::string, std::size_t> m1stSubVersionIndexMap;
+    //! @brief Since index is unchanged after loading, cache all music index.
+    //! Map of {VersionIndex, Map of {DbTitle, MusicIndex}}.
+    std::map<std::size_t, std::map<std::string, std::size_t>> mVersionMusicIndexMap;
 };
 
 }

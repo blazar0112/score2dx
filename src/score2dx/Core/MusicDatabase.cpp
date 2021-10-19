@@ -23,14 +23,23 @@ MusicDatabase()
 
     mAllTimeMusics.resize(VersionNames.size());
     auto &dbAllTimeMusics = mDatabase.at("version");
-    for (auto i : IndexRange{0, VersionNames.size()})
+    for (auto versionIndex : IndexRange{0, VersionNames.size()})
     {
-        auto version = ToVersionString(i);
+        auto version = ToVersionString(versionIndex);
         auto &dbVersionMusics = dbAllTimeMusics.at(version);
-        mAllTimeMusics[i].reserve(dbVersionMusics.size());
+        mAllTimeMusics[versionIndex].reserve(dbVersionMusics.size());
+        auto &musicIndexMap = mVersionMusicIndexMap[versionIndex];
+        std::size_t musicIndex = 0;
         for (auto &item : dbVersionMusics.items())
         {
-            mAllTimeMusics[i].emplace_back(item.value());
+            auto &title = item.value();
+            mAllTimeMusics[versionIndex].emplace_back(title);
+            if (versionIndex==0||versionIndex==1)
+            {
+                m1stSubVersionIndexMap[title] = versionIndex;
+            }
+            musicIndexMap[title] = musicIndex;
+            ++musicIndex;
         }
     }
 
@@ -61,51 +70,71 @@ const
     return std::nullopt;
 }
 
+std::optional<std::size_t>
+MusicDatabase::
+Find1stSubVersionIndex(const std::string &dbTitle)
+const
+{
+    auto find1stSubMusicVersionIndex = icl_s2::Find(m1stSubVersionIndexMap, dbTitle);
+    if (find1stSubMusicVersionIndex)
+    {
+        return find1stSubMusicVersionIndex.value()->second;
+    }
+
+    return std::nullopt;
+}
+
+std::optional<std::size_t>
+MusicDatabase::
+FindMusicIndex(std::size_t versionIndex, const std::string &dbTitle)
+const
+{
+    auto findVersion = icl_s2::Find(mVersionMusicIndexMap, versionIndex);
+    if (!findVersion)
+    {
+        throw std::runtime_error("FindMusicIndex: invalid versionIndex.");
+    }
+
+    auto findMusicIndex = icl_s2::Find(findVersion.value()->second, dbTitle);
+    if (findMusicIndex)
+    {
+        return findMusicIndex.value()->second;
+    }
+
+    return std::nullopt;
+}
+
 std::pair<std::size_t, std::size_t>
 MusicDatabase::
-FindIndexes(const std::string &officialVersionName, const std::string &dbTitle)
+FindIndexes(const std::string &versionName, const std::string &dbTitle)
 const
 {
     std::size_t versionIndex = 0;
-    std::size_t musicIndex = 0;
 
-    if (officialVersionName!="1st&substream")
+    std::optional<std::size_t> findVersionIndex;
+    if (versionName==Official1stSubVersionName)
     {
-        auto findVersionIndex = FindVersionIndex(officialVersionName);
-        if (!findVersionIndex)
-        {
-            throw std::runtime_error("cannot find version index of version ["+officialVersionName+"].");
-        }
-
-        versionIndex = findVersionIndex.value();
-
-        if (auto findMusicIndex = FindMusicIndex(versionIndex, dbTitle))
-        {
-            musicIndex = findMusicIndex.value();
-        }
-        else
-        {
-            throw std::runtime_error("cannot find indexes of title ["+dbTitle+"] in version ["+officialVersionName+"].");
-        }
+        findVersionIndex = Find1stSubVersionIndex(dbTitle);
     }
     else
     {
-        if (auto findMusicIndex = FindMusicIndex(0, dbTitle))
-        {
-            versionIndex = 0;
-            musicIndex = findMusicIndex.value();
-        }
-        else if (auto findMusicIndex = FindMusicIndex(1, dbTitle))
-        {
-            versionIndex = 1;
-            musicIndex = findMusicIndex.value();
-        }
-        else
-        {
-            throw std::runtime_error("cannot find version and music indexes of title ["+dbTitle+"].");
-        }
+        findVersionIndex = FindVersionIndex(versionName);
     }
 
+    if (!findVersionIndex)
+    {
+        throw std::runtime_error("cannot find "+versionName+" title "+dbTitle+" version index.");
+    }
+
+    versionIndex = findVersionIndex.value();
+
+    auto findMusicIndex = FindMusicIndex(versionIndex, dbTitle);
+    if (!findMusicIndex)
+    {
+        throw std::runtime_error("cannot find "+versionName+" title "+dbTitle+" music index.");
+    }
+
+    auto musicIndex = findMusicIndex.value();
     return {versionIndex, musicIndex};
 }
 
@@ -206,21 +235,6 @@ const
     }
 
     return nullptr;
-}
-
-std::optional<std::size_t>
-MusicDatabase::
-FindMusicIndex(std::size_t versionIndex, const std::string &dbTitle)
-const
-{
-    auto &versionMusics = mAllTimeMusics.at(versionIndex);
-    if (auto findMusic = icl_s2::Find(versionMusics, dbTitle))
-    {
-        auto musicIndex = static_cast<std::size_t>(std::distance(versionMusics.begin(), findMusic.value()));
-        return musicIndex;
-    }
-
-    return std::nullopt;
 }
 
 }

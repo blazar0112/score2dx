@@ -164,13 +164,24 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
                 dbTitle = findMappedTitle.value();
             }
 
-            auto [versionIndex, musicIndex] = musicDatabase.FindIndexes(versionName, dbTitle);
-            lastVersionIndex = versionIndex;
-            icl_s2::MapIncrementCount(versionMusicCounts, versionIndex);
+            std::optional<std::size_t> findVersionIndex;
+            if (versionName==Official1stSubVersionName)
+            {
+                findVersionIndex = musicDatabase.Find1stSubVersionIndex(dbTitle);
+            }
+            else
+            {
+                findVersionIndex = FindVersionIndex(versionName);
+            }
 
-            auto &versionMusic = musicDatabase.GetAllTimeMusics().at(versionIndex);
+            if (!findVersionIndex)
+            {
+                throw std::runtime_error("cannot find "+versionName+" title "+dbTitle+" version index.");
+            }
 
-            auto findMusicIndex = icl_s2::Find(versionMusic, dbTitle);
+            auto versionIndex = findVersionIndex.value();
+
+            auto findMusicIndex = musicDatabase.FindMusicIndex(versionIndex, dbTitle);
             if (!findMusicIndex)
             {
                 if (versionIndex==VersionNames.size()-1)
@@ -180,6 +191,11 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
                 }
                 throw std::runtime_error("music title ["+dbTitle+"] is not listed in it's version ["+ToVersionString(versionIndex)+"] in database");
             }
+
+            auto musicIndex = findMusicIndex.value();
+
+            lastVersionIndex = versionIndex;
+            icl_s2::MapIncrementCount(versionMusicCounts, versionIndex);
 
             if (mCheckWithDatabase)
             {
