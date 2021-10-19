@@ -3,6 +3,8 @@
 #include <array>
 #include <map>
 
+#include "fmt/format.h"
+
 #include "icl_s2/Common/IntegralRangeUsing.hpp"
 #include "icl_s2/StdUtil/Find.hxx"
 
@@ -33,6 +35,12 @@ const std::map<std::size_t, std::array<std::string, icl_s2::RangeSideSmartEnum::
 
 namespace score2dx
 {
+
+std::string
+ToVersionString(std::size_t versionIndex)
+{
+    return fmt::format("{:02}", versionIndex);
+}
 
 std::optional<std::size_t>
 FindVersionIndex(const std::string &dbVersionName)

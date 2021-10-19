@@ -10,6 +10,11 @@
 namespace score2dx
 {
 
+//! @brief Convert versionIndex(size_t) to 2-size version string padded with 0.
+//! e.g. versionIndex=4, versionString = "04".
+std::string
+ToVersionString(std::size_t versionIndex);
+
 const std::vector<std::string> VersionNames
 {
     "1st style",

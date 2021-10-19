@@ -5,6 +5,7 @@
 #include <string_view>
 
 #include "score2dx/Core/JsonDefinition.hpp"
+#include "score2dx/Core/MusicDatabase.hpp"
 #include "score2dx/Score/MusicScore.hpp"
 
 namespace score2dx
@@ -26,7 +27,7 @@ const std::size_t MinCsvFilenameSize = ExampleCsvFilename.size();
 class Csv
 {
 public:
-        Csv(const std::string &csvPath, const Json &musicDatabase, bool verbose=false);
+        Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose=false);
 
         const std::string &
         GetFilename()

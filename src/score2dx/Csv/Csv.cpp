@@ -88,7 +88,7 @@ GetColumnHeaders()
 }
 
 Csv::
-Csv(const std::string &csvPath, const Json &musicDatabase, bool verbose)
+Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose)
 {
     //'' default name [IIDX ID]_[sp|dp]_score.csv
     //'' e.g. 5483-7391_dp_score.csv
@@ -126,20 +126,13 @@ Csv(const std::string &csvPath, const Json &musicDatabase, bool verbose)
 
         if (verbose) std::cout << "PlayStyle [" << ToString(mPlayStyle) << "].\n";
 
-        //auto &musicTable = musicDatabase["musicTable"];
-        auto &csvTitleMapping = musicDatabase["titleMapping"]["csv"];
-        auto &versionMusics = musicDatabase["version"];
-
         //'' Map of {VersionIndex, MusicCount}.
         std::map<std::size_t, int> versionMusicCounts;
         std::ifstream csvFile{csvPath};
         std::string line;
         int lineCount = 0;
 
-        std::string lastVersion;
-        std::string lastVersionJsonKey = "00";
-        std::size_t versionIndex = 0;
-
+        std::size_t lastVersionIndex = 0;
         std::map<std::string, int> debugCounts;
         std::set<std::string> dateTimes;
 
@@ -162,65 +155,40 @@ Csv(const std::string &csvPath, const Json &musicDatabase, bool verbose)
                 throw std::runtime_error("incorrect columnn size.");
             }
 
-            auto &version = columns[static_cast<std::size_t>(CsvMusicColumn::Version)];
+            auto &versionName = columns[static_cast<std::size_t>(CsvMusicColumn::Version)];
             auto &csvTitle = columns[static_cast<std::size_t>(CsvMusicColumn::Title)];
-            auto title = csvTitle;
-            if (auto findMappedTitle = icl_s2::Find(csvTitleMapping, csvTitle))
+
+            auto dbTitle = csvTitle;
+            if (auto findMappedTitle = musicDatabase.FindDbTitle(csvTitle))
             {
-                title = findMappedTitle.value().value();
+                dbTitle = findMappedTitle.value();
             }
 
-            if (lastVersion!=version||version=="1st&substream")
-            {
-                if (version=="1st&substream")
-                {
-                    if (icl_s2::Find(versionMusics["00"], title))
-                    {
-                        versionIndex = 0;
-                    }
-                    else if (icl_s2::Find(versionMusics["01"], title))
-                    {
-                        versionIndex = 1;
-                    }
-                    else
-                    {
-                        throw std::runtime_error("cannot find 1st&substream title ["+csvTitle+"] in music table, title ["+title+"].");
-                    }
-                }
-                else
-                {
-                    auto findIndex = FindVersionIndex(version);
-                    if (!findIndex)
-                    {
-                        throw std::runtime_error("CSV has unknown version name ["+version+"].");
-                    }
-                    versionIndex = findIndex.value();
-                }
-
-                lastVersion = version;
-                lastVersionJsonKey = fmt::format("{:02}", versionIndex);
-
-                icl_s2::MapIncrementCount(debugCounts, "version index format");
-            }
-
+            auto [versionIndex, musicIndex] = musicDatabase.FindIndexes(versionName, dbTitle);
+            lastVersionIndex = versionIndex;
             icl_s2::MapIncrementCount(versionMusicCounts, versionIndex);
 
-            auto &versionMusic = versionMusics.at(lastVersionJsonKey);
+            auto &versionMusic = musicDatabase.GetAllTimeMusics().at(versionIndex);
 
-            auto findMusicIndex = icl_s2::Find(versionMusic, title);
+            auto findMusicIndex = icl_s2::Find(versionMusic, dbTitle);
             if (!findMusicIndex)
             {
                 if (versionIndex==VersionNames.size()-1)
                 {
-                    std::cout << "Possible ["+version+"] new music title ["+title+"] not in database, skipped.\n";
+                    std::cout << "Possible ["+ToVersionString(versionIndex)+"] new music title ["+csvTitle+"] not in database, skipped.\n";
                     continue;
                 }
-                throw std::runtime_error("music title ["+title+"] is not listed in it's version ["+version+"] in database");
+                throw std::runtime_error("music title ["+dbTitle+"] is not listed in it's version ["+ToVersionString(versionIndex)+"] in database");
             }
 
             if (mCheckWithDatabase)
             {
-                auto &music = musicDatabase["musicTable"][lastVersionJsonKey][title];
+                auto findMusic = musicDatabase.FindDbMusic(versionIndex, dbTitle);
+                if (!findMusic)
+                {
+                    throw std::runtime_error("cannot find music when check CSV with DB.");
+                }
+                auto &music = *findMusic;
 
                 //'' last check with V28 CSV, mismatch in artist or genre
                 //'' were special symbol (heart) or replace ",." with full width in CSV.
@@ -259,7 +227,7 @@ Csv(const std::string &csvPath, const Json &musicDatabase, bool verbose)
                         //'' have chart but level unknonwn, need update database level
                         if (dbLevel==0)
                         {
-                            std::cout << "Title [" << title << "][" << ToString(styleDifficulty) << "] Level Csv [" << csvLevel << "], DB [0]\n";
+                            std::cout << "Title [" << dbTitle << "][" << ToString(styleDifficulty) << "] Level Csv [" << csvLevel << "], DB [0]\n";
                         }
                         //'' mismatch levels, but because csv may come from different versions,
                         //'' and level changes, so it's just a warning.
@@ -267,19 +235,18 @@ Csv(const std::string &csvPath, const Json &musicDatabase, bool verbose)
                         {
                             if (std::stoi(csvLevel)!=dbLevel)
                             {
-                                std::cout << "Title [" << title << "][" << ToString(styleDifficulty) << "] Level Csv [" << csvLevel << "] != DB [" << dbLevel << "]\n";
+                                std::cout << "Title [" << dbTitle << "][" << ToString(styleDifficulty) << "] Level Csv [" << csvLevel << "] != DB [" << dbLevel << "]\n";
                             }
                         }
                     }
                     //'' new difficulty appears in csv.
                     else if (csvLevel!="0")
                     {
-                        std::cout << "Title [" << title << "][" << ToString(styleDifficulty) << "] Level Csv [" << csvLevel << "] != DB [N/A]\n";
+                        std::cout << "Title [" << dbTitle << "][" << ToString(styleDifficulty) << "] Level Csv [" << csvLevel << "] != DB [N/A]\n";
                     }
                 }
             }
 
-            auto musicIndex = static_cast<std::size_t>(std::distance(versionMusic.begin(), findMusicIndex.value()));
             auto playCount = std::stoull(columns[static_cast<std::size_t>(CsvMusicColumn::PlayCount)]);
             mTotalPlayCount += playCount;
 
@@ -287,9 +254,11 @@ Csv(const std::string &csvPath, const Json &musicDatabase, bool verbose)
             dateTimes.emplace(dateTime);
 
             auto musicId = ToMusicId(versionIndex, musicIndex);
-            auto itPair = mMusicScores.emplace(std::piecewise_construct,
-                                          std::forward_as_tuple(musicId),
-                                          std::forward_as_tuple(versionIndex, musicIndex, mPlayStyle, playCount, dateTime));
+            auto itPair = mMusicScores.emplace(
+                std::piecewise_construct,
+                std::forward_as_tuple(musicId),
+                std::forward_as_tuple(versionIndex, musicIndex, mPlayStyle, playCount, dateTime)
+            );
             auto &musicScore = itPair.first->second;
 
             for (auto difficulty : DifficultySmartEnum::ToRange())
@@ -322,11 +291,13 @@ Csv(const std::string &csvPath, const Json &musicDatabase, bool verbose)
             }
         }
 
+        mVersion = VersionNames.at(lastVersionIndex);
+
         std::size_t totalMusicCount = 0;
         if (verbose)
         {
-            std::cout << "Version [" << lastVersion << "]\n"
-                      << "Version music count:\n";
+            std::cout << "CSV Version [" << mVersion << "]\n"
+                      << "Each version music count:\n";
             for (auto &[versionIndex, count] : versionMusicCounts)
             {
                 //std::cout << "[" << VersionNames[versionIndex] << "] " << count << " musics.\n";
@@ -362,8 +333,6 @@ Csv(const std::string &csvPath, const Json &musicDatabase, bool verbose)
         mLastDateTime = *dateTimes.rbegin();
 
         if (verbose) std::cout << "DateTime [" << *dateTimes.begin() << ", " << mLastDateTime << "].\n";
-
-        mVersion = lastVersion;
 
         s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "CSV construct");
     }
