@@ -140,7 +140,7 @@ const
 
 MusicInfo
 MusicDatabase::
-GetMusicInfo(std::size_t musicId)
+GetLatestMusicInfo(std::size_t musicId)
 const
 {
     auto versionIndex = musicId/1000;
@@ -172,13 +172,14 @@ const
     musicInfo.AddField(MusicInfoField::Genre, dbMusic["info"]["genre"]["latest"]);
     musicInfo.AddField(MusicInfoField::Artist, dbMusic["info"]["artist"]["latest"]);
 
-    auto &dbChartInfos = dbMusic["difficulty"];
-    for (auto &[key, value] : dbChartInfos.items())
+    auto &dbDiffList = dbMusic["difficulty"];
+    for (auto &[diff, diffData] : dbDiffList.items())
     {
-        auto styleDifficulty = ToStyleDifficulty(key);
+        auto styleDifficulty = ToStyleDifficulty(diff);
         auto [playStyle, difficulty] = Split(styleDifficulty);
-        int level = value["latest"]["level"];
-        int note = value["latest"]["note"];
+        auto &latestChartData = diffData.back();
+        int level = latestChartData["level"];
+        int note = latestChartData["note"];
         musicInfo.AddChartInfo(playStyle, difficulty, {level, note});
     }
 

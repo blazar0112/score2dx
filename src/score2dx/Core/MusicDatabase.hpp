@@ -59,8 +59,17 @@ public:
         FindIndexes(const std::string &versionName, const std::string &dbTitle)
         const;
 
+    //! @brief Get latest music info of music id.
+    //! @note Each difficulty can change info or availability at different versionRange.
+    //! This function get last available versionRange.
+    //! e.g. "5.1.1." SPA "12-29" level: 10, note: 786,
+    //!               SPB "cs05, cs07-cs08, cs10, cs12, cs16" level: 1 note: 70
+    //!               SPN "12-26" level: 1, note 99 "27-29" level: 2, note 99.
+    //! "27-29" is latest info for SPN, so SPN will contain that info.
+    //! @note This is not for active version, which requires only chart info available at specific version.
+    //! e.g Active version = 26, "5.1.1." not have SPB, SPN level = 1.
         MusicInfo
-        GetMusicInfo(std::size_t musicId)
+        GetLatestMusicInfo(std::size_t musicId)
         const;
 
         bool

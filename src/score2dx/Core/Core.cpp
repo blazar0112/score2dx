@@ -242,7 +242,7 @@ const
 
         for (auto &[musicId, dateTimeScores] : musicScores)
         {
-            auto musicInfo = mMusicDatabase.GetMusicInfo(musicId);
+            auto musicInfo = mMusicDatabase.GetLatestMusicInfo(musicId);
             auto &title = musicInfo.GetField(MusicInfoField::Title);
             auto versionIndex = ToIndexes(musicId).first;
             auto versionName = VersionNames[versionIndex];

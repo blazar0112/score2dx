@@ -199,68 +199,7 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
 
             if (mCheckWithDatabase)
             {
-                auto findMusic = musicDatabase.FindDbMusic(versionIndex, dbTitle);
-                if (!findMusic)
-                {
-                    throw std::runtime_error("cannot find music when check CSV with DB.");
-                }
-                auto &music = *findMusic;
-
-                //'' last check with V28 CSV, mismatch in artist or genre
-                //'' were special symbol (heart) or replace ",." with full width in CSV.
-
-                /*
-                auto &info = music["info"];
-
-                auto &dbGenre = info["genre"]["latest"];
-                auto &csvGenre = columns[static_cast<std::size_t>(CsvMusicColumn::Genre)];
-                if (dbGenre!=csvGenre)
-                {
-                    std::cout << "Title [" << title << "] Genre Csv [" << csvGenre << "] != DB [" << dbGenre << "]\n";
-                }
-
-                auto &dbArtist = info["artist"]["latest"];
-                auto &csvArtist = columns[static_cast<std::size_t>(CsvMusicColumn::Artist)];
-                if (dbArtist!=csvArtist)
-                {
-                    std::cout << "Title [" << title << "] Artist Csv [" << csvArtist << "] != DB [" << dbArtist << "]\n";
-                }
-                */
-
-                for (auto difficulty : DifficultySmartEnum::ToRange())
-                {
-                    if (difficulty==Difficulty::Beginner)
-                    {
-                        continue;
-                    }
-
-                    auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
-                    auto findDbDifficulty = icl_s2::Find(music["difficulty"], ToString(styleDifficulty));
-                    auto csvLevel = columns[ToColumnIndex(difficulty, CsvScoreColumn::Level)];
-                    if (findDbDifficulty)
-                    {
-                        auto &dbLevel = findDbDifficulty.value().value()["latest"]["level"];
-                        //'' have chart but level unknonwn, need update database level
-                        if (dbLevel==0)
-                        {
-                            std::cout << "Title [" << dbTitle << "][" << ToString(styleDifficulty) << "] Level Csv [" << csvLevel << "], DB [0]\n";
-                        }
-                        //'' mismatch levels, but because csv may come from different versions,
-                        //'' and level changes, so it's just a warning.
-                        else if (csvLevel!="0")
-                        {
-                            if (std::stoi(csvLevel)!=dbLevel)
-                            {
-                                std::cout << "Title [" << dbTitle << "][" << ToString(styleDifficulty) << "] Level Csv [" << csvLevel << "] != DB [" << dbLevel << "]\n";
-                            }
-                        }
-                    }
-                    //'' new difficulty appears in csv.
-                    else if (csvLevel!="0")
-                    {
-                        std::cout << "Title [" << dbTitle << "][" << ToString(styleDifficulty) << "] Level Csv [" << csvLevel << "] != DB [N/A]\n";
-                    }
-                }
+                //'' need rewrite check since database format changed.
             }
 
             auto playCount = std::stoull(columns[static_cast<std::size_t>(CsvMusicColumn::PlayCount)]);

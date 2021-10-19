@@ -98,7 +98,7 @@ main(int argc, char* argv[])
                 if (tokens.size()>=2)
                 {
                     auto musicId = std::stoull(tokens[1]);
-                    auto musicInfo = core.GetMusicDatabase().GetMusicInfo(musicId);
+                    auto musicInfo = musicDatabase.GetLatestMusicInfo(musicId);
                     musicInfo.Print();
                 }
                 else
@@ -118,7 +118,7 @@ main(int argc, char* argv[])
                     auto [playStyle, difficulty] = score2dx::Split(styleDifficulty);
                     auto &playerScore = core.GetPlayerScores().at("5483-7391");
                     auto chartScores = playerScore.GetChartScores(musicId, playStyle, difficulty);
-                    std::cout << "Music ["+musicDatabase.GetMusicInfo(musicId).GetField(score2dx::MusicInfoField::Title)+"]:\n";
+                    std::cout << "Music ["+musicDatabase.GetLatestMusicInfo(musicId).GetField(score2dx::MusicInfoField::Title)+"]:\n";
                     for (auto &[dateTime, chartScorePtr] : chartScores)
                     {
                         auto &chartScore = *chartScorePtr;
