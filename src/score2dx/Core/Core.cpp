@@ -23,7 +23,7 @@ Core::
 Core()
 {
     auto jsonBegin = s2Time::Now();
-    std::ifstream databaseFile{"table/MusicDatabase28_20211006.json"};
+    std::ifstream databaseFile{"table/MusicDatabase29_2021-10-19.json"};
     databaseFile >> mMusicDatabase;
 
     mAllVersionMusics.resize(VersionNames.size());

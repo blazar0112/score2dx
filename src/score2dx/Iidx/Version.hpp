@@ -40,7 +40,8 @@ const std::vector<std::string> VersionNames
     "CANNON BALLERS",
     "Rootage",
     "HEROIC VERSE",
-    "BISTROVER"
+    "BISTROVER",
+    "CastHour"
 };
 
 //! @brief Find VersionIndex of database VersionName.
@@ -65,7 +66,7 @@ FindVersionIndex(const std::string &dbVersionName);
 //! Since score2dx does not record each score's origin version, mixing score
 //! should not be a problem.
 //!
-//! @note Current version, IIDX 28's EndDateTime is empty.
+//! @note Current version, IIDX 29's EndDateTime is empty.
 //!
 std::map<icl_s2::RangeSide, std::string>
 GetVersionDateTimeRange(std::size_t versionIndex);

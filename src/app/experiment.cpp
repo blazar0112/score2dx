@@ -23,7 +23,7 @@ main(int argc, char* argv[])
         auto begin = s2Time::Now();
 
         score2dx::Core core;
-        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391)", true);
+        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\1067-6562)", true);
         if (!succeeded)
         {
             std::cout << "Load directory failed.\n";
