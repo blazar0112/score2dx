@@ -184,7 +184,7 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
             auto findMusicIndex = musicDatabase.FindMusicIndex(versionIndex, dbTitle);
             if (!findMusicIndex)
             {
-                if (versionIndex==VersionNames.size()-1)
+                if (versionIndex==GetLatestVersionIndex())
                 {
                     std::cout << "Possible ["+ToVersionString(versionIndex)+"] new music title ["+csvTitle+"] not in database, skipped.\n";
                     continue;

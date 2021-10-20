@@ -42,6 +42,34 @@ ToVersionString(std::size_t versionIndex)
     return fmt::format("{:02}", versionIndex);
 }
 
+bool
+IsValidVersion(const std::string &version)
+{
+    if (version.size()!=2)
+    {
+        return false;
+    }
+
+    if (!std::all_of(version.begin(), version.end(), ::isdigit))
+    {
+        return false;
+    }
+
+    auto versionIndex = std::stoull(version);
+    if (versionIndex>GetLatestVersionIndex())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+std::size_t
+GetLatestVersionIndex()
+{
+    return VersionNames.size()-1;
+}
+
 std::optional<std::size_t>
 FindVersionIndex(const std::string &dbVersionName)
 {

@@ -15,6 +15,15 @@ namespace score2dx
 std::string
 ToVersionString(std::size_t versionIndex);
 
+//! @brief Check if version string format and value is valid (i.e. "00" to latest "29").
+bool
+IsValidVersion(const std::string &version);
+
+//! @brief Return latest version index, i.e. max index of VersionNames.
+std::size_t
+GetLatestVersionIndex();
+
+//! @brief Names of each version. Vector index same as VersionIndex.
 const std::vector<std::string> VersionNames
 {
     "1st style",
