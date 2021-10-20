@@ -43,6 +43,7 @@ clear_color_mapping = {
 }
 
 version_end_datetime = {
+    28: '2021-10-12 23:59',
     27: '2020-10-27 23:59',
     26: '2019-10-15 23:59',
     25: '2018-11-06 23:59',
@@ -68,7 +69,8 @@ version_names = {
     25: 'CANNON BALLERS',
     26: 'Rootage',
     27: 'HEROIC VERSE',
-    28: 'BISTROVER'
+    28: 'BISTROVER',
+    29: 'CastHour'
 }
 
 def generate_url(iidx_id, play_style, version_index, page):
@@ -248,7 +250,7 @@ def scrap_ist():
                 export_start = timeit.default_timer()
 
                 datetime = get_jst_date_time()
-                if scrap_version!=28:
+                if scrap_version!=29:
                     datetime = version_end_datetime.get(scrap_version, datetime)
 
                 log('+-- scrap version '+str(scrap_version)+' datetime set to '+datetime)

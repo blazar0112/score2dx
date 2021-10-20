@@ -9,6 +9,7 @@ set_property(GLOBAL PROPERTY
     PROP_SOURCES
     ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/Core.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/MusicDatabase.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicInfo.cpp
 )
 
@@ -18,6 +19,7 @@ set_property(GLOBAL PROPERTY
     ${PUBLIC_HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/Core.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/JsonDefinition.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/MusicDatabase.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicInfo.hpp
 )
 

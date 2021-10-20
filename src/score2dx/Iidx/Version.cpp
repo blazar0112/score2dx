@@ -3,6 +3,8 @@
 #include <array>
 #include <map>
 
+#include "fmt/format.h"
+
 #include "icl_s2/Common/IntegralRangeUsing.hpp"
 #include "icl_s2/StdUtil/Find.hxx"
 
@@ -10,10 +12,12 @@ namespace
 {
 
 //! @brief Map of {VersionIndex, Array of [BeginDateTime, EndDateTime]}.
+//! EndDateTime = 23:59 of day before next version release day.
 //! @note tricoro use Ver.UP release date, not tricoro-machine limited release date (2012-09-19).
 const std::map<std::size_t, std::array<std::string, icl_s2::RangeSideSmartEnum::Size()>> VersionDateTimeRangeMap
 {
-    {28, {"2020-10-28 00:00", ""}},
+    {29, {"2021-10-13 00:00", ""}},
+    {28, {"2020-10-28 00:00", "2021-10-12 23:59"}},
     {27, {"2019-10-16 00:00", "2020-10-27 23:59"}},
     {26, {"2018-11-07 00:00", "2019-10-15 23:59"}},
     {25, {"2017-12-21 00:00", "2018-11-06 23:59"}},
@@ -31,6 +35,40 @@ const std::map<std::size_t, std::array<std::string, icl_s2::RangeSideSmartEnum::
 
 namespace score2dx
 {
+
+std::string
+ToVersionString(std::size_t versionIndex)
+{
+    return fmt::format("{:02}", versionIndex);
+}
+
+bool
+IsValidVersion(const std::string &version)
+{
+    if (version.size()!=2)
+    {
+        return false;
+    }
+
+    if (!std::all_of(version.begin(), version.end(), ::isdigit))
+    {
+        return false;
+    }
+
+    auto versionIndex = std::stoull(version);
+    if (versionIndex>GetLatestVersionIndex())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+std::size_t
+GetLatestVersionIndex()
+{
+    return VersionNames.size()-1;
+}
 
 std::optional<std::size_t>
 FindVersionIndex(const std::string &dbVersionName)

@@ -1,6 +1,6 @@
 # Score2dx
 
-- Library for analyzing and processing Beatmania IIDX CSV score.
+- C++ Library for analyzing and processing Beatmania IIDX CSV score.
 
 ## Features
 

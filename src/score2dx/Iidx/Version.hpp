@@ -10,6 +10,20 @@
 namespace score2dx
 {
 
+//! @brief Convert versionIndex(size_t) to 2-size version string padded with 0.
+//! e.g. versionIndex=4, versionString = "04".
+std::string
+ToVersionString(std::size_t versionIndex);
+
+//! @brief Check if version string format and value is valid (i.e. "00" to latest "29").
+bool
+IsValidVersion(const std::string &version);
+
+//! @brief Return latest version index, i.e. max index of VersionNames.
+std::size_t
+GetLatestVersionIndex();
+
+//! @brief Names of each version. Vector index same as VersionIndex.
 const std::vector<std::string> VersionNames
 {
     "1st style",
@@ -40,7 +54,8 @@ const std::vector<std::string> VersionNames
     "CANNON BALLERS",
     "Rootage",
     "HEROIC VERSE",
-    "BISTROVER"
+    "BISTROVER",
+    "CastHour"
 };
 
 //! @brief Find VersionIndex of database VersionName.
@@ -65,7 +80,7 @@ FindVersionIndex(const std::string &dbVersionName);
 //! Since score2dx does not record each score's origin version, mixing score
 //! should not be a problem.
 //!
-//! @note Current version, IIDX 28's EndDateTime is empty.
+//! @note Current version, IIDX 29's EndDateTime is empty.
 //!
 std::map<icl_s2::RangeSide, std::string>
 GetVersionDateTimeRange(std::size_t versionIndex);

@@ -22,24 +22,14 @@ namespace score2dx
 Core::
 Core()
 {
-    auto jsonBegin = s2Time::Now();
-    std::ifstream databaseFile{"table/MusicDatabase28_20211006.json"};
-    databaseFile >> mMusicDatabase;
+}
 
-    mAllVersionMusics.resize(VersionNames.size());
-    auto &dbAllVersionMusics = mMusicDatabase.at("version");
-    for (auto i : IndexRange{0, VersionNames.size()})
-    {
-        auto versionIndex = fmt::format("{:02}", i);
-        auto &dbVersionMusics = dbAllVersionMusics.at(versionIndex);
-        mAllVersionMusics[i].reserve(dbVersionMusics.size());
-        for (auto &item : dbVersionMusics.items())
-        {
-            mAllVersionMusics[i].emplace_back(item.value());
-        }
-    }
-
-    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(jsonBegin), "Load music database");
+const MusicDatabase &
+Core::
+GetMusicDatabase()
+const
+{
+    return mMusicDatabase;
 }
 
 void
@@ -55,171 +45,6 @@ AddPlayer(const std::string &iidxId)
     {
         CreatePlayer(iidxId);
     }
-}
-
-std::optional<std::string>
-Core::
-FindDbTitle(const std::string &title)
-const
-{
-    for (auto &section : {"csv", "display", "wiki"})
-    {
-        if (auto findMapping = icl_s2::Find(mMusicDatabase["titleMapping"][section], title))
-        {
-            return findMapping.value().value();
-        }
-    }
-
-    return std::nullopt;
-}
-
-std::optional<std::size_t>
-Core::
-FindMusicIndex(std::size_t versionIndex, const std::string &dbTitle)
-const
-{
-    auto &versionMusics = GetVersionMusics(versionIndex);
-    if (auto findMusic = icl_s2::Find(versionMusics, dbTitle))
-    {
-        auto musicIndex = static_cast<std::size_t>(std::distance(versionMusics.begin(), findMusic.value()));
-        return musicIndex;
-    }
-
-    return std::nullopt;
-}
-
-std::pair<std::size_t, std::size_t>
-Core::
-FindIndexes(const std::string &officialVersionName, const std::string &dbTitle)
-const
-{
-    std::size_t versionIndex = 0;
-    std::size_t musicIndex = 0;
-
-    if (officialVersionName!="1st&substream")
-    {
-        auto findVersionIndex = FindVersionIndex(officialVersionName);
-        if (!findVersionIndex)
-        {
-            throw std::runtime_error("cannot find version index of version ["+officialVersionName+"].");
-        }
-
-        versionIndex = findVersionIndex.value();
-
-        if (auto findMusicIndex = FindMusicIndex(versionIndex, dbTitle))
-        {
-            musicIndex = findMusicIndex.value();
-        }
-        else
-        {
-            throw std::runtime_error("cannot find indexes of title ["+dbTitle+"] in version ["+officialVersionName+"].");
-        }
-    }
-    else
-    {
-        if (auto findMusicIndex = FindMusicIndex(0, dbTitle))
-        {
-            versionIndex = 0;
-            musicIndex = findMusicIndex.value();
-        }
-        else if (auto findMusicIndex = FindMusicIndex(1, dbTitle))
-        {
-            versionIndex = 1;
-            musicIndex = findMusicIndex.value();
-        }
-        else
-        {
-            throw std::runtime_error("cannot find version and music indexes of title ["+dbTitle+"].");
-        }
-    }
-
-    return {versionIndex, musicIndex};
-}
-
-const std::vector<std::string> &
-Core::
-GetVersionMusics(std::size_t versionIndex)
-const
-{
-    return mAllVersionMusics.at(versionIndex);
-}
-
-MusicInfo
-Core::
-GetMusicInfo(std::size_t musicId)
-const
-{
-    auto versionIndex = musicId/1000;
-    if (versionIndex>=mAllVersionMusics.size())
-    {
-        throw std::runtime_error("versionIndex out of range in musicId.");
-    }
-
-    auto musicIndex = musicId%1000;
-    auto &versionMusics = GetVersionMusics(versionIndex);
-    if (musicIndex>=versionMusics.size())
-    {
-        throw std::runtime_error("musicIndex out of range in musicId.");
-    }
-
-    auto &title = versionMusics[musicIndex];
-
-    auto findDbMusic = FindDbMusic(versionIndex, title);
-    if (!findDbMusic)
-    {
-        std::cout << "versionJsonKey ["+ToDbVersionKey(versionIndex)+"] title ["+title+"].\n";
-        throw std::runtime_error("cannot find music in main table and cs table.");
-    }
-
-    auto &dbMusic = *findDbMusic;
-
-    MusicInfo musicInfo{musicId};
-    musicInfo.AddField(MusicInfoField::Title, title);
-    musicInfo.AddField(MusicInfoField::Genre, dbMusic["info"]["genre"]["latest"]);
-    musicInfo.AddField(MusicInfoField::Artist, dbMusic["info"]["artist"]["latest"]);
-
-    auto &dbChartInfos = dbMusic["difficulty"];
-    for (auto &[key, value] : dbChartInfos.items())
-    {
-        auto styleDifficulty = ToStyleDifficulty(key);
-        auto [playStyle, difficulty] = Split(styleDifficulty);
-        int level = value["latest"]["level"];
-        int note = value["latest"]["note"];
-        musicInfo.AddChartInfo(playStyle, difficulty, {level, note});
-    }
-
-    return musicInfo;
-}
-
-bool
-Core::
-IsCsMusic(std::size_t musicId)
-const
-{
-    auto versionIndex = musicId/1000;
-    if (versionIndex>=mAllVersionMusics.size())
-    {
-        throw std::runtime_error("versionIndex out of range in musicId.");
-    }
-
-    auto musicIndex = musicId%1000;
-    auto &versionMusics = GetVersionMusics(versionIndex);
-    if (musicIndex>=versionMusics.size())
-    {
-        throw std::runtime_error("musicIndex out of range in musicId.");
-    }
-
-    auto &title = versionMusics[musicIndex];
-
-    auto versionJsonKey = fmt::format("{:02}", versionIndex);
-    auto findVersion = icl_s2::Find(mMusicDatabase["csMusicTable"], versionJsonKey);
-    if (!findVersion)
-    {
-        return false;
-    }
-
-    auto findMusic = icl_s2::Find(findVersion.value().value(), title);
-    return findMusic.has_value();
 }
 
 bool
@@ -417,7 +242,7 @@ const
 
         for (auto &[musicId, dateTimeScores] : musicScores)
         {
-            auto musicInfo = GetMusicInfo(musicId);
+            auto musicInfo = mMusicDatabase.GetLatestMusicInfo(musicId);
             auto &title = musicInfo.GetField(MusicInfoField::Title);
             auto versionIndex = ToIndexes(musicId).first;
             auto versionName = VersionNames[versionIndex];
@@ -578,12 +403,12 @@ Import(const std::string &requiredIidxId,
             for (auto &[title, musicData] : versionData.items())
             {
                 std::string dbTitle = title;
-                if (auto findMappedTitle = FindDbTitle(title))
+                if (auto findMappedTitle = mMusicDatabase.FindDbTitle(title))
                 {
                     dbTitle = findMappedTitle.value();
                 }
 
-                auto [versionIndex, musicIndex] = FindIndexes(versionName, dbTitle);
+                auto [versionIndex, musicIndex] = mMusicDatabase.FindIndexes(versionName, dbTitle);
 
                 for (auto &[dateTime, recordData] : musicData.items())
                 {
@@ -672,33 +497,6 @@ AddCsvToPlayerScore(const std::string &iidxId,
         (void)musicId;
         playerScore.AddMusicScore(musicScore);
     }
-}
-
-const Json*
-Core::
-FindDbMusic(std::size_t versionIndex, const std::string &title)
-const
-{
-    auto versionJsonKey = ToDbVersionKey(versionIndex);
-    auto findMusic = icl_s2::Find(mMusicDatabase["musicTable"][versionJsonKey], title);
-    if (findMusic)
-    {
-        return &(findMusic.value().value());
-    }
-
-    auto findCsMusic = icl_s2::Find(mMusicDatabase["csMusicTable"][versionJsonKey], title);
-    if (findCsMusic)
-    {
-        return &(findCsMusic.value().value());
-    }
-
-    return nullptr;
-}
-
-std::string
-ToDbVersionKey(std::size_t versionIndex)
-{
-    return fmt::format("{:02}", versionIndex);
 }
 
 }
