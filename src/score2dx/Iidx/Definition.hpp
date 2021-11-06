@@ -9,6 +9,8 @@
 namespace score2dx
 {
 
+inline constexpr int MaxLevel = 12;
+
 ICL_S2_SMART_ENUM(PlayStyle,
     SinglePlay,
     DoublePlay

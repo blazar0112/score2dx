@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "score2dx/Core/ActiveVersion.hpp"
 #include "score2dx/Core/JsonDefinition.hpp"
 #include "score2dx/Core/MusicInfo.hpp"
 
@@ -20,7 +21,9 @@ public:
         GetAllTimeMusics()
         const;
 
-    //! @brief Find if title is database title, if not, return the mapped database title.
+    //! @brief Find if title is database title:
+    //!     If so return nullopt.
+    //!     If not, return the mapped database title.
     //! DbTitle: actual title used in DB, almost same as official title.
     //!     * Not replace half width character to full width like CSV title.
     //! Official title: occurs in official data in website or CSV.
@@ -80,17 +83,31 @@ public:
         FindDbMusic(std::size_t versionIndex, const std::string &title)
         const;
 
+        const std::map<std::size_t, ActiveVersion> &
+        GetActiveVersions()
+        const;
+
 private:
     Json mDatabase;
+    std::size_t mLatestVersionIndex{0};
 
     //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
     std::vector<std::vector<std::string>> mAllTimeMusics;
+
     //! @brief Cache all 00 and 01 musics to lookup version index.
     //! Map of {DbTitle Version="00" or "01", versionIndex}.
     std::map<std::string, std::size_t> m1stSubVersionIndexMap;
+
     //! @brief Since index is unchanged after loading, cache all music index.
     //! Map of {VersionIndex, Map of {DbTitle, MusicIndex}}.
     std::map<std::size_t, std::map<std::string, std::size_t>> mVersionMusicIndexMap;
+
+    //! @brief Map of {VersionIndex, ActiveVersion}.
+    std::map<std::size_t, ActiveVersion> mActiveVersions;
+
+    //! @brief Generate all active versions between version range [begin, latest].
+        void
+        GenerateActiveVersions(std::size_t beginVersionIndex);
 };
 
 }

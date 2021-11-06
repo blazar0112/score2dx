@@ -4,7 +4,9 @@
 #include <iostream>
 
 #include "icl_s2/Common/IntegralRangeUsing.hpp"
+#include "icl_s2/Common/IntegralRangeList.hxx"
 #include "icl_s2/StdUtil/Find.hxx"
+#include "icl_s2/StdUtil/FormatString.hxx"
 #include "icl_s2/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Iidx/Version.hpp"
@@ -42,6 +44,10 @@ MusicDatabase()
             ++musicIndex;
         }
     }
+
+    mLatestVersionIndex = VersionNames.size()-1;
+
+    GenerateActiveVersions(22);
 
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Load music database");
 }
@@ -236,6 +242,109 @@ const
     }
 
     return nullptr;
+}
+
+const std::map<std::size_t, ActiveVersion> &
+MusicDatabase::
+GetActiveVersions()
+const
+{
+    return mActiveVersions;
+}
+
+void
+MusicDatabase::
+GenerateActiveVersions(std::size_t beginVersionIndex)
+{
+    const auto &musicTable = mDatabase.at("musicTable");
+
+    mActiveVersions.clear();
+    for (auto versionIndex : IndexRange{beginVersionIndex, mLatestVersionIndex+1})
+    {
+        mActiveVersions.emplace(versionIndex, versionIndex);
+    }
+
+    //! @brief Convert non-CS availableVersions to range list.
+    auto ToRangeList = [](const std::string &availableVersions)
+    -> icl_s2::IntegralRangeList<std::size_t>
+    {
+        icl_s2::IntegralRangeList<std::size_t> rangeList;
+
+        if (icl_s2::Find(availableVersions, "cs"))
+        {
+            return rangeList;
+        }
+
+        auto tokens = icl_s2::SplitString(", ", availableVersions);
+        for (auto &token : tokens)
+        {
+            if (token.size()==2)
+            {
+                auto versionIndex = std::stoull(token);
+                rangeList.AddRange({versionIndex, versionIndex+1});
+            }
+            //'' for 00-29 like case, note it's range [00, 29], not [00, 29).
+            else if (token.size()==5)
+            {
+                auto beginVersionIndex = std::stoull(token.substr(0, 2));
+                auto endVersionIndex = std::stoull(token.substr(3, 2));
+                rangeList.AddRange({beginVersionIndex, endVersionIndex+1});
+            }
+            else
+            {
+                std::cout << icl_s2::FormatString(tokens) << std::endl;
+                throw std::runtime_error("incorrect availableVersions "+availableVersions);
+            }
+        }
+
+        return rangeList;
+    };
+
+    auto IsActive = [ToRangeList](std::size_t activeVersionIndex, const std::string &availableVersions)
+    -> bool
+    {
+        auto rangeList = ToRangeList(availableVersions);
+        return rangeList.HasRange(activeVersionIndex);
+    };
+
+    for (const auto &[version, versionMusics] : mDatabase.at("version").items())
+    {
+        auto versionIndex = std::stoull(version);
+        for (auto musicIndex : IndexRange{0, versionMusics.size()})
+        {
+            std::string title = versionMusics.at(musicIndex);
+            auto findMusic = icl_s2::Find(musicTable.at(version), title);
+            //'' cs musics.
+            if (!findMusic) { continue; }
+
+            auto &musicInfo = findMusic.value().value();
+            std::string availableVersions = musicInfo.at("availableVersions");
+
+            for (auto &[activeVersionIndex, activeVersion] : mActiveVersions)
+            {
+                if (!IsActive(activeVersionIndex, availableVersions))
+                {
+                    continue;
+                }
+
+                for (auto &[styleDiffStr, diffInfo] : musicInfo.at("difficulty").items())
+                {
+                    auto styleDifficulty = ToStyleDifficulty(styleDiffStr);
+                    for (auto &[chartVersions, chartInfo] : diffInfo.items())
+                    {
+                        if (IsActive(activeVersionIndex, chartVersions))
+                        {
+                            auto musicId = ToMusicId(versionIndex, musicIndex);
+                            int level = chartInfo.at("level");
+                            int note = chartInfo.at("note");
+                            activeVersion.AddDifficulty(musicId, styleDifficulty, {level, note});
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 }
