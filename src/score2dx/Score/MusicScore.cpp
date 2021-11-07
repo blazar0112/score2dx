@@ -8,35 +8,16 @@ namespace score2dx
 {
 
 MusicScore::
-MusicScore(std::size_t versionIndex,
-           std::size_t musicIndex,
+MusicScore(std::size_t musicId,
            PlayStyle playStyle,
            std::size_t playCount,
-           const std::string &dateTime)
-:   mVersionIndex(versionIndex),
-    mMusicIndex(musicIndex),
-    mMusicId(ToMusicId(versionIndex, musicIndex)),
+           std::string dateTime)
+:   mMusicId(musicId),
     mPlayStyle(playStyle),
     mPlayCount(playCount),
-    mDateTime(dateTime)
+    mDateTime(std::move(dateTime))
 {
     //! @todo: check date time.
-}
-
-std::size_t
-MusicScore::
-GetVersionIndex()
-const
-{
-    return mVersionIndex;
-}
-
-std::size_t
-MusicScore::
-GetMusicIndex()
-const
-{
-    return mMusicIndex;
 }
 
 std::size_t
@@ -61,6 +42,13 @@ GetPlayCount()
 const
 {
     return mPlayCount;
+}
+
+void
+MusicScore::
+SetPlayCount(std::size_t playCount)
+{
+    mPlayCount = playCount;
 }
 
 const std::string &

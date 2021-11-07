@@ -15,21 +15,12 @@ namespace score2dx
 class MusicScore
 {
 public:
-    //! @note Verify if dateTime format is correct.
-    //! (But not check if dateTime and version are consistent.)
-        MusicScore(std::size_t versionIndex,
-                   std::size_t musicIndex,
+    //! @note DateTime should be valid if construct from CSV.
+    //! For other purpose it can be empty.
+        MusicScore(std::size_t musicId,
                    PlayStyle playStyle,
                    std::size_t playCount,
-                   const std::string &dateTime);
-
-        std::size_t
-        GetVersionIndex()
-        const;
-
-        std::size_t
-        GetMusicIndex()
-        const;
+                   std::string dateTime);
 
     //! @brief MusicId = VersionIndex*1000+{MusicIndex in version music list}.
     //! e.g. "Elisha"'s VersionIndex is 17, MusicIndex is 0, MusicId is 17000.
@@ -45,10 +36,14 @@ public:
         GetPlayCount()
         const;
 
+        void
+        SetPlayCount(std::size_t playCount);
+
         const std::string &
         GetDateTime()
         const;
 
+    //! @brief Add chart score for difficulty, overwrite if exist.
         void
         AddChartScore(Difficulty difficulty,
                       const ChartScore &chartScore);
@@ -66,9 +61,6 @@ public:
         const;
 
 private:
-    std::size_t mVersionIndex{0};
-    std::size_t mMusicIndex{0};
-
     //! @brief MusicId = VersionIndex*1000+{MusicIndex in version music list}.
     //! e.g. "Elisha"'s VersionIndex is 17, MusicIndex is 0, MusicId is 17000.
     std::size_t mMusicId{0};

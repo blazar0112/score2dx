@@ -52,6 +52,14 @@ MusicDatabase()
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Load music database");
 }
 
+std::size_t
+MusicDatabase::
+GetLatestVersionIndex()
+const
+{
+    return mLatestVersionIndex;
+}
+
 const std::vector<std::vector<std::string>> &
 MusicDatabase::
 GetAllTimeMusics()
@@ -250,6 +258,17 @@ GetActiveVersions()
 const
 {
     return mActiveVersions;
+}
+
+const ActiveVersion*
+MusicDatabase::
+FindActiveVersion(std::size_t activeVersionIndex)
+const
+{
+    auto findActiveVersion = icl_s2::Find(mActiveVersions, activeVersionIndex);
+    if (!findActiveVersion) { return nullptr; }
+
+    return &(findActiveVersion.value()->second);
 }
 
 void

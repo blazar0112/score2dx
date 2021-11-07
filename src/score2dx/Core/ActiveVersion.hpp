@@ -29,20 +29,25 @@ public:
                       StyleDifficulty styleDifficulty)
         const;
 
-    //! @brief Get all chart difficulty with level={level} in Map of {MusicId, StyleDifficultyList}.
-        const std::map<std::size_t, std::set<StyleDifficulty>> &
-        GetChartDifficultyList(int level)
+    //! @brief Map of {ChartId, ChartInfo}.
+        const std::map<std::size_t, ChartInfo> &
+        GetChartInfos()
+        const;
+
+    //! @brief Get chart id list which level={level}.
+        const std::set<std::size_t> &
+        GetChartIdList(int level)
         const;
 
 private:
     std::size_t mVersionIndex{0};
 
-    //! @brief Map of {MusicId, Map of {StyleDifficulty, ChartInfo}}.
-    std::map<std::size_t, std::map<StyleDifficulty, ChartInfo>> mMusicChartInfoMap;
+    //! @brief Map of {ChartId, ChartInfo}.
+    std::map<std::size_t, ChartInfo> mChartInfos;
 
-    //! @brief Array of {Index=Level, Map of {MusicId, AvaiableStyleDifficultyList}}.
+    //! @brief Array of {Index=Level, ChartIdList}.
     //! @note Level = 0 is unused.
-    std::array<std::map<std::size_t, std::set<StyleDifficulty>>, MaxLevel+1> mLevelSortedDifficultyLists;
+    std::array<std::set<std::size_t>, MaxLevel+1> mChartIdListByLevel;
 };
 
 }

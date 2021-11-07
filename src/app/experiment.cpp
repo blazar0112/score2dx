@@ -24,41 +24,44 @@ main(int argc, char* argv[])
         auto begin = s2Time::Now();
 
         score2dx::Core core;
+        core.SetActiveVersionIndex(28);
 
-        /*
         auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\1067-6562)", true);
         if (!succeeded)
         {
             std::cout << "Load directory failed.\n";
         }
-        */
 
-        // List all DPL level = 10/11 in each active version.
-        auto &database = core.GetMusicDatabase();
-        for (auto &[versionIndex, activeVersion] : database.GetActiveVersions())
+        auto* scoreAnalysisPtr = core.FindAnalysis("1067-6562");
+        if (!scoreAnalysisPtr) { throw std::runtime_error("scoreAnalysisPtr is nullptr."); }
+        auto &scoreAnalysis = *scoreAnalysisPtr;
+        std::cout << "scoreAnalysis.StatisticsByVersionStyleDifficulty.size() = " << scoreAnalysis.StatisticsByVersionStyleDifficulty.size() << std::endl;
+
+        auto lastIt = scoreAnalysis.StatisticsByVersionStyleDifficulty.rbegin();
+        auto lastVer = lastIt->first;
+        auto &verStyleDiffStats = lastIt->second;
+        std::cout << "Last analyzed version [" << lastVer << "]\n";
+        for (auto &[styleDifficulty, statistics] : verStyleDiffStats)
         {
-            if (versionIndex<26) { continue; }
+            std::cout << "[" << ToString(styleDifficulty) << "] " << statistics.ChartIdList.size() << " chart ids.\n";
+        }
 
-            std::cout << "ActiveVersion = " << versionIndex << "\n";
-            for (auto level : IntRange{10, 12})
-            {
-                for (auto &[musicId, styleDifficultyList] : activeVersion.GetChartDifficultyList(level))
-                {
-                    if (icl_s2::Find(styleDifficultyList, score2dx::StyleDifficulty::DPL))
-                    {
-                        auto findChartInfo = activeVersion.FindChartInfo(musicId, score2dx::StyleDifficulty::DPL);
-                        if (!findChartInfo) { throw std::runtime_error("should have chart info."); }
-
-                        auto &title = database.GetLatestMusicInfo(musicId).GetField(score2dx::MusicInfoField::Title);
-
-                        std::cout << "[" << score2dx::ToFormatted(musicId)
-                                  << "][" << title
-                                  << "][DPL] Level=" << findChartInfo->Level
-                                  << ", Note=" << findChartInfo->Note
-                                  << ".\n";
-                    }
-                }
-            }
+        auto &dpaStats = verStyleDiffStats.at(score2dx::StyleDifficulty::DPA);
+        std::cout << "DPA stats:\n";
+        std::cout << "--------\n";
+        for (auto &[clearType, chartIds] : dpaStats.ChartIdListByClearType)
+        {
+            std::cout << ToString(clearType) << ": " << chartIds.size() << "\n";
+        }
+        std::cout << "--------\n";
+        for (auto &[djLevel, chartIds] : dpaStats.ChartIdListByDjLevel)
+        {
+            std::cout << ToString(djLevel) << ": " << chartIds.size() << "\n";
+        }
+        std::cout << "--------\n";
+        for (auto &[scoreLevel, chartIds] : dpaStats.ChartIdListByScoreLevelRange)
+        {
+            std::cout << ToString(scoreLevel) << ": " << chartIds.size() << "\n";
         }
 
         s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "experiment.exe");

@@ -27,12 +27,15 @@ AddDifficulty(std::size_t musicId,
               StyleDifficulty styleDifficulty,
               ChartInfo chartInfo)
 {
-    if (static_cast<std::size_t>(chartInfo.Level)>=mLevelSortedDifficultyLists.size())
+    if (static_cast<std::size_t>(chartInfo.Level)>=mChartIdListByLevel.size())
     {
         throw std::runtime_error("invalid level");
     }
-    mLevelSortedDifficultyLists[chartInfo.Level][musicId].emplace(styleDifficulty);
-    mMusicChartInfoMap[musicId].emplace(styleDifficulty, std::move(chartInfo));
+
+    auto chartId = ToChartId(musicId, styleDifficulty);
+
+    mChartIdListByLevel[chartInfo.Level].emplace(chartId);
+    mChartInfos.emplace(chartId, std::move(chartInfo));
 }
 
 const ChartInfo*
@@ -41,25 +44,31 @@ FindChartInfo(std::size_t musicId,
               StyleDifficulty styleDifficulty)
 const
 {
-    auto findMusic = icl_s2::Find(mMusicChartInfoMap, musicId);
-    if (!findMusic) { return nullptr; }
+    auto chartId = ToChartId(musicId, styleDifficulty);
+    auto findChartInfo = icl_s2::Find(mChartInfos, chartId);
+    if (!findChartInfo) { return nullptr; }
 
-    auto findDifficulty = icl_s2::Find(findMusic.value()->second, styleDifficulty);
-    if (!findDifficulty) { return nullptr; }
-
-    return &(findDifficulty.value()->second);
+    return &(findChartInfo.value()->second);
 }
 
-const std::map<std::size_t, std::set<StyleDifficulty>> &
+const std::map<std::size_t, ChartInfo> &
 ActiveVersion::
-GetChartDifficultyList(int level)
+GetChartInfos()
 const
 {
-    if (static_cast<std::size_t>(level)>=mLevelSortedDifficultyLists.size())
+    return mChartInfos;
+}
+
+const std::set<std::size_t> &
+ActiveVersion::
+GetChartIdList(int level)
+const
+{
+    if (static_cast<std::size_t>(level)>=mChartIdListByLevel.size())
     {
         throw std::runtime_error("invalid level");
     }
-    return mLevelSortedDifficultyLists[level];
+    return mChartIdListByLevel[level];
 }
 
 }

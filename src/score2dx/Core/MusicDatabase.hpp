@@ -16,6 +16,10 @@ class MusicDatabase
 public:
         MusicDatabase();
 
+        std::size_t
+        GetLatestVersionIndex()
+        const;
+
         //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
         const std::vector<std::vector<std::string>> &
         GetAllTimeMusics()
@@ -85,6 +89,10 @@ public:
 
         const std::map<std::size_t, ActiveVersion> &
         GetActiveVersions()
+        const;
+
+        const ActiveVersion*
+        FindActiveVersion(std::size_t activeVersionIndex)
         const;
 
 private:

@@ -76,7 +76,7 @@ AddChartScore(std::size_t musicId,
         allTimeMusicScores.emplace(
             std::piecewise_construct,
             std::forward_as_tuple(dateTime),
-            std::forward_as_tuple(versionIndex, musicIndex, playStyle, 0, dateTime)
+            std::forward_as_tuple(ToMusicId(versionIndex, musicIndex), playStyle, 0, dateTime)
         );
     }
 

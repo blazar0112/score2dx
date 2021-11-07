@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <string>
 
 #include "icl_s2/Common/SmartEnum.hxx"
 
@@ -18,5 +19,8 @@ struct ChartScore
     int GreatCount{0};
     std::optional<int> MissCount;
 };
+
+std::string
+ToString(const ChartScore &chartScore);
 
 }
