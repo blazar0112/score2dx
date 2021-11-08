@@ -238,8 +238,11 @@ const
         {
             stats->ChartIdList.emplace(chartId);
             stats->ChartIdListByClearType[versionBestChartScore.ClearType].emplace(chartId);
-            stats->ChartIdListByDjLevel[versionBestChartScore.DjLevel].emplace(chartId);
-            stats->ChartIdListByScoreLevelRange[statsScoreLevel].emplace(chartId);
+            if (versionBestChartScore.ClearType!=ClearType::NO_PLAY)
+            {
+                stats->ChartIdListByDjLevel[versionBestChartScore.DjLevel].emplace(chartId);
+                stats->ChartIdListByScoreLevelRange[statsScoreLevel].emplace(chartId);
+            }
         }
     }
 

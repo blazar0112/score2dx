@@ -20,7 +20,7 @@ MusicDatabase::
 MusicDatabase()
 {
     auto begin = s2Time::Now();
-    std::ifstream databaseFile{"table/MusicDatabase29_2021-10-19.json"};
+    std::ifstream databaseFile{"table/MusicDatabase29_2021-11-08.json"};
     databaseFile >> mDatabase;
 
     mAllTimeMusics.resize(VersionNames.size());
