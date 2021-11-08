@@ -1,7 +1,8 @@
 {
     "#meta": {
         "score2dx": "2.0.0",
-        "version": "29"
+        "version": "29",
+        "id": "29044"
     },
     "csMusicTable": {
         "04": {
@@ -99068,12 +99069,6 @@
             "Angel's Ladder": {
                 "availableVersions": "29",
                 "difficulty": {
-                    "DPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1800
-                        }
-                    },
                     "DPH": {
                         "29": {
                             "level": 10,
@@ -99084,12 +99079,6 @@
                         "29": {
                             "level": 6,
                             "note": 617
-                        }
-                    },
-                    "SPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1800
                         }
                     },
                     "SPH": {
@@ -99318,12 +99307,6 @@
             "Don't believe the hype": {
                 "availableVersions": "29",
                 "difficulty": {
-                    "DPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1572
-                        }
-                    },
                     "DPH": {
                         "29": {
                             "level": 10,
@@ -99334,12 +99317,6 @@
                         "29": {
                             "level": 6,
                             "note": 579
-                        }
-                    },
-                    "SPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1666
                         }
                     },
                     "SPH": {
@@ -99468,12 +99445,6 @@
             "Fegrix": {
                 "availableVersions": "29",
                 "difficulty": {
-                    "DPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1803
-                        }
-                    },
                     "DPH": {
                         "29": {
                             "level": 10,
@@ -99484,12 +99455,6 @@
                         "29": {
                             "level": 6,
                             "note": 649
-                        }
-                    },
-                    "SPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1687
                         }
                     },
                     "SPH": {
@@ -99518,12 +99483,6 @@
             "GiGaGaHell": {
                 "availableVersions": "29",
                 "difficulty": {
-                    "DPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1594
-                        }
-                    },
                     "DPH": {
                         "29": {
                             "level": 10,
@@ -99534,12 +99493,6 @@
                         "29": {
                             "level": 7,
                             "note": 697
-                        }
-                    },
-                    "SPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1687
                         }
                     },
                     "SPH": {
@@ -99668,12 +99621,6 @@
             "LIVE DRIVING!! feat. 花たん": {
                 "availableVersions": "29",
                 "difficulty": {
-                    "DPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1988
-                        }
-                    },
                     "DPH": {
                         "29": {
                             "level": 10,
@@ -99684,12 +99631,6 @@
                         "29": {
                             "level": 7,
                             "note": 830
-                        }
-                    },
-                    "SPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1947
                         }
                     },
                     "SPH": {
@@ -100124,12 +100065,6 @@
             "Purple Perplex": {
                 "availableVersions": "29",
                 "difficulty": {
-                    "DPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1501
-                        }
-                    },
                     "DPH": {
                         "29": {
                             "level": 10,
@@ -100140,12 +100075,6 @@
                         "29": {
                             "level": 6,
                             "note": 611
-                        }
-                    },
-                    "SPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1578
                         }
                     },
                     "SPH": {
@@ -100224,12 +100153,6 @@
             "Skreaming for Salvation": {
                 "availableVersions": "29",
                 "difficulty": {
-                    "DPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1584
-                        }
-                    },
                     "DPH": {
                         "29": {
                             "level": 10,
@@ -100240,12 +100163,6 @@
                         "29": {
                             "level": 6,
                             "note": 458
-                        }
-                    },
-                    "SPA": {
-                        "29": {
-                            "level": 12,
-                            "note": 1625
                         }
                     },
                     "SPH": {
@@ -101147,6 +101064,106 @@
                     },
                     "genre": {
                         "latest": "J-POP"
+                    },
+                    "version": 29
+                }
+            },
+            "《GRANDMASTER》": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1508
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 934
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 496
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1504
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 939
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 499
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Blacklolita"
+                    },
+                    "genre": {
+                        "latest": "TRIUMPH"
+                    },
+                    "version": 29
+                }
+            },
+            "TOMAHAWK": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1841
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1318
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 713
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1830
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1215
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 697
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "かめりあ"
+                    },
+                    "genre": {
+                        "latest": "SUPER HARDCORE NOVA"
                     },
                     "version": 29
                 }
@@ -103328,7 +103345,9 @@
             "口カラ凸ゲキ",
             "愛しくてラヴィンユー ft. マナ",
             "月とミルク",
-            "踊"
+            "踊",
+            "《GRANDMASTER》",
+            "TOMAHAWK"
         ]
     }
 }

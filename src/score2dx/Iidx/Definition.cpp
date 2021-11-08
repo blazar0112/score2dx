@@ -80,4 +80,29 @@ ToFormatted(std::size_t musicId)
     return fmt::format("{:05}", musicId);
 }
 
+std::size_t
+ToChartId(std::size_t musicId,
+          PlayStyle playStyle,
+          Difficulty difficulty)
+{
+    return musicId*100+static_cast<std::size_t>(playStyle)*10+static_cast<std::size_t>(difficulty);
+}
+
+std::size_t
+ToChartId(std::size_t musicId,
+          StyleDifficulty styleDifficulty)
+{
+    auto [playStyle, difficulty] = Split(styleDifficulty);
+    return ToChartId(musicId, playStyle, difficulty);
+}
+
+std::tuple<std::size_t, PlayStyle, Difficulty>
+ToMusicStyleDiffculty(std::size_t chartId)
+{
+    auto musicId = chartId/100;
+    auto playStyle = static_cast<PlayStyle>((chartId%100)/10);
+    auto difficulty = static_cast<Difficulty>(chartId%10);
+    return {musicId, playStyle, difficulty};
+}
+
 }

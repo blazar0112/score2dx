@@ -3,6 +3,7 @@
 #include <map>
 #include <string_view>
 
+#include "score2dx/Analysis/Analyzer.hpp"
 #include "score2dx/Core/JsonDefinition.hpp"
 #include "score2dx/Core/MusicDatabase.hpp"
 #include "score2dx/Csv/Csv.hpp"
@@ -27,14 +28,15 @@ public:
         void
         AddPlayer(const std::string &iidxId);
 
-    //! @brief Load directory of name in IIDX ID format.
+    //! @brief Load directory of player score data and update player score analysis.
+    //! Directory name need in form of IIDX ID format.
     //! Search and load all CSV begin with that ID. Also load all exported files with same ID inside.
     //! Do nothing if directory is not IIDX ID or failed.
     //! @return If load directory succeeded.
         bool
         LoadDirectory(std::string_view directory, bool verbose=false);
 
-    //! @brief Export loaded PlayerScore to score2dx json format export data.
+    //! @brief Export loaded PlayerScore to score2dx Json format data.
     //! Filename: score2dx_export_<PlayStyleAcronym>_<CurrentDate>[_<suffix>].json
     //! @example Load csv and export filename will be:
     //!     score2dx_export_DP_2021-09-12.json
@@ -47,6 +49,8 @@ public:
                const std::string &suffix="")
         const;
 
+    //! @brief Import score2dx Json format data.
+    //! @note Does not update player score analysis.
         void
         Import(const std::string &requiredIidxId,
                const std::string &exportedFilename,
@@ -62,15 +66,34 @@ public:
         GetCsvs(const std::string &iidxId, PlayStyle playStyle)
         const;
 
+    //! @brief Set active version for score analysis, also clear all previous stored player analyses.
+    //! Call Analyze for player manually. Not auto analyze for all players.
+        void
+        SetActiveVersionIndex(std::size_t activeVersionIndex);
+
+    //! @brief Generate score analysis for player of IIDX ID.
+    //! @note LoadDirectory will analyze once after loaded. Use for manually import player score.
+        void
+        Analyze(const std::string &iidxId);
+
+    //! @brief Find if player of IIDX ID has analysis.
+    //! @note SetActiveVersion, LoadDirectory, Analyze invalidate previous ScoreAnalysis.
+        const ScoreAnalysis*
+        FindAnalysis(const std::string &iidxId)
+        const;
+
 private:
     MusicDatabase mMusicDatabase;
-    std::vector<std::vector<std::string>> mAllVersionMusics;
 
     //! @brief Map of {IidxId, PlayerScore}.
     std::map<std::string, PlayerScore> mPlayerScores;
 
     //! @brief Map of {IidxId, Map of {PlayStyle, Map of {DateTime, Csv}}}.
-    std::map<std::string, std::map<PlayStyle, std::map<std::string, std::unique_ptr<Csv>>>> mAllPlayerCsvs;
+    std::map<std::string, std::map<PlayStyle, std::map<std::string, std::unique_ptr<Csv>>>> mPlayerCsvs;
+
+    Analyzer mAnalyzer;
+    //! @brief Map of {IidxId, LastScoreAnalysis}.
+    std::map<std::string, ScoreAnalysis> mPlayerAnalyses;
 
         void
         CreatePlayer(const std::string &iidxId);
@@ -79,8 +102,10 @@ private:
         AddCsvToPlayerScore(const std::string &iidxId,
                             PlayStyle playStyle,
                             const std::string &dateTime);
+
+        void
+        Analyze(const std::string &iidxId,
+                const PlayerScore &playerScore);
 };
-
-
 
 }

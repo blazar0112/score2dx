@@ -73,11 +73,14 @@ FindScoreLevelRangeDiff(int note, int exScore);
 //! @brief Convert scoreLevelRange {AAA, LevelMinus} to prettified string "AAA-".
 //! @note Level in upper case.
 std::string
-ToString(const ScoreLevelRange &scoreLevelRange);
+ToPrettyString(const ScoreLevelRange &scoreLevelRange);
 
 //! @brief Combined ScoreLevelRange and ScoreDiff to prettified string.
 //! e.g. "AAA-5", "MAX+0", "AA+0", "F+50".
 std::string
 ToScoreLevelRangeDiffString(int note, int exScore);
+
+DjLevel
+ConvertToDjLevel(const ScoreLevelRange &scoreLevelRange);
 
 }

@@ -9,6 +9,8 @@
 namespace score2dx
 {
 
+inline constexpr int MaxLevel = 12;
+
 ICL_S2_SMART_ENUM(PlayStyle,
     SinglePlay,
     DoublePlay
@@ -101,5 +103,17 @@ ToIndexes(std::size_t musicId);
 
 std::string
 ToFormatted(std::size_t musicId);
+
+std::size_t
+ToChartId(std::size_t musicId,
+          PlayStyle playStyle,
+          Difficulty difficulty);
+
+std::size_t
+ToChartId(std::size_t musicId,
+          StyleDifficulty styleDifficulty);
+
+std::tuple<std::size_t, PlayStyle, Difficulty>
+ToMusicStyleDiffculty(std::size_t chartId);
 
 }

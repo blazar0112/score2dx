@@ -21,6 +21,7 @@ namespace score2dx
 
 Core::
 Core()
+:   mAnalyzer(mMusicDatabase)
 {
 }
 
@@ -61,8 +62,8 @@ LoadDirectory(std::string_view directory, bool verbose)
     }
 
     auto path = fs::canonical(directory).lexically_normal();
-    auto id = path.filename().string().substr(0, 9);
-    if (!IsIidxId(id))
+    auto iidxId = path.filename().string().substr(0, 9);
+    if (!IsIidxId(iidxId))
     {
         if (verbose)
         {
@@ -71,12 +72,12 @@ LoadDirectory(std::string_view directory, bool verbose)
         return false;
     }
 
-    if (!icl_s2::Find(mPlayerScores, id))
+    if (!icl_s2::Find(mPlayerScores, iidxId))
     {
-        CreatePlayer(id);
+        CreatePlayer(iidxId);
     }
 
-    auto &playerScore = mPlayerScores.at(id);
+    auto &playerScore = mPlayerScores.at(iidxId);
 
     for (auto &entry : fs::directory_iterator{directory})
     {
@@ -92,7 +93,7 @@ LoadDirectory(std::string_view directory, bool verbose)
                 continue;
             }
 
-            if (!filename.starts_with(id))
+            if (!filename.starts_with(iidxId))
             {
                 if (verbose) std::cout << "Skip CSV ["+filename+"] with unmatch IIDX ID.\n";
                 continue;
@@ -123,10 +124,10 @@ LoadDirectory(std::string_view directory, bool verbose)
 
             auto dateTime = csv.GetLastDateTime();
             auto playStyle = csv.GetPlayStyle();
-            auto &allTimeCsvs = mAllPlayerCsvs.at(id).at(playStyle);
+            auto &allTimeCsvs = mPlayerCsvs.at(iidxId).at(playStyle);
             allTimeCsvs[dateTime] = std::move(csvPtr);
 
-            AddCsvToPlayerScore(id, playStyle, dateTime);
+            AddCsvToPlayerScore(iidxId, playStyle, dateTime);
         }
 
         if (entry.is_regular_file()&&entry.path().extension()==".json")
@@ -134,14 +135,14 @@ LoadDirectory(std::string_view directory, bool verbose)
             auto filename = entry.path().filename().string();
             if (filename.starts_with("score2dx_export_"))
             {
-                Import(id, entry.path().string(), verbose);
+                Import(iidxId, entry.path().string(), verbose);
             }
         }
     }
 
     if (verbose)
     {
-        auto &playerCsvs = mAllPlayerCsvs.at(id);
+        auto &playerCsvs = mPlayerCsvs.at(iidxId);
         std::cout << "Player IIDX ID ["+playerScore.GetIidxId()+"] CSV files:\n";
         for (auto playStyle : PlayStyleSmartEnum::ToRange())
         {
@@ -158,20 +159,9 @@ LoadDirectory(std::string_view directory, bool verbose)
         }
     }
 
-    return true;
-}
+    Analyze(iidxId, playerScore);
 
-std::map<std::string, const Csv*>
-Core::
-GetCsvs(const std::string &iidxId, PlayStyle playStyle)
-const
-{
-    std::map<std::string, const Csv*> csvs;
-    for (auto &[dateTime, csv] : mAllPlayerCsvs.at(iidxId).at(playStyle))
-    {
-        csvs[dateTime] = csv.get();
-    }
-    return csvs;
+    return true;
 }
 
 void
@@ -313,7 +303,8 @@ Import(const std::string &requiredIidxId,
 {
     try
     {
-        (void)requiredIidxId;
+        auto begin = s2Time::Now();
+
         if (!fs::exists(exportedFilename)||fs::is_directory(exportedFilename))
         {
             throw std::runtime_error("exportedFilename ["+exportedFilename+"] is not a file.");
@@ -416,8 +407,7 @@ Import(const std::string &requiredIidxId,
 
                     MusicScore musicScore
                     {
-                        versionIndex,
-                        musicIndex,
+                        ToMusicId(versionIndex, musicIndex),
                         metaPlayStyle,
                         playCount,
                         dateTime
@@ -445,6 +435,8 @@ Import(const std::string &requiredIidxId,
                 }
             }
         }
+
+        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Import");
     }
     catch (const std::exception &e)
     {
@@ -460,15 +452,71 @@ const
     return mPlayerScores;
 }
 
+std::map<std::string, const Csv*>
+Core::
+GetCsvs(const std::string &iidxId, PlayStyle playStyle)
+const
+{
+    std::map<std::string, const Csv*> csvs;
+    for (auto &[dateTime, csv] : mPlayerCsvs.at(iidxId).at(playStyle))
+    {
+        csvs[dateTime] = csv.get();
+    }
+    return csvs;
+}
+
+void
+Core::
+SetActiveVersionIndex(std::size_t activeVersionIndex)
+{
+    mAnalyzer.SetActiveVersion(activeVersionIndex);
+    mPlayerAnalyses.clear();
+}
+
+void
+Core::
+Analyze(const std::string &iidxId)
+{
+    auto findPlayerScore = icl_s2::Find(mPlayerScores, iidxId);
+    if (!findPlayerScore)
+    {
+        throw std::runtime_error("no such player ["+iidxId+"].");
+    }
+
+    auto &playerScore = findPlayerScore.value()->second;
+
+    Analyze(iidxId, playerScore);
+}
+
+void
+Core::
+Analyze(const std::string &iidxId,
+        const PlayerScore &playerScore)
+{
+    mPlayerAnalyses.erase(iidxId);
+    mPlayerAnalyses.emplace(iidxId, mAnalyzer.Analyze(playerScore));
+}
+
+const ScoreAnalysis*
+Core::
+FindAnalysis(const std::string &iidxId)
+const
+{
+    auto findAnalysis = icl_s2::Find(mPlayerAnalyses, iidxId);
+    if (!findAnalysis) { return nullptr; }
+
+    return &(findAnalysis.value()->second);
+}
+
 void
 Core::
 CreatePlayer(const std::string &iidxId)
 {
     mPlayerScores.emplace(iidxId, iidxId);
-    mAllPlayerCsvs[iidxId];
+    mPlayerCsvs[iidxId];
     for (auto playStyle : PlayStyleSmartEnum::ToRange())
     {
-        mAllPlayerCsvs[iidxId][playStyle];
+        mPlayerCsvs[iidxId][playStyle];
     }
 }
 
@@ -478,7 +526,7 @@ AddCsvToPlayerScore(const std::string &iidxId,
                     PlayStyle playStyle,
                     const std::string &dateTime)
 {
-    auto findPlayer = icl_s2::Find(mAllPlayerCsvs, iidxId);
+    auto findPlayer = icl_s2::Find(mPlayerCsvs, iidxId);
     if (!findPlayer)
     {
         throw std::runtime_error("cannot find ["+iidxId+"] player.");
