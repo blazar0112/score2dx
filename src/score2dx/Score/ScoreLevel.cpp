@@ -170,7 +170,7 @@ FindScoreLevelRangeDiff(int note, int exScore)
 }
 
 std::string
-ToString(const ScoreLevelRange &scoreLevelRange)
+ToPrettyString(const ScoreLevelRange &scoreLevelRange)
 {
     auto &[scoreLevel, scoreRange] = scoreLevelRange;
 
@@ -200,9 +200,33 @@ ToScoreLevelRangeDiffString(int note, int exScore)
     auto [scoreLevelRange, scoreDiff] = FindScoreLevelRangeDiff(note, exScore);
     if (scoreDiff==0)
     {
-        return ToString(scoreLevelRange)+"+"+std::to_string(scoreDiff);
+        return ToPrettyString(scoreLevelRange)+"+"+std::to_string(scoreDiff);
     }
-    return ToString(scoreLevelRange)+std::to_string(scoreDiff);
+    return ToPrettyString(scoreLevelRange)+std::to_string(scoreDiff);
+}
+
+DjLevel
+ConvertToDjLevel(const ScoreLevelRange &scoreLevelRange)
+{
+    auto &[scoreLevel, scoreRange] = scoreLevelRange;
+    if (scoreLevel==ScoreLevel::Min)
+    {
+        throw std::runtime_error("invalid score level range with score level min.");
+    }
+
+    if (scoreLevel==ScoreLevel::F) { return DjLevel::F; }
+
+    auto djLevel = DjLevel::AAA;
+    if (scoreLevel!=ScoreLevel::Max)
+    {
+        djLevel = static_cast<DjLevel>(static_cast<int>(scoreLevel)-1);
+        if (scoreRange==ScoreRange::LevelMinus)
+        {
+            djLevel = static_cast<DjLevel>(static_cast<int>(djLevel)-1);
+        }
+    }
+
+    return djLevel;
 }
 
 }

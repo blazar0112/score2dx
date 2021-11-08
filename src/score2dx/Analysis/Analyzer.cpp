@@ -14,6 +14,24 @@ namespace s2Time = icl_s2::Time;
 namespace score2dx
 {
 
+std::string
+ToPrettyString(StatisticScoreLevelRange statisticScoreLevelRange)
+{
+    static const std::array<std::string, StatisticScoreLevelRangeSmartEnum::Size()> prettyStrings
+    {
+        "A-",
+        "A+",
+        "AA-",
+        "AA+",
+        "AAA-",
+        "AAA+",
+        "MAX-",
+        "MAX"
+    };
+
+    return prettyStrings[static_cast<std::size_t>(statisticScoreLevelRange)];
+}
+
 Statistics::
 Statistics()
 {
@@ -70,13 +88,22 @@ const
 
     for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
     {
+        if (styleDifficulty==StyleDifficulty::SPB||styleDifficulty==StyleDifficulty::DPB)
+        {
+            continue;
+        }
         analysis.StatisticsByStyleDifficulty[styleDifficulty];
     }
 
+    analysis.StatisticsByVersionStyleDifficulty.resize(mActiverVersionIndex+1);
     for (auto versionIndex : IndexRange{0, mActiverVersionIndex+1})
     {
         for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
         {
+            if (styleDifficulty==StyleDifficulty::SPB||styleDifficulty==StyleDifficulty::DPB)
+            {
+                continue;
+            }
             analysis.StatisticsByVersionStyleDifficulty[versionIndex][styleDifficulty];
         }
     }
@@ -105,7 +132,7 @@ const
 
         auto &bestScoreData = analysis.MusicBestScoreData[musicId].at(chartPlayStyle);
         auto &versionBestMusicScore = bestScoreData.VersionBestMusicScore;
-        versionBestMusicScore.AddChartScore(difficulty, ChartScore{});
+        versionBestMusicScore.AddChartScore(difficulty, {});
         auto &careerBestChartScore = bestScoreData.CareerBestChartScores[difficulty];
 
         auto &musicScores = playerScore.GetMusicScores(chartPlayStyle);
@@ -113,6 +140,7 @@ const
         if (findMusicId)
         {
             auto &musicScoreByDateTime = findMusicId.value()->second;
+            std::size_t chartVersionPlayCount = 0;
             for (auto &[dateTime, musicScore] : musicScoreByDateTime)
             {
                 //'' It is possible that some chart is only available at certain date time after version begin.
@@ -130,14 +158,16 @@ const
                     &&( mActiverVersionIndex==mMusicDatabase.GetLatestVersionIndex()
                         ||dateTime<=versionDateTimeRange.at(icl_s2::RangeSide::End)))
                 {
-                    if (musicScore.GetPlayCount()<versionBestMusicScore.GetPlayCount())
+                    if (musicScore.GetPlayCount()<chartVersionPlayCount)
                     {
-                        throw std::runtime_error("musicScore.GetPlayCount()<bestMusicScore.GetPlayCount()");
+                        throw std::runtime_error("musicScore.GetPlayCount()<chartVersionPlayCount");
                     }
                     if (musicScore.GetPlayCount()>versionBestMusicScore.GetPlayCount())
                     {
                         versionBestMusicScore.SetPlayCount(musicScore.GetPlayCount());
                     }
+
+                    chartVersionPlayCount = musicScore.GetPlayCount();
 
                     auto* verBestChartScorePtr = versionBestMusicScore.FindChartScore(difficulty);
                     if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
@@ -164,6 +194,15 @@ const
         auto &versionBestChartScore = *verBestChartScorePtr;
 
         auto [scoreLevel, scoreRange] = FindScoreLevelRange(chartInfo.Note, versionBestChartScore.ExScore);
+
+        auto calculateDjLevel = ConvertToDjLevel({scoreLevel, scoreRange});
+        if (calculateDjLevel!=versionBestChartScore.DjLevel)
+        {
+            std::cout << "calculateDjLevel = " << ToString(calculateDjLevel) << "\n"
+                      << "versionBestChartScore.DjLevel = " << ToString(versionBestChartScore.DjLevel) << "\n";
+            throw std::runtime_error("calculate dj level from score is not as dj level in chart score.");
+        }
+
         auto statsScoreLevel = StatisticScoreLevelRange::AMinus;
         if (scoreLevel>=ScoreLevel::A)
         {
@@ -181,6 +220,11 @@ const
         if (versionIndex>mActiverVersionIndex)
         {
             throw std::runtime_error("versionIndex>mActiverVersionIndex");
+        }
+
+        if (styleDifficulty==StyleDifficulty::SPB||styleDifficulty==StyleDifficulty::DPB)
+        {
+            continue;
         }
 
         std::set<Statistics*> analysisStatsList

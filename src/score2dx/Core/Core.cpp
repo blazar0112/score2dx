@@ -124,7 +124,7 @@ LoadDirectory(std::string_view directory, bool verbose)
 
             auto dateTime = csv.GetLastDateTime();
             auto playStyle = csv.GetPlayStyle();
-            auto &allTimeCsvs = mAllPlayerCsvs.at(iidxId).at(playStyle);
+            auto &allTimeCsvs = mPlayerCsvs.at(iidxId).at(playStyle);
             allTimeCsvs[dateTime] = std::move(csvPtr);
 
             AddCsvToPlayerScore(iidxId, playStyle, dateTime);
@@ -142,7 +142,7 @@ LoadDirectory(std::string_view directory, bool verbose)
 
     if (verbose)
     {
-        auto &playerCsvs = mAllPlayerCsvs.at(iidxId);
+        auto &playerCsvs = mPlayerCsvs.at(iidxId);
         std::cout << "Player IIDX ID ["+playerScore.GetIidxId()+"] CSV files:\n";
         for (auto playStyle : PlayStyleSmartEnum::ToRange())
         {
@@ -159,8 +159,7 @@ LoadDirectory(std::string_view directory, bool verbose)
         }
     }
 
-    auto analysis = mAnalyzer.Analyze(playerScore);
-    mPlayerAnalyses.emplace(iidxId, std::move(analysis));
+    Analyze(iidxId, playerScore);
 
     return true;
 }
@@ -304,7 +303,8 @@ Import(const std::string &requiredIidxId,
 {
     try
     {
-        (void)requiredIidxId;
+        auto begin = s2Time::Now();
+
         if (!fs::exists(exportedFilename)||fs::is_directory(exportedFilename))
         {
             throw std::runtime_error("exportedFilename ["+exportedFilename+"] is not a file.");
@@ -435,6 +435,8 @@ Import(const std::string &requiredIidxId,
                 }
             }
         }
+
+        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Import");
     }
     catch (const std::exception &e)
     {
@@ -456,7 +458,7 @@ GetCsvs(const std::string &iidxId, PlayStyle playStyle)
 const
 {
     std::map<std::string, const Csv*> csvs;
-    for (auto &[dateTime, csv] : mAllPlayerCsvs.at(iidxId).at(playStyle))
+    for (auto &[dateTime, csv] : mPlayerCsvs.at(iidxId).at(playStyle))
     {
         csvs[dateTime] = csv.get();
     }
@@ -475,8 +477,6 @@ void
 Core::
 Analyze(const std::string &iidxId)
 {
-    mPlayerAnalyses.erase(iidxId);
-
     auto findPlayerScore = icl_s2::Find(mPlayerScores, iidxId);
     if (!findPlayerScore)
     {
@@ -485,6 +485,15 @@ Analyze(const std::string &iidxId)
 
     auto &playerScore = findPlayerScore.value()->second;
 
+    Analyze(iidxId, playerScore);
+}
+
+void
+Core::
+Analyze(const std::string &iidxId,
+        const PlayerScore &playerScore)
+{
+    mPlayerAnalyses.erase(iidxId);
     mPlayerAnalyses.emplace(iidxId, mAnalyzer.Analyze(playerScore));
 }
 
@@ -504,10 +513,10 @@ Core::
 CreatePlayer(const std::string &iidxId)
 {
     mPlayerScores.emplace(iidxId, iidxId);
-    mAllPlayerCsvs[iidxId];
+    mPlayerCsvs[iidxId];
     for (auto playStyle : PlayStyleSmartEnum::ToRange())
     {
-        mAllPlayerCsvs[iidxId][playStyle];
+        mPlayerCsvs[iidxId][playStyle];
     }
 }
 
@@ -517,7 +526,7 @@ AddCsvToPlayerScore(const std::string &iidxId,
                     PlayStyle playStyle,
                     const std::string &dateTime)
 {
-    auto findPlayer = icl_s2::Find(mAllPlayerCsvs, iidxId);
+    auto findPlayer = icl_s2::Find(mPlayerCsvs, iidxId);
     if (!findPlayer)
     {
         throw std::runtime_error("cannot find ["+iidxId+"] player.");

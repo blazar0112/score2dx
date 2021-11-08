@@ -3,6 +3,7 @@
 #include <array>
 #include <map>
 #include <set>
+#include <vector>
 
 #include "icl_s2/Common/SmartEnum.hxx"
 
@@ -25,6 +26,9 @@ ICL_S2_SMART_ENUM(StatisticScoreLevelRange,
     MaxMinus,
     Max
 );
+
+std::string
+ToPrettyString(StatisticScoreLevelRange statisticScoreLevelRange);
 
 struct Statistics
 {
@@ -73,8 +77,8 @@ struct ScoreAnalysis
     //! @brief Map of {StyleDifficulty, Statistics}.
     std::map<StyleDifficulty, Statistics> StatisticsByStyleDifficulty;
 
-    //! @brief Map of {VersionIndex, Map of {StyleDifficulty, Statistics}}.
-    std::map<std::size_t, std::map<StyleDifficulty, Statistics>> StatisticsByVersionStyleDifficulty;
+    //! @brief Vector of {Index=VersionIndex, Map of {StyleDifficulty, Statistics}}.
+    std::vector<std::map<StyleDifficulty, Statistics>> StatisticsByVersionStyleDifficulty;
 };
 
 class Analyzer

@@ -66,7 +66,8 @@ public:
         GetCsvs(const std::string &iidxId, PlayStyle playStyle)
         const;
 
-    //! @brief Set active version for score analysis, also invalidate all stored player analyses.
+    //! @brief Set active version for score analysis, also clear all previous stored player analyses.
+    //! Call Analyze for player manually. Not auto analyze for all players.
         void
         SetActiveVersionIndex(std::size_t activeVersionIndex);
 
@@ -83,13 +84,12 @@ public:
 
 private:
     MusicDatabase mMusicDatabase;
-    std::vector<std::vector<std::string>> mAllVersionMusics;
 
     //! @brief Map of {IidxId, PlayerScore}.
     std::map<std::string, PlayerScore> mPlayerScores;
 
     //! @brief Map of {IidxId, Map of {PlayStyle, Map of {DateTime, Csv}}}.
-    std::map<std::string, std::map<PlayStyle, std::map<std::string, std::unique_ptr<Csv>>>> mAllPlayerCsvs;
+    std::map<std::string, std::map<PlayStyle, std::map<std::string, std::unique_ptr<Csv>>>> mPlayerCsvs;
 
     Analyzer mAnalyzer;
     //! @brief Map of {IidxId, LastScoreAnalysis}.
@@ -102,6 +102,10 @@ private:
         AddCsvToPlayerScore(const std::string &iidxId,
                             PlayStyle playStyle,
                             const std::string &dateTime);
+
+        void
+        Analyze(const std::string &iidxId,
+                const PlayerScore &playerScore);
 };
 
 }

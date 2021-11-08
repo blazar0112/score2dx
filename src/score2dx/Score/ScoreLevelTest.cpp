@@ -107,4 +107,23 @@ TEST(ScoreLevel, ToScoreLevelRangeDiffString)
     ASSERT_EQ("F-445", ToScoreLevelRangeDiffString(n, 0));
 }
 
+TEST(ScoreLevel, ConvertToDjLevel)
+{
+    EXPECT_EQ(DjLevel::F, ConvertToDjLevel({ScoreLevel::F, ScoreRange::LevelMinus}));
+    EXPECT_EQ(DjLevel::F, ConvertToDjLevel({ScoreLevel::F, ScoreRange::AtLevel}));
+    EXPECT_EQ(DjLevel::F, ConvertToDjLevel({ScoreLevel::E, ScoreRange::LevelMinus}));
+
+    EXPECT_EQ(DjLevel::B, ConvertToDjLevel({ScoreLevel::A, ScoreRange::LevelMinus}));
+    EXPECT_EQ(DjLevel::A, ConvertToDjLevel({ScoreLevel::A, ScoreRange::AtLevel}));
+    EXPECT_EQ(DjLevel::A, ConvertToDjLevel({ScoreLevel::A, ScoreRange::LevelPlus}));
+    EXPECT_EQ(DjLevel::A, ConvertToDjLevel({ScoreLevel::AA, ScoreRange::LevelMinus}));
+    EXPECT_EQ(DjLevel::AA, ConvertToDjLevel({ScoreLevel::AA, ScoreRange::AtLevel}));
+    EXPECT_EQ(DjLevel::AA, ConvertToDjLevel({ScoreLevel::AA, ScoreRange::LevelPlus}));
+    EXPECT_EQ(DjLevel::AA, ConvertToDjLevel({ScoreLevel::AAA, ScoreRange::LevelMinus}));
+    EXPECT_EQ(DjLevel::AAA, ConvertToDjLevel({ScoreLevel::AAA, ScoreRange::AtLevel}));
+    EXPECT_EQ(DjLevel::AAA, ConvertToDjLevel({ScoreLevel::AAA, ScoreRange::LevelPlus}));
+    EXPECT_EQ(DjLevel::AAA, ConvertToDjLevel({ScoreLevel::Max, ScoreRange::LevelMinus}));
+    ASSERT_EQ(DjLevel::AAA, ConvertToDjLevel({ScoreLevel::Max, ScoreRange::AtLevel}));
+}
+
 }
