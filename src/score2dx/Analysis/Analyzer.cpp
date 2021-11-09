@@ -62,12 +62,12 @@ Analyzer::
 Analyzer(const MusicDatabase &musicDatabase)
 :   mMusicDatabase(musicDatabase)
 {
-    SetActiveVersion(mMusicDatabase.GetLatestVersionIndex());
+    SetActiveVersionIndex(GetLatestVersionIndex());
 }
 
 void
 Analyzer::
-SetActiveVersion(std::size_t activeVersionIndex)
+SetActiveVersionIndex(std::size_t activeVersionIndex)
 {
     if (!icl_s2::Find(mMusicDatabase.GetActiveVersions(), activeVersionIndex))
     {
@@ -75,6 +75,14 @@ SetActiveVersion(std::size_t activeVersionIndex)
     }
 
     mActiverVersionIndex = activeVersionIndex;
+}
+
+std::size_t
+Analyzer::
+GetActiveVersionIndex()
+const
+{
+    return mActiverVersionIndex;
 }
 
 ScoreAnalysis
@@ -85,6 +93,11 @@ const
     auto begin = s2Time::Now();
 
     ScoreAnalysis analysis;
+
+    for (auto playStyle : PlayStyleSmartEnum::ToRange())
+    {
+        analysis.StatisticsByStyleLevel[playStyle];
+    }
 
     for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
     {
@@ -155,8 +168,8 @@ const
                 }
 
                 if (dateTime>=versionDateTimeRange.at(icl_s2::RangeSide::Begin)
-                    &&( mActiverVersionIndex==mMusicDatabase.GetLatestVersionIndex()
-                        ||dateTime<=versionDateTimeRange.at(icl_s2::RangeSide::End)))
+                    &&(mActiverVersionIndex==GetLatestVersionIndex()
+                       ||dateTime<=versionDateTimeRange.at(icl_s2::RangeSide::End)))
                 {
                     if (musicScore.GetPlayCount()<chartVersionPlayCount)
                     {
@@ -189,19 +202,49 @@ const
             }
         }
 
-        auto* verBestChartScorePtr = versionBestMusicScore.FindChartScore(difficulty);
-        if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
-        auto &versionBestChartScore = *verBestChartScorePtr;
+        auto styleDifficulty = ConvertToStyleDifficulty(chartPlayStyle, difficulty);
 
-        auto [scoreLevel, scoreRange] = FindScoreLevelRange(chartInfo.Note, versionBestChartScore.ExScore);
+        ScoreLevelRange scoreLevelRange;
 
-        auto calculateDjLevel = ConvertToDjLevel({scoreLevel, scoreRange});
-        if (calculateDjLevel!=versionBestChartScore.DjLevel)
         {
-            std::cout << "calculateDjLevel = " << ToString(calculateDjLevel) << "\n"
-                      << "versionBestChartScore.DjLevel = " << ToString(versionBestChartScore.DjLevel) << "\n";
-            throw std::runtime_error("calculate dj level from score is not as dj level in chart score.");
+            auto* verBestChartScorePtr = versionBestMusicScore.FindChartScore(difficulty);
+            if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
+            auto &versionBestChartScore = *verBestChartScorePtr;
+
+            if (chartInfo.Note<=0)
+            {
+                std::cout << "[" << ToFormatted(musicId)
+                          << "][" << mMusicDatabase.GetLatestMusicInfo(musicId).GetField(MusicInfoField::Title)
+                          << "][" << ToString(styleDifficulty)
+                          << "] Note is non-positive\nLevel: " << chartInfo.Level
+                          << ", Note: " << chartInfo.Note
+                          << ", Score: " << versionBestChartScore.ExScore
+                          << ", Data DJ Level: " << ToString(versionBestChartScore.DjLevel)
+                          << ".\n";
+            }
+
+            scoreLevelRange = FindScoreLevelRange(chartInfo.Note, versionBestChartScore.ExScore);
+
+            auto calculateDjLevel = FindDjLevel(chartInfo.Note, versionBestChartScore.ExScore);
+            if (calculateDjLevel!=versionBestChartScore.DjLevel)
+            {
+                std::cout << "Analyze find unmatched DJ Level for [" << ToFormatted(musicId)
+                          << "][" << mMusicDatabase.GetLatestMusicInfo(musicId).GetField(MusicInfoField::Title)
+                          << "][" << ToString(styleDifficulty)
+                          << "]\nLevel: " << chartInfo.Level
+                          << ", Note: " << chartInfo.Note
+                          << ", Score: " << versionBestChartScore.ExScore
+                          << ", Actual DJ Level: " << ToString(calculateDjLevel)
+                          << ", Data DJ Level: " << ToString(versionBestChartScore.DjLevel)
+                          << ".\n";
+
+                auto updateChartScore = versionBestChartScore;
+                updateChartScore.DjLevel = calculateDjLevel;
+                versionBestMusicScore.AddChartScore(difficulty, updateChartScore);
+            }
         }
+
+        auto [scoreLevel, scoreRange] = scoreLevelRange;
 
         auto statsScoreLevel = StatisticScoreLevelRange::AMinus;
         if (scoreLevel>=ScoreLevel::A)
@@ -215,7 +258,6 @@ const
             }
         }
 
-        auto styleDifficulty = ConvertToStyleDifficulty(chartPlayStyle, difficulty);
         auto versionIndex = ToIndexes(musicId).first;
         if (versionIndex>mActiverVersionIndex)
         {
@@ -229,16 +271,21 @@ const
 
         std::set<Statistics*> analysisStatsList
         {
-            &analysis.StatisticsByLevel[chartInfo.Level],
+            &analysis.StatisticsByStyleLevel[chartPlayStyle][chartInfo.Level],
             &analysis.StatisticsByStyleDifficulty[styleDifficulty],
             &analysis.StatisticsByVersionStyleDifficulty[versionIndex][styleDifficulty]
         };
+
+        auto* verBestChartScorePtr = versionBestMusicScore.FindChartScore(difficulty);
+        if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
+        auto &versionBestChartScore = *verBestChartScorePtr;
 
         for (auto stats : analysisStatsList)
         {
             stats->ChartIdList.emplace(chartId);
             stats->ChartIdListByClearType[versionBestChartScore.ClearType].emplace(chartId);
-            if (versionBestChartScore.ClearType!=ClearType::NO_PLAY)
+            if (versionBestChartScore.ClearType!=ClearType::NO_PLAY
+                &&versionBestChartScore.ExScore!=0)
             {
                 stats->ChartIdListByDjLevel[versionBestChartScore.DjLevel].emplace(chartId);
                 stats->ChartIdListByScoreLevelRange[statsScoreLevel].emplace(chartId);

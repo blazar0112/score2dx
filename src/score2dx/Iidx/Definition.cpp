@@ -27,6 +27,14 @@ Split(StyleDifficulty styleDifficulty)
     return {style, difficulty};
 }
 
+bool
+IsStyle(StyleDifficulty styleDifficulty, PlayStyle playStyle)
+{
+    auto i = static_cast<std::size_t>(styleDifficulty);
+    auto style = static_cast<PlayStyle>(i/DifficultySmartEnum::Size());
+    return style==playStyle;
+}
+
 ClearType
 ConvertToClearType(const std::string &spaceSeparatedClearType)
 {
@@ -41,6 +49,24 @@ ToSpaceSeparated(ClearType clearType)
     auto spaceSeparated = ToString(clearType);
     icl_s2::RecursiveReplace(spaceSeparated, "_", " ");
     return spaceSeparated;
+}
+
+std::string
+ToPrettyString(ClearType clearType)
+{
+    static const std::array<std::string, ClearTypeSmartEnum::Size()> prettyStrings
+    {
+        "NO PLAY",
+        "FAILED",
+        "ASSIST",
+        "EASY",
+        "CLEAR",
+        "HARD",
+        "EX HARD",
+        "FC"
+    };
+
+    return prettyStrings[static_cast<std::size_t>(clearType)];
 }
 
 bool

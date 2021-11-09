@@ -16,10 +16,6 @@ class MusicDatabase
 public:
         MusicDatabase();
 
-        std::size_t
-        GetLatestVersionIndex()
-        const;
-
         //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
         const std::vector<std::vector<std::string>> &
         GetAllTimeMusics()
@@ -95,9 +91,23 @@ public:
         FindActiveVersion(std::size_t activeVersionIndex)
         const;
 
+    //! @brief Find title's style difficulty's ChartInfo at activeVersion.
+    //! Does not consider cs music table.
+    //! @return ChartInfo if find, otherwise nullopt if:
+    //!     1. title is not available at that version.
+    //!     2. title has no such style difficulty.
+    //!     3. that style difficulty is not available at that version.
+    //! @note User need make sure dbTitle is in db by using FindDbTitle before calling this.
+    //! @throw Throws if dbTitle is not in db.
+        std::optional<ChartInfo>
+        FindChartInfo(std::size_t titleVersionIndex,
+                      const std::string &dbTitle,
+                      StyleDifficulty styleDifficulty,
+                      std::size_t activeVersionIndex)
+        const;
+
 private:
     Json mDatabase;
-    std::size_t mLatestVersionIndex{0};
 
     //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
     std::vector<std::vector<std::string>> mAllTimeMusics;

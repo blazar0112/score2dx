@@ -19,8 +19,8 @@
 
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Iidx/Version.hpp"
-
 #include "score2dx/Score/MusicScore.hpp"
+#include "score2dx/Score/ScoreLevel.hpp"
 
 namespace fs = std::filesystem;
 namespace s2Time = icl_s2::Time;
@@ -208,6 +208,8 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
             auto &dateTime = columns[DateTimeColumnIndex];
             dateTimes.emplace(dateTime);
 
+            auto activeVersionIndex = FindVersionIndexFromDateTime(dateTime);
+
             auto musicId = ToMusicId(versionIndex, musicIndex);
             auto itPair = mMusicScores.emplace(
                 std::piecewise_construct,
@@ -240,6 +242,50 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
                 if (djLevel!="---")
                 {
                     chartScore.DjLevel = ToDjLevel(djLevel);
+                    auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
+                    auto findChartInfo = musicDatabase.FindChartInfo(
+                        versionIndex,
+                        dbTitle,
+                        styleDifficulty,
+                        activeVersionIndex
+                    );
+
+                    if (!findChartInfo)
+                    {
+                        std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
+                                  << "DateTime: " << dateTime << "\n"
+                                  << "ActiveVersion: " << ToVersionString(activeVersionIndex) << "\n"
+                                  << "StyleDifficulty: " << ToString(styleDifficulty) << "\n";
+                        throw std::runtime_error("cannot find chart info");
+                    }
+
+                    auto &chartInfo = findChartInfo.value();
+                    if (chartInfo.Note<=0)
+                    {
+                        std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
+                                  << "DateTime: " << dateTime << "\n"
+                                  << "ActiveVersion: " << ToVersionString(activeVersionIndex) << "\n"
+                                  << "StyleDifficulty: " << ToString(styleDifficulty) << "\n";
+                        throw std::runtime_error("DB chart info note is non-positive.");
+                    }
+
+                    auto actualDjLevel = FindDjLevel(chartInfo.Note, chartScore.ExScore);
+                    if (actualDjLevel!=chartScore.DjLevel)
+                    {
+                        std::cout << "Error: unmatched DJ level in CSV:"
+                                  << "\n[" << ToVersionString(versionIndex)
+                                  << "][" << dbTitle
+                                  << "][" << ToString(styleDifficulty)
+                                  << "]\nLevel: " << chartInfo.Level
+                                  << ", Note: " << chartInfo.Note
+                                  << ", Score: " << chartScore.ExScore
+                                  << ", Actual DJ Level: " << ToString(actualDjLevel)
+                                  << ", Data DJ Level: " << ToString(chartScore.DjLevel)
+                                  << "\nDateTime: " << dateTime
+                                  << ", ActiveVersion: " << ToVersionString(activeVersionIndex)
+                                  << ".\n";
+                        chartScore.DjLevel = actualDjLevel;
+                    }
                 }
 
                 musicScore.AddChartScore(difficulty, chartScore);

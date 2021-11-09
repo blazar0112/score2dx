@@ -107,4 +107,19 @@ GetVersionDateTimeRange(std::size_t versionIndex)
     return range;
 }
 
+std::size_t
+FindVersionIndexFromDateTime(const std::string &dateTime)
+{
+    auto versionIndex = VersionDateTimeRangeMap.begin()->first;
+    for (auto &[ver, dateTimeRange] : VersionDateTimeRangeMap)
+    {
+        if (dateTime>=dateTimeRange[static_cast<int>(icl_s2::RangeSide::Begin)])
+        {
+            versionIndex = ver;
+        }
+    }
+
+    return versionIndex;
+}
+
 }

@@ -58,6 +58,9 @@ ConvertToStyleDifficulty(PlayStyle playStyle, Difficulty difficulty);
 std::pair<PlayStyle, Difficulty>
 Split(StyleDifficulty styleDifficulty);
 
+bool
+IsStyle(StyleDifficulty styleDifficulty, PlayStyle playStyle);
+
 //! @note To match string used in CSV, use capitalized style, and underscore for space.
 //! i.e. FULLCOMBO_CLEAR can replace to "FULLCOMBO CLEAR" in CSV.
 ICL_S2_SMART_ENUM(ClearType,
@@ -76,6 +79,9 @@ ConvertToClearType(const std::string &spaceSeparatedClearType);
 
 std::string
 ToSpaceSeparated(ClearType clearType);
+
+std::string
+ToPrettyString(ClearType clearType);
 
 //! @brief DjLevel is arcade's DJ LEVEL, so it only has at most AAA.
 //! To express "MAX", "MAX-", "AAA+", @see ScoreLevel.

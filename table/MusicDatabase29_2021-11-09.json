@@ -2,7 +2,7 @@
     "#meta": {
         "score2dx": "2.0.0",
         "version": "29",
-        "id": "29044"
+        "id": "29048"
     },
     "csMusicTable": {
         "04": {
@@ -4015,12 +4015,6 @@
             "BRILLIANT 2U": {
                 "availableVersions": "01-05, 10-25",
                 "difficulty": {
-                    "DPA": {
-                        "01-05, 10-25": {
-                            "level": 5,
-                            "note": 0
-                        }
-                    },
                     "DPH": {
                         "01-05, 10-25": {
                             "level": 3,
@@ -31553,8 +31547,18 @@
                             "note": 1249
                         }
                     },
+                    "SPB": {
+                        "cs13": {
+                            "level": 2,
+                            "note": 220
+                        }
+                    },
                     "SPH": {
-                        "13-29": {
+                        "13": {
+                            "level": 9,
+                            "note": 910
+                        },
+                        "14-29": {
                             "level": 8,
                             "note": 910
                         }
@@ -101118,6 +101122,106 @@
                     "version": 29
                 }
             },
+            "Game Changers": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1353
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 759
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 386
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1395
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 740
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 390
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Yuta Imai"
+                    },
+                    "genre": {
+                        "latest": "HARD MIXTURE"
+                    },
+                    "version": 29
+                }
+            },
+            "Hat Surprise": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1246
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 820
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 350
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1234
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 825
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 349
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Hommarju"
+                    },
+                    "genre": {
+                        "latest": "UK HARDCORE"
+                    },
+                    "version": 29
+                }
+            },
             "TOMAHAWK": {
                 "availableVersions": "29",
                 "difficulty": {
@@ -101164,6 +101268,106 @@
                     },
                     "genre": {
                         "latest": "SUPER HARDCORE NOVA"
+                    },
+                    "version": 29
+                }
+            },
+            "One for All": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1554
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 946
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 524
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1632
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 910
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 516
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "RoughSketch"
+                    },
+                    "genre": {
+                        "latest": "EUPHORIC FRENCHCORE"
+                    },
+                    "version": 29
+                }
+            },
+            "Brave Spirits": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1249
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 718
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 362
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1250
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 722
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 362
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "MK"
+                    },
+                    "genre": {
+                        "latest": "MELODIC RIDDIM"
                     },
                     "version": 29
                 }
@@ -103347,7 +103551,11 @@
             "月とミルク",
             "踊",
             "《GRANDMASTER》",
-            "TOMAHAWK"
+            "Game Changers",
+            "Hat Surprise",
+            "TOMAHAWK",
+            "One for All",
+            "Brave Spirits"
         ]
     }
 }

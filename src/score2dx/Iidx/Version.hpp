@@ -85,4 +85,9 @@ FindVersionIndex(const std::string &dbVersionName);
 std::map<icl_s2::RangeSide, std::string>
 GetVersionDateTimeRange(std::size_t versionIndex);
 
+//! @brief Find version index from date time. Possible value range: [17, latest].
+//! @note Minimum is 17, since date time before 17 is not implemented.
+std::size_t
+FindVersionIndexFromDateTime(const std::string &dateTime);
+
 }

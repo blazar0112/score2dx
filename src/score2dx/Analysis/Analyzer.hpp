@@ -71,8 +71,8 @@ struct ScoreAnalysis
     //! @brief Map of {MusicId, Map of {PlayStyle, BestScoreData}}.
     std::map<std::size_t, std::map<PlayStyle, BestScoreData>> MusicBestScoreData;
 
-    //! @brief Array of {Index=Level, Statistics}. Level = 0 is unused.
-    std::array<Statistics, MaxLevel+1> StatisticsByLevel;
+    //! @brief Map of {PlayStyle, Array of {Index=Level, Statistics}}. Level = 0 is unused.
+    std::map<PlayStyle, std::array<Statistics, MaxLevel+1>> StatisticsByStyleLevel;
 
     //! @brief Map of {StyleDifficulty, Statistics}.
     std::map<StyleDifficulty, Statistics> StatisticsByStyleDifficulty;
@@ -87,7 +87,11 @@ public:
         explicit Analyzer(const MusicDatabase &musicDatabase);
 
         void
-        SetActiveVersion(std::size_t activeVersionIndex);
+        SetActiveVersionIndex(std::size_t activeVersionIndex);
+
+        std::size_t
+        GetActiveVersionIndex()
+        const;
 
         ScoreAnalysis
         Analyze(const PlayerScore &playerScore)
