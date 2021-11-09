@@ -14,6 +14,12 @@ TEST(IidxDefinition, StyleDifficulty)
     ASSERT_EQ(Difficulty::Another, difficulty);
 }
 
+TEST(IidxDefinition, IsStyle)
+{
+    EXPECT_FALSE(IsStyle(StyleDifficulty::SPB, PlayStyle::DoublePlay));
+    ASSERT_TRUE(IsStyle(StyleDifficulty::SPA, PlayStyle::SinglePlay));
+}
+
 TEST(IidxDefinition, IsIidxId)
 {
     EXPECT_FALSE(IsIidxId(""));

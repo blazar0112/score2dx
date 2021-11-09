@@ -13,6 +13,54 @@
 
 namespace s2Time = icl_s2::Time;
 
+namespace
+{
+
+//! @brief Convert non-CS availableVersions to range list.
+icl_s2::IntegralRangeList<std::size_t>
+ToRangeList(const std::string &availableVersions)
+{
+    icl_s2::IntegralRangeList<std::size_t> rangeList;
+
+    if (icl_s2::Find(availableVersions, "cs"))
+    {
+        return rangeList;
+    }
+
+    auto tokens = icl_s2::SplitString(", ", availableVersions);
+    for (auto &token : tokens)
+    {
+        if (token.size()==2)
+        {
+            auto versionIndex = std::stoull(token);
+            rangeList.AddRange({versionIndex, versionIndex+1});
+        }
+        //'' for 00-29 like case, note it's range [00, 29], not [00, 29).
+        else if (token.size()==5)
+        {
+            auto beginVersionIndex = std::stoull(token.substr(0, 2));
+            auto endVersionIndex = std::stoull(token.substr(3, 2));
+            rangeList.AddRange({beginVersionIndex, endVersionIndex+1});
+        }
+        else
+        {
+            std::cout << icl_s2::FormatString(tokens) << std::endl;
+            throw std::runtime_error("incorrect availableVersions "+availableVersions);
+        }
+    }
+
+    return rangeList;
+}
+
+bool
+IsActive(std::size_t activeVersionIndex, const std::string &availableVersions)
+{
+    auto rangeList = ToRangeList(availableVersions);
+    return rangeList.HasRange(activeVersionIndex);
+}
+
+}
+
 namespace score2dx
 {
 
@@ -20,7 +68,7 @@ MusicDatabase::
 MusicDatabase()
 {
     auto begin = s2Time::Now();
-    std::ifstream databaseFile{"table/MusicDatabase29_2021-11-08.json"};
+    std::ifstream databaseFile{"table/MusicDatabase29_2021-11-09.json"};
     databaseFile >> mDatabase;
 
     mAllTimeMusics.resize(VersionNames.size());
@@ -45,19 +93,9 @@ MusicDatabase()
         }
     }
 
-    mLatestVersionIndex = VersionNames.size()-1;
-
-    GenerateActiveVersions(22);
+    GenerateActiveVersions(20);
 
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Load music database");
-}
-
-std::size_t
-MusicDatabase::
-GetLatestVersionIndex()
-const
-{
-    return mLatestVersionIndex;
 }
 
 const std::vector<std::vector<std::string>> &
@@ -271,6 +309,46 @@ const
     return &(findActiveVersion.value()->second);
 }
 
+std::optional<ChartInfo>
+MusicDatabase::
+FindChartInfo(std::size_t titleVersionIndex,
+              const std::string &dbTitle,
+              StyleDifficulty styleDifficulty,
+              std::size_t activeVersionIndex)
+const
+{
+    auto version = ToVersionString(titleVersionIndex);
+    auto findMusic = icl_s2::Find(mDatabase["musicTable"][version], dbTitle);
+    if (!findMusic)
+    {
+        throw std::runtime_error("FindChartInfo: cannot find title ["+dbTitle+"] in version ["+version+"].");
+    }
+
+    auto &musicInfo = findMusic.value().value();
+    if (!IsActive(activeVersionIndex, musicInfo["availableVersions"]))
+    {
+        return std::nullopt;
+    }
+
+    auto findDifficulty = icl_s2::Find(musicInfo["difficulty"], ToString(styleDifficulty));
+    if (!findDifficulty)
+    {
+        return std::nullopt;
+    }
+
+    for (auto &[chartVersions, chartInfo] : findDifficulty.value().value().items())
+    {
+        if (IsActive(activeVersionIndex, chartVersions))
+        {
+            int level = chartInfo.at("level");
+            int note = chartInfo.at("note");
+            return {{level, note}};
+        }
+    }
+
+    return std::nullopt;
+}
+
 void
 MusicDatabase::
 GenerateActiveVersions(std::size_t beginVersionIndex)
@@ -278,53 +356,10 @@ GenerateActiveVersions(std::size_t beginVersionIndex)
     const auto &musicTable = mDatabase.at("musicTable");
 
     mActiveVersions.clear();
-    for (auto versionIndex : IndexRange{beginVersionIndex, mLatestVersionIndex+1})
+    for (auto versionIndex : IndexRange{beginVersionIndex, GetLatestVersionIndex()+1})
     {
         mActiveVersions.emplace(versionIndex, versionIndex);
     }
-
-    //! @brief Convert non-CS availableVersions to range list.
-    auto ToRangeList = [](const std::string &availableVersions)
-    -> icl_s2::IntegralRangeList<std::size_t>
-    {
-        icl_s2::IntegralRangeList<std::size_t> rangeList;
-
-        if (icl_s2::Find(availableVersions, "cs"))
-        {
-            return rangeList;
-        }
-
-        auto tokens = icl_s2::SplitString(", ", availableVersions);
-        for (auto &token : tokens)
-        {
-            if (token.size()==2)
-            {
-                auto versionIndex = std::stoull(token);
-                rangeList.AddRange({versionIndex, versionIndex+1});
-            }
-            //'' for 00-29 like case, note it's range [00, 29], not [00, 29).
-            else if (token.size()==5)
-            {
-                auto beginVersionIndex = std::stoull(token.substr(0, 2));
-                auto endVersionIndex = std::stoull(token.substr(3, 2));
-                rangeList.AddRange({beginVersionIndex, endVersionIndex+1});
-            }
-            else
-            {
-                std::cout << icl_s2::FormatString(tokens) << std::endl;
-                throw std::runtime_error("incorrect availableVersions "+availableVersions);
-            }
-        }
-
-        return rangeList;
-    };
-
-    auto IsActive = [ToRangeList](std::size_t activeVersionIndex, const std::string &availableVersions)
-    -> bool
-    {
-        auto rangeList = ToRangeList(availableVersions);
-        return rangeList.HasRange(activeVersionIndex);
-    };
 
     for (const auto &[version, versionMusics] : mDatabase.at("version").items())
     {

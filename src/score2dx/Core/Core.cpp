@@ -413,6 +413,8 @@ Import(const std::string &requiredIidxId,
                         dateTime
                     };
 
+                    auto activeVersionIndex = FindVersionIndexFromDateTime(dateTime);
+
                     for (auto &[difficultyAcronym, scoreData] : recordData["score"].items())
                     {
                         ChartScore chartScore;
@@ -421,12 +423,61 @@ Import(const std::string &requiredIidxId,
                         //! @brief [score, pgreat, great, miss, clear, djLevel], same order as CSV.
                         std::array<std::string, 6> difficultyData = scoreData;
 
-                        if (!difficultyData[0].empty()) chartScore.ExScore = std::stoi(difficultyData[0]);
-                        if (!difficultyData[1].empty()) chartScore.PGreatCount = std::stoi(difficultyData[1]);
-                        if (!difficultyData[2].empty()) chartScore.GreatCount = std::stoi(difficultyData[2]);
-                        if (difficultyData[3]!="---") chartScore.MissCount = std::stoi(difficultyData[3]);
+                        if (!difficultyData[0].empty()) { chartScore.ExScore = std::stoi(difficultyData[0]); }
+                        if (!difficultyData[1].empty()) { chartScore.PGreatCount = std::stoi(difficultyData[1]); }
+                        if (!difficultyData[2].empty()) { chartScore.GreatCount = std::stoi(difficultyData[2]); }
+                        if (difficultyData[3]!="---") { chartScore.MissCount = std::stoi(difficultyData[3]); }
                         chartScore.ClearType = ToClearType(difficultyData[4]);
-                        if (difficultyData[5]!="---") chartScore.DjLevel = ToDjLevel(difficultyData[5]);
+                        if (difficultyData[5]!="---") { chartScore.DjLevel = ToDjLevel(difficultyData[5]); }
+
+                        auto styleDifficulty = ConvertToStyleDifficulty(metaPlayStyle, difficulty);
+                        auto findChartInfo = mMusicDatabase.FindChartInfo(
+                            versionIndex,
+                            dbTitle,
+                            styleDifficulty,
+                            activeVersionIndex
+                        );
+
+                        if (!findChartInfo)
+                        {
+                            std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
+                                      << "DateTime: " << dateTime << "\n"
+                                      << "ActiveVersion: " << ToVersionString(activeVersionIndex) << "\n"
+                                      << "StyleDifficulty: " << ToString(styleDifficulty) << "\n";
+                            throw std::runtime_error("cannot find chart info");
+                        }
+
+                        auto &chartInfo = findChartInfo.value();
+                        if (chartInfo.Note<=0)
+                        {
+                            std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
+                                      << "DateTime: " << dateTime << "\n"
+                                      << "ActiveVersion: " << ToVersionString(activeVersionIndex) << "\n"
+                                      << "StyleDifficulty: " << ToString(styleDifficulty) << "\n";
+                            throw std::runtime_error("DB chart info note is non-positive.");
+                        }
+
+                        auto actualDjLevel = FindDjLevel(chartInfo.Note, chartScore.ExScore);
+                        if (actualDjLevel!=chartScore.DjLevel)
+                        {
+                            if (verbose)
+                            {
+                                std::cout << "Warning: unmatched DJ level in import file:"
+                                          << "\n[" << ToVersionString(versionIndex)
+                                          << "][" << dbTitle
+                                          << "][" << ToString(styleDifficulty)
+                                          << "]\nLevel: " << chartInfo.Level
+                                          << ", Note: " << chartInfo.Note
+                                          << ", Score: " << chartScore.ExScore
+                                          << ", Actual DJ Level: " << ToString(actualDjLevel)
+                                          << ", Data DJ Level: " << ToString(chartScore.DjLevel)
+                                          << "\nDateTime: " << dateTime
+                                          << ", ActiveVersion: " << ToVersionString(activeVersionIndex)
+                                          << "."
+                                          << std::endl;
+                            }
+                            chartScore.DjLevel = actualDjLevel;
+                        }
 
                         musicScore.AddChartScore(difficulty, chartScore);
                     }
@@ -469,8 +520,16 @@ void
 Core::
 SetActiveVersionIndex(std::size_t activeVersionIndex)
 {
-    mAnalyzer.SetActiveVersion(activeVersionIndex);
+    mAnalyzer.SetActiveVersionIndex(activeVersionIndex);
     mPlayerAnalyses.clear();
+}
+
+std::size_t
+Core::
+GetActiveVersionIndex()
+const
+{
+    return mAnalyzer.GetActiveVersionIndex();
 }
 
 void

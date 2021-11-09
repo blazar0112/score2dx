@@ -1,5 +1,13 @@
 # Changelog of score2dx
 
+* 2.2.0 [2021-11-10]:
+    * Now detect DJ level and score mismatch when loading data.
+        * Analyze also detect such mismatch.
+        * Use calculated DJ level in above cases.
+        * CSV should not have mismatch, print error message in this case, need check music DB.
+    * Update MusicDatabase to 29048.
+        * Add musics from event `WORLD TOURISM` (6/6).
+
 * 2.1.0 [2021-11-08]:
     * Add Score Analysis function.
         * Set active version and analyze score at that version.

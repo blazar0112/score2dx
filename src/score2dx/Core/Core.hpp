@@ -71,6 +71,10 @@ public:
         void
         SetActiveVersionIndex(std::size_t activeVersionIndex);
 
+        std::size_t
+        GetActiveVersionIndex()
+        const;
+
     //! @brief Generate score analysis for player of IIDX ID.
     //! @note LoadDirectory will analyze once after loaded. Use for manually import player score.
         void

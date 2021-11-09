@@ -29,4 +29,15 @@ TEST(Version, FindVersionIndex)
     ASSERT_EQ(1u, FindVersionIndex("substream"));
 }
 
+TEST(Version, FindVersionIndexFromDateTime)
+{
+    EXPECT_EQ(29u, FindVersionIndexFromDateTime("2021-11-10 00:00"));
+    EXPECT_EQ(29u, FindVersionIndexFromDateTime("2021-10-13 00:00"));
+    EXPECT_EQ(18u, FindVersionIndexFromDateTime("2010-12-31 00:00"));
+    EXPECT_EQ(18u, FindVersionIndexFromDateTime("2010-09-15 00:00"));
+    EXPECT_EQ(17u, FindVersionIndexFromDateTime("2010-09-14 23:59"));
+    EXPECT_EQ(17u, FindVersionIndexFromDateTime("2009-10-21 00:00"));
+    ASSERT_EQ(17u, FindVersionIndexFromDateTime("1999-12-31 23:59"));
+}
+
 }
