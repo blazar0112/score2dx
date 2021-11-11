@@ -599,33 +599,26 @@ GenerateActiveVersions(std::size_t beginVersionIndex)
         auto versionIndex = std::stoull(version);
         for (auto musicIndex : IndexRange{0, versionMusics.size()})
         {
-            std::string title = versionMusics.at(musicIndex);
-            auto findMusic = icl_s2::Find(musicTable.at(version), title);
+            auto findMusic = icl_s2::Find(musicTable.at(version), versionMusics.at(musicIndex));
             //'' cs musics.
             if (!findMusic) { continue; }
 
             auto &musicInfo = findMusic.value().value();
-            std::string availableVersions = musicInfo.at("availableVersions");
 
-            for (auto &[activeVersionIndex, activeVersion] : mActiveVersions)
+            for (auto &[styleDiffStr, diffInfo] : musicInfo.at("difficulty").items())
             {
-                if (!IsActive(activeVersionIndex, availableVersions))
+                auto styleDifficulty = ToStyleDifficulty(styleDiffStr);
+                for (auto &[chartVersions, chartInfo] : diffInfo.items())
                 {
-                    continue;
-                }
-
-                for (auto &[styleDiffStr, diffInfo] : musicInfo.at("difficulty").items())
-                {
-                    auto styleDifficulty = ToStyleDifficulty(styleDiffStr);
-                    for (auto &[chartVersions, chartInfo] : diffInfo.items())
+                    auto chartAvailableRangeList = ToRangeList(chartVersions);
+                    for (auto &[activeVersionIndex, activeVersion] : mActiveVersions)
                     {
-                        if (IsActive(activeVersionIndex, chartVersions))
+                        if (chartAvailableRangeList.HasRange(activeVersionIndex))
                         {
                             auto musicId = ToMusicId(versionIndex, musicIndex);
                             int level = chartInfo.at("level");
                             int note = chartInfo.at("note");
                             activeVersion.AddDifficulty(musicId, styleDifficulty, {level, note});
-                            break;
                         }
                     }
                 }
