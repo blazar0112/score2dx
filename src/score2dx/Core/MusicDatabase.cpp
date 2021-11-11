@@ -3,10 +3,12 @@
 #include <fstream>
 #include <iostream>
 
+#include "icl_s2/Common/AdjacentArrayRange.hxx"
 #include "icl_s2/Common/IntegralRangeUsing.hpp"
 #include "icl_s2/Common/IntegralRangeList.hxx"
 #include "icl_s2/StdUtil/Find.hxx"
 #include "icl_s2/StdUtil/FormatString.hxx"
+#include "icl_s2/String/RecursiveReplace.hpp"
 #include "icl_s2/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Iidx/Version.hpp"
@@ -68,8 +70,9 @@ MusicDatabase::
 MusicDatabase()
 {
     auto begin = s2Time::Now();
-    std::ifstream databaseFile{"table/MusicDatabase29_2021-11-09.json"};
+    std::ifstream databaseFile{"table/MusicDatabase29_2021-11-12.json"};
     databaseFile >> mDatabase;
+    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Read Json");
 
     mAllTimeMusics.resize(VersionNames.size());
     auto &dbAllTimeMusics = mDatabase.at("version");
@@ -93,7 +96,9 @@ MusicDatabase()
         }
     }
 
-    GenerateActiveVersions(20);
+    auto stageBegin = s2Time::Now();
+    GenerateActiveVersions(GetFirstDateTimeAvailableVersionIndex());
+    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(stageBegin), "GenerateActiveVersions");
 
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Load music database");
 }
@@ -351,6 +356,234 @@ const
 
 void
 MusicDatabase::
+CheckValidity()
+const
+{
+    std::cout << "Check DB validity...\n";
+
+    auto begin = s2Time::Now();
+
+    IntRange levelRange{1, MaxLevel+1};
+
+    auto &musicTable = mDatabase["musicTable"];
+    for (auto &[version, versionMusics] : musicTable.items())
+    {
+        for (auto &[title, titleData] : versionMusics.items())
+        {
+            if (titleData.size()!=3)
+            {
+                std::cout << "[" << version << "][" << title << "] incorrect element size [" << titleData.size() << "].\n";
+                continue;
+            }
+            for (auto &key : {"availableVersions", "difficulty", "info"})
+            {
+                if (!icl_s2::Find(titleData, key))
+                {
+                    std::cout << "[" << version << "][" << title << "] lack key [" << key << "].\n";
+                    continue;
+                }
+            }
+
+            auto musicAvailableRangeList = ToRangeList(titleData["availableVersions"]);
+            std::set<std::size_t> musicAvailableVersions;
+            for (auto &range : musicAvailableRangeList.GetRanges())
+            {
+                for (auto v : range)
+                {
+                    musicAvailableVersions.emplace(v);
+                }
+            }
+
+            for (auto &[styleDifficulty, diffData] : titleData["difficulty"].items())
+            {
+                if (!StyleDifficultySmartEnum::Has(styleDifficulty))
+                {
+                    std::cout << "[" << version << "][" << title << "] invalid difficulty [" << styleDifficulty << "].\n";
+                    continue;
+                }
+
+                //'' check chart version format:
+                auto isDiffDataValid = true;
+                for (auto &[chartVersion, chartData] : diffData.items())
+                {
+                    std::string versionRangeStr = chartVersion;
+                    //'' remove cs prefix.
+                    icl_s2::RecursiveReplace(versionRangeStr, "cs", "");
+                    //'' make sure comma only follow by one space.
+                    icl_s2::RecursiveReplace(versionRangeStr, ", ", "|");
+                    auto versionRanges = icl_s2::SplitString("|", versionRangeStr);
+                    auto isValid = true;
+                    std::string reason;
+                    for (auto &versionRange : versionRanges)
+                    {
+                        if (versionRange.size()!=2&&versionRange.size()!=5)
+                        {
+                            reason = "incorrect size";
+                            isValid = false;
+                            break;
+                        }
+                        if (versionRange.size()==5&&versionRange[2]!='-')
+                        {
+                            reason = "range not separated by -";
+                            isValid = false;
+                            break;
+                        }
+
+                        for (auto i : IndexRange{0, versionRange.size()})
+                        {
+                            if (i==2) continue;
+                            if (!std::isdigit(static_cast<unsigned char>(versionRange[i])))
+                            {
+                                reason = "!isdigit";
+                                isValid = false;
+                                break;
+                            }
+                        }
+
+                        if (isValid)
+                        {
+                            auto maxVersion = GetLatestVersionIndex();
+
+                            auto versions = icl_s2::SplitString("-", versionRange);
+                            auto beginVersion = std::stoull(versions[0]);
+                            auto endVersion = beginVersion;
+                            if (versions.size()==2)
+                            {
+                                auto endVersion = std::stoull(versions[1]);
+                                if (beginVersion>=endVersion)
+                                {
+                                    reason = "begin>=end";
+                                    isValid = false;
+                                }
+                                if (beginVersion>=maxVersion)
+                                {
+                                    reason = "begin>=max";
+                                    isValid = false;
+                                }
+                            }
+
+                            if (endVersion>maxVersion)
+                            {
+                                reason = "end>max";
+                                isValid = false;
+                            }
+                        }
+                    }
+
+                    if (!isValid)
+                    {
+                        isDiffDataValid = false;
+                        std::cout   << "[" << version << "][" << title << "][" << styleDifficulty
+                                    << "] invalid chartVersionRange [" << chartVersion << "].\n"
+                                    << "Reason: " << reason << ".\n";
+                    }
+                }
+
+                if (!isDiffDataValid) { continue; }
+
+                //'' check chart version range is valid:
+                //'' to make sure order of chart version is correct, not depend on lexicographic order of key string.
+                std::map<std::size_t, std::string> chartVersionByFirstVer;
+                std::set<std::size_t> difficultyAvailableVersions;
+                for (auto &[chartVersion, chartData] : diffData.items())
+                {
+                    if (icl_s2::Find(chartVersion, "cs")) { continue; }
+
+                    if (chartData["level"]==0)
+                    {
+                        isDiffDataValid = false;
+                        std::cout << "[" << version << "][" << title << "][" << styleDifficulty
+                                  << "] has 0 level at [" << chartVersion << "].\n";
+                        break;
+                    }
+
+                    if (!icl_s2::Find(levelRange, chartData["level"]))
+                    {
+                        isDiffDataValid = false;
+                        std::cout << "[" << version << "][" << title << "][" << styleDifficulty
+                                  << "] has invalid level [" << chartData["level"]
+                                  << "] at [" << chartVersion << "].\n";
+                        break;
+                    }
+
+                    if (chartData["note"]==0)
+                    {
+                        isDiffDataValid = false;
+                        std::cout << "[" << version << "][" << title << "][" << styleDifficulty
+                                  << "] has 0 note at [" << chartVersion << "].\n";
+                        break;
+                    }
+
+                    auto chartVerRangeList = ToRangeList(chartVersion);
+                    auto chartVerRanges = chartVerRangeList.GetRanges();
+                    if (chartVerRanges.empty())
+                    {
+                        isDiffDataValid = false;
+                        std::cout << "[" << version << "][" << title << "][" << styleDifficulty
+                                  << "] has invalid chart version [" << chartVersion << "].\n";
+                        break;
+                    }
+
+                    auto isChartVersionValid = true;
+                    for (auto &verRange : chartVerRanges)
+                    {
+                        for (auto v : verRange)
+                        {
+                            if (!icl_s2::Find(musicAvailableVersions, v))
+                            {
+                                isChartVersionValid = false;
+                                break;
+                            }
+
+                            if (icl_s2::Find(difficultyAvailableVersions, v))
+                            {
+                                isChartVersionValid = false;
+                                break;
+                            }
+
+                            difficultyAvailableVersions.emplace(v);
+                        }
+
+                        if (!isChartVersionValid) { break; }
+                    }
+                    if (!isChartVersionValid)
+                    {
+                        isDiffDataValid = false;
+                        std::cout << "[" << version << "][" << title << "][" << styleDifficulty
+                                  << "] has invalid chart version [" << chartVersion << "].\n";
+                        break;
+                    }
+
+                    auto firstVer = chartVerRangeList.GetRanges().begin()->GetMin();
+                    chartVersionByFirstVer[firstVer] = chartVersion;
+                }
+
+                if (!isDiffDataValid) { continue; }
+
+                //'' check adjacent chart infos are not same.
+
+                for (auto itArray : icl_s2::MakeAdjacentArrayRange<2>(chartVersionByFirstVer))
+                {
+                    auto &previousChartVer = itArray[0]->second;
+                    auto &nextChartVer = itArray[1]->second;
+                    if (diffData[previousChartVer]==diffData[nextChartVer])
+                    {
+                        std::cout << "[" << version << "][" << title << "][" << styleDifficulty
+                                  << "] has same chart info for [" << previousChartVer
+                                  << "] and [" << nextChartVer << "].\n";
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Check DB validity");
+    std::cout << "Check DB validity done.\n";
+}
+
+void
+MusicDatabase::
 GenerateActiveVersions(std::size_t beginVersionIndex)
 {
     const auto &musicTable = mDatabase.at("musicTable");
@@ -366,33 +599,26 @@ GenerateActiveVersions(std::size_t beginVersionIndex)
         auto versionIndex = std::stoull(version);
         for (auto musicIndex : IndexRange{0, versionMusics.size()})
         {
-            std::string title = versionMusics.at(musicIndex);
-            auto findMusic = icl_s2::Find(musicTable.at(version), title);
+            auto findMusic = icl_s2::Find(musicTable.at(version), versionMusics.at(musicIndex));
             //'' cs musics.
             if (!findMusic) { continue; }
 
             auto &musicInfo = findMusic.value().value();
-            std::string availableVersions = musicInfo.at("availableVersions");
 
-            for (auto &[activeVersionIndex, activeVersion] : mActiveVersions)
+            for (auto &[styleDiffStr, diffInfo] : musicInfo.at("difficulty").items())
             {
-                if (!IsActive(activeVersionIndex, availableVersions))
+                auto styleDifficulty = ToStyleDifficulty(styleDiffStr);
+                for (auto &[chartVersions, chartInfo] : diffInfo.items())
                 {
-                    continue;
-                }
-
-                for (auto &[styleDiffStr, diffInfo] : musicInfo.at("difficulty").items())
-                {
-                    auto styleDifficulty = ToStyleDifficulty(styleDiffStr);
-                    for (auto &[chartVersions, chartInfo] : diffInfo.items())
+                    auto chartAvailableRangeList = ToRangeList(chartVersions);
+                    for (auto &[activeVersionIndex, activeVersion] : mActiveVersions)
                     {
-                        if (IsActive(activeVersionIndex, chartVersions))
+                        if (chartAvailableRangeList.HasRange(activeVersionIndex))
                         {
                             auto musicId = ToMusicId(versionIndex, musicIndex);
                             int level = chartInfo.at("level");
                             int note = chartInfo.at("note");
                             activeVersion.AddDifficulty(musicId, styleDifficulty, {level, note});
-                            break;
                         }
                     }
                 }

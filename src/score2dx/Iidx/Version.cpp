@@ -90,6 +90,12 @@ FindVersionIndex(const std::string &dbVersionName)
     return std::nullopt;
 }
 
+std::size_t
+GetFirstDateTimeAvailableVersionIndex()
+{
+    return VersionDateTimeRangeMap.begin()->first;
+}
+
 std::map<icl_s2::RangeSide, std::string>
 GetVersionDateTimeRange(std::size_t versionIndex)
 {

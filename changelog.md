@@ -1,5 +1,15 @@
 # Changelog of score2dx
 
+* 2.3.0 [2021-11-12]:
+    * Update MusicDatabase with 2021-11-11 unlocking default LV12 chart info.
+    * Use CheckValidity to verify music database and fix several errors.
+        * Policy: for early version with hidden another (wiki has note, but level is N/A):
+            * Regard it as not available.
+            * Only add chart info with both valid level and note.
+    * GenerateActiveVersions change version range to [17, 29].
+        * Also optimize it from 200ms to 100ms.
+    * Handle import invalid data case, ignore NO_PLAY non-available charts.
+
 * 2.2.0 [2021-11-10]:
     * Now detect DJ level and score mismatch when loading data.
         * Analyze also detect such mismatch.
