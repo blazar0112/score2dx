@@ -63,6 +63,11 @@ const std::vector<std::string> VersionNames
 std::optional<std::size_t>
 FindVersionIndex(const std::string &dbVersionName);
 
+//! @brief Get first version with date time range implemented.
+//! @note Currently it's 17.
+std::size_t
+GetFirstDateTimeAvailableVersionIndex();
+
 //! @brief Get Version's DateTime range [BeginDateTime, EndDateTime] (including end).
 //! @note Empty string if DateTime is unknown.
 //! DateTime is assigned using release day of each version from bemani wiki.

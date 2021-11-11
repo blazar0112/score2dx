@@ -440,6 +440,11 @@ Import(const std::string &requiredIidxId,
 
                         if (!findChartInfo)
                         {
+                            //'' exported data from script may contain difficulty not existing (yet).
+                            if (chartScore.ClearType==ClearType::NO_PLAY)
+                            {
+                                continue;
+                            }
                             std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
                                       << "DateTime: " << dateTime << "\n"
                                       << "ActiveVersion: " << ToVersionString(activeVersionIndex) << "\n"

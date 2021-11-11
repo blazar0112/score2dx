@@ -106,6 +106,11 @@ public:
                       std::size_t activeVersionIndex)
         const;
 
+    //! @brief [Debug] Check database validity and print inconsistency.
+        void
+        CheckValidity()
+        const;
+
 private:
     Json mDatabase;
 
