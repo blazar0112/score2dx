@@ -30,8 +30,20 @@ ICL_S2_SMART_ENUM(StatisticScoreLevelRange,
 std::string
 ToPrettyString(StatisticScoreLevelRange statisticScoreLevelRange);
 
+StatisticScoreLevelRange
+FindStatisticScoreLevelRange(int note, int exScore);
+
+StatisticScoreLevelRange
+FindStatisticScoreLevelRange(ScoreLevelRange scoreLevelRange);
+
 struct Statistics
 {
+    //! @brief Total ChartIdList available for this statistics.
+    //! @note It should be equivalent to:
+    //!     Sum of ChartIdListByClearType
+    //!     (since every chart score should have at least NO_PLAY)
+    //! @note Not every chart score have current Score/DjLevel/StatisticScoreLevelRange.
+    //! So sum of ChartIdListByDjLevel/ChartIdListByScoreLevelRange may only be part of total ChartIdList.
     std::set<std::size_t> ChartIdList;
 
     //! @brief Map of {ClearType, ChartIdList}.
@@ -70,6 +82,16 @@ struct ScoreAnalysis
 {
     //! @brief Map of {MusicId, Map of {PlayStyle, BestScoreData}}.
     std::map<std::size_t, std::map<PlayStyle, BestScoreData>> MusicBestScoreData;
+
+    //! @brief Map of {PlayStyle, Statistics}.
+    //! @note It should be equivalent to
+    //!     Sum of levels in StatisticsByStyleLevel
+    //!     Sum of difficulty in StatisticsByStyleDifficulty (of each style)
+    //!     Sum of difficulty and version in StatisticsByVersionStyleDifficulty (of each style)
+    std::map<PlayStyle, Statistics> StatisticsByStyle;
+
+    //! @brief Vector of {Index=VersionIndex, Map of {Style, Statistics}}.
+    std::vector<std::map<PlayStyle, Statistics>> StatisticsByVersionStyle;
 
     //! @brief Map of {PlayStyle, Array of {Index=Level, Statistics}}. Level = 0 is unused.
     std::map<PlayStyle, std::array<Statistics, MaxLevel+1>> StatisticsByStyleLevel;

@@ -32,6 +32,32 @@ ToPrettyString(StatisticScoreLevelRange statisticScoreLevelRange)
     return prettyStrings[static_cast<std::size_t>(statisticScoreLevelRange)];
 }
 
+StatisticScoreLevelRange
+FindStatisticScoreLevelRange(int note, int exScore)
+{
+    return FindStatisticScoreLevelRange(FindScoreLevelRange(note, exScore));
+}
+
+StatisticScoreLevelRange
+FindStatisticScoreLevelRange(ScoreLevelRange scoreLevelRange)
+{
+    auto [scoreLevel, scoreRange] = scoreLevelRange;
+
+    auto statsScoreLevel = StatisticScoreLevelRange::AMinus;
+    if (scoreLevel>=ScoreLevel::A)
+    {
+        if (scoreLevel==ScoreLevel::AA) { statsScoreLevel = StatisticScoreLevelRange::AAMinus; }
+        if (scoreLevel==ScoreLevel::AAA) { statsScoreLevel = StatisticScoreLevelRange::AAAMinus; }
+        if (scoreLevel==ScoreLevel::Max) { statsScoreLevel = StatisticScoreLevelRange::MaxMinus; }
+        if (scoreRange!=ScoreRange::LevelMinus)
+        {
+            statsScoreLevel = static_cast<StatisticScoreLevelRange>(static_cast<int>(statsScoreLevel)+1);
+        }
+    }
+
+    return statsScoreLevel;
+}
+
 Statistics::
 Statistics()
 {
@@ -96,6 +122,7 @@ const
 
     for (auto playStyle : PlayStyleSmartEnum::ToRange())
     {
+        analysis.StatisticsByStyle[playStyle];
         analysis.StatisticsByStyleLevel[playStyle];
     }
 
@@ -108,9 +135,15 @@ const
         analysis.StatisticsByStyleDifficulty[styleDifficulty];
     }
 
+    analysis.StatisticsByVersionStyle.resize(mActiverVersionIndex+1);
     analysis.StatisticsByVersionStyleDifficulty.resize(mActiverVersionIndex+1);
     for (auto versionIndex : IndexRange{0, mActiverVersionIndex+1})
     {
+        for (auto playStyle : PlayStyleSmartEnum::ToRange())
+        {
+            analysis.StatisticsByVersionStyle[versionIndex][playStyle];
+        }
+
         for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
         {
             if (styleDifficulty==StyleDifficulty::SPB||styleDifficulty==StyleDifficulty::DPB)
@@ -165,6 +198,8 @@ const
                 if (chartScore.ExScore>careerBestChartScore.BestChartScore.ExScore)
                 {
                     careerBestChartScore.BestChartScore = chartScore;
+                    careerBestChartScore.DateTime = dateTime;
+                    careerBestChartScore.VersionIndex = FindVersionIndexFromDateTime(dateTime);
                 }
 
                 if (dateTime>=versionDateTimeRange.at(icl_s2::RangeSide::Begin)
@@ -271,8 +306,10 @@ const
 
         std::set<Statistics*> analysisStatsList
         {
+            &analysis.StatisticsByStyle[chartPlayStyle],
             &analysis.StatisticsByStyleLevel[chartPlayStyle][chartInfo.Level],
             &analysis.StatisticsByStyleDifficulty[styleDifficulty],
+            &analysis.StatisticsByVersionStyle[versionIndex][chartPlayStyle],
             &analysis.StatisticsByVersionStyleDifficulty[versionIndex][styleDifficulty]
         };
 
