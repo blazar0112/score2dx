@@ -195,15 +195,15 @@ const
 
 const ChartScoreRecord*
 BestScoreData::
-FindBestDifferChartScoreRecord(BestDifferType bestDifferType,
-                               Difficulty difficulty)
+FindDiffableChartScoreRecord(DiffableBestScoreType diffableBestScoreType,
+                             Difficulty difficulty)
 const
 {
     auto* verBestChartScorePtr = GetVersionBestMusicScore().FindChartScore(difficulty);
     if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
     auto &versionBestChartScore = *verBestChartScorePtr;
 
-    if (bestDifferType==BestDifferType::ExScore)
+    if (diffableBestScoreType==DiffableBestScoreType::ExScore)
     {
         auto* bestScoreRecord = FindBestChartScoreRecord(BestScoreType::BestExScore, difficulty);
         if (!bestScoreRecord) { return nullptr; }
@@ -220,7 +220,7 @@ const
         return bestScoreRecord;
     }
 
-    if (bestDifferType==BestDifferType::Miss)
+    if (diffableBestScoreType==DiffableBestScoreType::Miss)
     {
         if (!versionBestChartScore.MissCount.has_value())
         {

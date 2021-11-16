@@ -11,7 +11,7 @@
 namespace score2dx
 {
 
-ICL_S2_SMART_ENUM(BestDifferType,
+ICL_S2_SMART_ENUM(DiffableBestScoreType,
     ExScore,
     Miss
 );
@@ -86,8 +86,8 @@ public:
     //! S == S1: return S2 or nullptr if S2 is not available.
     //! S1 > S: return S1
         const ChartScoreRecord*
-        FindBestDifferChartScoreRecord(BestDifferType bestDifferType,
-                                       Difficulty difficulty)
+        FindDiffableChartScoreRecord(DiffableBestScoreType diffableBestScoreType,
+                                     Difficulty difficulty)
         const;
 
 private:
