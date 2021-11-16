@@ -1,5 +1,16 @@
 # Changelog of score2dx
 
+* 2.4.0 [2021-11-17]:
+    * Rework ScoreAnalysis to use BestScoreData as class and provide finding following:
+        * BestExScore
+        * SecondBestExScore
+        * BestMiss
+        * SecondBestMiss
+    * Fix BestScoreData problem:
+        * Included trivial score data, now only record non-trivial (has score or miss).
+        * Not inherited previous clear type before active version.
+        * Fix revival music problem by always use first active version score data.
+
 * 2.3.0 [2021-11-12]:
     * Update MusicDatabase with 2021-11-11 unlocking default LV12 chart info.
     * Use CheckValidity to verify music database and fix several errors.

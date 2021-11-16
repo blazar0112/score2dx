@@ -27,4 +27,11 @@ ToString(const ChartScore &chartScore)
     return s;
 }
 
+bool
+IsDefault(const ChartScore &chartScore)
+{
+    static const ChartScore defaultChartScore;
+    return chartScore==defaultChartScore;
+}
+
 }

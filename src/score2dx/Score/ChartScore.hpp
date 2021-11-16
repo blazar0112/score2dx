@@ -18,9 +18,14 @@ struct ChartScore
     int PGreatCount{0};
     int GreatCount{0};
     std::optional<int> MissCount;
+
+        auto operator<=>(const ChartScore&) const = default;
 };
 
 std::string
 ToString(const ChartScore &chartScore);
+
+bool
+IsDefault(const ChartScore &chartScore);
 
 }

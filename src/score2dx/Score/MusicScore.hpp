@@ -52,6 +52,9 @@ public:
         FindChartScore(Difficulty difficulty)
         const;
 
+        ChartScore*
+        FindChartScore(Difficulty difficulty);
+
         const std::map<Difficulty, ChartScore> &
         GetChartScores()
         const;

@@ -79,6 +79,13 @@ const
     return nullptr;
 }
 
+ChartScore*
+MusicScore::
+FindChartScore(Difficulty difficulty)
+{
+    return const_cast<ChartScore*>(std::as_const(*this).FindChartScore(difficulty));
+}
+
 const std::map<Difficulty, ChartScore> &
 MusicScore::
 GetChartScores()

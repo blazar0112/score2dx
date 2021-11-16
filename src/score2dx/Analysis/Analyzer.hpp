@@ -7,6 +7,7 @@
 
 #include "icl_s2/Common/SmartEnum.hxx"
 
+#include "score2dx/Analysis/BestScoreData.hpp"
 #include "score2dx/Core/MusicDatabase.hpp"
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Score/PlayerScore.hpp"
@@ -58,25 +59,6 @@ struct Statistics
         Statistics();
 };
 
-struct CareerBestChartScore
-{
-    ChartScore BestChartScore;
-    std::size_t VersionIndex{0};
-    std::string DateTime;
-};
-
-struct BestScoreData
-{
-    //! @note DateTime is omitted, since each chart have different best, can have play count of version.
-    MusicScore VersionBestMusicScore;
-
-    //! @brief Career BestExScore for each difficulty. Map of {Difficulty, CareerBestChartScore}.
-    std::map<Difficulty, CareerBestChartScore> CareerBestChartScores;
-
-        BestScoreData(std::size_t musicId,
-                      PlayStyle playStyle);
-};
-
 //! @note BestScore includes SPB data, but Statistics do not include SPB.
 struct ScoreAnalysis
 {
@@ -122,7 +104,7 @@ public:
 private:
     const MusicDatabase &mMusicDatabase;
     //! @brief Current active version, default to latest version in music database.
-    std::size_t mActiverVersionIndex;
+    std::size_t mActiveVersionIndex;
 };
 
 }
