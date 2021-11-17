@@ -25,7 +25,6 @@ main(int argc, char* argv[])
 
         score2dx::Core core;
 
-        /*
         auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391)", false);
         if (!succeeded)
         {
@@ -40,9 +39,8 @@ main(int argc, char* argv[])
             core.SetActiveVersionIndex(activeVersionIndex);
             core.Analyze("5483-7391");
         }
-        */
 
-        core.GetMusicDatabase().CheckValidity();
+        //core.GetMusicDatabase().CheckValidity();
 
         s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "experiment.exe");
         return 0;
