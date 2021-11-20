@@ -59,6 +59,19 @@ struct Statistics
         Statistics();
 };
 
+struct ActivityAnalysis
+{
+    std::string BeginDateTime;
+
+    //! @brief BeginSnapshot of all available music.
+    //! Map of {PlayStyle, Map of {MusicId, MusicScore}}.
+    std::map<PlayStyle, std::map<std::size_t, MusicScore>> BeginSnapshot;
+
+    //! @brief Updating activity after snapshot, sorted by datetime.
+    //! Map of {PlayStyle, Map of {DateTime, Map of {MusicId, MusicScore}}}.
+    std::map<PlayStyle, std::map<std::string, std::map<std::size_t, MusicScore>>> ActivityByDateTime;
+};
+
 //! @note BestScore includes SPB data, but Statistics do not include SPB.
 struct ScoreAnalysis
 {
@@ -101,10 +114,51 @@ public:
         Analyze(const PlayerScore &playerScore)
         const;
 
+    //! @brief Analyze activity during current active version date time range.
+    //! @note In CSV may have initial inherited data records with play count zero at time of data transfer.
+    //! But third party import data may not have play count set correctly.
+    //! So play count = 0 records are kept.
+        ActivityAnalysis
+        AnalyzeVersionActivity(const PlayerScore &playerScore)
+        const;
+
+    //! @brief Analyze activity during specific date time range.
+        ActivityAnalysis
+        AnalyzeActivity(const PlayerScore &playerScore,
+                        const std::string &beginDateTime,
+                        const std::string &endDateTime)
+        const;
+
 private:
     const MusicDatabase &mMusicDatabase;
     //! @brief Current active version, default to latest version in music database.
     std::size_t mActiveVersionIndex;
+
+    //! @brief Find Status of ChartScore at given time, consider active version, version change, availibilty.
+    //! Not found if:
+    //! 1. Player don't have score for music.
+    //! 2. Music/Chart does not available at datetime's active version.
+    //! (Note: later chart added during a version like SPL is consider
+    //!     have NO_PLAY at the beginning of that version, to simplify the problem.)
+    //! @note If chart availibilty is continued at datetime's active version,
+    //!     then clear type is inherited from previous score data if exist such data.
+    //! Else the chart is regarded wipe to NO_PLAY at beginning of that version.
+    //! @example
+    //! Clear EASY          HARD
+    //! Score  100          50
+    //! Time     *    VB    *              VE
+    //!                ^ VersionBegin       ^ VersionEnd
+    //!          t1   t2    t3
+    //! FindChartScore [t1, t2) = {EASY, 100}, [t2, t3) = {EASY, 0}, [t3, VE] = {HARD, 50}
+    //! If t1 is very early version, and music is deleted in between, then [t2, t3) = {NO_PLAY, 0}.
+
+        std::optional<ChartScore>
+        FindChartScoreAtTime(const PlayerScore &playerScore,
+                             std::size_t musicId,
+                             PlayStyle playStyle,
+                             Difficulty difficulty,
+                             const std::string &dateTime)
+        const;
 };
 
 }

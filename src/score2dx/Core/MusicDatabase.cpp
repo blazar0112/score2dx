@@ -354,6 +354,23 @@ const
     return std::nullopt;
 }
 
+bool
+MusicDatabase::
+IsAvailable(std::size_t musicId,
+            StyleDifficulty styleDifficulty,
+            std::size_t versionIndex)
+const
+{
+    auto findActiveVersion = icl_s2::Find(mActiveVersions, versionIndex);
+    if (!findActiveVersion)
+    {
+        return false;
+    }
+
+    auto &activeVersion = findActiveVersion.value()->second;
+    return activeVersion.FindChartInfo(musicId, styleDifficulty);
+}
+
 void
 MusicDatabase::
 CheckValidity()

@@ -108,7 +108,7 @@ std::pair<std::size_t, std::size_t>
 ToIndexes(std::size_t musicId);
 
 std::string
-ToFormatted(std::size_t musicId);
+ToMusicIdString(std::size_t musicId);
 
 std::size_t
 ToChartId(std::size_t musicId,

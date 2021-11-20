@@ -500,6 +500,19 @@ Import(const std::string &requiredIidxId,
     }
 }
 
+const PlayerScore &
+Core::
+GetPlayerScore(const std::string &iidxId)
+const
+{
+    auto findPlayerScore = icl_s2::Find(mPlayerScores, iidxId);
+    if (!findPlayerScore)
+    {
+        throw std::runtime_error("no player score for ["+iidxId+"].");
+    }
+    return findPlayerScore.value()->second;
+}
+
 const std::map<std::string, PlayerScore> &
 Core::
 GetPlayerScores()

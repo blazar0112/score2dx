@@ -106,6 +106,12 @@ public:
                       std::size_t activeVersionIndex)
         const;
 
+        bool
+        IsAvailable(std::size_t musicId,
+                    StyleDifficulty styleDifficulty,
+                    std::size_t versionIndex)
+        const;
+
     //! @brief [Debug] Check database validity and print inconsistency.
         void
         CheckValidity()

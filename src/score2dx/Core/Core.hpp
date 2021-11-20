@@ -56,6 +56,10 @@ public:
                const std::string &exportedFilename,
                bool verbose=false);
 
+        const PlayerScore &
+        GetPlayerScore(const std::string &iidxId)
+        const;
+
     //! @brief Map of {IidxId, PlayerScore}.
         const std::map<std::string, PlayerScore> &
         GetPlayerScores()
@@ -85,6 +89,9 @@ public:
         const ScoreAnalysis*
         FindAnalysis(const std::string &iidxId)
         const;
+
+        //'' temp test
+        Analyzer & GetAnalyzer() { return mAnalyzer; }
 
 private:
     MusicDatabase mMusicDatabase;
