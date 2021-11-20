@@ -431,6 +431,22 @@ Import(const std::string &requiredIidxId,
                         if (difficultyData[5]!="---") { chartScore.DjLevel = ToDjLevel(difficultyData[5]); }
 
                         auto styleDifficulty = ConvertToStyleDifficulty(metaPlayStyle, difficulty);
+
+                        if (chartScore.MissCount==0&&chartScore.ClearType!=ClearType::FULLCOMBO_CLEAR)
+                        {
+                            if (verbose)
+                            {
+                                std::cout << "[" << ToVersionString(versionIndex)
+                                          << "][" << dbTitle
+                                          << "][" << ToString(styleDifficulty)
+                                          << "][" << dateTime
+                                          << "] has ClearType [" << ToString(chartScore.ClearType)
+                                          << "] and MissCount has value " << chartScore.MissCount.value()
+                                          << "\n";
+                            }
+                            chartScore.MissCount = std::nullopt;
+                        }
+
                         auto findChartInfo = mMusicDatabase.FindChartInfo(
                             versionIndex,
                             dbTitle,
