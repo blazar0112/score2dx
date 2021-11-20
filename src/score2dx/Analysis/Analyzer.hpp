@@ -5,6 +5,7 @@
 #include <set>
 #include <vector>
 
+#include "icl_s2/Common/RangeSide.hpp"
 #include "icl_s2/Common/SmartEnum.hxx"
 
 #include "score2dx/Analysis/BestScoreData.hpp"
@@ -59,9 +60,15 @@ struct Statistics
         Statistics();
 };
 
+struct ActivityData
+{
+    const MusicScore* CurrentMusicScore{nullptr};
+    const MusicScore* PreviousMusicScore{nullptr};
+};
+
 struct ActivityAnalysis
 {
-    std::string BeginDateTime;
+    std::map<icl_s2::RangeSide, std::string> DateTimeRange;
 
     //! @brief BeginSnapshot of all available music.
     //! Map of {PlayStyle, Map of {MusicId, MusicScore}}.
@@ -70,6 +77,10 @@ struct ActivityAnalysis
     //! @brief Updating activity after snapshot, sorted by datetime.
     //! Map of {PlayStyle, Map of {DateTime, Map of {MusicId, MusicScore}}}.
     std::map<PlayStyle, std::map<std::string, std::map<std::size_t, MusicScore>>> ActivityByDateTime;
+
+    //! @brief Activity Snapshot of each date time of all available musics. (not include begin snapshot).
+    //! Map of {PlayStyle, Map of {DateTime, Map of {MusicId, ActivityData}}}.
+    std::map<PlayStyle, std::map<std::string, std::map<std::size_t, ActivityData>>> ActivitySnapshotByDateTime;
 };
 
 //! @note BestScore includes SPB data, but Statistics do not include SPB.

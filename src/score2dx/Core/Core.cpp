@@ -587,6 +587,35 @@ const
 
 void
 Core::
+AnalyzeActivity(const std::string &iidxId,
+                const std::string &beginDateTime,
+                const std::string &endDateTime)
+{
+    auto findPlayerScore = icl_s2::Find(mPlayerScores, iidxId);
+    if (!findPlayerScore)
+    {
+        throw std::runtime_error("no such player ["+iidxId+"].");
+    }
+
+    auto &playerScore = findPlayerScore.value()->second;
+
+    mPlayerActivityAnalyses.erase(iidxId);
+    mPlayerActivityAnalyses.emplace(iidxId, mAnalyzer.AnalyzeActivity(playerScore, beginDateTime, endDateTime));
+}
+
+const ActivityAnalysis*
+Core::
+FindActivityAnalysis(const std::string &iidxId)
+const
+{
+    auto findAnalysis = icl_s2::Find(mPlayerActivityAnalyses, iidxId);
+    if (!findAnalysis) { return nullptr; }
+
+    return &(findAnalysis.value()->second);
+}
+
+void
+Core::
 CreatePlayer(const std::string &iidxId)
 {
     mPlayerScores.emplace(iidxId, iidxId);

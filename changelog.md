@@ -1,5 +1,8 @@
 # Changelog of score2dx
 
+* Ongoing:
+    * Add Activity Analyze.
+
 * 2.4.0 [2021-11-17]:
     * Rework ScoreAnalysis to use BestScoreData as class and provide finding following:
         * BestExScore

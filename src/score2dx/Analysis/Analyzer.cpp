@@ -282,8 +282,10 @@ const
     {
         activityAnalysis.BeginSnapshot[playStyle];
         activityAnalysis.ActivityByDateTime[playStyle];
+        activityAnalysis.ActivitySnapshotByDateTime[playStyle];
     }
-    activityAnalysis.BeginDateTime = beginDateTime;
+    activityAnalysis.DateTimeRange[icl_s2::RangeSide::Begin] = beginDateTime;
+    activityAnalysis.DateTimeRange[icl_s2::RangeSide::End] = endDateTime;
 
     auto versionIndex = FindVersionIndexFromDateTime(beginDateTime);
     auto* activeVersionPtr = mMusicDatabase.FindActiveVersion(versionIndex);
@@ -303,7 +305,7 @@ const
 
         auto &snapshotMusicScores = activityAnalysis.BeginSnapshot[chartPlayStyle];
 
-        auto findChartScoreAtTime = FindChartScoreAtTime(playerScore, musicId, chartPlayStyle, difficulty, activityAnalysis.BeginDateTime);
+        auto findChartScoreAtTime = FindChartScoreAtTime(playerScore, musicId, chartPlayStyle, difficulty, beginDateTime);
         if (!findChartScoreAtTime) { continue; }
 
         if (!icl_s2::Find(snapshotMusicScores, musicId))
@@ -311,7 +313,7 @@ const
             snapshotMusicScores.emplace(
                 std::piecewise_construct,
                 std::forward_as_tuple(musicId),
-                std::forward_as_tuple(musicId, chartPlayStyle, 0, activityAnalysis.BeginDateTime)
+                std::forward_as_tuple(musicId, chartPlayStyle, 0, beginDateTime)
             );
         }
 
@@ -320,8 +322,12 @@ const
         snapshotMusicScore.AddChartScore(difficulty, findChartScoreAtTime.value());
 
         auto findMusicScores = icl_s2::Find(playerScore.GetMusicScores(chartPlayStyle), musicId);
-        if (!findMusicScores) { continue; }
+        if (!findMusicScores)
+        {
+            continue;
+        }
 
+        auto previousDateTime = beginDateTime;
         for (auto &[dateTime, musicScore] : findMusicScores.value()->second)
         {
             if (dateTime>=versionBeginDateTime && dateTime<=beginDateTime)
@@ -329,7 +335,7 @@ const
                 snapshotMusicScore.SetPlayCount(musicScore.GetPlayCount());
             }
 
-            if (dateTime>=beginDateTime
+            if (dateTime>beginDateTime
                 && (endDateTime.empty() || dateTime<=endDateTime))
             {
                 auto* findChartScore = musicScore.FindChartScore(difficulty);
@@ -339,9 +345,72 @@ const
                     if (!icl_s2::Find(activityMusicScoreById, musicId))
                     {
                         activityMusicScoreById.emplace(musicId, musicScore);
+                        auto &activitySnapshot = activityAnalysis.ActivitySnapshotByDateTime[chartPlayStyle];
+                        auto &activityData = activitySnapshot[dateTime][musicId];
+                        activityData.CurrentMusicScore = &activityMusicScoreById.at(musicId);
+                        if (previousDateTime==beginDateTime)
+                        {
+                            activityData.PreviousMusicScore = &snapshotMusicScore;
+                        }
+                        else
+                        {
+                            auto &previousActivityData = activitySnapshot.at(previousDateTime).at(musicId);
+                            activityData.PreviousMusicScore = previousActivityData.CurrentMusicScore;
+                        }
+
+                        if (!activityData.PreviousMusicScore)
+                        {
+                            throw std::runtime_error("activityData.PreviousMusicScore is nullptr");
+                        }
+                        previousDateTime = dateTime;
                     }
                 }
             }
+        }
+    }
+
+    //''  BeginSnapshot t0 MMMMM
+    //''                t1  M
+    //''                t2 M   M
+    //''                t3 MM M
+    //''                   ^ActivityByDateTime
+    //'' fill ActivitySnapshotByDateTime so that every ActivitySnapshot have same music ids as begin snapshot
+    //'' and with activity data pointers point correctly
+    //''  BeginSnapshot t1 21222
+    //''                t2 12221
+    //''                t3 11212
+    //'' 1: already set above, 2: here fill point to previous 1/2 or begin.
+    //'' 1: Current: MusicScore in activity, Previous: MusicScore in activity/begin (see above graph)
+    //'' 2: Current & Previous: both set to previous MusicScore in activity/begin
+    for (auto &[playStyle, activityMusicScores] : activityAnalysis.ActivityByDateTime)
+    {
+        auto previousDateTime = beginDateTime;
+        for (auto &[dateTime, musicScoreById] : activityMusicScores)
+        {
+            auto &activityDataById = activityAnalysis.ActivitySnapshotByDateTime.at(playStyle).at(dateTime);
+
+            for (auto &[musicId, musicScore] : activityAnalysis.BeginSnapshot.at(playStyle))
+            {
+                if (icl_s2::Find(musicScoreById, musicId))
+                {
+                    continue;
+                }
+
+                auto &activityData = activityDataById[musicId];
+                if (previousDateTime==beginDateTime)
+                {
+                    activityData.CurrentMusicScore = &musicScore;
+                    activityData.PreviousMusicScore = &musicScore;
+                }
+                else
+                {
+                    auto &previousActivityData = activityAnalysis.ActivitySnapshotByDateTime.at(playStyle).at(previousDateTime).at(musicId);
+                    activityData.CurrentMusicScore = previousActivityData.CurrentMusicScore;
+                    activityData.PreviousMusicScore = previousActivityData.CurrentMusicScore;
+                }
+            }
+
+            previousDateTime = dateTime;
         }
     }
 

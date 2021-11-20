@@ -31,10 +31,11 @@ main(int argc, char* argv[])
             std::cout << "Load directory failed.\n";
         }
 
-        //auto activityAnalysis = core.GetAnalyzer().AnalyzeVersionActivity(core.GetPlayerScore("5483-7391"));
-        auto activityAnalysis = core.GetAnalyzer().AnalyzeActivity(core.GetPlayerScore("5483-7391"), "2021-11-20 00:00", "2021-11-20 23:59");
+        core.AnalyzeActivity("5483-7391", "2021-11-20 00:00", "2021-11-20 23:59");
+        auto* findActivityAnalysis = core.FindActivityAnalysis("5483-7391");
+        auto& activityAnalysis = *findActivityAnalysis;
         std::cout << "ActivityAnalysis:\n"
-                  << "Begin Time: " << activityAnalysis.BeginDateTime << "\n";
+                  << "Begin Time: " << activityAnalysis.DateTimeRange.at(icl_s2::RangeSide::Begin) << "\n";
         std::size_t beginPlayCount = 0;
         for (auto &[musicId, musicScore] : activityAnalysis.BeginSnapshot.at(score2dx::PlayStyle::DoublePlay))
         {
@@ -45,15 +46,13 @@ main(int argc, char* argv[])
                   << "\n";
         for (auto &[dateTime, musicScoreById] : activityAnalysis.ActivityByDateTime.at(score2dx::PlayStyle::DoublePlay))
         {
-            std::size_t playCount = 0;
+            std::cout << "Activity [" << dateTime << "]:\n";
             for (auto &[musicId, musicScore] : musicScoreById)
             {
-                playCount += musicScore.GetPlayCount();
+                std::cout << "[" << score2dx::ToMusicIdString(musicId) << "] PlayCount: ";
+                auto &activityData = activityAnalysis.ActivitySnapshotByDateTime.at(score2dx::PlayStyle::DoublePlay).at(dateTime).at(musicId);
+                std::cout << activityData.PreviousMusicScore->GetPlayCount() << "->" << musicScore.GetPlayCount() << "\n";
             }
-            std::cout << "Activity [" << dateTime
-                      << "], Musics: " << musicScoreById.size()
-                      << ", Total PlayCount = " << playCount
-                      << "\n";
         }
 
         /*
