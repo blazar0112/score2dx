@@ -58,7 +58,8 @@ public:
 
     //! @brief Initialize chart in music score, regardless have score or not.
         void
-        RegisterActiveChart(Difficulty difficulty);
+        InitializeVersionBeginChartScore(Difficulty difficulty,
+                                         const ChartScore &chartScore);
 
     //! @brief Update chart score by incremental date time.
     //! To avoid copy date time many times, dateTime is assumed to be incremental.

@@ -1,6 +1,9 @@
 #pragma once
 
+#include <optional>
 #include <string>
+
+#include "icl_s2/Common/IntegralRange.hxx"
 
 #include "score2dx/Core/ActiveVersion.hpp"
 #include "score2dx/Core/JsonDefinition.hpp"
@@ -110,6 +113,12 @@ public:
         IsAvailable(std::size_t musicId,
                     StyleDifficulty styleDifficulty,
                     std::size_t versionIndex)
+        const;
+
+        std::optional<icl_s2::IndexRange>
+        FindContainingAvailableVersionRange(std::size_t musicId,
+                                            StyleDifficulty styleDifficulty,
+                                            std::size_t versionIndex)
         const;
 
     //! @brief [Debug] Check database validity and print inconsistency.

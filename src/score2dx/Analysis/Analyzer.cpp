@@ -156,6 +156,7 @@ const
     auto &activeVersion = *activeVersionPtr;
 
     auto versionDateTimeRange = GetVersionDateTimeRange(mActiveVersionIndex);
+    auto &versionBeginDateTime = versionDateTimeRange.at(icl_s2::RangeSide::Begin);
 
     for (auto &[chartId, chartInfo] : activeVersion.GetChartInfos())
     {
@@ -182,8 +183,16 @@ const
             continue;
         }
 
+        auto findVersionBeginChartScore = FindChartScoreAtTime(playerScore, musicId, chartPlayStyle, difficulty, versionBeginDateTime);
+        if (!findVersionBeginChartScore)
+        {
+            std::cout << "Cannot find version begin chart score.\n";
+            throw std::runtime_error("not findVersionBeginChartScore");
+        }
+        auto &versionBeginChartScore = findVersionBeginChartScore.value();
+
         auto &bestScoreData = analysis.MusicBestScoreData[musicId].at(chartPlayStyle);
-        bestScoreData.RegisterActiveChart(difficulty);
+        bestScoreData.InitializeVersionBeginChartScore(difficulty, versionBeginChartScore);
 
         auto &musicScores = playerScore.GetMusicScores(chartPlayStyle);
         auto findMusicId = icl_s2::Find(musicScores, musicId);
@@ -430,7 +439,7 @@ const
     auto findMusicScoresById = icl_s2::Find(playerScore.GetMusicScores(playStyle), musicId);
     if (!findMusicScoresById)
     {
-        return std::nullopt;
+        return ChartScore{};
     }
 
     auto versionIndex = FindVersionIndexFromDateTime(dateTime);
@@ -440,26 +449,14 @@ const
         return std::nullopt;
     }
 
-    auto* activeVersionPtr = mMusicDatabase.FindActiveVersion(mActiveVersionIndex);
-    if (!activeVersionPtr)
-    {
-        std::cout << "No Active Version [" << ToVersionString(versionIndex) << "].\n";
-        return std::nullopt;
-    }
-
-    auto &activeVersion = *activeVersionPtr;
     auto styleDifficulty = ConvertToStyleDifficulty(playStyle, difficulty);
-    if (!activeVersion.FindChartInfo(musicId, styleDifficulty))
+    auto findContainingAvailableRange = mMusicDatabase.FindContainingAvailableVersionRange(musicId, styleDifficulty, versionIndex);
+    if (!findContainingAvailableRange)
     {
         return std::nullopt;
     }
 
-    //'' note: version index should >= 17.
-    auto previousVersionIndex = versionIndex-1;
-    if (!mMusicDatabase.IsAvailable(musicId, styleDifficulty, previousVersionIndex))
-    {
-        return ChartScore{};
-    }
+    auto &containingAvailableVersionRange = findContainingAvailableRange.value();
 
     ChartScore chartScore;
     auto &musicScoreById = findMusicScoresById.value()->second;
@@ -470,7 +467,10 @@ const
         auto* findChartScore = musicScore.FindChartScore(difficulty);
         if (!findChartScore) { continue; }
 
-        if (recordDateTime<versionBeginDateTime)
+        auto recordVersionIndex = FindVersionIndexFromDateTime(recordDateTime);
+
+        if (recordDateTime<versionBeginDateTime
+            && containingAvailableVersionRange.IsInRange(recordVersionIndex))
         {
             chartScore.ClearType = findChartScore->ClearType;
         }

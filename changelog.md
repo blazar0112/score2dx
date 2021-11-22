@@ -2,6 +2,8 @@
 
 * Ongoing:
     * Add Activity Analyze.
+    * Fix import data miss = 0 for non-FC cases.
+    * Fix revival music inherit previous clear mark.
 
 * 2.4.0 [2021-11-17]:
     * Rework ScoreAnalysis to use BestScoreData as class and provide finding following:

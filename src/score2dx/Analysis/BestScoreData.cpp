@@ -44,12 +44,12 @@ const
 
 void
 BestScoreData::
-RegisterActiveChart(Difficulty difficulty)
+InitializeVersionBeginChartScore(Difficulty difficulty,
+                                 const ChartScore &chartScore)
 {
-    //'' Version at least have initial NO_PLAY 0 exscore chart score.
     if (!mVersionBestMusicScore.FindChartScore(difficulty))
     {
-        mVersionBestMusicScore.AddChartScore(difficulty, {});
+        mVersionBestMusicScore.AddChartScore(difficulty, chartScore);
         mChartVersionPlayCounts[difficulty] = 0;
     }
 }
@@ -61,7 +61,10 @@ UpdateChartScore(Difficulty difficulty,
                  const ChartScore &chartScore,
                  std::size_t playCount)
 {
-    RegisterActiveChart(difficulty);
+    if (!mVersionBestMusicScore.FindChartScore(difficulty))
+    {
+        throw std::runtime_error("UpdateChartScore(): InitializeVersionBeginChartScore first.");
+    }
 
     //'' cases:
     //'' S = chartScore.EXScore, S1 = BestExScore, S2 = SecondBestExScore
@@ -149,36 +152,26 @@ UpdateChartScore(Difficulty difficulty,
         if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
         auto &versionBestChartScore = *verBestChartScorePtr;
 
+        /*
         if (icl_s2::Find(mVersionUpdatedDifficultySet, difficulty))
         {
-            if (versionBestChartScore.ClearType>chartScore.ClearType
-                ||versionBestChartScore.DjLevel>chartScore.DjLevel
-                ||versionBestChartScore.ExScore>chartScore.ExScore
-                ||(versionBestChartScore.MissCount.has_value()&&chartScore.MissCount.has_value()
-                   &&versionBestChartScore.MissCount.value()<chartScore.MissCount.value()))
-            {
-                std::cout << "Previous " << ToString(versionBestChartScore) << "\n"
-                          << "Current " << ToString(chartScore) << "\n";
-                throw std::runtime_error("chart score is not incrementally better within a version");
-            }
+
+        }
+        */
+
+        if (versionBestChartScore.ClearType>chartScore.ClearType
+            ||versionBestChartScore.DjLevel>chartScore.DjLevel
+            ||versionBestChartScore.ExScore>chartScore.ExScore
+            ||(versionBestChartScore.MissCount.has_value()&&chartScore.MissCount.has_value()
+               &&versionBestChartScore.MissCount.value()<chartScore.MissCount.value()))
+        {
+            std::cout << "Previous " << ToString(versionBestChartScore) << "\n"
+                      << "Current " << ToString(chartScore) << "\n";
+            throw std::runtime_error("chart score is not incrementally better within a version");
         }
 
         mVersionBestMusicScore.AddChartScore(difficulty, chartScore);
         mVersionUpdatedDifficultySet.emplace(difficulty);
-    }
-
-    auto* verBestChartScorePtr = mVersionBestMusicScore.FindChartScore(difficulty);
-    if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
-    auto &versionBestChartScore = *verBestChartScorePtr;
-
-    //'' inherit previous clear type, however music may be deleted and revived again.
-    //'' so version first update does not check and set to any score data if available.
-    if (dateTime<versionDateTimeRange.at(icl_s2::RangeSide::Begin))
-    {
-        if (chartScore.ClearType>versionBestChartScore.ClearType)
-        {
-            versionBestChartScore.ClearType = chartScore.ClearType;
-        }
     }
 }
 

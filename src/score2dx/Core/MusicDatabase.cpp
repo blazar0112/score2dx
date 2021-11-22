@@ -371,6 +371,60 @@ const
     return activeVersion.FindChartInfo(musicId, styleDifficulty);
 }
 
+std::optional<icl_s2::IndexRange>
+MusicDatabase::
+FindContainingAvailableVersionRange(std::size_t musicId,
+                                    StyleDifficulty styleDifficulty,
+                                    std::size_t versionIndex)
+const
+{
+    auto musicVersionIndex = musicId/1000;
+    if (musicVersionIndex>=mAllTimeMusics.size())
+    {
+        throw std::runtime_error("musicVersionIndex out of range in musicId.");
+    }
+
+    auto musicIndex = musicId%1000;
+    auto &versionMusics = mAllTimeMusics.at(musicVersionIndex);
+    if (musicIndex>=versionMusics.size())
+    {
+        throw std::runtime_error("musicIndex out of range in musicId.");
+    }
+
+    auto &title = versionMusics[musicIndex];
+
+    auto findDbMusic = FindDbMusic(musicVersionIndex, title);
+    if (!findDbMusic)
+    {
+        std::cout << "version ["+ToVersionString(musicVersionIndex)+"] title ["+title+"].\n";
+        throw std::runtime_error("cannot find music in main table and cs table.");
+    }
+
+    auto &dbMusic = *findDbMusic;
+    auto findDiffInfo = icl_s2::Find(dbMusic["difficulty"], ToString(styleDifficulty));
+    if (!findDiffInfo)
+    {
+        std::cout << "music id ["+ToMusicIdString(musicId)+"] has not difficulty ["+ToString(styleDifficulty)+"].\n";
+        throw std::runtime_error("cannot difficulty.");
+    }
+
+    auto &diffInfo = findDiffInfo.value().value();
+
+    for (auto &[chartVersions, chartInfo] : diffInfo.items())
+    {
+        auto rangeList = ToRangeList(chartVersions);
+        for (auto range : rangeList.GetRanges())
+        {
+            if (range.IsInRange(versionIndex))
+            {
+                return range;
+            }
+        }
+    }
+
+    return std::nullopt;
+}
+
 void
 MusicDatabase::
 CheckValidity()
