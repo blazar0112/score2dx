@@ -17,6 +17,11 @@
 namespace score2dx
 {
 
+ICL_S2_SMART_ENUM(FindChartScoreOption,
+    AtDateTime,
+    BeforeDateTime
+);
+
 struct Statistics
 {
     //! @brief Total ChartIdList available for this statistics.
@@ -50,15 +55,15 @@ struct ActivityAnalysis
 {
     std::map<icl_s2::RangeSide, std::string> DateTimeRange;
 
-    //! @brief BeginSnapshot of all available music.
+    //! @brief PreviousSnapshot of all available music.
     //! Map of {PlayStyle, Map of {MusicId, MusicScore}}.
-    std::map<PlayStyle, std::map<std::size_t, MusicScore>> BeginSnapshot;
+    std::map<PlayStyle, std::map<std::size_t, MusicScore>> PreviousSnapshot;
 
     //! @brief Updating activity after snapshot, sorted by datetime.
     //! Map of {PlayStyle, Map of {DateTime, Map of {MusicId, MusicScore}}}.
     std::map<PlayStyle, std::map<std::string, std::map<std::size_t, MusicScore>>> ActivityByDateTime;
 
-    //! @brief Activity Snapshot of each date time of all available musics. (not include begin snapshot).
+    //! @brief Activity Snapshot of each date time of all available musics.
     //! Map of {PlayStyle, Map of {DateTime, Map of {MusicId, ActivityData}}}.
     std::map<PlayStyle, std::map<std::string, std::map<std::size_t, ActivityData>>> ActivitySnapshotByDateTime;
 };
@@ -91,11 +96,6 @@ struct ScoreAnalysis
 
     //! @brief Vector of {Index=VersionIndex, Map of {StyleDifficulty, Statistics}}.
     std::vector<std::map<StyleDifficulty, Statistics>> StatisticsByVersionStyleDifficulty;
-
-    //! @brief Activity by date of all record in PlayerScore.
-    //! Map of {PlayStyle, IsoDates}.
-    //! @note Each version begin ISO date is always included, even if without activity.
-    std::map<PlayStyle, std::set<std::string>> ActivityByDate;
 };
 
 class Analyzer
@@ -153,11 +153,12 @@ private:
     //! If t1 is very early version, and music is deleted in between, then [t2, t3) = {NO_PLAY, 0}.
 
         std::optional<ChartScore>
-        FindChartScoreAtTime(const PlayerScore &playerScore,
+        FindChartScoreByTime(const PlayerScore &playerScore,
                              std::size_t musicId,
                              PlayStyle playStyle,
                              Difficulty difficulty,
-                             const std::string &dateTime)
+                             const std::string &dateTime,
+                             FindChartScoreOption option)
         const;
 };
 

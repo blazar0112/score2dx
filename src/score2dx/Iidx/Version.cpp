@@ -132,6 +132,11 @@ FindVersionIndexFromDateTime(const std::string &dateTime)
 VersionDateType
 FindVersionDateType(const std::string &dateTime)
 {
+    if (dateTime.empty())
+    {
+        return VersionDateType::VersionEnd;
+    }
+
     auto versionIndex = FindVersionIndexFromDateTime(dateTime);
     auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
     auto tokens = icl_s2::SplitString(" ", dateTime);

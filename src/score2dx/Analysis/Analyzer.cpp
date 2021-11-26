@@ -73,7 +73,6 @@ const
     {
         analysis.StatisticsByStyle[playStyle];
         analysis.StatisticsByStyleLevel[playStyle];
-        analysis.ActivityByDate[playStyle];
     }
 
     for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
@@ -140,7 +139,11 @@ const
             continue;
         }
 
-        auto findVersionBeginChartScore = FindChartScoreAtTime(playerScore, musicId, chartPlayStyle, difficulty, versionBeginDateTime);
+        auto findVersionBeginChartScore = FindChartScoreByTime(
+            playerScore, musicId, chartPlayStyle,
+            difficulty, versionBeginDateTime, FindChartScoreOption::AtDateTime
+        );
+
         if (!findVersionBeginChartScore)
         {
             std::cout << "Cannot find version begin chart score.\n";
@@ -151,6 +154,13 @@ const
         auto &bestScoreData = analysis.MusicBestScoreData[musicId].at(chartPlayStyle);
         bestScoreData.InitializeVersionBeginChartScore(difficulty, versionBeginChartScore);
 
+        auto findContainingAvailableRange = mMusicDatabase.FindContainingAvailableVersionRange(musicId, styleDifficulty, mActiveVersionIndex);
+        if (!findContainingAvailableRange)
+        {
+            throw std::runtime_error("active version incorrectly include chart version not contained.");
+        }
+        auto &containingAvailableVersionRange = findContainingAvailableRange.value();
+
         auto &musicScores = playerScore.GetMusicScores(chartPlayStyle);
         auto findMusicId = icl_s2::Find(musicScores, musicId);
         if (findMusicId)
@@ -159,17 +169,33 @@ const
 
             for (auto &[dateTime, musicScore] : musicScoreByDateTime)
             {
+                auto dateTimeVersionIndex = FindVersionIndexFromDateTime(dateTime);
+                if (!containingAvailableVersionRange.IsInRange(dateTimeVersionIndex))
+                {
+                    continue;
+                }
+
                 //'' It is possible that some chart is only available at certain date time after version begin.
                 //'' for example: arena SPL added later.
                 auto* chartScorePtr = musicScore.FindChartScore(difficulty);
                 if (!chartScorePtr) { continue; }
                 auto &chartScore = *chartScorePtr;
 
-                bestScoreData.UpdateChartScore(difficulty, dateTime, chartScore, musicScore.GetPlayCount());
-
-                auto tokens = icl_s2::SplitString(" ", dateTime);
-                auto &isoDate = tokens[0];
-                analysis.ActivityByDate[chartPlayStyle].emplace(isoDate);
+                auto inconsistency = bestScoreData.UpdateChartScore(difficulty, dateTime, chartScore, musicScore.GetPlayCount());
+                if (!inconsistency.empty())
+                {
+                    auto title = mMusicDatabase.GetLatestMusicInfo(musicId).GetField(MusicInfoField::Title);
+                    std::cout << "[" << ToMusicIdString(musicId)
+                              << "][" << ToString(styleDifficulty)
+                              << "] " << title << "\n"
+                              << inconsistency
+                              << "ChartAvailabe version" << ToString(containingAvailableVersionRange) << "\n";
+                    for (auto &[dateTime, musicScore] : musicScoreByDateTime)
+                    {
+                        std::cout << "[" << dateTime << "] Ver [" << ToVersionString(FindVersionIndexFromDateTime(dateTime)) << "]\n";
+                        musicScore.Print();
+                    }
+                }
             }
         }
 
@@ -223,19 +249,6 @@ const
         }
     }
 
-    for (auto versionIndex : IndexRange{GetFirstDateTimeAvailableVersionIndex(), GetLatestVersionIndex()+1})
-    {
-        auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
-        auto &versionBeginDateTime = versionDateTimeRange.at(icl_s2::RangeSide::Begin);
-        auto tokens = icl_s2::SplitString(" ", versionBeginDateTime);
-        auto &isoDate = tokens[0];
-
-        for (auto playStyle : PlayStyleSmartEnum::ToRange())
-        {
-            analysis.ActivityByDate[playStyle].emplace(isoDate);
-        }
-    }
-
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Analyze");
 
     return analysis;
@@ -246,7 +259,6 @@ Analyzer::
 AnalyzeVersionActivity(const PlayerScore &playerScore)
 const
 {
-    std::cout << "AnalyzeVersionActivity Ver [" << ToVersionString(mActiveVersionIndex) << "]\n";
     auto timeRange = GetVersionDateTimeRange(mActiveVersionIndex);
     return AnalyzeActivity(playerScore, timeRange.at(icl_s2::RangeSide::Begin), timeRange.at(icl_s2::RangeSide::End));
 }
@@ -259,16 +271,17 @@ AnalyzeActivity(const PlayerScore &playerScore,
 const
 {
     auto begin = s2Time::Now();
+
     ActivityAnalysis activityAnalysis;
+    activityAnalysis.DateTimeRange[icl_s2::RangeSide::Begin] = beginDateTime;
+    activityAnalysis.DateTimeRange[icl_s2::RangeSide::End] = endDateTime;
 
     for (auto playStyle : PlayStyleSmartEnum::ToRange())
     {
-        activityAnalysis.BeginSnapshot[playStyle];
+        activityAnalysis.PreviousSnapshot[playStyle];
         activityAnalysis.ActivityByDateTime[playStyle];
         activityAnalysis.ActivitySnapshotByDateTime[playStyle];
     }
-    activityAnalysis.DateTimeRange[icl_s2::RangeSide::Begin] = beginDateTime;
-    activityAnalysis.DateTimeRange[icl_s2::RangeSide::End] = endDateTime;
 
     auto versionIndex = FindVersionIndexFromDateTime(beginDateTime);
     auto* activeVersionPtr = mMusicDatabase.FindActiveVersion(versionIndex);
@@ -284,25 +297,27 @@ const
     for (auto &[chartId, chartInfo] : activeVersion.GetChartInfos())
     {
         auto [musicId, chartPlayStyle, difficulty] = ToMusicStyleDiffculty(chartId);
-        //auto styleDifficulty = ConvertToStyleDifficulty(chartPlayStyle, difficulty);
 
-        auto &snapshotMusicScores = activityAnalysis.BeginSnapshot[chartPlayStyle];
+        auto &snapshotMusicScores = activityAnalysis.PreviousSnapshot[chartPlayStyle];
 
-        auto findChartScoreAtTime = FindChartScoreAtTime(playerScore, musicId, chartPlayStyle, difficulty, beginDateTime);
-        if (!findChartScoreAtTime) { continue; }
+        auto findChartScoreBeforeTime = FindChartScoreByTime(
+            playerScore, musicId, chartPlayStyle,
+            difficulty, beginDateTime, FindChartScoreOption::BeforeDateTime
+        );
+        if (!findChartScoreBeforeTime) { continue; }
 
         if (!icl_s2::Find(snapshotMusicScores, musicId))
         {
             snapshotMusicScores.emplace(
                 std::piecewise_construct,
                 std::forward_as_tuple(musicId),
-                std::forward_as_tuple(musicId, chartPlayStyle, 0, beginDateTime)
+                std::forward_as_tuple(musicId, chartPlayStyle, 0, "")
             );
         }
 
         auto &snapshotMusicScore = snapshotMusicScores.at(musicId);
 
-        snapshotMusicScore.AddChartScore(difficulty, findChartScoreAtTime.value());
+        snapshotMusicScore.AddChartScore(difficulty, findChartScoreBeforeTime.value());
 
         auto findMusicScores = icl_s2::Find(playerScore.GetMusicScores(chartPlayStyle), musicId);
         if (!findMusicScores)
@@ -310,15 +325,15 @@ const
             continue;
         }
 
-        auto previousDateTime = beginDateTime;
+        std::string previousDateTime;
         for (auto &[dateTime, musicScore] : findMusicScores.value()->second)
         {
-            if (dateTime>=versionBeginDateTime && dateTime<=beginDateTime)
+            if (dateTime>=versionBeginDateTime && dateTime<beginDateTime)
             {
                 snapshotMusicScore.SetPlayCount(musicScore.GetPlayCount());
             }
 
-            if (dateTime>beginDateTime
+            if (dateTime>=beginDateTime
                 && (endDateTime.empty() || dateTime<=endDateTime))
             {
                 auto* findChartScore = musicScore.FindChartScore(difficulty);
@@ -331,7 +346,7 @@ const
                         auto &activitySnapshot = activityAnalysis.ActivitySnapshotByDateTime[chartPlayStyle];
                         auto &activityData = activitySnapshot[dateTime][musicId];
                         activityData.CurrentMusicScore = &activityMusicScoreById.at(musicId);
-                        if (previousDateTime==beginDateTime)
+                        if (previousDateTime.empty())
                         {
                             activityData.PreviousMusicScore = &snapshotMusicScore;
                         }
@@ -352,35 +367,35 @@ const
         }
     }
 
-    //''  BeginSnapshot t0 MMMMM
-    //''                t1  M
-    //''                t2 M   M
-    //''                t3 MM M
-    //''                   ^ActivityByDateTime
-    //'' fill ActivitySnapshotByDateTime so that every ActivitySnapshot have same music ids as begin snapshot
+    //'' PrevSnapshot     t0 MMMMM
+    //''                  t1  M
+    //''                  t2 M   M
+    //''                  t3 MM M
+    //''                     ^ActivityByDateTime
+    //'' Fill ActivitySnapshotByDateTime so that every ActivitySnapshot have same music ids as previous snapshot
     //'' and with activity data pointers point correctly
-    //''  BeginSnapshot t1 21222
-    //''                t2 12221
-    //''                t3 11212
+    //'' ActivitySnapshot t1 21222
+    //''                  t2 12221
+    //''                  t3 11212
     //'' 1: already set above, 2: here fill point to previous 1/2 or begin.
-    //'' 1: Current: MusicScore in activity, Previous: MusicScore in activity/begin (see above graph)
-    //'' 2: Current & Previous: both set to previous MusicScore in activity/begin
+    //'' 1: Current: MusicScore in activity, Previous: MusicScore in activity/previous snapshot
+    //'' 2: Current & Previous: both set to previous MusicScore in activity/previous snapshot
     for (auto &[playStyle, activityMusicScores] : activityAnalysis.ActivityByDateTime)
     {
-        auto previousDateTime = beginDateTime;
-        for (auto &[dateTime, musicScoreById] : activityMusicScores)
+        std::string previousDateTime;
+        for (auto &[dateTime, activityMusicScoreById] : activityMusicScores)
         {
             auto &activityDataById = activityAnalysis.ActivitySnapshotByDateTime.at(playStyle).at(dateTime);
 
-            for (auto &[musicId, musicScore] : activityAnalysis.BeginSnapshot.at(playStyle))
+            for (auto &[musicId, musicScore] : activityAnalysis.PreviousSnapshot.at(playStyle))
             {
-                if (icl_s2::Find(musicScoreById, musicId))
+                if (icl_s2::Find(activityMusicScoreById, musicId))
                 {
                     continue;
                 }
 
                 auto &activityData = activityDataById[musicId];
-                if (previousDateTime==beginDateTime)
+                if (previousDateTime.empty())
                 {
                     activityData.CurrentMusicScore = &musicScore;
                     activityData.PreviousMusicScore = &musicScore;
@@ -403,11 +418,12 @@ const
 
 std::optional<ChartScore>
 Analyzer::
-FindChartScoreAtTime(const PlayerScore &playerScore,
+FindChartScoreByTime(const PlayerScore &playerScore,
                      std::size_t musicId,
                      PlayStyle playStyle,
                      Difficulty difficulty,
-                     const std::string &dateTime)
+                     const std::string &dateTime,
+                     FindChartScoreOption option)
 const
 {
     auto findMusicScoresById = icl_s2::Find(playerScore.GetMusicScores(playStyle), musicId);
@@ -449,12 +465,20 @@ const
             chartScore.ClearType = findChartScore->ClearType;
         }
 
-        if (recordDateTime<=dateTime && recordDateTime>=versionBeginDateTime)
+        if ((recordDateTime<dateTime
+            || (option==FindChartScoreOption::AtDateTime
+                &&recordDateTime==dateTime))
+            && recordDateTime>=versionBeginDateTime)
         {
             chartScore = *findChartScore;
         }
 
-        if (recordDateTime>dateTime) { break; }
+        if (recordDateTime>dateTime
+            || (option==FindChartScoreOption::BeforeDateTime
+                &&recordDateTime==dateTime))
+        {
+            break;
+        }
     }
 
     return chartScore;

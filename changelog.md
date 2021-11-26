@@ -1,56 +1,60 @@
 # Changelog of score2dx
 
-* Ongoing:
-    * Add Activity Analyze.
-    * Fix import data miss = 0 for non-FC cases.
-    * Fix revival music inherit previous clear mark.
+- Ongoing:
+    - Add Activity Analyze.
+    - Fix import data miss = 0 for non-FC cases.
+    - Fix revival music inherit previous clear mark.
+    - Update Music DB to [2021-11-27]
+        - Fix revival music available range:
+            - `ハリツヤランデヴー`
+            - `夕焼け ～Fading Day～`
 
-* 2.4.0 [2021-11-17]:
-    * Rework ScoreAnalysis to use BestScoreData as class and provide finding following:
-        * BestExScore
-        * SecondBestExScore
-        * BestMiss
-        * SecondBestMiss
-    * Fix BestScoreData problem:
-        * Included trivial score data, now only record non-trivial (has score or miss).
-        * Not inherited previous clear type before active version.
-        * Fix revival music problem by always use first active version score data.
+- 2.4.0 [2021-11-17]:
+    - Rework ScoreAnalysis to use BestScoreData as class and provide finding following:
+        - BestExScore
+        - SecondBestExScore
+        - BestMiss
+        - SecondBestMiss
+    - Fix BestScoreData problem:
+        - Included trivial score data, now only record non-trivial (has score or miss).
+        - Not inherited previous clear type before active version.
+        - Fix revival music problem by always use first active version score data.
 
-* 2.3.0 [2021-11-12]:
-    * Update MusicDatabase with 2021-11-11 unlocking default LV12 chart info.
-    * Use CheckValidity to verify music database and fix several errors.
-        * Policy: for early version with hidden another (wiki has note, but level is N/A):
-            * Regard it as not available.
-            * Only add chart info with both valid level and note.
-    * GenerateActiveVersions change version range to [17, 29].
-        * Also optimize it from 200ms to 100ms.
-    * Handle import invalid data case, ignore NO_PLAY non-available charts.
+- 2.3.0 [2021-11-12]:
+    - Update MusicDatabase with 2021-11-11 unlocking default LV12 chart info.
+    - Use CheckValidity to verify music database and fix several errors.
+        - Policy: for early version with hidden another (wiki has note, but level is N/A):
+            - Regard it as not available.
+            - Only add chart info with both valid level and note.
+    - GenerateActiveVersions change version range to [17, 29].
+        - Also optimize it from 200ms to 100ms.
+    - Handle import invalid data case, ignore NO_PLAY non-available charts.
 
-* 2.2.0 [2021-11-10]:
-    * Now detect DJ level and score mismatch when loading data.
-        * Analyze also detect such mismatch.
-        * Use calculated DJ level in above cases.
-        * CSV should not have mismatch, print error message in this case, need check music DB.
-    * Update MusicDatabase to 29048.
-        * Add musics from event `WORLD TOURISM` (6/6).
+- 2.2.0 [2021-11-10]:
+    - Now detect DJ level and score mismatch when loading data.
+        - Analyze also detect such mismatch.
+        - Use calculated DJ level in above cases.
+        - CSV should not have mismatch, print error message in this case, need check music DB.
+    - Update MusicDatabase to 29048.
+        - Add musics from event `WORLD TOURISM` (6/6).
 
-* 2.1.0 [2021-11-08]:
-    * Add Score Analysis function.
-        * Set active version and analyze score at that version.
-    * Update MusicDatabase to 29044.
-        * Policy: only add music with note info known for each difficulty.
-        * So only add two in this case (2/6 event musics).
+- 2.1.0 [2021-11-08]:
+    - Add Score Analysis function.
+        - Set active version and analyze score at that version.
+    - Update MusicDatabase to 29044.
+        - Policy: only add music with note info known for each difficulty.
+        - So only add two in this case (2/6 event musics).
 
-* 2.0.0 [2021-10-21]:
-    * Update for IIDX29 CastHour.
-    * Json MusicDatabase change to v2 format.
-        * Update Json MusicDatabase to include IIDX29 (42 musics).
-        * Fix many incorrect info in Json MusicDatabase.
-    * Refactor C++ interface.
-        * In C++ `MusicDatabase` is also class now, separated from `Core`.
+- 2.0.0 [2021-10-21]:
+    - Update for IIDX29 CastHour.
+    - Json MusicDatabase change to v2 format.
+        - Update Json MusicDatabase to include IIDX29 (42 musics).
+        - Fix many incorrect info in Json MusicDatabase.
+    - Refactor C++ interface.
+        - In C++ `MusicDatabase` is also class now, separated from `Core`.
 
-* 1.0.0 [2021-10-08]:
-    * Initial commit with basic functionalities.
-        * Load CSV.
-        * Import/Export.
-        * Calculate ScoreLevel.
+- 1.0.0 [2021-10-08]:
+    - Initial commit with basic functionalities.
+        - Load CSV.
+        - Import/Export.
+        - Calculate ScoreLevel.

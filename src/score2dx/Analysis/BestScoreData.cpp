@@ -54,7 +54,7 @@ InitializeVersionBeginChartScore(Difficulty difficulty,
     }
 }
 
-void
+std::string
 BestScoreData::
 UpdateChartScore(Difficulty difficulty,
                  const std::string &dateTime,
@@ -131,6 +131,7 @@ UpdateChartScore(Difficulty difficulty,
         }
     }
 
+    std::string inconsistency;
     auto versionDateTimeRange = GetVersionDateTimeRange(mActiveVersionIndex);
     if (dateTime>=versionDateTimeRange.at(icl_s2::RangeSide::Begin)
         &&(mActiveVersionIndex==GetLatestVersionIndex()
@@ -165,14 +166,19 @@ UpdateChartScore(Difficulty difficulty,
             ||(versionBestChartScore.MissCount.has_value()&&chartScore.MissCount.has_value()
                &&versionBestChartScore.MissCount.value()<chartScore.MissCount.value()))
         {
-            std::cout << "Previous " << ToString(versionBestChartScore) << "\n"
-                      << "Current " << ToString(chartScore) << "\n";
-            throw std::runtime_error("chart score is not incrementally better within a version");
+            inconsistency = "Chart score is not incrementally better within a version\n";
+            inconsistency += "Ver ["+ToVersionString(mActiveVersionIndex)+"\n";
+            inconsistency += "VerDateTimeRange ["+versionDateTimeRange.at(icl_s2::RangeSide::Begin)
+                             +", "+versionDateTimeRange.at(icl_s2::RangeSide::End)+"]\n";
+            inconsistency += "Previous "+ToString(versionBestChartScore)+"\n";
+            inconsistency += "Current "+ToString(chartScore)+"\n";
         }
 
         mVersionBestMusicScore.AddChartScore(difficulty, chartScore);
         mVersionUpdatedDifficultySet.emplace(difficulty);
     }
+
+    return inconsistency;
 }
 
 const ChartScoreRecord*

@@ -90,6 +90,10 @@ public:
         FindAnalysis(const std::string &iidxId)
         const;
 
+        const ActivityAnalysis*
+        FindVersionActivityAnalysis(const std::string &iidxId)
+        const;
+
     //! @note Requires manually call analyze because need date time range, does not auto
     //! analyze upon LoadDirectory.
         void
@@ -114,7 +118,9 @@ private:
     Analyzer mAnalyzer;
     //! @brief Map of {IidxId, ScoreAnalysis}.
     std::map<std::string, ScoreAnalysis> mPlayerAnalyses;
-    //! @brief Map of {IidxId, ActivityAnalysis}.
+    //! @brief Map of {IidxId, ActivityAnalysis(ActiveVersionDateTimeRange)}.
+    std::map<std::string, ActivityAnalysis> mPlayerVersionActivityAnalyses;
+    //! @brief Map of {IidxId, ActivityAnalysis(SpecificDateTimeRange)}.
     std::map<std::string, ActivityAnalysis> mPlayerActivityAnalyses;
 
         void

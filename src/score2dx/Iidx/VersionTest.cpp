@@ -50,6 +50,7 @@ TEST(Version, FindVersionDateType)
     EXPECT_EQ(VersionDateType::VersionEnd, FindVersionDateType("2021-10-12 00:00"));
     EXPECT_EQ(VersionDateType::None, FindVersionDateType("2021-10-11 23:59"));
     EXPECT_EQ(VersionDateType::VersionBegin, FindVersionDateType("2021-10-13 13:57"));
+    EXPECT_EQ(VersionDateType::VersionEnd, FindVersionDateType(""));
     ASSERT_EQ(VersionDateType::None, FindVersionDateType("2022-09-12 23:59"));
 }
 

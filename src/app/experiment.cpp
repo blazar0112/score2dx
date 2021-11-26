@@ -32,15 +32,31 @@ main(int argc, char* argv[])
         }
 
         /*
-        auto firstActiveVersion = core.GetMusicDatabase().GetActiveVersions().begin()->first;
+        core.AnalyzeActivity("5483-7391", "2019-10-13 00:00", "2019-10-13 23:59");
+        auto* findAnalyzeActivity = core.FindActivityAnalysis("5483-7391");
+        if (!findAnalyzeActivity)
+        {
+            std::cout << "not findAnalyzeActivity\n";
+        }
 
-        for (auto activeVersionIndex : ReverseIndexRange{firstActiveVersion, score2dx::GetLatestVersionIndex()+1})
+        auto &activityAnalysis = *findAnalyzeActivity;
+        std::cout << "Activity Analysis:\n"
+                  << "BeginDateTime [" << activityAnalysis.DateTimeRange.at(icl_s2::RangeSide::Begin) << "]: "
+                  << activityAnalysis.BeginSnapshot.at(score2dx::PlayStyle::DoublePlay).size() << "\n";
+
+        for (auto &[dateTime, activities] : activityAnalysis.ActivityByDateTime.at(score2dx::PlayStyle::DoublePlay))
+        {
+            std::cout << "DateTime [" << dateTime << "]: "
+                      << activities.size() << "\n";
+        }
+        */
+
+        for (auto activeVersionIndex : ReverseIndexRange{score2dx::GetFirstDateTimeAvailableVersionIndex(), score2dx::GetLatestVersionIndex()+1})
         {
             std::cout << "Active Version set to [" << score2dx::ToVersionString(activeVersionIndex) << "].\n";
             core.SetActiveVersionIndex(activeVersionIndex);
             core.Analyze("5483-7391");
         }
-        */
 
         //core.GetMusicDatabase().CheckValidity();
 

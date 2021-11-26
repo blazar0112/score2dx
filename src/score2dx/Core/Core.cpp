@@ -588,6 +588,8 @@ Analyze(const std::string &iidxId,
 {
     mPlayerAnalyses.erase(iidxId);
     mPlayerAnalyses.emplace(iidxId, mAnalyzer.Analyze(playerScore));
+    mPlayerVersionActivityAnalyses.erase(iidxId);
+    mPlayerVersionActivityAnalyses.emplace(iidxId, mAnalyzer.AnalyzeVersionActivity(playerScore));
 }
 
 const ScoreAnalysis*
@@ -596,6 +598,17 @@ FindAnalysis(const std::string &iidxId)
 const
 {
     auto findAnalysis = icl_s2::Find(mPlayerAnalyses, iidxId);
+    if (!findAnalysis) { return nullptr; }
+
+    return &(findAnalysis.value()->second);
+}
+
+const ActivityAnalysis*
+Core::
+FindVersionActivityAnalysis(const std::string &iidxId)
+const
+{
+    auto findAnalysis = icl_s2::Find(mPlayerVersionActivityAnalyses, iidxId);
     if (!findAnalysis) { return nullptr; }
 
     return &(findAnalysis.value()->second);
