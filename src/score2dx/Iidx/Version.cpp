@@ -7,6 +7,7 @@
 
 #include "icl_s2/Common/IntegralRangeUsing.hpp"
 #include "icl_s2/StdUtil/Find.hxx"
+#include "icl_s2/String/SplitString.hpp"
 
 namespace
 {
@@ -126,6 +127,27 @@ FindVersionIndexFromDateTime(const std::string &dateTime)
     }
 
     return versionIndex;
+}
+
+VersionDateType
+FindVersionDateType(const std::string &dateTime)
+{
+    auto versionIndex = FindVersionIndexFromDateTime(dateTime);
+    auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
+    auto tokens = icl_s2::SplitString(" ", dateTime);
+    auto &date = tokens[0];
+
+    if (icl_s2::Find(versionDateTimeRange.at(icl_s2::RangeSide::Begin), date))
+    {
+        return VersionDateType::VersionBegin;
+    }
+
+    if (icl_s2::Find(versionDateTimeRange.at(icl_s2::RangeSide::End), date))
+    {
+        return VersionDateType::VersionEnd;
+    }
+
+    return VersionDateType::None;
 }
 
 }

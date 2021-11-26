@@ -73,6 +73,7 @@ const
     {
         analysis.StatisticsByStyle[playStyle];
         analysis.StatisticsByStyleLevel[playStyle];
+        analysis.ActivityByDate[playStyle];
     }
 
     for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
@@ -165,6 +166,10 @@ const
                 auto &chartScore = *chartScorePtr;
 
                 bestScoreData.UpdateChartScore(difficulty, dateTime, chartScore, musicScore.GetPlayCount());
+
+                auto tokens = icl_s2::SplitString(" ", dateTime);
+                auto &isoDate = tokens[0];
+                analysis.ActivityByDate[chartPlayStyle].emplace(isoDate);
             }
         }
 
@@ -215,6 +220,19 @@ const
                 stats->ChartIdListByDjLevel[versionBestChartScore.DjLevel].emplace(chartId);
                 stats->ChartIdListByScoreLevelCategory[category].emplace(chartId);
             }
+        }
+    }
+
+    for (auto versionIndex : IndexRange{GetFirstDateTimeAvailableVersionIndex(), GetLatestVersionIndex()+1})
+    {
+        auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
+        auto &versionBeginDateTime = versionDateTimeRange.at(icl_s2::RangeSide::Begin);
+        auto tokens = icl_s2::SplitString(" ", versionBeginDateTime);
+        auto &isoDate = tokens[0];
+
+        for (auto playStyle : PlayStyleSmartEnum::ToRange())
+        {
+            analysis.ActivityByDate[playStyle].emplace(isoDate);
         }
     }
 

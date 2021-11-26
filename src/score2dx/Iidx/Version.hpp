@@ -6,9 +6,16 @@
 #include <vector>
 
 #include "icl_s2/Common/RangeSide.hpp"
+#include "icl_s2/Common/SmartEnum.hxx"
 
 namespace score2dx
 {
+
+ICL_S2_SMART_ENUM(VersionDateType,
+    None,
+    VersionBegin,
+    VersionEnd
+);
 
 //! @brief Convert versionIndex(size_t) to 2-size version string padded with 0.
 //! e.g. versionIndex=4, versionString = "04".
@@ -94,5 +101,8 @@ GetVersionDateTimeRange(std::size_t versionIndex);
 //! @note Minimum is 17, since date time before 17 is not implemented.
 std::size_t
 FindVersionIndexFromDateTime(const std::string &dateTime);
+
+VersionDateType
+FindVersionDateType(const std::string &dateTime);
 
 }

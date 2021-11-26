@@ -45,6 +45,7 @@ struct ActivityData
     const MusicScore* PreviousMusicScore{nullptr};
 };
 
+//! @brief Activity analysis of specific date time range.
 struct ActivityAnalysis
 {
     std::map<icl_s2::RangeSide, std::string> DateTimeRange;
@@ -62,6 +63,10 @@ struct ActivityAnalysis
     std::map<PlayStyle, std::map<std::string, std::map<std::size_t, ActivityData>>> ActivitySnapshotByDateTime;
 };
 
+//! @brief Data analysis from PlayerScore.
+//! 1. BestScore of current version, and career best from PlayerScore.
+//! 2. Score Statistics
+//! 3. Acitivty by date.
 //! @note BestScore includes SPB data, but Statistics do not include SPB.
 struct ScoreAnalysis
 {
@@ -86,6 +91,11 @@ struct ScoreAnalysis
 
     //! @brief Vector of {Index=VersionIndex, Map of {StyleDifficulty, Statistics}}.
     std::vector<std::map<StyleDifficulty, Statistics>> StatisticsByVersionStyleDifficulty;
+
+    //! @brief Activity by date of all record in PlayerScore.
+    //! Map of {PlayStyle, IsoDates}.
+    //! @note Each version begin ISO date is always included, even if without activity.
+    std::map<PlayStyle, std::set<std::string>> ActivityByDate;
 };
 
 class Analyzer
