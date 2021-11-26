@@ -17,34 +17,13 @@
 namespace score2dx
 {
 
-//! @brief Special ScoreLevelRange enum for statistics.
-ICL_S2_SMART_ENUM(StatisticScoreLevelRange,
-    AMinus,
-    AEqPlus,
-    AAMinus,
-    AAEqPlus,
-    AAAMinus,
-    AAAEqPlus,
-    MaxMinus,
-    Max
-);
-
-std::string
-ToPrettyString(StatisticScoreLevelRange statisticScoreLevelRange);
-
-StatisticScoreLevelRange
-FindStatisticScoreLevelRange(int note, int exScore);
-
-StatisticScoreLevelRange
-FindStatisticScoreLevelRange(ScoreLevelRange scoreLevelRange);
-
 struct Statistics
 {
     //! @brief Total ChartIdList available for this statistics.
     //! @note It should be equivalent to:
     //!     Sum of ChartIdListByClearType
     //!     (since every chart score should have at least NO_PLAY)
-    //! @note Not every chart score have current Score/DjLevel/StatisticScoreLevelRange.
+    //! @note Not every chart score have current Score/DjLevel/ScoreLevelCategory.
     //! So sum of ChartIdListByDjLevel/ChartIdListByScoreLevelRange may only be part of total ChartIdList.
     std::set<std::size_t> ChartIdList;
 
@@ -54,8 +33,8 @@ struct Statistics
     //! @brief Map of {DjLevel, ChartIdList}.
     std::map<DjLevel, std::set<std::size_t>> ChartIdListByDjLevel;
 
-    //! @brief Map of {StatisticScoreLevelRange, ChartIdList}.
-    std::map<StatisticScoreLevelRange, std::set<std::size_t>> ChartIdListByScoreLevelRange;
+    //! @brief Map of {ScoreLevelCategory, ChartIdList}.
+    std::map<ScoreLevelCategory, std::set<std::size_t>> ChartIdListByScoreLevelCategory;
 
         Statistics();
 };

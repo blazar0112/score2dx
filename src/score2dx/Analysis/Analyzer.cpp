@@ -14,50 +14,6 @@ namespace s2Time = icl_s2::Time;
 namespace score2dx
 {
 
-std::string
-ToPrettyString(StatisticScoreLevelRange statisticScoreLevelRange)
-{
-    static const std::array<std::string, StatisticScoreLevelRangeSmartEnum::Size()> prettyStrings
-    {
-        "A-",
-        "A+",
-        "AA-",
-        "AA+",
-        "AAA-",
-        "AAA+",
-        "MAX-",
-        "MAX"
-    };
-
-    return prettyStrings[static_cast<std::size_t>(statisticScoreLevelRange)];
-}
-
-StatisticScoreLevelRange
-FindStatisticScoreLevelRange(int note, int exScore)
-{
-    return FindStatisticScoreLevelRange(FindScoreLevelRange(note, exScore));
-}
-
-StatisticScoreLevelRange
-FindStatisticScoreLevelRange(ScoreLevelRange scoreLevelRange)
-{
-    auto [scoreLevel, scoreRange] = scoreLevelRange;
-
-    auto statsScoreLevel = StatisticScoreLevelRange::AMinus;
-    if (scoreLevel>=ScoreLevel::A)
-    {
-        if (scoreLevel==ScoreLevel::AA) { statsScoreLevel = StatisticScoreLevelRange::AAMinus; }
-        if (scoreLevel==ScoreLevel::AAA) { statsScoreLevel = StatisticScoreLevelRange::AAAMinus; }
-        if (scoreLevel==ScoreLevel::Max) { statsScoreLevel = StatisticScoreLevelRange::MaxMinus; }
-        if (scoreRange!=ScoreRange::LevelMinus)
-        {
-            statsScoreLevel = static_cast<StatisticScoreLevelRange>(static_cast<int>(statsScoreLevel)+1);
-        }
-    }
-
-    return statsScoreLevel;
-}
-
 Statistics::
 Statistics()
 {
@@ -71,9 +27,9 @@ Statistics()
         ChartIdListByDjLevel[djLevel];
     }
 
-    for (auto statisticScoreLevelRange : StatisticScoreLevelRangeSmartEnum::ToRange())
+    for (auto scoreLevelCategory : ScoreLevelCategorySmartEnum::ToRange())
     {
-        ChartIdListByScoreLevelRange[statisticScoreLevelRange];
+        ChartIdListByScoreLevelCategory[scoreLevelCategory];
     }
 }
 
@@ -217,15 +173,15 @@ const
         auto &versionBestChartScore = *verBestChartScorePtr;
 
         auto [scoreLevel, scoreRange] = FindScoreLevelRange(chartInfo.Note, versionBestChartScore.ExScore);
-        auto statsScoreLevel = StatisticScoreLevelRange::AMinus;
+        auto category = ScoreLevelCategory::AMinus;
         if (scoreLevel>=ScoreLevel::A)
         {
-            if (scoreLevel==ScoreLevel::AA) { statsScoreLevel = StatisticScoreLevelRange::AAMinus; }
-            if (scoreLevel==ScoreLevel::AAA) { statsScoreLevel = StatisticScoreLevelRange::AAAMinus; }
-            if (scoreLevel==ScoreLevel::Max) { statsScoreLevel = StatisticScoreLevelRange::MaxMinus; }
+            if (scoreLevel==ScoreLevel::AA) { category = ScoreLevelCategory::AAMinus; }
+            if (scoreLevel==ScoreLevel::AAA) { category = ScoreLevelCategory::AAAMinus; }
+            if (scoreLevel==ScoreLevel::Max) { category = ScoreLevelCategory::MaxMinus; }
             if (scoreRange!=ScoreRange::LevelMinus)
             {
-                statsScoreLevel = static_cast<StatisticScoreLevelRange>(static_cast<int>(statsScoreLevel)+1);
+                category = static_cast<ScoreLevelCategory>(static_cast<int>(category)+1);
             }
         }
 
@@ -257,7 +213,7 @@ const
                 &&versionBestChartScore.ExScore!=0)
             {
                 stats->ChartIdListByDjLevel[versionBestChartScore.DjLevel].emplace(chartId);
-                stats->ChartIdListByScoreLevelRange[statsScoreLevel].emplace(chartId);
+                stats->ChartIdListByScoreLevelCategory[category].emplace(chartId);
             }
         }
     }

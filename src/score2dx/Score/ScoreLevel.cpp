@@ -68,11 +68,11 @@ FindHalfKeyScore(int note, ScoreLevel scoreLevel)
 ScoreLevelRange
 FindScoreLevelRange(int note, int exScore)
 {
-    return FindScoreLevelRangeDiff(note, exScore).first;
+    return FindScoreLevelDiff(note, exScore).first;
 }
 
 std::pair<ScoreLevelRange, int>
-FindScoreLevelRangeDiff(int note, int exScore)
+FindScoreLevelDiff(int note, int exScore)
 {
     if (note<=0)
     {
@@ -195,9 +195,9 @@ ToPrettyString(const ScoreLevelRange &scoreLevelRange)
 }
 
 std::string
-ToScoreLevelRangeDiffString(int note, int exScore)
+ToScoreLevelDiffString(int note, int exScore)
 {
-    auto [scoreLevelRange, scoreDiff] = FindScoreLevelRangeDiff(note, exScore);
+    auto [scoreLevelRange, scoreDiff] = FindScoreLevelDiff(note, exScore);
     if (scoreDiff==0)
     {
         return ToPrettyString(scoreLevelRange)+"+"+std::to_string(scoreDiff);
@@ -206,7 +206,7 @@ ToScoreLevelRangeDiffString(int note, int exScore)
 }
 
 DjLevel
-ConvertToDjLevel(const ScoreLevelRange &scoreLevelRange)
+FindDjLevel(const ScoreLevelRange &scoreLevelRange)
 {
     auto &[scoreLevel, scoreRange] = scoreLevelRange;
     if (scoreLevel==ScoreLevel::Min)
@@ -227,6 +227,50 @@ ConvertToDjLevel(const ScoreLevelRange &scoreLevelRange)
     }
 
     return djLevel;
+}
+
+std::string
+ToPrettyString(ScoreLevelCategory scoreLevelCategory)
+{
+    static const std::array<std::string, ScoreLevelCategorySmartEnum::Size()> prettyStrings
+    {
+        "A-",
+        "A+",
+        "AA-",
+        "AA+",
+        "AAA-",
+        "AAA+",
+        "MAX-",
+        "MAX"
+    };
+
+    return prettyStrings[static_cast<int>(scoreLevelCategory)];
+}
+
+ScoreLevelCategory
+FindScoreLevelCategory(int note, int exScore)
+{
+    return FindScoreLevelCategory(FindScoreLevelRange(note, exScore));
+}
+
+ScoreLevelCategory
+FindScoreLevelCategory(const ScoreLevelRange &scoreLevelRange)
+{
+    auto [scoreLevel, scoreRange] = scoreLevelRange;
+
+    auto category = ScoreLevelCategory::AMinus;
+    if (scoreLevel>=ScoreLevel::A)
+    {
+        if (scoreLevel==ScoreLevel::AA) { category = ScoreLevelCategory::AAMinus; }
+        if (scoreLevel==ScoreLevel::AAA) { category = ScoreLevelCategory::AAAMinus; }
+        if (scoreLevel==ScoreLevel::Max) { category = ScoreLevelCategory::MaxMinus; }
+        if (scoreRange!=ScoreRange::LevelMinus)
+        {
+            category = static_cast<ScoreLevelCategory>(static_cast<int>(category)+1);
+        }
+    }
+
+    return category;
 }
 
 }
