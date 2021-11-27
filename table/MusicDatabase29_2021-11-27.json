@@ -2,7 +2,7 @@
     "#meta": {
         "score2dx": "2.0.0",
         "version": "29",
-        "id": "29048"
+        "count": "29050"
     },
     "csMusicTable": {
         "04": {
@@ -101645,6 +101645,106 @@
                     },
                     "version": 29
                 }
+            },
+            "EMOTiON TRiPPER": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1103
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 769
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 504
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1098
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 749
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 477
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "sky_delta"
+                    },
+                    "genre": {
+                        "latest": "ELECTRIC POP"
+                    },
+                    "version": 29
+                }
+            },
+            "Ergosphere": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1345
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 972
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 517
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1391
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 950
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 506
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "TOMOSUKE"
+                    },
+                    "genre": {
+                        "latest": "亜空間ジャズ"
+                    },
+                    "version": 29
+                }
             }
         }
     },
@@ -103829,7 +103929,9 @@
             "Hat Surprise",
             "TOMAHAWK",
             "One for All",
-            "Brave Spirits"
+            "Brave Spirits",
+            "EMOTiON TRiPPER",
+            "Ergosphere"
         ]
     }
 }

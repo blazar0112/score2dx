@@ -4,12 +4,14 @@
     - Add Activity Analyze.
     - Fix import data miss = 0 for non-FC cases.
     - Fix revival music inherit previous clear mark.
-    - Update Music DB to [2021-11-27]
+    - Add Music DB meta count check. (Previously called id.)
+    - Update Music DB to count 29050 [2021-11-27]
         - Fix revival music available range:
             - `ハリツヤランデヴー`
             - `夕焼け ～Fading Day～`
         - Fix incorrect level:
             - `TOMAHAWK`
+        - Add two music from event `WORLD TOURISM jubeat / pop'n music`.
 
 - 2.4.0 [2021-11-17]:
     - Rework ScoreAnalysis to use BestScoreData as class and provide finding following:

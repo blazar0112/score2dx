@@ -96,6 +96,27 @@ MusicDatabase()
         }
     }
 
+    std::string countString = mDatabase.at("#meta").at("count");
+    auto count = std::stoull(countString);
+    auto versionIndex = count/1000;
+    auto versionCount = count%1000;
+
+    if (versionIndex>=mAllTimeMusics.size())
+    {
+        std::cout << "DB ID [" << countString
+                  << "] cannot find latest version " << ToVersionString(versionIndex)
+                  << " musics.\n";
+    }
+
+    auto &latestMusics = mAllTimeMusics[versionIndex];
+    if (versionCount!=latestMusics.size())
+    {
+        std::cout << "DB ID [" << countString
+                  << "] latest version " << ToVersionString(versionIndex)
+                  << " musics count " << latestMusics.size()
+                  << " is not same as ID.\n";
+    }
+
     auto stageBegin = s2Time::Now();
     GenerateActiveVersions(GetFirstDateTimeAvailableVersionIndex());
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(stageBegin), "GenerateActiveVersions");
