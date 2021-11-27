@@ -76,7 +76,13 @@ UpdateChartScore(Difficulty difficulty,
     //''  S1  S2    assert(S1>S2)
     //''            S>S1 ? { S2=S1; S1=S } : S<S1&&S>S2 ? { S2=S } : S<S2 ? {} : {}
 
-    auto versionIndex = FindVersionIndexFromDateTime(dateTime);
+    auto findVersionIndex = FindVersionIndexFromDateTime(dateTime);
+    if (!findVersionIndex)
+    {
+        throw std::runtime_error("can only update score from date time in known version date time range.");
+    }
+    auto versionIndex = findVersionIndex.value();
+
     auto isTrivial = chartScore.ExScore==0 && !chartScore.MissCount.has_value();
 
     if (!isTrivial)

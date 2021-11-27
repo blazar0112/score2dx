@@ -8,6 +8,8 @@
         - Fix revival music available range:
             - `ハリツヤランデヴー`
             - `夕焼け ～Fading Day～`
+        - Fix incorrect level:
+            - `TOMAHAWK`
 
 - 2.4.0 [2021-11-17]:
     - Rework ScoreAnalysis to use BestScoreData as class and provide finding following:

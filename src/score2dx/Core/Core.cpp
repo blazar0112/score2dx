@@ -413,7 +413,15 @@ Import(const std::string &requiredIidxId,
                         dateTime
                     };
 
-                    auto activeVersionIndex = FindVersionIndexFromDateTime(dateTime);
+                    auto findActiveVersionIndex = FindVersionIndexFromDateTime(dateTime);
+                    if (!findActiveVersionIndex)
+                    {
+                        std::cout << "Data contains date time not supported.\n"
+                                  << recordData << "\n";
+                        continue;
+                    }
+
+                    auto activeVersionIndex = findActiveVersionIndex.value();
 
                     for (auto &[difficultyAcronym, scoreData] : recordData["score"].items())
                     {

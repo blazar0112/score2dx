@@ -98,10 +98,12 @@ std::map<icl_s2::RangeSide, std::string>
 GetVersionDateTimeRange(std::size_t versionIndex);
 
 //! @brief Find version index from date time. Possible value range: [17, latest].
+//! @return std::nullopt if date time before version 17.
 //! @note Minimum is 17, since date time before 17 is not implemented.
-std::size_t
+std::optional<std::size_t>
 FindVersionIndexFromDateTime(const std::string &dateTime);
 
+//! @return None if dateTime is out of range (before 17).
 VersionDateType
 FindVersionDateType(const std::string &dateTime);
 

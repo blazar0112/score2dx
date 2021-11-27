@@ -208,7 +208,14 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
             auto &dateTime = columns[DateTimeColumnIndex];
             dateTimes.emplace(dateTime);
 
-            auto activeVersionIndex = FindVersionIndexFromDateTime(dateTime);
+            auto findActiveVersionIndex = FindVersionIndexFromDateTime(dateTime);
+            if (!findActiveVersionIndex)
+            {
+                std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
+                          << "DateTime: " << dateTime << " is not supported.\n";
+                continue;
+            }
+            auto activeVersionIndex = findActiveVersionIndex.value();
 
             auto musicId = ToMusicId(versionIndex, musicIndex);
             auto itPair = mMusicScores.emplace(

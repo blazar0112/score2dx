@@ -114,10 +114,17 @@ GetVersionDateTimeRange(std::size_t versionIndex)
     return range;
 }
 
-std::size_t
+std::optional<std::size_t>
 FindVersionIndexFromDateTime(const std::string &dateTime)
 {
-    auto versionIndex = VersionDateTimeRangeMap.begin()->first;
+    auto &[firstVersionIndex, firstVersionDateTimeRange] = *VersionDateTimeRangeMap.begin();
+    auto &firstVersionBeginDateTime = firstVersionDateTimeRange[static_cast<int>(icl_s2::RangeSide::Begin)];
+    if (dateTime<firstVersionBeginDateTime)
+    {
+        return std::nullopt;
+    }
+
+    auto versionIndex = firstVersionIndex;
     for (auto &[ver, dateTimeRange] : VersionDateTimeRangeMap)
     {
         if (dateTime>=dateTimeRange[static_cast<int>(icl_s2::RangeSide::Begin)])
@@ -126,7 +133,7 @@ FindVersionIndexFromDateTime(const std::string &dateTime)
         }
     }
 
-    return versionIndex;
+    return {versionIndex};
 }
 
 VersionDateType
@@ -137,7 +144,13 @@ FindVersionDateType(const std::string &dateTime)
         return VersionDateType::VersionEnd;
     }
 
-    auto versionIndex = FindVersionIndexFromDateTime(dateTime);
+    auto findVersionIndex = FindVersionIndexFromDateTime(dateTime);
+    if (!findVersionIndex)
+    {
+        return VersionDateType::None;
+    }
+    auto versionIndex = findVersionIndex.value();
+
     auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
     auto tokens = icl_s2::SplitString(" ", dateTime);
     auto &date = tokens[0];

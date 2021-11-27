@@ -169,7 +169,9 @@ const
 
             for (auto &[dateTime, musicScore] : musicScoreByDateTime)
             {
-                auto dateTimeVersionIndex = FindVersionIndexFromDateTime(dateTime);
+                auto findDateTimeVersionIndex = FindVersionIndexFromDateTime(dateTime);
+                if (!findDateTimeVersionIndex) { continue; }
+                auto dateTimeVersionIndex = findDateTimeVersionIndex.value();
                 if (!containingAvailableVersionRange.IsInRange(dateTimeVersionIndex))
                 {
                     continue;
@@ -192,7 +194,6 @@ const
                               << "ChartAvailabe version" << ToString(containingAvailableVersionRange) << "\n";
                     for (auto &[dateTime, musicScore] : musicScoreByDateTime)
                     {
-                        std::cout << "[" << dateTime << "] Ver [" << ToVersionString(FindVersionIndexFromDateTime(dateTime)) << "]\n";
                         musicScore.Print();
                     }
                 }
@@ -283,7 +284,13 @@ const
         activityAnalysis.ActivitySnapshotByDateTime[playStyle];
     }
 
-    auto versionIndex = FindVersionIndexFromDateTime(beginDateTime);
+    auto findVersionIndex = FindVersionIndexFromDateTime(beginDateTime);
+    if (!findVersionIndex)
+    {
+        return activityAnalysis;
+    }
+    auto versionIndex = findVersionIndex.value();
+
     auto* activeVersionPtr = mMusicDatabase.FindActiveVersion(versionIndex);
     if (!activeVersionPtr)
     {
@@ -432,7 +439,13 @@ const
         return ChartScore{};
     }
 
-    auto versionIndex = FindVersionIndexFromDateTime(dateTime);
+    auto findVersionIndex = FindVersionIndexFromDateTime(dateTime);
+    if (!findVersionIndex)
+    {
+        return ChartScore{};
+    }
+    auto versionIndex = findVersionIndex.value();
+
     if ((musicId/1000)>versionIndex)
     {
         std::cout << "(musicId/1000)>versionIndex, Id [" << ToMusicIdString(musicId) << ", ver [" << ToVersionString(versionIndex) << "].\n";
@@ -457,7 +470,9 @@ const
         auto* findChartScore = musicScore.FindChartScore(difficulty);
         if (!findChartScore) { continue; }
 
-        auto recordVersionIndex = FindVersionIndexFromDateTime(recordDateTime);
+        auto findRecordVersionIndex = FindVersionIndexFromDateTime(recordDateTime);
+        if (!findRecordVersionIndex) { continue; }
+        auto recordVersionIndex = findRecordVersionIndex.value();
 
         if (recordDateTime<versionBeginDateTime
             && containingAvailableVersionRange.IsInRange(recordVersionIndex))
