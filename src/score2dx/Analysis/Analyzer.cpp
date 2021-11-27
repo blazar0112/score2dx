@@ -374,51 +374,6 @@ const
         }
     }
 
-    //'' PrevSnapshot     t0 MMMMM
-    //''                  t1  M
-    //''                  t2 M   M
-    //''                  t3 MM M
-    //''                     ^ActivityByDateTime
-    //'' Fill ActivitySnapshotByDateTime so that every ActivitySnapshot have same music ids as previous snapshot
-    //'' and with activity data pointers point correctly
-    //'' ActivitySnapshot t1 21222
-    //''                  t2 12221
-    //''                  t3 11212
-    //'' 1: already set above, 2: here fill point to previous 1/2 or begin.
-    //'' 1: Current: MusicScore in activity, Previous: MusicScore in activity/previous snapshot
-    //'' 2: Current & Previous: both set to previous MusicScore in activity/previous snapshot
-    for (auto &[playStyle, activityMusicScores] : activityAnalysis.ActivityByDateTime)
-    {
-        std::string previousDateTime;
-        for (auto &[dateTime, activityMusicScoreById] : activityMusicScores)
-        {
-            auto &activityDataById = activityAnalysis.ActivitySnapshotByDateTime.at(playStyle).at(dateTime);
-
-            for (auto &[musicId, musicScore] : activityAnalysis.PreviousSnapshot.at(playStyle))
-            {
-                if (icl_s2::Find(activityMusicScoreById, musicId))
-                {
-                    continue;
-                }
-
-                auto &activityData = activityDataById[musicId];
-                if (previousDateTime.empty())
-                {
-                    activityData.CurrentMusicScore = &musicScore;
-                    activityData.PreviousMusicScore = &musicScore;
-                }
-                else
-                {
-                    auto &previousActivityData = activityAnalysis.ActivitySnapshotByDateTime.at(playStyle).at(previousDateTime).at(musicId);
-                    activityData.CurrentMusicScore = previousActivityData.CurrentMusicScore;
-                    activityData.PreviousMusicScore = previousActivityData.CurrentMusicScore;
-                }
-            }
-
-            previousDateTime = dateTime;
-        }
-    }
-
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "AnalyzeActivity");
     return activityAnalysis;
 }
