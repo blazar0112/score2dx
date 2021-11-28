@@ -27,7 +27,10 @@ const std::size_t MinCsvFilenameSize = ExampleCsvFilename.size();
 class Csv
 {
 public:
-        Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose=false);
+        Csv(const std::string &csvPath,
+            const MusicDatabase &musicDatabase,
+            bool verbose=false,
+            bool checkWithDatabase=false);
 
         const std::string &
         GetFilename()
@@ -58,8 +61,6 @@ public:
         const;
 
 private:
-    bool mCheckWithDatabase{false};
-
     std::string mPath;
     std::string mFilename;
     std::string mIidxId;

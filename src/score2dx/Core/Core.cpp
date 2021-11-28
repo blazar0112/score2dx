@@ -50,7 +50,9 @@ AddPlayer(const std::string &iidxId)
 
 bool
 Core::
-LoadDirectory(std::string_view directory, bool verbose)
+LoadDirectory(std::string_view directory,
+              bool verbose,
+              bool checkWithDatabase)
 {
     if (!fs::exists(directory)||!fs::is_directory(directory))
     {
@@ -103,7 +105,7 @@ LoadDirectory(std::string_view directory, bool verbose)
             std::unique_ptr<Csv> csvPtr;
             try
             {
-                csvPtr = std::make_unique<Csv>(entry.path().string(), mMusicDatabase, verbose);
+                csvPtr = std::make_unique<Csv>(entry.path().string(), mMusicDatabase, verbose, checkWithDatabase);
             }
             catch (const std::exception &e)
             {

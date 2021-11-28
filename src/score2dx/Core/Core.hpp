@@ -34,7 +34,9 @@ public:
     //! Do nothing if directory is not IIDX ID or failed.
     //! @return If load directory succeeded.
         bool
-        LoadDirectory(std::string_view directory, bool verbose=false);
+        LoadDirectory(std::string_view directory,
+                      bool verbose=false,
+                      bool checkWithDatabase=false);
 
     //! @brief Export loaded PlayerScore to score2dx Json format data.
     //! Filename: score2dx_export_<PlayStyleAcronym>_<CurrentDate>[_<suffix>].json
