@@ -1,6 +1,6 @@
 # Changelog of score2dx
 
-- Ongoing:
+- 2.5.0 [2021-11-28]:
     - Add Activity Analyze.
     - Fix import data miss = 0 for non-FC cases.
     - Fix revival music inherit previous clear mark.

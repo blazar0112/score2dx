@@ -9,4 +9,4 @@
 - Identify timeline of score.
 - Import/Export to Json format.
 - Utility to scrap IST data.
-- Analyze for statistics.
+- Analyze for statistics and activity.
