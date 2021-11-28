@@ -34,7 +34,9 @@ public:
     //! Do nothing if directory is not IIDX ID or failed.
     //! @return If load directory succeeded.
         bool
-        LoadDirectory(std::string_view directory, bool verbose=false);
+        LoadDirectory(std::string_view directory,
+                      bool verbose=false,
+                      bool checkWithDatabase=false);
 
     //! @brief Export loaded PlayerScore to score2dx Json format data.
     //! Filename: score2dx_export_<PlayStyleAcronym>_<CurrentDate>[_<suffix>].json
@@ -55,6 +57,10 @@ public:
         Import(const std::string &requiredIidxId,
                const std::string &exportedFilename,
                bool verbose=false);
+
+        const PlayerScore &
+        GetPlayerScore(const std::string &iidxId)
+        const;
 
     //! @brief Map of {IidxId, PlayerScore}.
         const std::map<std::string, PlayerScore> &
@@ -86,6 +92,22 @@ public:
         FindAnalysis(const std::string &iidxId)
         const;
 
+        const ActivityAnalysis*
+        FindVersionActivityAnalysis(const std::string &iidxId)
+        const;
+
+    //! @note Requires manually call analyze because need date time range, does not auto
+    //! analyze upon LoadDirectory.
+        void
+        AnalyzeActivity(const std::string &iidxId,
+                        const std::string &beginDateTime,
+                        const std::string &endDateTime);
+
+    //! @brief Find if player of IIDX ID has activity analysis.
+        const ActivityAnalysis*
+        FindActivityAnalysis(const std::string &iidxId)
+        const;
+
 private:
     MusicDatabase mMusicDatabase;
 
@@ -96,8 +118,12 @@ private:
     std::map<std::string, std::map<PlayStyle, std::map<std::string, std::unique_ptr<Csv>>>> mPlayerCsvs;
 
     Analyzer mAnalyzer;
-    //! @brief Map of {IidxId, LastScoreAnalysis}.
+    //! @brief Map of {IidxId, ScoreAnalysis}.
     std::map<std::string, ScoreAnalysis> mPlayerAnalyses;
+    //! @brief Map of {IidxId, ActivityAnalysis(ActiveVersionDateTimeRange)}.
+    std::map<std::string, ActivityAnalysis> mPlayerVersionActivityAnalyses;
+    //! @brief Map of {IidxId, ActivityAnalysis(SpecificDateTimeRange)}.
+    std::map<std::string, ActivityAnalysis> mPlayerActivityAnalyses;
 
         void
         CreatePlayer(const std::string &iidxId);

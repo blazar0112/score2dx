@@ -99,7 +99,7 @@ MusicScore::
 Print()
 const
 {
-    std::cout << "MusicScore ["+ToFormatted(GetMusicId())+"]["+GetDateTime()+"]:\n"
+    std::cout << "MusicScore ["+ToMusicIdString(GetMusicId())+"]["+GetDateTime()+"]:\n"
               << "PlayCount: " << mPlayCount << "\n";
     for (auto &[difficulty, chartScore] : mChartScores)
     {

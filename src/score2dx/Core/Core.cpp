@@ -50,7 +50,9 @@ AddPlayer(const std::string &iidxId)
 
 bool
 Core::
-LoadDirectory(std::string_view directory, bool verbose)
+LoadDirectory(std::string_view directory,
+              bool verbose,
+              bool checkWithDatabase)
 {
     if (!fs::exists(directory)||!fs::is_directory(directory))
     {
@@ -103,7 +105,7 @@ LoadDirectory(std::string_view directory, bool verbose)
             std::unique_ptr<Csv> csvPtr;
             try
             {
-                csvPtr = std::make_unique<Csv>(entry.path().string(), mMusicDatabase, verbose);
+                csvPtr = std::make_unique<Csv>(entry.path().string(), mMusicDatabase, verbose, checkWithDatabase);
             }
             catch (const std::exception &e)
             {
@@ -413,7 +415,15 @@ Import(const std::string &requiredIidxId,
                         dateTime
                     };
 
-                    auto activeVersionIndex = FindVersionIndexFromDateTime(dateTime);
+                    auto findActiveVersionIndex = FindVersionIndexFromDateTime(dateTime);
+                    if (!findActiveVersionIndex)
+                    {
+                        std::cout << "Data contains date time not supported.\n"
+                                  << recordData << "\n";
+                        continue;
+                    }
+
+                    auto activeVersionIndex = findActiveVersionIndex.value();
 
                     for (auto &[difficultyAcronym, scoreData] : recordData["score"].items())
                     {
@@ -431,6 +441,22 @@ Import(const std::string &requiredIidxId,
                         if (difficultyData[5]!="---") { chartScore.DjLevel = ToDjLevel(difficultyData[5]); }
 
                         auto styleDifficulty = ConvertToStyleDifficulty(metaPlayStyle, difficulty);
+
+                        if (chartScore.MissCount==0&&chartScore.ClearType!=ClearType::FULLCOMBO_CLEAR)
+                        {
+                            if (verbose)
+                            {
+                                std::cout << "[" << ToVersionString(versionIndex)
+                                          << "][" << dbTitle
+                                          << "][" << ToString(styleDifficulty)
+                                          << "][" << dateTime
+                                          << "] has ClearType [" << ToString(chartScore.ClearType)
+                                          << "] and MissCount has value " << chartScore.MissCount.value()
+                                          << "\n";
+                            }
+                            chartScore.MissCount = std::nullopt;
+                        }
+
                         auto findChartInfo = mMusicDatabase.FindChartInfo(
                             versionIndex,
                             dbTitle,
@@ -500,6 +526,19 @@ Import(const std::string &requiredIidxId,
     }
 }
 
+const PlayerScore &
+Core::
+GetPlayerScore(const std::string &iidxId)
+const
+{
+    auto findPlayerScore = icl_s2::Find(mPlayerScores, iidxId);
+    if (!findPlayerScore)
+    {
+        throw std::runtime_error("no player score for ["+iidxId+"].");
+    }
+    return findPlayerScore.value()->second;
+}
+
 const std::map<std::string, PlayerScore> &
 Core::
 GetPlayerScores()
@@ -559,6 +598,8 @@ Analyze(const std::string &iidxId,
 {
     mPlayerAnalyses.erase(iidxId);
     mPlayerAnalyses.emplace(iidxId, mAnalyzer.Analyze(playerScore));
+    mPlayerVersionActivityAnalyses.erase(iidxId);
+    mPlayerVersionActivityAnalyses.emplace(iidxId, mAnalyzer.AnalyzeVersionActivity(playerScore));
 }
 
 const ScoreAnalysis*
@@ -567,6 +608,46 @@ FindAnalysis(const std::string &iidxId)
 const
 {
     auto findAnalysis = icl_s2::Find(mPlayerAnalyses, iidxId);
+    if (!findAnalysis) { return nullptr; }
+
+    return &(findAnalysis.value()->second);
+}
+
+const ActivityAnalysis*
+Core::
+FindVersionActivityAnalysis(const std::string &iidxId)
+const
+{
+    auto findAnalysis = icl_s2::Find(mPlayerVersionActivityAnalyses, iidxId);
+    if (!findAnalysis) { return nullptr; }
+
+    return &(findAnalysis.value()->second);
+}
+
+void
+Core::
+AnalyzeActivity(const std::string &iidxId,
+                const std::string &beginDateTime,
+                const std::string &endDateTime)
+{
+    auto findPlayerScore = icl_s2::Find(mPlayerScores, iidxId);
+    if (!findPlayerScore)
+    {
+        throw std::runtime_error("no such player ["+iidxId+"].");
+    }
+
+    auto &playerScore = findPlayerScore.value()->second;
+
+    mPlayerActivityAnalyses.erase(iidxId);
+    mPlayerActivityAnalyses.emplace(iidxId, mAnalyzer.AnalyzeActivity(playerScore, beginDateTime, endDateTime));
+}
+
+const ActivityAnalysis*
+Core::
+FindActivityAnalysis(const std::string &iidxId)
+const
+{
+    auto findAnalysis = icl_s2::Find(mPlayerActivityAnalyses, iidxId);
     if (!findAnalysis) { return nullptr; }
 
     return &(findAnalysis.value()->second);

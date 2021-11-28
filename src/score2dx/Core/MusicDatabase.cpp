@@ -70,7 +70,7 @@ MusicDatabase::
 MusicDatabase()
 {
     auto begin = s2Time::Now();
-    std::ifstream databaseFile{"table/MusicDatabase29_2021-11-12.json"};
+    std::ifstream databaseFile{"table/MusicDatabase29_2021-11-27.json"};
     databaseFile >> mDatabase;
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Read Json");
 
@@ -94,6 +94,27 @@ MusicDatabase()
             musicIndexMap[title] = musicIndex;
             ++musicIndex;
         }
+    }
+
+    std::string countString = mDatabase.at("#meta").at("count");
+    auto count = std::stoull(countString);
+    auto versionIndex = count/1000;
+    auto versionCount = count%1000;
+
+    if (versionIndex>=mAllTimeMusics.size())
+    {
+        std::cout << "DB ID [" << countString
+                  << "] cannot find latest version " << ToVersionString(versionIndex)
+                  << " musics.\n";
+    }
+
+    auto &latestMusics = mAllTimeMusics[versionIndex];
+    if (versionCount!=latestMusics.size())
+    {
+        std::cout << "DB ID [" << countString
+                  << "] latest version " << ToVersionString(versionIndex)
+                  << " musics count " << latestMusics.size()
+                  << " is not same as ID.\n";
     }
 
     auto stageBegin = s2Time::Now();
@@ -348,6 +369,77 @@ const
             int level = chartInfo.at("level");
             int note = chartInfo.at("note");
             return {{level, note}};
+        }
+    }
+
+    return std::nullopt;
+}
+
+bool
+MusicDatabase::
+IsAvailable(std::size_t musicId,
+            StyleDifficulty styleDifficulty,
+            std::size_t versionIndex)
+const
+{
+    auto findActiveVersion = icl_s2::Find(mActiveVersions, versionIndex);
+    if (!findActiveVersion)
+    {
+        return false;
+    }
+
+    auto &activeVersion = findActiveVersion.value()->second;
+    return activeVersion.FindChartInfo(musicId, styleDifficulty);
+}
+
+std::optional<icl_s2::IndexRange>
+MusicDatabase::
+FindContainingAvailableVersionRange(std::size_t musicId,
+                                    StyleDifficulty styleDifficulty,
+                                    std::size_t versionIndex)
+const
+{
+    auto musicVersionIndex = musicId/1000;
+    if (musicVersionIndex>=mAllTimeMusics.size())
+    {
+        throw std::runtime_error("musicVersionIndex out of range in musicId.");
+    }
+
+    auto musicIndex = musicId%1000;
+    auto &versionMusics = mAllTimeMusics.at(musicVersionIndex);
+    if (musicIndex>=versionMusics.size())
+    {
+        throw std::runtime_error("musicIndex out of range in musicId.");
+    }
+
+    auto &title = versionMusics[musicIndex];
+
+    auto findDbMusic = FindDbMusic(musicVersionIndex, title);
+    if (!findDbMusic)
+    {
+        std::cout << "version ["+ToVersionString(musicVersionIndex)+"] title ["+title+"].\n";
+        throw std::runtime_error("cannot find music in main table and cs table.");
+    }
+
+    auto &dbMusic = *findDbMusic;
+    auto findDiffInfo = icl_s2::Find(dbMusic["difficulty"], ToString(styleDifficulty));
+    if (!findDiffInfo)
+    {
+        std::cout << "music id ["+ToMusicIdString(musicId)+"] has not difficulty ["+ToString(styleDifficulty)+"].\n";
+        throw std::runtime_error("cannot difficulty.");
+    }
+
+    auto &diffInfo = findDiffInfo.value().value();
+
+    for (auto &[chartVersions, chartInfo] : diffInfo.items())
+    {
+        auto rangeList = ToRangeList(chartVersions);
+        for (auto range : rangeList.GetRanges())
+        {
+            if (range.IsInRange(versionIndex))
+            {
+                return range;
+            }
         }
     }
 

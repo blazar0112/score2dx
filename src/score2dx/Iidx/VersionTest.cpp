@@ -40,4 +40,18 @@ TEST(Version, FindVersionIndexFromDateTime)
     ASSERT_EQ(17u, FindVersionIndexFromDateTime("1999-12-31 23:59"));
 }
 
+TEST(Version, FindVersionDateType)
+{
+    /*
+        {29, {"2021-10-13 00:00", ""}},
+        {28, {"2020-10-28 00:00", "2021-10-12 23:59"}},
+    */
+    EXPECT_EQ(VersionDateType::VersionBegin, FindVersionDateType("2020-10-28 12:34"));
+    EXPECT_EQ(VersionDateType::VersionEnd, FindVersionDateType("2021-10-12 00:00"));
+    EXPECT_EQ(VersionDateType::None, FindVersionDateType("2021-10-11 23:59"));
+    EXPECT_EQ(VersionDateType::VersionBegin, FindVersionDateType("2021-10-13 13:57"));
+    EXPECT_EQ(VersionDateType::VersionEnd, FindVersionDateType(""));
+    ASSERT_EQ(VersionDateType::None, FindVersionDateType("2022-09-12 23:59"));
+}
+
 }

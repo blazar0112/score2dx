@@ -88,7 +88,10 @@ GetColumnHeaders()
 }
 
 Csv::
-Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose)
+Csv(const std::string &csvPath,
+    const MusicDatabase &musicDatabase,
+    bool verbose,
+    bool checkWithDatabase)
 {
     //'' default name [IIDX ID]_[sp|dp]_score.csv
     //'' e.g. 5483-7391_dp_score.csv
@@ -188,19 +191,39 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
                 {
                     std::cout << "Possible ["+ToVersionString(versionIndex)+"] new music title ["+csvTitle+"] not in database, skipped.\n";
                     continue;
-                }
-                throw std::runtime_error("music title ["+dbTitle+"] is not listed in it's version ["+ToVersionString(versionIndex)+"] in database");
+                } throw std::runtime_error("music title ["+dbTitle+"] is not listed in it's version ["+ToVersionString(versionIndex)+"] in database");
             }
 
             auto musicIndex = findMusicIndex.value();
 
+            /*
+            if (checkWithDatabase)
+            {
+                auto musicId = ToMusicId(versionIndex, musicIndex);
+                auto musicInfo = musicDatabase.GetLatestMusicInfo(musicId);
+
+                auto &dbArtist = musicInfo.GetField(MusicInfoField::Artist);
+                auto &csvArtist = columns[static_cast<std::size_t>(CsvMusicColumn::Artist)];
+                if (csvArtist!=dbArtist)
+                {
+                    std::cout << "[" << dbTitle << "] artist mismatch:\n"
+                              << "CSV [" << csvArtist << "]\n"
+                              << "DB [" << dbArtist << "]\n";
+                }
+
+                auto &dbGenre = musicInfo.GetField(MusicInfoField::Genre);
+                auto &csvGenre = columns[static_cast<std::size_t>(CsvMusicColumn::Genre)];
+                if (csvGenre!=dbGenre)
+                {
+                    std::cout << "[" << dbTitle << "] genre mismatch:\n"
+                              << "CSV [" << csvGenre << "]\n"
+                              << "DB [" << dbGenre << "]\n";
+                }
+            }
+            */
+
             lastVersionIndex = versionIndex;
             icl_s2::MapIncrementCount(versionMusicCounts, versionIndex);
-
-            if (mCheckWithDatabase)
-            {
-                //'' need rewrite check since database format changed.
-            }
 
             auto playCount = std::stoull(columns[static_cast<std::size_t>(CsvMusicColumn::PlayCount)]);
             mTotalPlayCount += playCount;
@@ -208,7 +231,14 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
             auto &dateTime = columns[DateTimeColumnIndex];
             dateTimes.emplace(dateTime);
 
-            auto activeVersionIndex = FindVersionIndexFromDateTime(dateTime);
+            auto findActiveVersionIndex = FindVersionIndexFromDateTime(dateTime);
+            if (!findActiveVersionIndex)
+            {
+                std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
+                          << "DateTime: " << dateTime << " is not supported.\n";
+                continue;
+            }
+            auto activeVersionIndex = findActiveVersionIndex.value();
 
             auto musicId = ToMusicId(versionIndex, musicIndex);
             auto itPair = mMusicScores.emplace(
@@ -225,6 +255,28 @@ Csv(const std::string &csvPath, const MusicDatabase &musicDatabase, bool verbose
                 {
                     continue;
                 }
+
+                if (checkWithDatabase)
+                {
+                    auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
+                    auto findChartInfo = musicDatabase.FindChartInfo(versionIndex, dbTitle, styleDifficulty, activeVersionIndex);
+                    if (!findChartInfo)
+                    {
+                        std::cout << "[" << dbTitle << "] Cannot find chart info.\n";
+                    }
+                    else
+                    {
+                        auto &chartInfo = findChartInfo.value();
+                        auto csvLevel = std::stoi(level);
+                        if (csvLevel!=chartInfo.Level)
+                        {
+                            std::cout << "[" << dbTitle << "] level mismatch:\n"
+                                      << "CSV [" << csvLevel << "]\n"
+                                      << "DB [" << chartInfo.Level << "]\n";
+                        }
+                    }
+                }
+
                 ChartScore chartScore;
                 chartScore.ExScore = std::stoi(columns[ToColumnIndex(difficulty, CsvScoreColumn::ExScore)]);
                 chartScore.PGreatCount = std::stoi(columns[ToColumnIndex(difficulty, CsvScoreColumn::PGreatCount)]);

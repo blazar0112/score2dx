@@ -38,6 +38,18 @@ ICL_S2_SMART_ENUM(ScoreRange,
     LevelMinus
 );
 
+//! @brief Category of ScoreLevelRange.
+ICL_S2_SMART_ENUM(ScoreLevelCategory,
+    AMinus,
+    AEqPlus,
+    AAMinus,
+    AAEqPlus,
+    AAAMinus,
+    AAAEqPlus,
+    MaxMinus,
+    Max
+);
+
 using ScoreLevelRange = std::pair<ScoreLevel, ScoreRange>;
 
 DjLevel
@@ -68,19 +80,32 @@ FindScoreLevelRange(int note, int exScore);
 //! e.g. AA+50, ScoreDiff = 50, ScoreLevelRange = {AA, LevelPlus}.
 //! @note Lowest ScoreLevelRange is F-. (no Min+ or Min).
 std::pair<ScoreLevelRange, int>
-FindScoreLevelRangeDiff(int note, int exScore);
+FindScoreLevelDiff(int note, int exScore);
 
-//! @brief Convert scoreLevelRange {AAA, LevelMinus} to prettified string "AAA-".
+//! @brief Convert scoreLevelRange {AAA, LevelMinus} to pretty string "AAA-".
 //! @note Level in upper case.
 std::string
 ToPrettyString(const ScoreLevelRange &scoreLevelRange);
 
-//! @brief Combined ScoreLevelRange and ScoreDiff to prettified string.
+//! @brief Combined ScoreLevelRange and Diff value from FindScoreLevelDiff to pretty string.
 //! e.g. "AAA-5", "MAX+0", "AA+0", "F+50".
 std::string
-ToScoreLevelRangeDiffString(int note, int exScore);
+ToScoreLevelDiffString(int note, int exScore);
 
 DjLevel
-ConvertToDjLevel(const ScoreLevelRange &scoreLevelRange);
+FindDjLevel(const ScoreLevelRange &scoreLevelRange);
+
+//! @brief Convert ScoreLevelCategory to pretty string, e.g. "A-".
+//! Behavior is same as prefix in ToScoreLevelDiffString.
+//! ScoreLevelCategory::AMinus = "A-"
+//! ScoreLevelCategory::AEqPlus = "A+" (since ToScoreLevelDiffString is A+0 if AtLevel A).
+std::string
+ToPrettyString(ScoreLevelCategory scoreLevelCategory);
+
+ScoreLevelCategory
+FindScoreLevelCategory(int note, int exScore);
+
+ScoreLevelCategory
+FindScoreLevelCategory(const ScoreLevelRange &scoreLevelRange);
 
 }

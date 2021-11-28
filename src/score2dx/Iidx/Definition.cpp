@@ -101,7 +101,7 @@ ToIndexes(std::size_t musicId)
 }
 
 std::string
-ToFormatted(std::size_t musicId)
+ToMusicIdString(std::size_t musicId)
 {
     return fmt::format("{:05}", musicId);
 }

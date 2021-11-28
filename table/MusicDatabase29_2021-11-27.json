@@ -2,7 +2,7 @@
     "#meta": {
         "score2dx": "2.0.0",
         "version": "29",
-        "id": "29048"
+        "count": "29050"
     },
     "csMusicTable": {
         "04": {
@@ -42165,40 +42165,46 @@
                 }
             },
             "ハリツヤランデヴー": {
-                "availableVersions": "16-29",
+                "availableVersions": "16-20, 25-29",
                 "difficulty": {
                     "DPA": {
-                        "16-29": {
+                        "16-20, 25-29": {
                             "level": 10,
                             "note": 1248
                         }
                     },
                     "DPH": {
-                        "16-29": {
+                        "16-20, 25-29": {
                             "level": 8,
                             "note": 939
                         }
                     },
                     "DPN": {
-                        "16-29": {
+                        "16-20, 25-29": {
                             "level": 5,
                             "note": 482
                         }
                     },
                     "SPA": {
-                        "16-29": {
+                        "16-20, 25-29": {
                             "level": 10,
                             "note": 1251
                         }
                     },
+                    "SPB": {
+                        "cs16": {
+                            "level": 2,
+                            "note": 239
+                        }
+                    },
                     "SPH": {
-                        "16-29": {
+                        "16-20, 25-29": {
                             "level": 8,
                             "note": 1078
                         }
                     },
                     "SPN": {
-                        "16-29": {
+                        "16-20, 25-29": {
                             "level": 5,
                             "note": 482
                         }
@@ -49863,40 +49869,40 @@
                 }
             },
             "夕焼け ～Fading Day～": {
-                "availableVersions": "18-29",
+                "availableVersions": "18-20, 23-29",
                 "difficulty": {
                     "DPA": {
-                        "18-29": {
+                        "18-20, 23-29": {
                             "level": 11,
                             "note": 1314
                         }
                     },
                     "DPH": {
-                        "18-29": {
+                        "18-20, 23-29": {
                             "level": 9,
                             "note": 983
                         }
                     },
                     "DPN": {
-                        "18-29": {
+                        "18-20, 23-29": {
                             "level": 5,
                             "note": 488
                         }
                     },
                     "SPA": {
-                        "18-29": {
+                        "18-20, 23-29": {
                             "level": 11,
                             "note": 1420
                         }
                     },
                     "SPH": {
-                        "18-29": {
+                        "18-20, 23-29": {
                             "level": 9,
                             "note": 1067
                         }
                     },
                     "SPN": {
-                        "18-29": {
+                        "18-20, 23-29": {
                             "level": 5,
                             "note": 504
                         }
@@ -101507,7 +101513,7 @@
                     },
                     "DPN": {
                         "29": {
-                            "level": 6,
+                            "level": 7,
                             "note": 713
                         }
                     },
@@ -101636,6 +101642,106 @@
                     },
                     "genre": {
                         "latest": "MELODIC RIDDIM"
+                    },
+                    "version": 29
+                }
+            },
+            "EMOTiON TRiPPER": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1103
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 769
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 504
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1098
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 749
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 477
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "sky_delta"
+                    },
+                    "genre": {
+                        "latest": "ELECTRIC POP"
+                    },
+                    "version": 29
+                }
+            },
+            "Ergosphere": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1345
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 972
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 517
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1391
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 950
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 506
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "TOMOSUKE"
+                    },
+                    "genre": {
+                        "latest": "亜空間ジャズ"
                     },
                     "version": 29
                 }
@@ -103823,7 +103929,9 @@
             "Hat Surprise",
             "TOMAHAWK",
             "One for All",
-            "Brave Spirits"
+            "Brave Spirits",
+            "EMOTiON TRiPPER",
+            "Ergosphere"
         ]
     }
 }
