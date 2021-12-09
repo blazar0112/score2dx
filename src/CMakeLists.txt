@@ -85,6 +85,7 @@ endif()
 target_link_libraries(score2dx
     stdc++fs
     icl_s2::icl_s2
+    curl
 )
 
 add_custom_command(TARGET score2dx POST_BUILD
@@ -111,6 +112,14 @@ target_include_directories(test-all PUBLIC ${FMT_INCLUDE_DIRS} ${GTEST_INCLUDE_D
 set_target_properties(test-all PROPERTIES CXX_STANDARD 20)
 target_compile_options(test-all PUBLIC ${COMMON_FLAGS})
 target_link_libraries(test-all GTest::gtest score2dx)
+
+add_executable(iidxme app/iidxme.cpp)
+set_target_properties(iidxme PROPERTIES CXX_STANDARD 20)
+target_compile_options(iidxme PUBLIC ${COMMON_FLAGS})
+target_link_libraries(iidxme
+    score2dx
+    curl
+)
 
 set(MINGW_LIBRARY_NAMES gcc_s_seh-1 stdc++-6 winpthread-1)
 set(MINGW_LIBRARIES)

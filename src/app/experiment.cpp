@@ -31,6 +31,11 @@ main(int argc, char* argv[])
             std::cout << "Load directory failed.\n";
         }
 
+        //core.CheckIidxMeDataTable();
+        //core.GetMusicDatabase().CheckValidity();
+
+        core.ExportIidxMeData("delmitz");
+
         /*
         core.AnalyzeActivity("5483-7391", "2019-10-13 00:00", "2019-10-13 23:59");
         auto* findAnalyzeActivity = core.FindActivityAnalysis("5483-7391");
@@ -51,12 +56,14 @@ main(int argc, char* argv[])
         }
         */
 
+        /*
         for (auto activeVersionIndex : ReverseIndexRange{score2dx::GetFirstDateTimeAvailableVersionIndex(), score2dx::GetLatestVersionIndex()+1})
         {
             std::cout << "Active Version set to [" << score2dx::ToVersionString(activeVersionIndex) << "].\n";
             core.SetActiveVersionIndex(activeVersionIndex);
             core.Analyze("5483-7391");
         }
+        */
 
         //core.GetMusicDatabase().CheckValidity();
 

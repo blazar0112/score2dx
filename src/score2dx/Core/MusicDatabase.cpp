@@ -70,7 +70,7 @@ MusicDatabase::
 MusicDatabase()
 {
     auto begin = s2Time::Now();
-    std::ifstream databaseFile{"table/MusicDatabase29_2021-11-27.json"};
+    std::ifstream databaseFile{"table/MusicDatabase29_2021-12-02.json"};
     databaseFile >> mDatabase;
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Read Json");
 
@@ -139,9 +139,27 @@ const
 {
     for (auto &section : {"csv", "display", "wiki"})
     {
-        if (auto findMapping = icl_s2::Find(mDatabase["titleMapping"][section], title))
+        auto it = mDatabase["titleMapping"][section].find(title);
+        if (it!=mDatabase["titleMapping"][section].cend())
         {
-            return findMapping.value().value();
+            return it.value();
+        }
+    }
+
+    return std::nullopt;
+}
+
+std::optional<std::string>
+MusicDatabase::
+FindDbTitleMappingSection(const std::string &title)
+const
+{
+    for (auto &section : {"csv", "display", "wiki"})
+    {
+        auto it = mDatabase["titleMapping"][section].find(title);
+        if (it!=mDatabase["titleMapping"][section].cend())
+        {
+            return section;
         }
     }
 
@@ -249,6 +267,12 @@ const
     musicInfo.AddField(MusicInfoField::Title, title);
     musicInfo.AddField(MusicInfoField::Genre, dbMusic["info"]["genre"]["latest"]);
     musicInfo.AddField(MusicInfoField::Artist, dbMusic["info"]["artist"]["latest"]);
+    std::string displayTitle;
+    if (icl_s2::Find(dbMusic["info"], "displayTitle"))
+    {
+        displayTitle = dbMusic["info"]["displayTitle"];
+    }
+    musicInfo.AddField(MusicInfoField::DisplayTitle, displayTitle);
 
     auto &dbDiffList = dbMusic["difficulty"];
     for (auto &[diff, diffData] : dbDiffList.items())

@@ -48,6 +48,10 @@ public:
         FindDbTitle(const std::string &title)
         const;
 
+        std::optional<std::string>
+        FindDbTitleMappingSection(const std::string &title)
+        const;
+
     //! @brief Find VersionIndex of dbTitle belong to official combined version '1st&substream'.
     //! @return 0 (1st style) or 1 (substream) or nullopt (not found).
         std::optional<std::size_t>

@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <fstream>
 
+#include "curl/curl.h"
+
 #include "fmt/chrono.h"
 
 #include "icl_s2/Common/IntegralRangeUsing.hpp"
@@ -189,9 +191,29 @@ const
         }
 
         auto &playerScore = findPlayerScore.value()->second;
+        Export(playerScore, playStyle, outputDirectory, dateTimeType, suffix);
+    }
+    catch (const std::exception &e)
+    {
+        throw std::runtime_error("Core::Export(PlayStyle): exception:\n    "+std::string{e.what()});
+    }
+}
+
+void
+Core::
+Export(const PlayerScore &playerScore,
+       PlayStyle playStyle,
+       const std::string &outputDirectory,
+       const std::string &dateTimeType,
+       const std::string &suffix)
+const
+{
+    try
+    {
         auto &musicScores = playerScore.GetMusicScores(playStyle);
         if (musicScores.empty())
         {
+            std::cout << "music score is empty.\n";
             return;
         }
 
@@ -222,7 +244,7 @@ const
 
         Json exportData;
         auto &metadata = exportData["metadata"];
-        metadata["id"] = iidxId;
+        metadata["id"] = playerScore.GetIidxId();
         metadata["playStyle"] = ToString(playStyle);
         metadata["dateTimeType"] = dateTimeType;
         metadata["scoreVersion"] = "";
@@ -651,6 +673,652 @@ const
     if (!findAnalysis) { return nullptr; }
 
     return &(findAnalysis.value()->second);
+}
+
+std::string
+Core::
+AddIidxMeUser(const std::string &user)
+{
+    auto begin = s2Time::Now();
+    auto* curl = curl_easy_init();
+    auto* slist = curl_slist_append(nullptr, "Iidxme-Api-Key: 295d293051a911ecbf630242ac130002");
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist);
+
+    auto url = "https://api.iidx.me/user/data/djdata?user="+user+"&ver=29";
+    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
+        +[](char* bufptr, std::size_t size, std::size_t nitems, void* userp)
+        -> std::size_t
+        {
+            auto* buffer = reinterpret_cast<std::string*>(userp);
+            buffer->append(bufptr, size*nitems);
+            return size*nitems;
+        }
+    );
+
+    std::string buffer;
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+
+    auto errorCode = curl_easy_perform(curl);
+    if (errorCode!=CURLE_OK)
+    {
+        throw std::runtime_error("CURL error: "+std::to_string(errorCode));
+    }
+
+    auto json = score2dx::Json::parse(buffer);
+
+    if (icl_s2::Find(json, "status"))
+    {
+        std::cout << "Cannot find IIDXME user ["+user+"].\n";
+        return {};
+    }
+
+    std::string iidxId = json.at("iidxid").at("value");
+    if (iidxId.empty())
+    {
+        throw std::runtime_error("empty IidxMe found");
+    }
+
+    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "AddIidxMeUser");
+
+    std::cout << "IIDXME user ["+user+"] IIDX ID ["+iidxId+"].\n";
+
+    mIidxMeUserIdMap[user] = iidxId;
+
+    return iidxId;
+}
+
+void
+Core::
+ExportIidxMeData(const std::string &user)
+{
+    auto begin = s2Time::Now();
+    auto* curl = curl_easy_init();
+    auto* slist = curl_slist_append(nullptr, "Iidxme-Api-Key: 295d293051a911ecbf630242ac130002");
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist);
+
+    if (!icl_s2::Find(mIidxMeUserIdMap, user))
+    {
+        auto iidxMeIidxId = AddIidxMeUser(user);
+        if (iidxMeIidxId.empty())
+        {
+            throw std::runtime_error("cannot get IIDX ID of IIDX ME user ["+user+"].");
+        }
+    }
+
+    auto &iidxId = mIidxMeUserIdMap.at(user);
+    PlayerScore playerScore{iidxId};
+
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
+        +[](char* bufptr, std::size_t size, std::size_t nitems, void* userp)
+        -> std::size_t
+        {
+            auto* buffer = reinterpret_cast<std::string*>(userp);
+            buffer->append(bufptr, size*nitems);
+            return size*nitems;
+        }
+    );
+
+    auto urlPrefix = "https://api.iidx.me/user/data/music?user="+user+"&mid=";
+
+    for (auto versionIndex: IndexRange{0, 30})
+    {
+        std::size_t noEntryCount = 0;
+        for (auto iidxMeMusicIndex : IndexRange{1, 150})
+        {
+            auto iidxMeMusicId = score2dx::ToMusicId(versionIndex, iidxMeMusicIndex);
+            auto iidxMeMusicIdString = score2dx::ToMusicIdString(iidxMeMusicId);
+            auto iidxmeMid = iidxMeMusicIdString;
+            if (versionIndex<10)
+            {
+                iidxmeMid = iidxMeMusicIdString.substr(1);
+            }
+            auto url =  urlPrefix+iidxmeMid;
+            std::cout << "Check Music Data [" << iidxmeMid << "]" << std::endl;
+
+            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+
+            std::string buffer;
+
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+
+            auto curlBegin = s2Time::Now();
+            auto errorCode = curl_easy_perform(curl);
+
+            if (errorCode!=CURLE_OK)
+            {
+                std::cout << "CURL error: " << errorCode << "\n";
+                break;
+            }
+
+            auto json = score2dx::Json::parse(buffer);
+
+            if (!icl_s2::Find(json, "code"))
+            {
+                if (icl_s2::Find(json, "metadata"))
+                {
+                    noEntryCount = 0;
+
+                    auto &metadata = json.at("metadata");
+                    std::string title = metadata.at("title");
+                    std::size_t versionIndex = metadata.at("version");
+
+                    std::string dbTitle = title;
+                    auto findMappedTitle = mMusicDatabase.FindDbTitle(dbTitle);
+                    if (findMappedTitle)
+                    {
+                        dbTitle = findMappedTitle.value();
+                    }
+
+                    auto findMusicIndex = mMusicDatabase.FindMusicIndex(versionIndex, dbTitle);
+                    if (!findMusicIndex)
+                    {
+                        std::cout << "IIDXME [" << iidxmeMid << "][" << dbTitle << "] cannot find in music db.\n";
+                    }
+
+                    auto musicId = ToMusicId(versionIndex, findMusicIndex.value());
+
+                    for (auto playStyle : PlayStyleSmartEnum::ToRange())
+                    {
+                        std::map<Difficulty, std::set<std::size_t>> noUpdateDateVersionsByDifficulty;
+
+                        auto iidxMeStyle = ToString(playStyle).substr(0, 6);
+                        std::transform(iidxMeStyle.begin(), iidxMeStyle.end(), iidxMeStyle.begin(), ::tolower);
+
+                        if (!icl_s2::Find(json, iidxMeStyle))
+                        {
+                            std::cout << "IIDXME [" << iidxmeMid << "][" << title << "] lack style ["+iidxMeStyle+"]\n";
+                            continue;
+                        }
+
+                        auto &difficultyData = json.at(iidxMeStyle);
+                        for (auto &[chartIndex, chartData] : difficultyData.items())
+                        {
+                            if (!icl_s2::Find(chartData, "diff"))
+                            {
+                                std::cout << "IIDXME [" << iidxmeMid << "][" << title << "]["+iidxMeStyle+"]["+chartIndex+"] chartData lack key diff.\n";
+                                continue;
+                            }
+
+                            int iideMeDiff = chartData.at("diff");
+                            auto difficulty = static_cast<Difficulty>(iideMeDiff-1);
+                            auto styleDifficulty = ConvertToStyleDifficulty(playStyle, difficulty);
+
+                            if (!icl_s2::Find(chartData, "scores"))
+                            {
+                                std::cout << "IIDXME [" << iidxmeMid << "][" << title << "]["+iidxMeStyle+"]["+chartIndex+"]["+ToString(styleDifficulty)+"] chartData lack score.\n";
+                                continue;
+                            }
+
+                            auto &noUpdateDateVersions = noUpdateDateVersionsByDifficulty[difficulty];
+
+                            for (auto &[scoreIndex, scoreData] : chartData.at("scores").items())
+                            {
+                                if (!icl_s2::Find(scoreData, "version"))
+                                {
+                                    std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                              << "]["+iidxMeStyle
+                                              << "]["+chartIndex
+                                              << "]["+ToString(styleDifficulty)
+                                              << "] score ["+scoreIndex
+                                              << "] don't have version.\n";
+                                    continue;
+                                }
+
+                                if (!icl_s2::Find(scoreData, "clear")
+                                    ||!icl_s2::Find(scoreData, "rank")
+                                    ||!icl_s2::Find(scoreData, "miss")
+                                    ||!icl_s2::Find(scoreData, "score"))
+                                {
+                                    continue;
+                                }
+
+                                if (scoreData.at("clear")==0)
+                                {
+                                    continue;
+                                }
+
+                                std::size_t scoreVersionIndex = scoreData.at("version");
+                                if (scoreVersionIndex==GetLatestVersionIndex()&&scoreData.at("score").is_null())
+                                {
+                                    continue;
+                                }
+
+                                std::string dateTime;
+                                if (!icl_s2::Find(scoreData, "updated")||scoreData.at("updated").is_null())
+                                {
+                                    if (icl_s2::Find(noUpdateDateVersions, scoreVersionIndex))
+                                    {
+                                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                                  << "]["+iidxMeStyle
+                                                  << "]["+chartIndex
+                                                  << "]["+ToString(styleDifficulty)
+                                                  << "] score ["+scoreIndex
+                                                  << "] has repeated no date versions.\n";
+                                        continue;
+                                    }
+                                    noUpdateDateVersions.emplace(scoreVersionIndex);
+
+                                    if (scoreVersionIndex<GetFirstDateTimeAvailableVersionIndex())
+                                    {
+                                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                                  << "]["+iidxMeStyle
+                                                  << "]["+chartIndex
+                                                  << "]["+ToString(styleDifficulty)
+                                                  << "] score ["+scoreIndex
+                                                  << "] has no date version before 17.\n";
+                                        continue;
+                                    }
+
+                                    if (scoreVersionIndex==GetLatestVersionIndex())
+                                    {
+                                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                                  << "]["+iidxMeStyle
+                                                  << "]["+chartIndex
+                                                  << "]["+ToString(styleDifficulty)
+                                                  << "] score ["+scoreIndex
+                                                  << "] has score but no date at latest version index.\n";
+                                        continue;
+                                    }
+
+                                    dateTime = GetVersionDateTimeRange(scoreVersionIndex).at(icl_s2::RangeSide::End);
+                                }
+                                else
+                                {
+                                    dateTime = scoreData.at("updated");
+                                    dateTime += " 00:00";
+                                }
+
+                                if (dateTime.empty())
+                                {
+                                    std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                              << "]["+iidxMeStyle
+                                              << "]["+chartIndex
+                                              << "]["+ToString(styleDifficulty)
+                                              << "] score ["+scoreIndex
+                                              << "] has empty date time.\n";
+                                    continue;
+                                }
+
+                                if (scoreVersionIndex<GetFirstDateTimeAvailableVersionIndex())
+                                {
+                                    auto firstDateTime = GetVersionDateTimeRange(GetFirstDateTimeAvailableVersionIndex()).at(icl_s2::RangeSide::Begin);
+                                    if (dateTime>=firstDateTime)
+                                    {
+                                        dateTime = "2009-10-20 23:59";
+                                    }
+                                }
+                                else if (scoreVersionIndex!=GetLatestVersionIndex())
+                                {
+                                    auto versionEndDateTime = GetVersionDateTimeRange(scoreVersionIndex).at(icl_s2::RangeSide::End);
+                                    if (dateTime>versionEndDateTime)
+                                    {
+                                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                                  << "]["+iidxMeStyle
+                                                  << "]["+chartIndex
+                                                  << "]["+ToString(styleDifficulty)
+                                                  << "] score ["+scoreIndex
+                                                  << "] fix score date time from ["+dateTime
+                                                  << "] to ["+versionEndDateTime
+                                                  << "]\n";
+                                        dateTime = versionEndDateTime;
+                                    }
+                                }
+
+                                ChartScore chartScore;
+                                if (!scoreData.at("clear").is_null())
+                                {
+                                    int iClear = scoreData.at("clear");
+                                    chartScore.ClearType = static_cast<ClearType>(iClear);
+                                }
+                                if (!scoreData.at("miss").is_null())
+                                {
+                                    int miss = scoreData.at("miss");
+                                    chartScore.MissCount = miss;
+                                }
+                                if (!scoreData.at("rank").is_null())
+                                {
+                                    int iDjLevel = scoreData.at("rank");
+                                    chartScore.DjLevel = static_cast<DjLevel>(iDjLevel);
+                                }
+                                if (!scoreData.at("score").is_null())
+                                {
+                                    int score = scoreData.at("score");
+                                    chartScore.ExScore = score;
+                                }
+
+                                playerScore.AddChartScore(musicId, playStyle, difficulty, dateTime, chartScore);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    std::cout << "Get response but without metadata.\n";
+                    break;
+                }
+            }
+            else
+            {
+                noEntryCount++;
+            }
+
+            if (noEntryCount>4)
+            {
+                break;
+            }
+
+            s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(curlBegin), iidxMeMusicIdString+" done.");
+            while (s2Time::CountNs(curlBegin)<200'000'000)
+            {
+                continue;
+            }
+        }
+    }
+
+    curl_slist_free_all(slist);
+    curl_easy_cleanup(curl);
+
+    fs::create_directory("./ME");
+    fs::create_directory("./ME/"+iidxId);
+
+    for (auto playStyle : PlayStyleSmartEnum::ToRange())
+    {
+        Export(playerScore, playStyle, "ME/"+iidxId+"");
+    }
+
+    std::cout << std::endl;
+    s2Time::Print<std::chrono::seconds>(s2Time::CountNs(begin), "ExportIidxMeData");
+}
+
+void
+Core::
+CheckIidxMeDataTable()
+const
+{
+    auto begin = s2Time::Now();
+    //std::string iidxMeDataTableFilename = R"(E:\project_document\score2dx\iidxme\iidxme_datatable.json)";
+    std::string iidxMeDataTableFilename = R"(E:\project_document\score2dx\iidxme\iidxme_datatable_delmitz.json)";
+    std::cout << "iidxMeDataTableFilename = " << iidxMeDataTableFilename << "\n";
+    std::ifstream tableFile{iidxMeDataTableFilename};
+    Json iidxMeTable;
+    tableFile >> iidxMeTable;
+
+    for (auto &[iidxMeMusicId, musicData] : iidxMeTable.items())
+    {
+        auto &metadata = musicData.at("metadata");
+        std::string title = metadata.at("title");
+        std::size_t versionIndex = metadata.at("version");
+
+        std::string dbTitle = title;
+        auto findMappedTitle = mMusicDatabase.FindDbTitle(dbTitle);
+        if (findMappedTitle)
+        {
+            /*
+            auto findSection = mMusicDatabase.FindDbTitleMappingSection(dbTitle);
+            if (!findSection) { throw std::runtime_error("cannot find mapping section."); }
+            auto &section = findSection.value();
+            */
+
+            dbTitle = findMappedTitle.value();
+            /*
+            std::cout << "\nFound ["+section+"] title mapping:\n"
+                      << "IIDXME [" << iidxMeMusicId << "][" << title << "]\n"
+                      << "DB [" << dbTitle << "]\n";
+            */
+        }
+
+        auto findMusicIndex = mMusicDatabase.FindMusicIndex(versionIndex, dbTitle);
+        if (!findMusicIndex)
+        {
+            std::cout << "IIDXME [" << iidxMeMusicId << "][" << dbTitle << "] cannot find in music db.\n";
+        }
+
+        auto musicId = ToMusicId(versionIndex, findMusicIndex.value());
+
+        auto musicInfo = mMusicDatabase.GetLatestMusicInfo(musicId);
+        /*
+        if (findMappedTitle && !musicInfo.GetField(MusicInfoField::DisplayTitle).empty())
+        {
+            std::cout << "DB display title [" << musicInfo.GetField(MusicInfoField::DisplayTitle) << "]\n";
+        }
+        */
+
+        /*
+        auto &dbArtist = musicInfo.GetField(MusicInfoField::Artist);
+        auto &meArtist = metadata.at("artist");
+        if (dbArtist!=meArtist)
+        {
+            std::cout << "IIDXME [" << iidxMeMusicId << "][" << dbTitle << "] artist mismatch.\n"
+                      << "DB [" << dbArtist << "]\n"
+                      << "ME [" << meArtist << "]\n";
+        }
+
+        auto &dbGenre = musicInfo.GetField(MusicInfoField::Genre);
+        auto &meGenre = metadata.at("genre");
+        if (dbGenre!=meGenre)
+        {
+            std::cout << "IIDXME [" << iidxMeMusicId << "][" << dbTitle << "] genre mismatch.\n"
+                      << "DB [" << dbGenre << "]\n"
+                      << "ME [" << meGenre << "]\n";
+        }
+        */
+
+        for (auto playStyle : PlayStyleSmartEnum::ToRange())
+        {
+            auto iidxMeStyle = ToString(playStyle).substr(0, 6);
+            std::transform(iidxMeStyle.begin(), iidxMeStyle.end(), iidxMeStyle.begin(), ::tolower);
+
+            if (!icl_s2::Find(musicData, iidxMeStyle))
+            {
+                std::cout << "IIDXME [" << iidxMeMusicId << "][" << title << "] lack style ["+iidxMeStyle+"]\n";
+                continue;
+            }
+
+            std::map<Difficulty, std::set<std::size_t>> noUpdateDateVersionsByDifficulty;
+
+            auto &difficultyData = musicData.at(iidxMeStyle);
+            for (auto &[chartIndex, chartData] : difficultyData.items())
+            {
+                if (!icl_s2::Find(chartData, "diff"))
+                {
+                    std::cout << "IIDXME [" << iidxMeMusicId << "][" << title << "]["+iidxMeStyle+"]["+chartIndex+"] chartData lack key diff.\n";
+                }
+
+                int iideMeDiff = chartData.at("diff");
+                auto difficulty = static_cast<Difficulty>(iideMeDiff-1);
+                auto styleDifficulty = ConvertToStyleDifficulty(playStyle, difficulty);
+                auto &noUpdateDateVersions = noUpdateDateVersionsByDifficulty[difficulty];
+
+                auto iidxMeNote = chartData.at("notes");
+
+                if (!icl_s2::Find(chartData, "scores"))
+                {
+                    std::cout << "IIDXME [" << iidxMeMusicId << "][" << title << "]["+iidxMeStyle+"]["+chartIndex+"]["+ToString(styleDifficulty)+"] chartData lack score.\n";
+                }
+
+                for (auto &[scoreIndex, scoreData] : chartData.at("scores").items())
+                {
+                    if (!icl_s2::Find(scoreData, "version"))
+                    {
+                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                  << "]["+iidxMeStyle
+                                  << "]["+chartIndex
+                                  << "]["+ToString(styleDifficulty)
+                                  << "] score ["+scoreIndex
+                                  << "] don't have version.\n";
+                        continue;
+                    }
+
+                    if (!icl_s2::Find(scoreData, "clear")
+                        ||!icl_s2::Find(scoreData, "rank")
+                        ||!icl_s2::Find(scoreData, "miss")
+                        ||!icl_s2::Find(scoreData, "score"))
+                    {
+                        continue;
+                    }
+
+                    if (scoreData.at("clear")==0)
+                    {
+                        continue;
+                    }
+
+                    std::size_t scoreVersionIndex = scoreData.at("version");
+                    if (scoreVersionIndex==GetLatestVersionIndex()&&scoreData.at("score").is_null())
+                    {
+                        continue;
+                    }
+
+                    //'' check with DB:
+                    /*
+                    auto findChartInfo = mMusicDatabase.FindChartInfo(versionIndex, dbTitle, styleDifficulty, scoreVersionIndex);
+                    if (!findChartInfo)
+                    {
+                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                  << "]["+iidxMeStyle
+                                  << "]["+chartIndex
+                                  << "]["+ToString(styleDifficulty)
+                                  << "] score ["+scoreIndex
+                                  << "] cannot find chart info at ver ["+ToVersionString(scoreVersionIndex)
+                                  << "].\n";
+                        continue;
+                    }
+
+                    auto &chartInfo = findChartInfo.value();
+                    if (chartInfo.Note!=iidxMeNote)
+                    {
+                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title << "]["+iidxMeStyle+"]["+chartIndex+"]["+ToString(styleDifficulty)+"] chartData note mismatch.\n"
+                                  << "IIDXME note [" << iidxMeNote << "]\n"
+                                  << "DB note [" << chartInfo.Note << "]\n"
+                                  << "at Ver [" << ToVersionString(scoreVersionIndex) << "]\n";
+                    }
+
+                    if (!icl_s2::Find(scoreData, "level"))
+                    {
+                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                  << "]["+iidxMeStyle
+                                  << "]["+chartIndex
+                                  << "]["+ToString(styleDifficulty)
+                                  << "] score ["+scoreIndex
+                                  << "] don't have level.\n";
+                        continue;
+                    }
+
+                    if (scoreData.at("level").is_null())
+                    {
+                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                  << "]["+iidxMeStyle
+                                  << "]["+chartIndex
+                                  << "]["+ToString(styleDifficulty)
+                                  << "] score ["+scoreIndex
+                                  << "] level is null.\n";
+                        continue;
+                    }
+
+                    int iidxMeLevel = scoreData.at("level");
+                    if (iidxMeLevel!=chartInfo.Level)
+                    {
+                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                  << "]["+iidxMeStyle+"]["+chartIndex+"]["+ToString(styleDifficulty)
+                                  << "] chartData level mismatch.\n"
+                                  << "IIDXME level [" << iidxMeLevel << "]\n"
+                                  << "DB level [" << chartInfo.Level << "]\n"
+                                  << "at Ver [" << ToVersionString(scoreVersionIndex) << "]\n";
+                    }
+
+                    */
+
+                    std::string dateTime;
+                    if (!icl_s2::Find(scoreData, "updated")||scoreData.at("updated").is_null())
+                    {
+                        if (icl_s2::Find(noUpdateDateVersions, scoreVersionIndex))
+                        {
+                            std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                      << "]["+iidxMeStyle
+                                      << "]["+chartIndex
+                                      << "]["+ToString(styleDifficulty)
+                                      << "] score ["+scoreIndex
+                                      << "] has repeated no date versions.\n";
+                            continue;
+                        }
+                        noUpdateDateVersions.emplace(scoreVersionIndex);
+
+                        if (scoreVersionIndex<GetFirstDateTimeAvailableVersionIndex())
+                        {
+                            std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                      << "]["+iidxMeStyle
+                                      << "]["+chartIndex
+                                      << "]["+ToString(styleDifficulty)
+                                      << "] score ["+scoreIndex
+                                      << "] has no date version before 17.\n";
+                            continue;
+                        }
+
+                        if (scoreVersionIndex==GetLatestVersionIndex())
+                        {
+                            std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                      << "]["+iidxMeStyle
+                                      << "]["+chartIndex
+                                      << "]["+ToString(styleDifficulty)
+                                      << "] score ["+scoreIndex
+                                      << "] has score but no date at latest version index.\n";
+                            continue;
+                        }
+
+                        dateTime = GetVersionDateTimeRange(scoreVersionIndex).at(icl_s2::RangeSide::End);
+                    }
+                    else
+                    {
+                        dateTime = scoreData.at("updated");
+                        dateTime += " 00:00";
+                    }
+
+                    if (dateTime.empty())
+                    {
+                        std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                  << "]["+iidxMeStyle
+                                  << "]["+chartIndex
+                                  << "]["+ToString(styleDifficulty)
+                                  << "] score ["+scoreIndex
+                                  << "] has empty date time.\n";
+                        continue;
+                    }
+
+                    ChartScore chartScore;
+                    if (!scoreData.at("clear").is_null())
+                    {
+                        int iClear = scoreData.at("clear");
+                        chartScore.ClearType = static_cast<ClearType>(iClear);
+                    }
+                    if (!scoreData.at("miss").is_null())
+                    {
+                        int miss = scoreData.at("miss");
+                        chartScore.MissCount = miss;
+                    }
+                    if (!scoreData.at("rank").is_null())
+                    {
+                        int iDjLevel = scoreData.at("rank");
+                        chartScore.DjLevel = static_cast<DjLevel>(iDjLevel);
+                    }
+                    if (!scoreData.at("score").is_null())
+                    {
+                        int score = scoreData.at("score");
+                        chartScore.ExScore = score;
+                    }
+
+                    /*
+                    std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                              << "]["+iidxMeStyle
+                              << "]["+ToString(styleDifficulty)
+                              << "]\n" << ToString(chartScore) << "\n";
+                    */
+                }
+            }
+        }
+    }
+
+    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "CheckIidxMeDataTable");
 }
 
 void
