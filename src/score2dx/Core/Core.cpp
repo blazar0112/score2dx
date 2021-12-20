@@ -804,7 +804,7 @@ ExportIidxMeData(const std::string &user)
                     std::string title = metadata.at("title");
                     std::size_t versionIndex = metadata.at("version");
 
-                    std::string dbTitle = title;
+                    auto dbTitle = title;
                     auto findMappedTitle = mMusicDatabase.FindDbTitle(dbTitle);
                     if (findMappedTitle)
                     {
@@ -1001,18 +1001,18 @@ ExportIidxMeData(const std::string &user)
             }
             else
             {
-                noEntryCount++;
-            }
-
-            if (noEntryCount>4)
-            {
-                break;
+                ++noEntryCount;
             }
 
             s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(curlBegin), iidxMeMusicIdString+" done.");
             while (s2Time::CountNs(curlBegin)<200'000'000)
             {
                 continue;
+            }
+
+            if (noEntryCount>4)
+            {
+                break;
             }
         }
     }
