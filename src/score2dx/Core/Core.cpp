@@ -213,7 +213,7 @@ const
         auto &musicScores = playerScore.GetMusicScores(playStyle);
         if (musicScores.empty())
         {
-            std::cout << "music score is empty.\n";
+            std::cout << "["+ToString(playStyle)+"] music score is empty.\n";
             return;
         }
 
@@ -680,9 +680,16 @@ Core::
 AddIidxMeUser(const std::string &user)
 {
     auto begin = s2Time::Now();
+
+    if (auto findId = icl_s2::Find(mIidxMeUserIdMap, user))
+    {
+        return findId.value()->second;
+    }
+
     auto* curl = curl_easy_init();
     auto* slist = curl_slist_append(nullptr, "Iidxme-Api-Key: 295d293051a911ecbf630242ac130002");
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist);
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "ca-bundle.crt");
 
     auto url = "https://api.iidx.me/user/data/djdata?user="+user+"&ver=29";
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -737,6 +744,7 @@ ExportIidxMeData(const std::string &user)
     auto* curl = curl_easy_init();
     auto* slist = curl_slist_append(nullptr, "Iidxme-Api-Key: 295d293051a911ecbf630242ac130002");
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist);
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "ca-bundle.crt");
 
     if (!icl_s2::Find(mIidxMeUserIdMap, user))
     {
@@ -762,6 +770,7 @@ ExportIidxMeData(const std::string &user)
 
     auto urlPrefix = "https://api.iidx.me/user/data/music?user="+user+"&mid=";
 
+    //for (auto versionIndex: IndexRange{29, 30})
     for (auto versionIndex: IndexRange{0, 30})
     {
         std::size_t noEntryCount = 0;
@@ -815,6 +824,7 @@ ExportIidxMeData(const std::string &user)
                     if (!findMusicIndex)
                     {
                         std::cout << "IIDXME [" << iidxmeMid << "][" << dbTitle << "] cannot find in music db.\n";
+                        continue;
                     }
 
                     auto musicId = ToMusicId(versionIndex, findMusicIndex.value());

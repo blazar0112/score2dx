@@ -1,5 +1,12 @@
 # Changelog of score2dx
 
+- Ongoing [2021-12-24]:
+    - Add IIDX.ME support, download and export data using API.
+        - Add CURL dependencies.
+    - Check with IIDX.ME data and fix Music DB mismatch.
+    - Update Music DB to count 29056 [2021-12-20].
+        - Add 5 music from event `CastHour SPACE` and 1 from ULTIMATE MOBILE collab.
+
 - 2.5.0 [2021-11-28]:
     - Add Activity Analyze.
     - Fix import data miss = 0 for non-FC cases.

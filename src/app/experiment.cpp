@@ -34,7 +34,8 @@ main(int argc, char* argv[])
         //core.CheckIidxMeDataTable();
         //core.GetMusicDatabase().CheckValidity();
 
-        //core.ExportIidxMeData("delmitz");
+        core.ExportIidxMeData("blazar");
+
 
         /*
         core.AnalyzeActivity("5483-7391", "2019-10-13 00:00", "2019-10-13 23:59");

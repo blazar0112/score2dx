@@ -2,7 +2,7 @@
     "#meta": {
         "score2dx": "2.0.0",
         "version": "29",
-        "count": "29050"
+        "count": "29056"
     },
     "csMusicTable": {
         "04": {
@@ -102233,6 +102233,306 @@
                     },
                     "version": 29
                 }
+            },
+            "SPARK IN THE NIGHT": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1118
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 705
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 437
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1149
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 734
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 440
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"L.E.D.-G\""
+                    },
+                    "genre": {
+                        "latest": "EUPHORIC HARDSTYLE"
+                    },
+                    "version": 29
+                }
+            },
+            "ナイトフィクション": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1094
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 767
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 380
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1087
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 790
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 367
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "中山真斗 feat. CHAN"
+                    },
+                    "genre": {
+                        "latest": "ALTERNATIVE"
+                    },
+                    "version": 29
+                }
+            },
+            "Harmonia": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1007
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 641
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 379
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1013
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 629
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 376
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "ATSUMI UEDA"
+                    },
+                    "genre": {
+                        "latest": "NU PRELUDE"
+                    },
+                    "version": 29
+                }
+            },
+            "kors k's How to make OTOGE CORE": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1216
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 804
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 424
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1180
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 793
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 418
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "kors k"
+                    },
+                    "genre": {
+                        "latest": "CHANNEL K"
+                    },
+                    "version": 29
+                }
+            },
+            "禊": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1587
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1153
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 560
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1631
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1169
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 545
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Nhato"
+                    },
+                    "genre": {
+                        "latest": "HARD PSY TRANCE"
+                    },
+                    "version": 29
+                }
+            },
+            "ALTERNATOR": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1941
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1296
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 715
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1907
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1289
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 684
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"dj Hellix\""
+                    },
+                    "genre": {
+                        "latest": "IRREGULAR OMNIBUS HARDCORE"
+                    },
+                    "version": 29
+                }
             }
         }
     },
@@ -104419,7 +104719,13 @@
             "One for All",
             "Brave Spirits",
             "EMOTiON TRiPPER",
-            "Ergosphere"
+            "Ergosphere",
+            "SPARK IN THE NIGHT",
+            "ナイトフィクション",
+            "Harmonia",
+            "kors k's How to make OTOGE CORE",
+            "禊",
+            "ALTERNATOR"
         ]
     }
 }
