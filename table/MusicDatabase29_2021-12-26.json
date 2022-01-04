@@ -2,7 +2,7 @@
     "#meta": {
         "score2dx": "2.0.0",
         "version": "29",
-        "count": "29056"
+        "count": "29060"
     },
     "csMusicTable": {
         "04": {
@@ -102533,6 +102533,224 @@
                     },
                     "version": 29
                 }
+            },
+            "Aftermath": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1777
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1257
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 595
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1828
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1220
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 619
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"猫叉Master & あさき & Yvya\""
+                    },
+                    "genre": {
+                        "latest": "ROCK"
+                    },
+                    "version": 29
+                }
+            },
+            "怪物": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1241
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 6,
+                            "note": 610
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 383
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1205
+                        }
+                    },
+                    "SPB": {
+                        "29": {
+                            "level": 1,
+                            "note": 174
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 6,
+                            "note": 602
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 376
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by Nhato feat. ricono"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 29
+                }
+            },
+            "ミュージック・アワー": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1520
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1066
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 603
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1516
+                        }
+                    },
+                    "SPB": {
+                        "29": {
+                            "level": 3,
+                            "note": 275
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1084
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 610
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by BEMANI Sound Team \"PON\""
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 29
+                }
+            },
+            "ぐだふわエブリデー": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1179
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 674
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 352
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1169
+                        }
+                    },
+                    "SPB": {
+                        "29": {
+                            "level": 2,
+                            "note": 133
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 665
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 346
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by Xceon feat. Marcia(幽閉サテライト)"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 29
+                }
             }
         }
     },
@@ -104725,7 +104943,11 @@
             "Harmonia",
             "kors k's How to make OTOGE CORE",
             "禊",
-            "ALTERNATOR"
+            "ALTERNATOR",
+            "Aftermath",
+            "怪物",
+            "ミュージック・アワー",
+            "ぐだふわエブリデー"
         ]
     }
 }

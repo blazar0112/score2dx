@@ -143,7 +143,8 @@ UpdateChartScore(Difficulty difficulty,
         &&(mActiveVersionIndex==GetLatestVersionIndex()
            ||dateTime<=versionDateTimeRange.at(icl_s2::RangeSide::End)))
     {
-        if (playCount<mChartVersionPlayCounts.at(difficulty))
+        //'' workaround to ignore data from script or third party sites.
+        if (playCount<mChartVersionPlayCounts.at(difficulty)&&playCount!=0)
         {
             throw std::runtime_error("chart play count is not incremental.");
         }
