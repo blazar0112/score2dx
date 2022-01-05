@@ -713,6 +713,9 @@ AddIidxMeUser(const std::string &user)
         throw std::runtime_error("CURL error: "+std::to_string(errorCode));
     }
 
+    curl_slist_free_all(slist);
+    curl_easy_cleanup(curl);
+
     auto json = score2dx::Json::parse(buffer);
 
     if (icl_s2::Find(json, "status"))
