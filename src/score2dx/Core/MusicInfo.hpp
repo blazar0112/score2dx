@@ -12,7 +12,8 @@ namespace score2dx
 ICL_S2_SMART_ENUM(MusicInfoField,
     Title,
     Genre,
-    Artist
+    Artist,
+    DisplayTitle
 );
 
 struct ChartInfo

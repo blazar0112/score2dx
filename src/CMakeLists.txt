@@ -32,7 +32,11 @@ message(ICL_S2_INCLUDE_DIRS=${ICL_S2_INCLUDE_DIRS})
 set(FMT_INCLUDE_DIRS $ENV{FMT_ROOT}/include)
 set(JSON_INCLUDE_DIRS $ENV{JSON_ROOT}/include)
 
-set(MINGW_LIBRARY_NAMES gcc_s_seh-1 stdc++-6 winpthread-1)
+set(MINGW_LIBRARY_NAMES
+    gcc_s_seh-1 stdc++-6 winpthread-1
+    curl-4 brotlicommon brotlidec crypto-1_1-x64 idn2-0 nghttp2-14 psl-5 ssh2-1 ssl-1_1-x64 zstd iconv-2
+    intl-8 unistring-2
+)
 set(MINGW_LIBRARIES)
 foreach(LIB ${MINGW_LIBRARY_NAMES})
     set(MINGW_LIB_PATH $ENV{MINGW64_ROOT}/bin/lib${LIB}.dll)
@@ -42,6 +46,8 @@ foreach(LIB ${MINGW_LIBRARY_NAMES})
         message("Found MINGW Lib: ${FOUND_MINGW_LIB}")
     endif()
 endforeach(LIB)
+
+list(APPEND MINGW_LIBRARIES $ENV{MINGW64_ROOT}/bin/zlib1.dll)
 
 set_property(GLOBAL PROPERTY PROP_HEADERS)
 set_property(GLOBAL PROPERTY PROP_SOURCES)
@@ -85,6 +91,7 @@ endif()
 target_link_libraries(score2dx
     stdc++fs
     icl_s2::icl_s2
+    curl
 )
 
 add_custom_command(TARGET score2dx POST_BUILD
@@ -112,6 +119,11 @@ set_target_properties(test-all PROPERTIES CXX_STANDARD 20)
 target_compile_options(test-all PUBLIC ${COMMON_FLAGS})
 target_link_libraries(test-all GTest::gtest score2dx)
 
+add_executable(iidxme app/iidxme.cpp)
+set_target_properties(iidxme PROPERTIES CXX_STANDARD 20)
+target_compile_options(iidxme PUBLIC ${COMMON_FLAGS})
+target_link_libraries(iidxme score2dx)
+
 set(MINGW_LIBRARY_NAMES gcc_s_seh-1 stdc++-6 winpthread-1)
 set(MINGW_LIBRARIES)
 foreach (LIB ${MINGW_LIBRARY_NAMES})
@@ -126,6 +138,7 @@ if (MINGW)
     add_custom_command(TARGET test-all POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${MINGW_LIBRARIES} ${GTEST_LIBRARY}
+        $ENV{MINGW64_ROOT}/ssl/certs/ca-bundle.crt
         $<TARGET_FILE_DIR:test-all>
     )
 endif()

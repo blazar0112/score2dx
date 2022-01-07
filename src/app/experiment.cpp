@@ -25,11 +25,15 @@ main(int argc, char* argv[])
 
         score2dx::Core core;
 
-        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391_test_29)", false, true);
+        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391)", false, true);
         if (!succeeded)
         {
             std::cout << "Load directory failed.\n";
         }
+
+        core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391\ME\5483-7391)", true, true);
+
+        core.AddIidxMeUser("blazar");
 
         /*
         core.AnalyzeActivity("5483-7391", "2019-10-13 00:00", "2019-10-13 23:59");
@@ -51,12 +55,14 @@ main(int argc, char* argv[])
         }
         */
 
+        /*
         for (auto activeVersionIndex : ReverseIndexRange{score2dx::GetFirstDateTimeAvailableVersionIndex(), score2dx::GetLatestVersionIndex()+1})
         {
             std::cout << "Active Version set to [" << score2dx::ToVersionString(activeVersionIndex) << "].\n";
             core.SetActiveVersionIndex(activeVersionIndex);
             core.Analyze("5483-7391");
         }
+        */
 
         //core.GetMusicDatabase().CheckValidity();
 
