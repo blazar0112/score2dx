@@ -4,9 +4,9 @@
 
 #include "curl/curl.h"
 
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/StdUtil/Find.hxx"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/StdUtil/Find.hxx"
+#include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Core/Core.hpp"
 #include "score2dx/Core/JsonDefinition.hpp"
@@ -14,7 +14,7 @@
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/PlayerScore.hpp"
 
-namespace s2Time = icl_s2::Time;
+namespace s2Time = ies::Time;
 
 int
 main(int argc, char* argv[])
@@ -100,9 +100,9 @@ main(int argc, char* argv[])
 
                 auto json = score2dx::Json::parse(buffer);
 
-                if (!icl_s2::Find(json, "code"))
+                if (!ies::Find(json, "code"))
                 {
-                    if (icl_s2::Find(json, "metadata"))
+                    if (ies::Find(json, "metadata"))
                     {
                         noEntryCount = 0;
                         dataTable[musicIdString] = json;

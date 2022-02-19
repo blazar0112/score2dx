@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "icl_s2/StdUtil/Find.hxx"
+#include "ies/StdUtil/Find.hxx"
 
 namespace score2dx
 {
@@ -72,7 +72,7 @@ MusicScore::
 FindChartScore(Difficulty difficulty)
 const
 {
-    if (auto findScore = icl_s2::Find(mChartScores, difficulty))
+    if (auto findScore = ies::Find(mChartScores, difficulty))
     {
         return &(findScore.value()->second);
     }

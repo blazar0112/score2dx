@@ -16,6 +16,6 @@ project(Score2dx
     DESCRIPTION "IIDX CSV score library."
     LANGUAGES CXX
 )
-message("Project [${PROJECT_NAME}] v${PROJECT_VERSION} (${CMAKE_BUILD_TYPE})")
+message(STATUS "Project [${PROJECT_NAME}] v${PROJECT_VERSION} (${CMAKE_BUILD_TYPE})")
 
 add_subdirectory(src)

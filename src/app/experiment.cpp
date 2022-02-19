@@ -2,16 +2,16 @@
 #include <iostream>
 #include <string>
 
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/StdUtil/Find.hxx"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/StdUtil/Find.hxx"
+#include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Core/Core.hpp"
 #include "score2dx/Csv/Csv.hpp"
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/PlayerScore.hpp"
 
-namespace s2Time = icl_s2::Time;
+namespace s2Time = ies::Time;
 
 int
 main(int argc, char* argv[])
@@ -45,7 +45,7 @@ main(int argc, char* argv[])
 
         auto &activityAnalysis = *findAnalyzeActivity;
         std::cout << "Activity Analysis:\n"
-                  << "BeginDateTime [" << activityAnalysis.DateTimeRange.at(icl_s2::RangeSide::Begin) << "]: "
+                  << "BeginDateTime [" << activityAnalysis.DateTimeRange.at(ies::RangeSide::Begin) << "]: "
                   << activityAnalysis.BeginSnapshot.at(score2dx::PlayStyle::DoublePlay).size() << "\n";
 
         for (auto &[dateTime, activities] : activityAnalysis.ActivityByDateTime.at(score2dx::PlayStyle::DoublePlay))

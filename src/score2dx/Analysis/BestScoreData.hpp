@@ -4,19 +4,19 @@
 #include <set>
 #include <string>
 
-#include "icl_s2/Common/SmartEnum.hxx"
+#include "ies/Common/SmartEnum.hxx"
 
 #include "score2dx/Score/MusicScore.hpp"
 
 namespace score2dx
 {
 
-ICL_S2_SMART_ENUM(DiffableBestScoreType,
+IES_SMART_ENUM(DiffableBestScoreType,
     ExScore,
     Miss
 );
 
-ICL_S2_SMART_ENUM(BestScoreType,
+IES_SMART_ENUM(BestScoreType,
     BestExScore,
     SecondBestExScore,
     BestMiss,

@@ -5,13 +5,13 @@
 #include <set>
 #include <stdexcept>
 
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/StdUtil/Find.hxx"
-#include "icl_s2/StdUtil/FormatString.hxx"
-#include "icl_s2/StdUtil/ReverseEqualRange.hxx"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/StdUtil/Find.hxx"
+#include "ies/StdUtil/FormatString.hxx"
+#include "ies/StdUtil/ReverseEqualRange.hxx"
+#include "ies/Time/TimeUtilFormat.hxx"
 
-namespace s2Time = icl_s2::Time;
+namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -123,7 +123,7 @@ FindScoreLevelDiff(int note, int exScore)
         throw std::runtime_error("cannot find upper bound.");
     }
 
-    auto reverseLowerBound = icl_s2::ReverseLowerBound(keyScores, exScore);
+    auto reverseLowerBound = ies::ReverseLowerBound(keyScores, exScore);
     //'' is only possible if score < minScore.
     if (reverseLowerBound==keyScores.rend())
     {

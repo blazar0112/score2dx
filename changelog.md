@@ -1,5 +1,20 @@
 # Changelog of score2dx
 
+- 2.7.0 [2022-02-20]:
+    - Update dependent library `icl_s2` to rebrand and open-source version `ies`.
+    - Update README.
+    - Add user-specified music database functionality:
+        - User can put music database name in `table/usingDB.txt`, which takes priority than hard-coded default path.
+        - Fall back to default database if not exist file listed in `usingDB.txt` or have no such file.
+        - For future music-DB-only-update, user can only download new music DB and use this method to reflect.
+        - Music-DB-only-update will only increase patch version afterwards, and will not create release.
+    - Update Music DB to count 29071 [2022-02-20].
+        - Updated structure in `#meta`:
+            - `score2dx` value updated to `2.7.0` to denote this structure.
+            - Add `lastUpdateNewMusic` to denote last updated new music to ease count new music effort.
+            - Add `lastUpdateEvent` to denote last updated event:
+                - Event may only add revived music or new leggendaria charts, so no new music count change.
+
 - 2.6.0 [2022-01-05]:
     - Add IIDX.ME support, download and export data using API.
         - Add CURL dependencies.

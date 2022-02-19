@@ -1,35 +1,37 @@
 #include "score2dx/Core/MusicDatabase.hpp"
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
-#include "icl_s2/Common/AdjacentArrayRange.hxx"
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/Common/IntegralRangeList.hxx"
-#include "icl_s2/StdUtil/Find.hxx"
-#include "icl_s2/StdUtil/FormatString.hxx"
-#include "icl_s2/String/RecursiveReplace.hpp"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/Common/AdjacentArrayRange.hxx"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/Common/IntegralRangeList.hxx"
+#include "ies/StdUtil/Find.hxx"
+#include "ies/StdUtil/FormatString.hxx"
+#include "ies/String/RecursiveReplace.hpp"
+#include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Iidx/Version.hpp"
 
-namespace s2Time = icl_s2::Time;
+namespace fs = std::filesystem;
+namespace s2Time = ies::Time;
 
 namespace
 {
 
 //! @brief Convert non-CS availableVersions to range list.
-icl_s2::IntegralRangeList<std::size_t>
+ies::IntegralRangeList<std::size_t>
 ToRangeList(const std::string &availableVersions)
 {
-    icl_s2::IntegralRangeList<std::size_t> rangeList;
+    ies::IntegralRangeList<std::size_t> rangeList;
 
-    if (icl_s2::Find(availableVersions, "cs"))
+    if (ies::Find(availableVersions, "cs"))
     {
         return rangeList;
     }
 
-    auto tokens = icl_s2::SplitString(", ", availableVersions);
+    auto tokens = ies::SplitString(", ", availableVersions);
     for (auto &token : tokens)
     {
         if (token.size()==2)
@@ -46,7 +48,7 @@ ToRangeList(const std::string &availableVersions)
         }
         else
         {
-            std::cout << icl_s2::FormatString(tokens) << std::endl;
+            std::cout << ies::FormatString(tokens) << std::endl;
             throw std::runtime_error("incorrect availableVersions "+availableVersions);
         }
     }
@@ -69,59 +71,99 @@ namespace score2dx
 MusicDatabase::
 MusicDatabase()
 {
-    auto begin = s2Time::Now();
-    std::ifstream databaseFile{"table/MusicDatabase29_2021-12-26.json"};
-    databaseFile >> mDatabase;
-    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Read Json");
-
-    mAllTimeMusics.resize(VersionNames.size());
-    auto &dbAllTimeMusics = mDatabase.at("version");
-    for (auto versionIndex : IndexRange{0, VersionNames.size()})
+    try
     {
-        auto version = ToVersionString(versionIndex);
-        auto &dbVersionMusics = dbAllTimeMusics.at(version);
-        mAllTimeMusics[versionIndex].reserve(dbVersionMusics.size());
-        auto &musicIndexMap = mVersionMusicIndexMap[versionIndex];
-        std::size_t musicIndex = 0;
-        for (auto &item : dbVersionMusics.items())
+        auto begin = s2Time::Now();
+
         {
-            auto &title = item.value();
-            mAllTimeMusics[versionIndex].emplace_back(title);
-            if (versionIndex==0||versionIndex==1)
+            std::string usingDbFilename{"table/usingDB.txt"};
+            std::ifstream usingDbFile{usingDbFilename};
+            if (usingDbFile)
             {
-                m1stSubVersionIndexMap[title] = versionIndex;
+                std::string userDb;
+                usingDbFile >> userDb;
+                auto userDbPath = "table/"+userDb;
+                if (!fs::exists(userDbPath)||!fs::is_regular_file(userDbPath))
+                {
+                    std::cout << "Not exist user music DB [" << userDbPath << "], use default instead.\n";
+                }
+                else
+                {
+                    mDatabaseFilename = userDbPath;
+                }
             }
-            musicIndexMap[title] = musicIndex;
-            ++musicIndex;
         }
+
+        std::cout << "Loading music table from " << mDatabaseFilename << "\n";
+        std::ifstream databaseFile{mDatabaseFilename};
+        if (!databaseFile)
+        {
+            throw std::runtime_error("cannot find music table: "+mDatabaseFilename);
+        }
+        databaseFile >> mDatabase;
+        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Read Json");
+
+        mAllTimeMusics.resize(VersionNames.size());
+        auto &dbAllTimeMusics = mDatabase.at("version");
+        for (auto versionIndex : IndexRange{0, VersionNames.size()})
+        {
+            auto version = ToVersionString(versionIndex);
+            auto &dbVersionMusics = dbAllTimeMusics.at(version);
+            mAllTimeMusics[versionIndex].reserve(dbVersionMusics.size());
+            auto &musicIndexMap = mVersionMusicIndexMap[versionIndex];
+            std::size_t musicIndex = 0;
+            for (auto &item : dbVersionMusics.items())
+            {
+                auto &title = item.value();
+                mAllTimeMusics[versionIndex].emplace_back(title);
+                if (versionIndex==0||versionIndex==1)
+                {
+                    m1stSubVersionIndexMap[title] = versionIndex;
+                }
+                musicIndexMap[title] = musicIndex;
+                ++musicIndex;
+            }
+        }
+
+        std::string countString = mDatabase.at("#meta").at("count");
+        auto count = std::stoull(countString);
+        auto versionIndex = count/1000;
+        auto versionCount = count%1000;
+
+        if (versionIndex>=mAllTimeMusics.size())
+        {
+            std::cout << "DB ID [" << countString
+                      << "] cannot find latest version " << ToVersionString(versionIndex)
+                      << " musics.\n";
+        }
+
+        auto &latestMusics = mAllTimeMusics[versionIndex];
+        if (versionCount!=latestMusics.size())
+        {
+            std::cout << "DB ID [" << countString
+                      << "] latest version " << ToVersionString(versionIndex)
+                      << " musics count " << latestMusics.size()
+                      << " is not same as ID.\n";
+        }
+
+        auto stageBegin = s2Time::Now();
+        GenerateActiveVersions(GetFirstDateTimeAvailableVersionIndex());
+        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(stageBegin), "GenerateActiveVersions");
+
+        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Load music database");
     }
-
-    std::string countString = mDatabase.at("#meta").at("count");
-    auto count = std::stoull(countString);
-    auto versionIndex = count/1000;
-    auto versionCount = count%1000;
-
-    if (versionIndex>=mAllTimeMusics.size())
+    catch (const std::exception &e)
     {
-        std::cout << "DB ID [" << countString
-                  << "] cannot find latest version " << ToVersionString(versionIndex)
-                  << " musics.\n";
+        throw std::runtime_error("MusicDatabase::MusicDatabase(): exception:\n    "+std::string{e.what()});
     }
+}
 
-    auto &latestMusics = mAllTimeMusics[versionIndex];
-    if (versionCount!=latestMusics.size())
-    {
-        std::cout << "DB ID [" << countString
-                  << "] latest version " << ToVersionString(versionIndex)
-                  << " musics count " << latestMusics.size()
-                  << " is not same as ID.\n";
-    }
-
-    auto stageBegin = s2Time::Now();
-    GenerateActiveVersions(GetFirstDateTimeAvailableVersionIndex());
-    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(stageBegin), "GenerateActiveVersions");
-
-    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Load music database");
+const std::string &
+MusicDatabase::
+GetFilename()
+const
+{
+    return mDatabaseFilename;
 }
 
 const std::vector<std::vector<std::string>> &
@@ -171,7 +213,7 @@ MusicDatabase::
 Find1stSubVersionIndex(const std::string &dbTitle)
 const
 {
-    auto find1stSubMusicVersionIndex = icl_s2::Find(m1stSubVersionIndexMap, dbTitle);
+    auto find1stSubMusicVersionIndex = ies::Find(m1stSubVersionIndexMap, dbTitle);
     if (find1stSubMusicVersionIndex)
     {
         return find1stSubMusicVersionIndex.value()->second;
@@ -185,13 +227,13 @@ MusicDatabase::
 FindMusicIndex(std::size_t versionIndex, const std::string &dbTitle)
 const
 {
-    auto findVersion = icl_s2::Find(mVersionMusicIndexMap, versionIndex);
+    auto findVersion = ies::Find(mVersionMusicIndexMap, versionIndex);
     if (!findVersion)
     {
         throw std::runtime_error("FindMusicIndex: invalid versionIndex.");
     }
 
-    auto findMusicIndex = icl_s2::Find(findVersion.value()->second, dbTitle);
+    auto findMusicIndex = ies::Find(findVersion.value()->second, dbTitle);
     if (findMusicIndex)
     {
         return findMusicIndex.value()->second;
@@ -268,7 +310,7 @@ const
     musicInfo.AddField(MusicInfoField::Genre, dbMusic["info"]["genre"]["latest"]);
     musicInfo.AddField(MusicInfoField::Artist, dbMusic["info"]["artist"]["latest"]);
     std::string displayTitle;
-    if (icl_s2::Find(dbMusic["info"], "displayTitle"))
+    if (ies::Find(dbMusic["info"], "displayTitle"))
     {
         displayTitle = dbMusic["info"]["displayTitle"];
     }
@@ -309,13 +351,13 @@ const
     auto &title = versionMusics[musicIndex];
 
     auto version = ToVersionString(versionIndex);
-    auto findVersion = icl_s2::Find(mDatabase["csMusicTable"], version);
+    auto findVersion = ies::Find(mDatabase["csMusicTable"], version);
     if (!findVersion)
     {
         return false;
     }
 
-    auto findMusic = icl_s2::Find(findVersion.value().value(), title);
+    auto findMusic = ies::Find(findVersion.value().value(), title);
     return findMusic.has_value();
 }
 
@@ -325,13 +367,13 @@ FindDbMusic(std::size_t versionIndex, const std::string &title)
 const
 {
     auto version = ToVersionString(versionIndex);
-    auto findMusic = icl_s2::Find(mDatabase["musicTable"][version], title);
+    auto findMusic = ies::Find(mDatabase["musicTable"][version], title);
     if (findMusic)
     {
         return &(findMusic.value().value());
     }
 
-    auto findCsMusic = icl_s2::Find(mDatabase["csMusicTable"][version], title);
+    auto findCsMusic = ies::Find(mDatabase["csMusicTable"][version], title);
     if (findCsMusic)
     {
         return &(findCsMusic.value().value());
@@ -353,7 +395,7 @@ MusicDatabase::
 FindActiveVersion(std::size_t activeVersionIndex)
 const
 {
-    auto findActiveVersion = icl_s2::Find(mActiveVersions, activeVersionIndex);
+    auto findActiveVersion = ies::Find(mActiveVersions, activeVersionIndex);
     if (!findActiveVersion) { return nullptr; }
 
     return &(findActiveVersion.value()->second);
@@ -368,7 +410,7 @@ FindChartInfo(std::size_t titleVersionIndex,
 const
 {
     auto version = ToVersionString(titleVersionIndex);
-    auto findMusic = icl_s2::Find(mDatabase["musicTable"][version], dbTitle);
+    auto findMusic = ies::Find(mDatabase["musicTable"][version], dbTitle);
     if (!findMusic)
     {
         throw std::runtime_error("FindChartInfo: cannot find title ["+dbTitle+"] in version ["+version+"].");
@@ -380,7 +422,7 @@ const
         return std::nullopt;
     }
 
-    auto findDifficulty = icl_s2::Find(musicInfo["difficulty"], ToString(styleDifficulty));
+    auto findDifficulty = ies::Find(musicInfo["difficulty"], ToString(styleDifficulty));
     if (!findDifficulty)
     {
         return std::nullopt;
@@ -406,7 +448,7 @@ IsAvailable(std::size_t musicId,
             std::size_t versionIndex)
 const
 {
-    auto findActiveVersion = icl_s2::Find(mActiveVersions, versionIndex);
+    auto findActiveVersion = ies::Find(mActiveVersions, versionIndex);
     if (!findActiveVersion)
     {
         return false;
@@ -416,7 +458,7 @@ const
     return activeVersion.FindChartInfo(musicId, styleDifficulty);
 }
 
-std::optional<icl_s2::IndexRange>
+std::optional<ies::IndexRange>
 MusicDatabase::
 FindContainingAvailableVersionRange(std::size_t musicId,
                                     StyleDifficulty styleDifficulty,
@@ -446,7 +488,7 @@ const
     }
 
     auto &dbMusic = *findDbMusic;
-    auto findDiffInfo = icl_s2::Find(dbMusic["difficulty"], ToString(styleDifficulty));
+    auto findDiffInfo = ies::Find(dbMusic["difficulty"], ToString(styleDifficulty));
     if (!findDiffInfo)
     {
         std::cout << "music id ["+ToMusicIdString(musicId)+"] has not difficulty ["+ToString(styleDifficulty)+"].\n";
@@ -493,7 +535,7 @@ const
             }
             for (auto &key : {"availableVersions", "difficulty", "info"})
             {
-                if (!icl_s2::Find(titleData, key))
+                if (!ies::Find(titleData, key))
                 {
                     std::cout << "[" << version << "][" << title << "] lack key [" << key << "].\n";
                     continue;
@@ -524,10 +566,10 @@ const
                 {
                     std::string versionRangeStr = chartVersion;
                     //'' remove cs prefix.
-                    icl_s2::RecursiveReplace(versionRangeStr, "cs", "");
+                    ies::RecursiveReplace(versionRangeStr, "cs", "");
                     //'' make sure comma only follow by one space.
-                    icl_s2::RecursiveReplace(versionRangeStr, ", ", "|");
-                    auto versionRanges = icl_s2::SplitString("|", versionRangeStr);
+                    ies::RecursiveReplace(versionRangeStr, ", ", "|");
+                    auto versionRanges = ies::SplitString("|", versionRangeStr);
                     auto isValid = true;
                     std::string reason;
                     for (auto &versionRange : versionRanges)
@@ -560,7 +602,7 @@ const
                         {
                             auto maxVersion = GetLatestVersionIndex();
 
-                            auto versions = icl_s2::SplitString("-", versionRange);
+                            auto versions = ies::SplitString("-", versionRange);
                             auto beginVersion = std::stoull(versions[0]);
                             auto endVersion = beginVersion;
                             if (versions.size()==2)
@@ -603,7 +645,7 @@ const
                 std::set<std::size_t> difficultyAvailableVersions;
                 for (auto &[chartVersion, chartData] : diffData.items())
                 {
-                    if (icl_s2::Find(chartVersion, "cs")) { continue; }
+                    if (ies::Find(chartVersion, "cs")) { continue; }
 
                     if (chartData["level"]==0)
                     {
@@ -613,7 +655,7 @@ const
                         break;
                     }
 
-                    if (!icl_s2::Find(levelRange, chartData["level"]))
+                    if (!ies::Find(levelRange, chartData["level"]))
                     {
                         isDiffDataValid = false;
                         std::cout << "[" << version << "][" << title << "][" << styleDifficulty
@@ -645,13 +687,13 @@ const
                     {
                         for (auto v : verRange)
                         {
-                            if (!icl_s2::Find(musicAvailableVersions, v))
+                            if (!ies::Find(musicAvailableVersions, v))
                             {
                                 isChartVersionValid = false;
                                 break;
                             }
 
-                            if (icl_s2::Find(difficultyAvailableVersions, v))
+                            if (ies::Find(difficultyAvailableVersions, v))
                             {
                                 isChartVersionValid = false;
                                 break;
@@ -678,7 +720,7 @@ const
 
                 //'' check adjacent chart infos are not same.
 
-                for (auto itArray : icl_s2::MakeAdjacentArrayRange<2>(chartVersionByFirstVer))
+                for (auto itArray : ies::MakeAdjacentArrayRange<2>(chartVersionByFirstVer))
                 {
                     auto &previousChartVer = itArray[0]->second;
                     auto &nextChartVer = itArray[1]->second;
@@ -715,7 +757,7 @@ GenerateActiveVersions(std::size_t beginVersionIndex)
         auto versionIndex = std::stoull(version);
         for (auto musicIndex : IndexRange{0, versionMusics.size()})
         {
-            auto findMusic = icl_s2::Find(musicTable.at(version), versionMusics.at(musicIndex));
+            auto findMusic = ies::Find(musicTable.at(version), versionMusics.at(musicIndex));
             //'' cs musics.
             if (!findMusic) { continue; }
 

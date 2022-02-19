@@ -5,7 +5,7 @@
 
 #include "fmt/format.h"
 
-#include "icl_s2/String/RecursiveReplace.hpp"
+#include "ies/String/RecursiveReplace.hpp"
 
 namespace score2dx
 {
@@ -39,7 +39,7 @@ ClearType
 ConvertToClearType(const std::string &spaceSeparatedClearType)
 {
     auto s = spaceSeparatedClearType;
-    icl_s2::RecursiveReplace(s, " ", "_");
+    ies::RecursiveReplace(s, " ", "_");
     return ToClearType(s);
 }
 
@@ -47,7 +47,7 @@ std::string
 ToSpaceSeparated(ClearType clearType)
 {
     auto spaceSeparated = ToString(clearType);
-    icl_s2::RecursiveReplace(spaceSeparated, "_", " ");
+    ies::RecursiveReplace(spaceSeparated, "_", " ");
     return spaceSeparated;
 }
 

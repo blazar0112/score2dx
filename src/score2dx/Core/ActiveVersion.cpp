@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "icl_s2/StdUtil/Find.hxx"
+#include "ies/StdUtil/Find.hxx"
 
 namespace score2dx
 {
@@ -45,7 +45,7 @@ FindChartInfo(std::size_t musicId,
 const
 {
     auto chartId = ToChartId(musicId, styleDifficulty);
-    auto findChartInfo = icl_s2::Find(mChartInfos, chartId);
+    auto findChartInfo = ies::Find(mChartInfos, chartId);
     if (!findChartInfo) { return nullptr; }
 
     return &(findChartInfo.value()->second);

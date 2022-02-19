@@ -2,13 +2,13 @@
 
 #include <iostream>
 
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/StdUtil/Find.hxx"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/StdUtil/Find.hxx"
+#include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Iidx/Version.hpp"
 
-namespace s2Time = icl_s2::Time;
+namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -139,9 +139,9 @@ UpdateChartScore(Difficulty difficulty,
 
     std::string inconsistency;
     auto versionDateTimeRange = GetVersionDateTimeRange(mActiveVersionIndex);
-    if (dateTime>=versionDateTimeRange.at(icl_s2::RangeSide::Begin)
+    if (dateTime>=versionDateTimeRange.at(ies::RangeSide::Begin)
         &&(mActiveVersionIndex==GetLatestVersionIndex()
-           ||dateTime<=versionDateTimeRange.at(icl_s2::RangeSide::End)))
+           ||dateTime<=versionDateTimeRange.at(ies::RangeSide::End)))
     {
         //'' workaround to ignore data from script or third party sites.
         if (playCount<mChartVersionPlayCounts.at(difficulty)&&playCount!=0)
@@ -161,7 +161,7 @@ UpdateChartScore(Difficulty difficulty,
         auto &versionBestChartScore = *verBestChartScorePtr;
 
         /*
-        if (icl_s2::Find(mVersionUpdatedDifficultySet, difficulty))
+        if (ies::Find(mVersionUpdatedDifficultySet, difficulty))
         {
 
         }
@@ -175,8 +175,8 @@ UpdateChartScore(Difficulty difficulty,
         {
             inconsistency = "Chart score is not incrementally better within a version\n";
             inconsistency += "Ver ["+ToVersionString(mActiveVersionIndex)+"\n";
-            inconsistency += "VerDateTimeRange ["+versionDateTimeRange.at(icl_s2::RangeSide::Begin)
-                             +", "+versionDateTimeRange.at(icl_s2::RangeSide::End)+"]\n";
+            inconsistency += "VerDateTimeRange ["+versionDateTimeRange.at(ies::RangeSide::Begin)
+                             +", "+versionDateTimeRange.at(ies::RangeSide::End)+"]\n";
             inconsistency += "Previous "+ToString(versionBestChartScore)+"\n";
             inconsistency += "Current "+ToString(chartScore)+"\n";
         }
@@ -194,7 +194,7 @@ FindBestChartScoreRecord(BestScoreType bestScoreType,
                          Difficulty difficulty)
 const
 {
-    auto findRecord = icl_s2::Find(mCareerBestRecords.at(bestScoreType), difficulty);
+    auto findRecord = ies::Find(mCareerBestRecords.at(bestScoreType), difficulty);
     if (!findRecord) { return nullptr; }
     return &(findRecord.value()->second);
 }
