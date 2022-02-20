@@ -1,6 +1,6 @@
 # Changelog of score2dx
 
-- 2.7.0 [2022-02-20]:
+- 2.7.0 [2022-02-21]:
     - Update dependent library `icl_s2` to rebrand and open-source version `ies`.
     - Update README.
     - Add user-specified music database functionality:

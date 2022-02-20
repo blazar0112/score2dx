@@ -34,7 +34,7 @@
     | IES | MSVC | Todo. |
     | IES | MINGW | `$ENV{INSTALL_ROOT}/ies/latest/mingw64-11.2.0` |
 
-- Build as any cmake project
+- Build as any cmake project.
 
     ```
     cd /build/score2dx/build-mingw64-11.2.0
