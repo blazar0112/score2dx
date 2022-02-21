@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "icl_s2/StdUtil/Find.hxx"
+#include "ies/StdUtil/Find.hxx"
 
 namespace score2dx
 {
@@ -65,7 +65,7 @@ FindChartInfo(PlayStyle playStyle, Difficulty difficulty)
 const
 {
     auto &styleChartInfos = mChartInfos.at(playStyle);
-    auto findDifficulty = icl_s2::Find(styleChartInfos, difficulty);
+    auto findDifficulty = ies::Find(styleChartInfos, difficulty);
     if (findDifficulty)
     {
         return &(findDifficulty.value()->second);

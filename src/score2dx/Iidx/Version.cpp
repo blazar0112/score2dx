@@ -5,9 +5,9 @@
 
 #include "fmt/format.h"
 
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/StdUtil/Find.hxx"
-#include "icl_s2/String/SplitString.hpp"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/StdUtil/Find.hxx"
+#include "ies/String/SplitString.hpp"
 
 namespace
 {
@@ -15,7 +15,7 @@ namespace
 //! @brief Map of {VersionIndex, Array of [BeginDateTime, EndDateTime]}.
 //! EndDateTime = 23:59 of day before next version release day.
 //! @note tricoro use Ver.UP release date, not tricoro-machine limited release date (2012-09-19).
-const std::map<std::size_t, std::array<std::string, icl_s2::RangeSideSmartEnum::Size()>> VersionDateTimeRangeMap
+const std::map<std::size_t, std::array<std::string, ies::RangeSideSmartEnum::Size()>> VersionDateTimeRangeMap
 {
     {29, {"2021-10-13 00:00", ""}},
     {28, {"2020-10-28 00:00", "2021-10-12 23:59"}},
@@ -83,7 +83,7 @@ FindVersionIndex(const std::string &dbVersionName)
         }
     }
 
-    if (auto findIndex = icl_s2::Find(VersionIndexMap, dbVersionName))
+    if (auto findIndex = ies::Find(VersionIndexMap, dbVersionName))
     {
         return findIndex.value()->second;
     }
@@ -97,15 +97,15 @@ GetFirstDateTimeAvailableVersionIndex()
     return VersionDateTimeRangeMap.begin()->first;
 }
 
-std::map<icl_s2::RangeSide, std::string>
+std::map<ies::RangeSide, std::string>
 GetVersionDateTimeRange(std::size_t versionIndex)
 {
-    std::map<icl_s2::RangeSide, std::string> range;
+    std::map<ies::RangeSide, std::string> range;
 
-    if (auto findVersion = icl_s2::Find(VersionDateTimeRangeMap, versionIndex))
+    if (auto findVersion = ies::Find(VersionDateTimeRangeMap, versionIndex))
     {
         auto &dateTimeArray = findVersion.value()->second;
-        for (auto rangeSide : icl_s2::RangeSideSmartEnum::ToRange())
+        for (auto rangeSide : ies::RangeSideSmartEnum::ToRange())
         {
             range[rangeSide] = dateTimeArray[static_cast<std::size_t>(rangeSide)];
         }
@@ -118,7 +118,7 @@ std::optional<std::size_t>
 FindVersionIndexFromDateTime(const std::string &dateTime)
 {
     auto &[firstVersionIndex, firstVersionDateTimeRange] = *VersionDateTimeRangeMap.begin();
-    auto &firstVersionBeginDateTime = firstVersionDateTimeRange[static_cast<int>(icl_s2::RangeSide::Begin)];
+    auto &firstVersionBeginDateTime = firstVersionDateTimeRange[static_cast<int>(ies::RangeSide::Begin)];
     if (dateTime<firstVersionBeginDateTime)
     {
         return std::nullopt;
@@ -127,7 +127,7 @@ FindVersionIndexFromDateTime(const std::string &dateTime)
     auto versionIndex = firstVersionIndex;
     for (auto &[ver, dateTimeRange] : VersionDateTimeRangeMap)
     {
-        if (dateTime>=dateTimeRange[static_cast<int>(icl_s2::RangeSide::Begin)])
+        if (dateTime>=dateTimeRange[static_cast<int>(ies::RangeSide::Begin)])
         {
             versionIndex = ver;
         }
@@ -152,15 +152,15 @@ FindVersionDateType(const std::string &dateTime)
     auto versionIndex = findVersionIndex.value();
 
     auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
-    auto tokens = icl_s2::SplitString(" ", dateTime);
+    auto tokens = ies::SplitString(" ", dateTime);
     auto &date = tokens[0];
 
-    if (icl_s2::Find(versionDateTimeRange.at(icl_s2::RangeSide::Begin), date))
+    if (ies::Find(versionDateTimeRange.at(ies::RangeSide::Begin), date))
     {
         return VersionDateType::VersionBegin;
     }
 
-    if (icl_s2::Find(versionDateTimeRange.at(icl_s2::RangeSide::End), date))
+    if (ies::Find(versionDateTimeRange.at(ies::RangeSide::End), date))
     {
         return VersionDateType::VersionEnd;
     }

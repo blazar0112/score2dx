@@ -3,10 +3,10 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "icl_s2/StdUtil/Find.hxx"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/StdUtil/Find.hxx"
+#include "ies/Time/TimeUtilFormat.hxx"
 
-namespace s2Time = icl_s2::Time;
+namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -41,9 +41,9 @@ AddMusicScore(const MusicScore &musicScore)
     auto musicId = musicScore.GetMusicId();
     auto &dateTime = musicScore.GetDateTime();
 
-    if (auto findMusicId = icl_s2::Find(mMusicScores.at(playStyle), musicId))
+    if (auto findMusicId = ies::Find(mMusicScores.at(playStyle), musicId))
     {
-        if (auto findMusicScore = icl_s2::Find(findMusicId.value()->second, dateTime))
+        if (auto findMusicScore = ies::Find(findMusicId.value()->second, dateTime))
         {
             return;
         }
@@ -69,7 +69,7 @@ AddChartScore(std::size_t musicId,
               const ChartScore &chartScore)
 {
     auto &allTimeMusicScores = mMusicScores[playStyle][musicId];
-    auto findMusicScore = icl_s2::Find(allTimeMusicScores, dateTime);
+    auto findMusicScore = ies::Find(allTimeMusicScores, dateTime);
     if (!findMusicScore)
     {
         auto [versionIndex, musicIndex] = ToIndexes(musicId);
@@ -91,7 +91,7 @@ const
 {
     std::map<std::string, const ChartScore*> chartScores;
 
-    auto findMusic = icl_s2::Find(mMusicScores.at(playStyle), musicId);
+    auto findMusic = ies::Find(mMusicScores.at(playStyle), musicId);
     if (findMusic)
     {
         for (auto &[dateTime, musicScore] : findMusic.value()->second)

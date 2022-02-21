@@ -1,8 +1,10 @@
 {
     "#meta": {
-        "score2dx": "2.0.0",
+        "score2dx": "2.7.0",
         "version": "29",
-        "count": "29060"
+        "count": "29071",
+        "lastUpdateNewMusic": "n/a",
+        "lastUpdateEvent": "第1回オンラインバトル 2022-02-14"
     },
     "csMusicTable": {
         "04": {
@@ -23763,42 +23765,60 @@
                 }
             },
             "SCORE": {
-                "availableVersions": "10-11",
+                "availableVersions": "10-11, 29",
                 "difficulty": {
                     "DPA": {
-                        "10-11": {
+                        "29": {
                             "level": 10,
-                            "note": 1100
+                            "note": 1105
                         }
                     },
                     "DPH": {
                         "10-11": {
                             "level": 6,
                             "note": 828
+                        },
+                        "29": {
+                            "level": 8,
+                            "note": 806
                         }
                     },
                     "DPN": {
-                        "10-11": {
+                        "10-11, 29": {
                             "level": 5,
                             "note": 597
                         }
                     },
                     "SPA": {
-                        "10-11": {
+                        "29": {
                             "level": 10,
                             "note": 1055
+                        }
+                    },
+                    "SPB": {
+                        "cs10": {
+                            "level": 3,
+                            "note": 492
                         }
                     },
                     "SPH": {
                         "10-11": {
                             "level": 7,
                             "note": 829
+                        },
+                        "29": {
+                            "level": 8,
+                            "note": 812
                         }
                     },
                     "SPN": {
                         "10-11": {
                             "level": 6,
                             "note": 601
+                        },
+                        "29": {
+                            "level": 5,
+                            "note": 595
                         }
                     }
                 },
@@ -37313,6 +37333,12 @@
                             "note": 969
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 1834
+                        }
+                    },
                     "DPN": {
                         "15-29": {
                             "level": 6,
@@ -37338,7 +37364,7 @@
                         }
                     },
                     "SPL": {
-                        "cs15": {
+                        "29": {
                             "level": 12,
                             "note": 1895
                         }
@@ -43817,42 +43843,66 @@
                 }
             },
             "Do Back Burn": {
-                "availableVersions": "17-18",
+                "availableVersions": "17-18, 29",
                 "difficulty": {
                     "DPA": {
                         "17-18": {
                             "level": 10,
                             "note": 1085
+                        },
+                        "29": {
+                            "level": 10,
+                            "note": 1096
                         }
                     },
                     "DPH": {
                         "17-18": {
                             "level": 9,
                             "note": 807
+                        },
+                        "29": {
+                            "level": 9,
+                            "note": 788
                         }
                     },
                     "DPN": {
                         "17-18": {
                             "level": 5,
                             "note": 417
+                        },
+                        "29": {
+                            "level": 5,
+                            "note": 456
                         }
                     },
                     "SPA": {
                         "17-18": {
                             "level": 9,
                             "note": 1000
+                        },
+                        "29": {
+                            "level": 10,
+                            "note": 1078
                         }
                     },
                     "SPH": {
                         "17-18": {
                             "level": 7,
                             "note": 711
+                        },
+                        "29": {
+                            "level": 7,
+                            "note": 728
                         }
                     },
                     "SPN": {
                         "17-18": {
                             "level": 4,
                             "note": 342
+                        },
+                        "29": {
+                            "level": 4,
+                            "note": 364
                         }
                     }
                 },
@@ -81356,6 +81406,12 @@
                             "note": 833
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 1715
+                        }
+                    },
                     "DPN": {
                         "25-29": {
                             "level": 5,
@@ -81372,6 +81428,12 @@
                         "25-29": {
                             "level": 8,
                             "note": 844
+                        }
+                    },
+                    "SPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 1731
                         }
                     },
                     "SPN": {
@@ -102751,6 +102813,532 @@
                     },
                     "version": 29
                 }
+            },
+            "めでてえ": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1303
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 873
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 559
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1336
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 875
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 562
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "TORIENA"
+                    },
+                    "genre": {
+                        "latest": "ハッピースピードコア"
+                    },
+                    "version": 29
+                }
+            },
+            "Stepper": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1112
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 783
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 364
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1105
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 780
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 356
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "PSYQUI"
+                    },
+                    "genre": {
+                        "latest": "DANCE MUSIC"
+                    },
+                    "version": 29
+                }
+            },
+            "青の洞窟": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1560
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1027
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 472
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1600
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1033
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 455
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Ujico*"
+                    },
+                    "genre": {
+                        "latest": "AQUARIUM QUARTERSTEP"
+                    },
+                    "version": 29
+                }
+            },
+            "Banger Banger Banger Banger": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1573
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 919
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 580
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1497
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 907
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 496
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "nora2r"
+                    },
+                    "genre": {
+                        "latest": "EARLY RAVE"
+                    },
+                    "version": 29
+                }
+            },
+            "Silver Bullet": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1788
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1061
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 614
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1662
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1044
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 612
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "xi"
+                    },
+                    "genre": {
+                        "latest": "PIANO CONCERTINO + JAZZ FUSION"
+                    },
+                    "version": 29
+                }
+            },
+            "Binary Black Hole": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 2000
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1220
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 684
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 2000
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1174
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 681
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"D.J.Amuro\""
+                    },
+                    "genre": {
+                        "latest": "BLACK OUT"
+                    },
+                    "version": 29
+                }
+            },
+            "Souhait bleu": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1457
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1007
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 467
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1407
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 977
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 457
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "しーけー"
+                    },
+                    "genre": {
+                        "latest": "ALCHEMY POP"
+                    },
+                    "version": 29
+                }
+            },
+            "逆月": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1848
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1177
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 767
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1920
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1194
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 760
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"HuΣeR\" feat.Fernweh"
+                    },
+                    "genre": {
+                        "latest": "JAPANESQUE"
+                    },
+                    "version": 29
+                }
+            },
+            "2 Beasts Unchained": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1736
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1170
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 766
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1780
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1145
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 759
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "kors k vs Yooh"
+                    },
+                    "genre": {
+                        "latest": "HARDCORE"
+                    },
+                    "version": 29
+                }
+            },
+            "ABSOLUTE EVIL": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1818
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1193
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 603
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1778
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1136
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 602
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Yuta Imai"
+                    },
+                    "genre": {
+                        "latest": "EUPHORIC FRENCHCORE"
+                    },
+                    "version": 29
+                }
+            },
+            "n/a": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1929
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1867
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Blacklolita"
+                    },
+                    "genre": {
+                        "latest": "SYMPHONIC DUBSTEP"
+                    },
+                    "version": 29
+                }
             }
         }
     },
@@ -104947,7 +105535,18 @@
             "Aftermath",
             "怪物",
             "ミュージック・アワー",
-            "ぐだふわエブリデー"
+            "ぐだふわエブリデー",
+            "めでてえ",
+            "Stepper",
+            "青の洞窟",
+            "Banger Banger Banger Banger",
+            "Silver Bullet",
+            "Binary Black Hole",
+            "Souhait bleu",
+            "逆月",
+            "2 Beasts Unchained",
+            "ABSOLUTE EVIL",
+            "n/a"
         ]
     }
 }

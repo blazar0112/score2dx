@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include "icl_s2/Common/SmartEnum.hxx"
+#include "ies/Common/SmartEnum.hxx"
 
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Score/ChartScore.hpp"

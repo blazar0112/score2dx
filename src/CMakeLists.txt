@@ -22,11 +22,11 @@ if (WIN32)
 endif()
 
 find_package(GTest REQUIRED)
-message(GTEST_INCLUDE_DIRS = ${GTEST_INCLUDE_DIRS})
 
-set(ENV{icl_s2_DIR} $ENV{INSTALL_ROOT}/icl_s2/2.0.0/mingw64-10.2.0)
-find_package(icl_s2 REQUIRED)
-message(ICL_S2_INCLUDE_DIRS=${ICL_S2_INCLUDE_DIRS})
+set(ENV{ies_DIR} $ENV{INSTALL_ROOT}/ies/latest/mingw64-11.2.0)
+find_package(ies REQUIRED)
+file(TO_CMAKE_PATH $ENV{ies_DIR} IES_PATH)
+message(STATUS "Found ies: " ${IES_PATH})
 
 # Header only libraries
 set(FMT_INCLUDE_DIRS $ENV{FMT_ROOT}/include)
@@ -43,7 +43,7 @@ foreach(LIB ${MINGW_LIBRARY_NAMES})
     if (EXISTS ${MINGW_LIB_PATH} AND NOT IS_DIRECTORY ${MINGW_LIB_PATH})
         file(TO_CMAKE_PATH ${MINGW_LIB_PATH} FOUND_MINGW_LIB)
         list(APPEND MINGW_LIBRARIES ${FOUND_MINGW_LIB})
-        message("Found MINGW Lib: ${FOUND_MINGW_LIB}")
+        message(STATUS "Found MINGW Lib: ${FOUND_MINGW_LIB}")
     endif()
 endforeach(LIB)
 
@@ -90,13 +90,13 @@ else()
 endif()
 target_link_libraries(score2dx
     stdc++fs
-    icl_s2::icl_s2
+    ies::ies
     curl
 )
 
 add_custom_command(TARGET score2dx POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${MINGW_LIBRARIES} $<TARGET_FILE:icl_s2::icl_s2> ${GTEST_LIBRARY}
+        ${MINGW_LIBRARIES} $<TARGET_FILE:ies::ies> ${GTEST_LIBRARY}
         $<TARGET_FILE_DIR:score2dx>
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${PROJECT_SOURCE_DIR}/table
@@ -148,7 +148,7 @@ include(GenerateExportHeader)
 generate_export_header(score2dx EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/exports/score2dx/score2dx_export.h)
 install(FILES ${CMAKE_BINARY_DIR}/exports/score2dx/score2dx_export.h DESTINATION include/score2dx)
 
-message(CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX})
+message(STATUS "CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 install(

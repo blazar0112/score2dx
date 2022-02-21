@@ -5,13 +5,13 @@
 #include <string>
 #include <vector>
 
-#include "icl_s2/Common/RangeSide.hpp"
-#include "icl_s2/Common/SmartEnum.hxx"
+#include "ies/Common/RangeSide.hpp"
+#include "ies/Common/SmartEnum.hxx"
 
 namespace score2dx
 {
 
-ICL_S2_SMART_ENUM(VersionDateType,
+IES_SMART_ENUM(VersionDateType,
     None,
     VersionBegin,
     VersionEnd
@@ -94,7 +94,7 @@ GetFirstDateTimeAvailableVersionIndex();
 //!
 //! @note Current version, IIDX 29's EndDateTime is empty.
 //!
-std::map<icl_s2::RangeSide, std::string>
+std::map<ies::RangeSide, std::string>
 GetVersionDateTimeRange(std::size_t versionIndex);
 
 //! @brief Find version index from date time. Possible value range: [17, latest].

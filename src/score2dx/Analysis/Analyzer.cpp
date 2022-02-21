@@ -2,14 +2,14 @@
 
 #include <iostream>
 
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/StdUtil/Find.hxx"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/StdUtil/Find.hxx"
+#include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/ScoreLevel.hpp"
 
-namespace s2Time = icl_s2::Time;
+namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -44,7 +44,7 @@ void
 Analyzer::
 SetActiveVersionIndex(std::size_t activeVersionIndex)
 {
-    if (!icl_s2::Find(mMusicDatabase.GetActiveVersions(), activeVersionIndex))
+    if (!ies::Find(mMusicDatabase.GetActiveVersions(), activeVersionIndex))
     {
         throw std::runtime_error("ActiveVersion "+std::to_string(activeVersionIndex)+" is not supported.");
     }
@@ -112,7 +112,7 @@ const
     auto &activeVersion = *activeVersionPtr;
 
     auto versionDateTimeRange = GetVersionDateTimeRange(mActiveVersionIndex);
-    auto &versionBeginDateTime = versionDateTimeRange.at(icl_s2::RangeSide::Begin);
+    auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
 
     for (auto &[chartId, chartInfo] : activeVersion.GetChartInfos())
     {
@@ -162,7 +162,7 @@ const
         auto &containingAvailableVersionRange = findContainingAvailableRange.value();
 
         auto &musicScores = playerScore.GetMusicScores(chartPlayStyle);
-        auto findMusicId = icl_s2::Find(musicScores, musicId);
+        auto findMusicId = ies::Find(musicScores, musicId);
         if (findMusicId)
         {
             auto &musicScoreByDateTime = findMusicId.value()->second;
@@ -261,7 +261,7 @@ AnalyzeVersionActivity(const PlayerScore &playerScore)
 const
 {
     auto timeRange = GetVersionDateTimeRange(mActiveVersionIndex);
-    return AnalyzeActivity(playerScore, timeRange.at(icl_s2::RangeSide::Begin), timeRange.at(icl_s2::RangeSide::End));
+    return AnalyzeActivity(playerScore, timeRange.at(ies::RangeSide::Begin), timeRange.at(ies::RangeSide::End));
 }
 
 ActivityAnalysis
@@ -274,8 +274,8 @@ const
     auto begin = s2Time::Now();
 
     ActivityAnalysis activityAnalysis;
-    activityAnalysis.DateTimeRange[icl_s2::RangeSide::Begin] = beginDateTime;
-    activityAnalysis.DateTimeRange[icl_s2::RangeSide::End] = endDateTime;
+    activityAnalysis.DateTimeRange[ies::RangeSide::Begin] = beginDateTime;
+    activityAnalysis.DateTimeRange[ies::RangeSide::End] = endDateTime;
 
     for (auto playStyle : PlayStyleSmartEnum::ToRange())
     {
@@ -299,7 +299,7 @@ const
 
     auto &activeVersion = *activeVersionPtr;
     auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
-    auto &versionBeginDateTime = versionDateTimeRange.at(icl_s2::RangeSide::Begin);
+    auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
 
     for (auto &[chartId, chartInfo] : activeVersion.GetChartInfos())
     {
@@ -313,7 +313,7 @@ const
         );
         if (!findChartScoreBeforeTime) { continue; }
 
-        if (!icl_s2::Find(snapshotMusicScores, musicId))
+        if (!ies::Find(snapshotMusicScores, musicId))
         {
             snapshotMusicScores.emplace(
                 std::piecewise_construct,
@@ -326,7 +326,7 @@ const
 
         snapshotMusicScore.AddChartScore(difficulty, findChartScoreBeforeTime.value());
 
-        auto findMusicScores = icl_s2::Find(playerScore.GetMusicScores(chartPlayStyle), musicId);
+        auto findMusicScores = ies::Find(playerScore.GetMusicScores(chartPlayStyle), musicId);
         if (!findMusicScores)
         {
             continue;
@@ -347,7 +347,7 @@ const
                 if (findChartScore)
                 {
                     auto &activityMusicScoreById = activityAnalysis.ActivityByDateTime[chartPlayStyle][dateTime];
-                    if (!icl_s2::Find(activityMusicScoreById, musicId))
+                    if (!ies::Find(activityMusicScoreById, musicId))
                     {
                         activityMusicScoreById.emplace(musicId, musicScore);
                         auto &activitySnapshot = activityAnalysis.ActivitySnapshotByDateTime[chartPlayStyle];
@@ -388,7 +388,7 @@ FindChartScoreByTime(const PlayerScore &playerScore,
                      FindChartScoreOption option)
 const
 {
-    auto findMusicScoresById = icl_s2::Find(playerScore.GetMusicScores(playStyle), musicId);
+    auto findMusicScoresById = ies::Find(playerScore.GetMusicScores(playStyle), musicId);
     if (!findMusicScoresById)
     {
         return ChartScore{};
@@ -419,7 +419,7 @@ const
     ChartScore chartScore;
     auto &musicScoreById = findMusicScoresById.value()->second;
     auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
-    auto &versionBeginDateTime = versionDateTimeRange.at(icl_s2::RangeSide::Begin);
+    auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
     for (auto &[recordDateTime, musicScore] : musicScoreById)
     {
         auto* findChartScore = musicScore.FindChartScore(difficulty);

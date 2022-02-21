@@ -4,16 +4,16 @@
 
 #include "fmt/format.h"
 
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/String/SplitString.hpp"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/String/SplitString.hpp"
+#include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Core/Core.hpp"
 #include "score2dx/Csv/Csv.hpp"
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/PlayerScore.hpp"
 
-namespace s2Time = icl_s2::Time;
+namespace s2Time = ies::Time;
 
 void
 PrintHelp()
@@ -75,7 +75,7 @@ main(int argc, char* argv[])
 
             if (command.starts_with("pm"))
             {
-                auto tokens = icl_s2::SplitString(" ", command);
+                auto tokens = ies::SplitString(" ", command);
                 if (tokens.size()>=2)
                 {
                     auto versionIndex = std::stoull(tokens[1]);
@@ -94,7 +94,7 @@ main(int argc, char* argv[])
 
             if (command.starts_with("pi"))
             {
-                auto tokens = icl_s2::SplitString(" ", command);
+                auto tokens = ies::SplitString(" ", command);
                 if (tokens.size()>=2)
                 {
                     auto musicId = std::stoull(tokens[1]);
@@ -110,7 +110,7 @@ main(int argc, char* argv[])
 
             if (command.starts_with("ps"))
             {
-                auto tokens = icl_s2::SplitString(" ", command);
+                auto tokens = ies::SplitString(" ", command);
                 if (tokens.size()>=3)
                 {
                     auto musicId = std::stoull(tokens[1]);

@@ -4,25 +4,25 @@
 #include <string_view>
 #include <utility>
 
-#include "icl_s2/Common/SmartEnum.hxx"
+#include "ies/Common/SmartEnum.hxx"
 
 namespace score2dx
 {
 
 inline constexpr int MaxLevel = 12;
 
-ICL_S2_SMART_ENUM(PlayStyle,
+IES_SMART_ENUM(PlayStyle,
     SinglePlay,
     DoublePlay
 );
 
 //! @note Prefer to use PlayStyle in code. This for parse/generate string of desired use.
-ICL_S2_SMART_ENUM(PlayStyleAcronym,
+IES_SMART_ENUM(PlayStyleAcronym,
     SP,
     DP
 );
 
-ICL_S2_SMART_ENUM(Difficulty,
+IES_SMART_ENUM(Difficulty,
     Beginner,
     Normal,
     Hyper,
@@ -31,7 +31,7 @@ ICL_S2_SMART_ENUM(Difficulty,
 );
 
 //! @note Prefer to use Difficulty in code. This for parse/generate string of desired use.
-ICL_S2_SMART_ENUM(DifficultyAcronym,
+IES_SMART_ENUM(DifficultyAcronym,
     B,
     N,
     H,
@@ -39,7 +39,7 @@ ICL_S2_SMART_ENUM(DifficultyAcronym,
     L
 );
 
-ICL_S2_SMART_ENUM(StyleDifficulty,
+IES_SMART_ENUM(StyleDifficulty,
     SPB,
     SPN,
     SPH,
@@ -63,7 +63,7 @@ IsStyle(StyleDifficulty styleDifficulty, PlayStyle playStyle);
 
 //! @note To match string used in CSV, use capitalized style, and underscore for space.
 //! i.e. FULLCOMBO_CLEAR can replace to "FULLCOMBO CLEAR" in CSV.
-ICL_S2_SMART_ENUM(ClearType,
+IES_SMART_ENUM(ClearType,
     NO_PLAY,
     FAILED,
     ASSIST_CLEAR,
@@ -85,7 +85,7 @@ ToPrettyString(ClearType clearType);
 
 //! @brief DjLevel is arcade's DJ LEVEL, so it only has at most AAA.
 //! To express "MAX", "MAX-", "AAA+", @see ScoreLevel.
-ICL_S2_SMART_ENUM(DjLevel,
+IES_SMART_ENUM(DjLevel,
     F,
     E,
     D,

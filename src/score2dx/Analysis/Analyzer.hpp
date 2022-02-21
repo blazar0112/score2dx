@@ -5,8 +5,8 @@
 #include <set>
 #include <vector>
 
-#include "icl_s2/Common/RangeSide.hpp"
-#include "icl_s2/Common/SmartEnum.hxx"
+#include "ies/Common/RangeSide.hpp"
+#include "ies/Common/SmartEnum.hxx"
 
 #include "score2dx/Analysis/BestScoreData.hpp"
 #include "score2dx/Core/MusicDatabase.hpp"
@@ -17,7 +17,7 @@
 namespace score2dx
 {
 
-ICL_S2_SMART_ENUM(FindChartScoreOption,
+IES_SMART_ENUM(FindChartScoreOption,
     AtDateTime,
     BeforeDateTime
 );
@@ -53,7 +53,7 @@ struct ActivityData
 //! @brief Activity analysis of specific date time range.
 struct ActivityAnalysis
 {
-    std::map<icl_s2::RangeSide, std::string> DateTimeRange;
+    std::map<ies::RangeSide, std::string> DateTimeRange;
 
     //! @brief PreviousSnapshot of all available music.
     //! Map of {PlayStyle, Map of {MusicId, MusicScore}}.

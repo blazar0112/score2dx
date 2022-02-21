@@ -3,7 +3,7 @@
 #include <optional>
 #include <string>
 
-#include "icl_s2/Common/IntegralRange.hxx"
+#include "ies/Common/IntegralRange.hxx"
 
 #include "score2dx/Core/ActiveVersion.hpp"
 #include "score2dx/Core/JsonDefinition.hpp"
@@ -19,7 +19,12 @@ class MusicDatabase
 public:
         MusicDatabase();
 
-        //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
+    //! @brief Get filename created this MusicDatabase.
+        const std::string &
+        GetFilename()
+        const;
+
+    //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
         const std::vector<std::vector<std::string>> &
         GetAllTimeMusics()
         const;
@@ -119,7 +124,7 @@ public:
                     std::size_t versionIndex)
         const;
 
-        std::optional<icl_s2::IndexRange>
+        std::optional<ies::IndexRange>
         FindContainingAvailableVersionRange(std::size_t musicId,
                                             StyleDifficulty styleDifficulty,
                                             std::size_t versionIndex)
@@ -131,6 +136,7 @@ public:
         const;
 
 private:
+    std::string mDatabaseFilename{"table/MusicDatabase29_2022-02-20.json"};
     Json mDatabase;
 
     //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.

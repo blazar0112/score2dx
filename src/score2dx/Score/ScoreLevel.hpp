@@ -1,6 +1,6 @@
 #pragma once
 
-#include "icl_s2/Common/SmartEnum.hxx"
+#include "ies/Common/SmartEnum.hxx"
 
 #include "score2dx/Iidx/Definition.hpp"
 
@@ -19,7 +19,7 @@ namespace score2dx
 //! 2A:   7/9
 //! 3A:   8/9
 //! Max:  9/9
-ICL_S2_SMART_ENUM(ScoreLevel,
+IES_SMART_ENUM(ScoreLevel,
     Min,
     F,
     E,
@@ -32,14 +32,14 @@ ICL_S2_SMART_ENUM(ScoreLevel,
     Max
 );
 
-ICL_S2_SMART_ENUM(ScoreRange,
+IES_SMART_ENUM(ScoreRange,
     LevelPlus,
     AtLevel,
     LevelMinus
 );
 
 //! @brief Category of ScoreLevelRange.
-ICL_S2_SMART_ENUM(ScoreLevelCategory,
+IES_SMART_ENUM(ScoreLevelCategory,
     AMinus,
     AEqPlus,
     AAMinus,

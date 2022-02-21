@@ -2,11 +2,11 @@
 
 #include <gtest/gtest.h>
 
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/StdUtil/FormatString.hxx"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/StdUtil/FormatString.hxx"
+#include "ies/Time/TimeUtilFormat.hxx"
 
-namespace s2Time = icl_s2::Time;
+namespace s2Time = ies::Time;
 
 namespace score2dx
 {

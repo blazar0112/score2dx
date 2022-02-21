@@ -8,12 +8,12 @@
 #include <set>
 #include <string_view>
 
-#include "icl_s2/Common/IntegralRangeUsing.hpp"
-#include "icl_s2/Common/SmartEnum.hxx"
-#include "icl_s2/StdUtil/Find.hxx"
-#include "icl_s2/StdUtil/MapApply.hxx"
-#include "icl_s2/String/SplitString.hpp"
-#include "icl_s2/Time/TimeUtilFormat.hxx"
+#include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/Common/SmartEnum.hxx"
+#include "ies/StdUtil/Find.hxx"
+#include "ies/StdUtil/MapApply.hxx"
+#include "ies/String/SplitString.hpp"
+#include "ies/Time/TimeUtilFormat.hxx"
 
 #include "nlohmann/json.hpp"
 
@@ -23,7 +23,7 @@
 #include "score2dx/Score/ScoreLevel.hpp"
 
 namespace fs = std::filesystem;
-namespace s2Time = icl_s2::Time;
+namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -37,7 +37,7 @@ namespace score2dx
 //'' english_header = english_header_start_part+english_header+english_header_end_part
 
 //! @brief MusicColumn = ColumnIndex
-ICL_S2_SMART_ENUM(CsvMusicColumn,
+IES_SMART_ENUM(CsvMusicColumn,
     Version,
     Title,
     Genre,
@@ -46,7 +46,7 @@ ICL_S2_SMART_ENUM(CsvMusicColumn,
 );
 
 //! @brief Each Difficulty have ScoreColumns.
-ICL_S2_SMART_ENUM(CsvScoreColumn,
+IES_SMART_ENUM(CsvScoreColumn,
     Level,
     ExScore,
     PGreatCount,
@@ -152,7 +152,7 @@ Csv(const std::string &csvPath,
                 continue;
             }
 
-            auto columns = icl_s2::SplitString(",", line);
+            auto columns = ies::SplitString(",", line);
             if (columns.size()!=CsvColumnSize)
             {
                 throw std::runtime_error("incorrect columnn size.");
@@ -223,7 +223,7 @@ Csv(const std::string &csvPath,
             */
 
             lastVersionIndex = versionIndex;
-            icl_s2::MapIncrementCount(versionMusicCounts, versionIndex);
+            ies::MapIncrementCount(versionMusicCounts, versionIndex);
 
             auto playCount = std::stoull(columns[static_cast<std::size_t>(CsvMusicColumn::PlayCount)]);
             mTotalPlayCount += playCount;
