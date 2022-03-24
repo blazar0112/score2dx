@@ -25,13 +25,13 @@ main(int argc, char* argv[])
 
         score2dx::Core core;
 
-        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391)", false, true);
+        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391)", false, false);
         if (!succeeded)
         {
             std::cout << "Load directory failed.\n";
         }
 
-        core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391\ME\5483-7391)", true, true);
+        //core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391\ME\5483-7391)", true, true);
 
         //core.AddIidxMeUser("blazar");
 
