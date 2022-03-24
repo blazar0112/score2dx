@@ -33,7 +33,10 @@ main(int argc, char* argv[])
 
         core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391\ME\5483-7391)", true, true);
 
-        core.AddIidxMeUser("blazar");
+        //core.AddIidxMeUser("blazar");
+
+        //auto dbMusic = core.GetMusicDatabase().GetDbMusic(19026);
+        //std::cout << "dbMusic " << dbMusic.Title << "\n";
 
         /*
         core.AnalyzeActivity("5483-7391", "2019-10-13 00:00", "2019-10-13 23:59");

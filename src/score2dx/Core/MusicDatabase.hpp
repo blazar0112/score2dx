@@ -15,6 +15,13 @@ namespace score2dx
 
 const std::string Official1stSubVersionName = "1st&substream";
 
+struct DbMusicContext
+{
+    std::size_t MusicId;
+    std::string Title;
+    const Json* Data{nullptr};
+};
+
 class MusicDatabase
 {
 public:
@@ -138,6 +145,10 @@ public:
     //! @brief [Debug] Check database validity and print inconsistency.
         void
         CheckValidity()
+        const;
+
+        DbMusicContext
+        GetDbMusicContext(std::size_t musicId)
         const;
 
 private:
