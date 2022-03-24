@@ -378,6 +378,36 @@ const
     return activityAnalysis;
 }
 
+void
+Analyzer::
+AnalyzeHistory(const PlayerScore &playerScore,
+               std::size_t musicId,
+               StyleDifficulty styleDifficulty)
+const
+{
+    auto [playStyle, difficulty] = score2dx::Split(styleDifficulty);
+    auto chartScores = playerScore.GetChartScores(musicId, playStyle, difficulty);
+    std::cout << "Music ["+mMusicDatabase.GetLatestMusicInfo(musicId).GetField(score2dx::MusicInfoField::Title)+"]:\n";
+    //std::cout << "Available versions: " << mMusicDatabase.
+    for (auto &[dateTime, chartScorePtr] : chartScores)
+    {
+        auto &chartScore = *chartScorePtr;
+        std::cout   << "Record ["+dateTime+"] Clear: "+ToString(chartScore.ClearType)
+                    << ", DJ Level: "+ToString(chartScore.DjLevel)
+                    << ", EX Score: " << chartScore.ExScore
+                    << ", MissCount: ";
+        if (chartScore.MissCount)
+        {
+            std::cout << chartScore.MissCount.value();
+        }
+        else
+        {
+            std::cout << "N/A";
+        }
+        std::cout << std::endl;
+    }
+}
+
 std::optional<ChartScore>
 Analyzer::
 FindChartScoreByTime(const PlayerScore &playerScore,

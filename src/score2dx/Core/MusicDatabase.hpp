@@ -4,6 +4,7 @@
 #include <string>
 
 #include "ies/Common/IntegralRange.hxx"
+#include "ies/Common/IntegralRangeList.hxx"
 
 #include "score2dx/Core/ActiveVersion.hpp"
 #include "score2dx/Core/JsonDefinition.hpp"
@@ -128,6 +129,10 @@ public:
         FindContainingAvailableVersionRange(std::size_t musicId,
                                             StyleDifficulty styleDifficulty,
                                             std::size_t versionIndex)
+        const;
+
+        ies::IntegralRangeList<std::size_t>
+        GetAvailableVersions(std::size_t musicId)
         const;
 
     //! @brief [Debug] Check database validity and print inconsistency.

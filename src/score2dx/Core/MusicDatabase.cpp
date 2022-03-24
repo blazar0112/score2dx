@@ -6,7 +6,6 @@
 
 #include "ies/Common/AdjacentArrayRange.hxx"
 #include "ies/Common/IntegralRangeUsing.hpp"
-#include "ies/Common/IntegralRangeList.hxx"
 #include "ies/StdUtil/Find.hxx"
 #include "ies/StdUtil/FormatString.hxx"
 #include "ies/String/RecursiveReplace.hpp"
@@ -510,6 +509,16 @@ const
     }
 
     return std::nullopt;
+}
+
+ies::IntegralRangeList<std::size_t>
+MusicDatabase::
+GetAvailableVersions(std::size_t musicId)
+const
+{
+    (void)musicId;
+    ies::IntegralRangeList<std::size_t> availableVersions;
+    return availableVersions;
 }
 
 void

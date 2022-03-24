@@ -96,7 +96,8 @@ target_link_libraries(score2dx
 
 add_custom_command(TARGET score2dx POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${MINGW_LIBRARIES} $<TARGET_FILE:ies::ies> ${GTEST_LIBRARY}
+        ${MINGW_LIBRARIES} $<TARGET_FILE:ies::ies>
+        $ENV{MINGW64_ROOT}/ssl/certs/ca-bundle.crt
         $<TARGET_FILE_DIR:score2dx>
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${PROJECT_SOURCE_DIR}/table
@@ -123,25 +124,6 @@ add_executable(iidxme app/iidxme.cpp)
 set_target_properties(iidxme PROPERTIES CXX_STANDARD 20)
 target_compile_options(iidxme PUBLIC ${COMMON_FLAGS})
 target_link_libraries(iidxme score2dx)
-
-set(MINGW_LIBRARY_NAMES gcc_s_seh-1 stdc++-6 winpthread-1)
-set(MINGW_LIBRARIES)
-foreach (LIB ${MINGW_LIBRARY_NAMES})
-    set(MINGW_LIB_PATH $ENV{MINGW64_ROOT}/bin/lib${LIB}.dll)
-    if (EXISTS ${MINGW_LIB_PATH} AND NOT IS_DIRECTORY ${MINGW_LIB_PATH})
-        file(TO_CMAKE_PATH ${MINGW_LIB_PATH} FOUND_MINGW_LIB)
-        list(APPEND MINGW_LIBRARIES ${FOUND_MINGW_LIB})
-    endif()
-endforeach()
-
-if (MINGW)
-    add_custom_command(TARGET test-all POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${MINGW_LIBRARIES} ${GTEST_LIBRARY}
-        $ENV{MINGW64_ROOT}/ssl/certs/ca-bundle.crt
-        $<TARGET_FILE_DIR:test-all>
-    )
-endif()
 
 # Install
 include(GenerateExportHeader)
