@@ -59,39 +59,69 @@ const
     return mDateTime;
 }
 
+ChartScore &
+MusicScore::
+EnableChartScore(Difficulty difficulty)
+{
+    auto index = static_cast<std::size_t>(difficulty);
+    mEnables[index] = true;
+    return mChartScores[index];
+}
+
 void
 MusicScore::
-AddChartScore(Difficulty difficulty,
+SetChartScore(Difficulty difficulty,
               const ChartScore &chartScore)
 {
-    mChartScores[difficulty] = chartScore;
+    auto index = static_cast<std::size_t>(difficulty);
+    mChartScores[index] = chartScore;
+    EnableChartScore(difficulty);
+}
+
+void
+MusicScore::
+ResetChartScore(Difficulty difficulty)
+{
+    auto index = static_cast<std::size_t>(difficulty);
+    mEnables[index] = false;
+    mChartScores[index] = ChartScore{};
 }
 
 const ChartScore*
 MusicScore::
-FindChartScore(Difficulty difficulty)
+GetChartScore(Difficulty difficulty)
 const
 {
-    if (auto findScore = ies::Find(mChartScores, difficulty))
+    auto index = static_cast<std::size_t>(difficulty);
+    if (mEnables[index])
     {
-        return &(findScore.value()->second);
+        return &mChartScores[index];
     }
     return nullptr;
 }
 
 ChartScore*
 MusicScore::
-FindChartScore(Difficulty difficulty)
+GetChartScore(Difficulty difficulty)
 {
-    return const_cast<ChartScore*>(std::as_const(*this).FindChartScore(difficulty));
+    return const_cast<ChartScore*>(std::as_const(*this).GetChartScore(difficulty));
 }
 
-const std::map<Difficulty, ChartScore> &
+std::map<Difficulty, const ChartScore*>
 MusicScore::
 GetChartScores()
 const
 {
-    return mChartScores;
+    std::map<Difficulty, const ChartScore*> chartScores;
+    for (auto difficulty : DifficultySmartEnum::ToRange())
+    {
+        auto index = static_cast<std::size_t>(difficulty);
+        if (mEnables[index])
+        {
+            chartScores[difficulty] = &mChartScores[index];
+        }
+    }
+    return chartScores;
 }
 
 void
@@ -101,13 +131,13 @@ const
 {
     std::cout << "MusicScore ["+ToMusicIdString(GetMusicId())+"]["+GetDateTime()+"]:\n"
               << "PlayCount: " << mPlayCount << "\n";
-    for (auto &[difficulty, chartScore] : mChartScores)
+    for (auto &[difficulty, chartScore] : GetChartScores())
     {
         auto styleDifficulty = ConvertToStyleDifficulty(GetPlayStyle(), difficulty);
         std::cout   << "["+ToString(styleDifficulty)+"]: "
-                    << ToString(chartScore.ClearType)+"|"
-                    << ToString(chartScore.DjLevel)+"|"
-                    << std::to_string(chartScore.ExScore)
+                    << ToString(chartScore->ClearType)+"|"
+                    << ToString(chartScore->DjLevel)+"|"
+                    << std::to_string(chartScore->ExScore)
                     << "\n";
     }
 }

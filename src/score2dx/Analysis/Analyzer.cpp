@@ -179,7 +179,7 @@ const
 
                 //'' It is possible that some chart is only available at certain date time after version begin.
                 //'' for example: arena SPL added later.
-                auto* chartScorePtr = musicScore.FindChartScore(difficulty);
+                auto* chartScorePtr = musicScore.GetChartScore(difficulty);
                 if (!chartScorePtr) { continue; }
                 auto &chartScore = *chartScorePtr;
 
@@ -200,7 +200,7 @@ const
             }
         }
 
-        auto* verBestChartScorePtr = bestScoreData.GetVersionBestMusicScore().FindChartScore(difficulty);
+        auto* verBestChartScorePtr = bestScoreData.GetVersionBestMusicScore().GetChartScore(difficulty);
         if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
         auto &versionBestChartScore = *verBestChartScorePtr;
 
@@ -324,7 +324,7 @@ const
 
         auto &snapshotMusicScore = snapshotMusicScores.at(musicId);
 
-        snapshotMusicScore.AddChartScore(difficulty, findChartScoreBeforeTime.value());
+        snapshotMusicScore.SetChartScore(difficulty, findChartScoreBeforeTime.value());
 
         auto findMusicScores = ies::Find(playerScore.GetMusicScores(chartPlayStyle), musicId);
         if (!findMusicScores)
@@ -343,8 +343,8 @@ const
             if (dateTime>=beginDateTime
                 && (endDateTime.empty() || dateTime<=endDateTime))
             {
-                auto* findChartScore = musicScore.FindChartScore(difficulty);
-                if (findChartScore)
+                auto* chartScorePtr = musicScore.GetChartScore(difficulty);
+                if (chartScorePtr)
                 {
                     auto &activityMusicScoreById = activityAnalysis.ActivityByDateTime[chartPlayStyle][dateTime];
                     if (!ies::Find(activityMusicScoreById, musicId))
@@ -452,8 +452,8 @@ const
     auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
     for (auto &[recordDateTime, musicScore] : musicScoreById)
     {
-        auto* findChartScore = musicScore.FindChartScore(difficulty);
-        if (!findChartScore) { continue; }
+        auto* chartScorePtr = musicScore.GetChartScore(difficulty);
+        if (!chartScorePtr) { continue; }
 
         auto findRecordVersionIndex = FindVersionIndexFromDateTime(recordDateTime);
         if (!findRecordVersionIndex) { continue; }
@@ -462,7 +462,7 @@ const
         if (recordDateTime<versionBeginDateTime
             && containingAvailableVersionRange.IsInRange(recordVersionIndex))
         {
-            chartScore.ClearType = findChartScore->ClearType;
+            chartScore.ClearType = chartScorePtr->ClearType;
         }
 
         if ((recordDateTime<dateTime
@@ -470,7 +470,7 @@ const
                 &&recordDateTime==dateTime))
             && recordDateTime>=versionBeginDateTime)
         {
-            chartScore = *findChartScore;
+            chartScore = *chartScorePtr;
         }
 
         if (recordDateTime>dateTime

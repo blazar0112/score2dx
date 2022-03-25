@@ -279,9 +279,10 @@ const
                 record["play"] = musicScore.GetPlayCount();
                 auto &scoreData = record["score"];
 
-                for (auto &[difficulty, chartScore] : musicScore.GetChartScores())
+                for (auto &[difficulty, chartScorePtr] : musicScore.GetChartScores())
                 {
                     auto diffAcronym = static_cast<DifficultyAcronym>(difficulty);
+                    auto &chartScore = *chartScorePtr;
 
                     //! @brief [score, pgreat, great, miss, clear, djLevel], same order as CSV.
                     std::array<std::string, 6> difficultyData;
@@ -449,8 +450,8 @@ Import(const std::string &requiredIidxId,
 
                     for (auto &[difficultyAcronym, scoreData] : recordData["score"].items())
                     {
-                        ChartScore chartScore;
                         auto difficulty = static_cast<Difficulty>(ToDifficultyAcronym(difficultyAcronym));
+                        auto &chartScore = musicScore.EnableChartScore(difficulty);
 
                         //! @brief [score, pgreat, great, miss, clear, djLevel], same order as CSV.
                         std::array<std::string, 6> difficultyData = scoreData;
@@ -489,10 +490,12 @@ Import(const std::string &requiredIidxId,
                         if (!findChartInfo)
                         {
                             //'' exported data from script may contain difficulty not existing (yet).
+                            /*
                             if (chartScore.ClearType==ClearType::NO_PLAY)
                             {
                                 continue;
                             }
+                            */
                             std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
                                       << "DateTime: " << dateTime << "\n"
                                       << "ActiveVersion: " << ToVersionString(activeVersionIndex) << "\n"
@@ -531,8 +534,6 @@ Import(const std::string &requiredIidxId,
                             }
                             chartScore.DjLevel = actualDjLevel;
                         }
-
-                        musicScore.AddChartScore(difficulty, chartScore);
                     }
 
                     playerScore.AddMusicScore(musicScore);

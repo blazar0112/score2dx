@@ -1,6 +1,8 @@
 # Changelog of score2dx
 
 - Ongoing [2022-03-25]:
+    - MusicScore use array to hold ChartScore to reduce allocate time.
+        - Improve from 12ms to 11ms when loading CSV.
     - DjLevel check now only enabled in debug mode checkWithDb when construct CSV.
         - Improve about 24ms to 12ms when loading CSV, depend on number of Chart with scores.
     - Update Music DB to count 29078 [2022-03-25].

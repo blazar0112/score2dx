@@ -277,7 +277,7 @@ Csv(const std::string &csvPath,
                     }
                 }
 
-                ChartScore chartScore;
+                auto &chartScore = musicScore.EnableChartScore(difficulty);
                 chartScore.ExScore = std::stoi(columns[ToColumnIndex(difficulty, CsvScoreColumn::ExScore)]);
                 chartScore.PGreatCount = std::stoi(columns[ToColumnIndex(difficulty, CsvScoreColumn::PGreatCount)]);
                 chartScore.GreatCount = std::stoi(columns[ToColumnIndex(difficulty, CsvScoreColumn::GreatCount)]);
@@ -345,8 +345,6 @@ Csv(const std::string &csvPath,
                         }
                     }
                 }
-
-                musicScore.AddChartScore(difficulty, chartScore);
             }
         }
 
