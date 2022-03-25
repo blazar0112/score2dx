@@ -87,6 +87,32 @@ GetColumnHeaders()
     return headers;
 }
 
+std::size_t
+SplitCsvLine(const std::string &separators,
+             const std::string &input,
+             std::array<std::string, CsvColumnSize> &columns)
+{
+    std::size_t start = 0;
+    std::size_t end = 0;
+    std::size_t index = 0;
+    while ((start = input.find_first_not_of(separators, end))!=std::string::npos)
+    {
+        end = input.find_first_of(separators, start+1);
+        if (end==std::string::npos)
+        {
+            end = input.length();
+        }
+
+        if (index<CsvColumnSize)
+        {
+            columns[index] = input.substr(start, end-start);
+        }
+        ++index;
+    }
+
+    return index;
+}
+
 Csv::
 Csv(const std::string &csvPath,
     const MusicDatabase &musicDatabase,
@@ -139,6 +165,8 @@ Csv(const std::string &csvPath,
         std::map<std::string, int> debugCounts;
         std::set<std::string> dateTimes;
 
+        std::array<std::string, CsvColumnSize> columns;
+
         while (std::getline(csvFile, line))
         {
             if (line.empty())
@@ -152,8 +180,8 @@ Csv(const std::string &csvPath,
                 continue;
             }
 
-            auto columns = ies::SplitString(",", line);
-            if (columns.size()!=CsvColumnSize)
+            auto columnCount = SplitCsvLine(",", line, columns);
+            if (columnCount!=CsvColumnSize)
             {
                 throw std::runtime_error("incorrect columnn size.");
             }
