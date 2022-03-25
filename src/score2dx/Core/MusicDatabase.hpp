@@ -61,6 +61,11 @@ public:
         FindDbTitle(const std::string &title)
         const;
 
+    //! @brief Same as FindDbTitle but only for CSV title.
+        std::optional<std::string>
+        FindCsvDbTitle(const std::string &title)
+        const;
+
         std::optional<std::string>
         FindDbTitleMappingSection(const std::string &title)
         const;

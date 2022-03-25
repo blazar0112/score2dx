@@ -163,9 +163,12 @@ Csv(const std::string &csvPath,
 
         std::size_t lastVersionIndex = 0;
         std::map<std::string, int> debugCounts;
-        std::set<std::string> dateTimes;
+        std::string minDateTime;
+        std::string maxDateTime;
 
         std::array<std::string, CsvColumnSize> columns;
+
+        std::map<std::string, s2Time::NsCountType> profNsCounts;
 
         while (std::getline(csvFile, line))
         {
@@ -180,21 +183,26 @@ Csv(const std::string &csvPath,
                 continue;
             }
 
+            auto beginSplitString = s2Time::Now();
             auto columnCount = SplitCsvLine(",", line, columns);
             if (columnCount!=CsvColumnSize)
             {
                 throw std::runtime_error("incorrect columnn size.");
             }
+            ies::MapAddCount(profNsCounts, "SplitString", s2Time::CountNs(beginSplitString));
 
             auto &versionName = columns[static_cast<std::size_t>(CsvMusicColumn::Version)];
             auto &csvTitle = columns[static_cast<std::size_t>(CsvMusicColumn::Title)];
 
             auto dbTitle = csvTitle;
-            if (auto findMappedTitle = musicDatabase.FindDbTitle(csvTitle))
+            auto beginFindDbTitle = s2Time::Now();
+            if (auto findMappedTitle = musicDatabase.FindCsvDbTitle(csvTitle))
             {
                 dbTitle = findMappedTitle.value();
             }
+            ies::MapAddCount(profNsCounts, "FindDbTitle", s2Time::CountNs(beginFindDbTitle));
 
+            auto beginFindVerIndex = s2Time::Now();
             std::optional<std::size_t> findVersionIndex;
             if (versionName==Official1stSubVersionName)
             {
@@ -211,7 +219,9 @@ Csv(const std::string &csvPath,
             }
 
             auto versionIndex = findVersionIndex.value();
+            ies::MapAddCount(profNsCounts, "FindVerIndex", s2Time::CountNs(beginFindVerIndex));
 
+            auto beginFindMusicIndex = s2Time::Now();
             auto findMusicIndex = musicDatabase.FindMusicIndex(versionIndex, dbTitle);
             if (!findMusicIndex)
             {
@@ -223,6 +233,7 @@ Csv(const std::string &csvPath,
             }
 
             auto musicIndex = findMusicIndex.value();
+            ies::MapAddCount(profNsCounts, "FindMusicIndex", s2Time::CountNs(beginFindMusicIndex));
 
             /*
             if (checkWithDatabase)
@@ -250,6 +261,8 @@ Csv(const std::string &csvPath,
             }
             */
 
+
+            auto beginCount = s2Time::Now();
             lastVersionIndex = versionIndex;
             ies::MapIncrementCount(versionMusicCounts, versionIndex);
 
@@ -257,8 +270,17 @@ Csv(const std::string &csvPath,
             mTotalPlayCount += playCount;
 
             auto &dateTime = columns[DateTimeColumnIndex];
-            dateTimes.emplace(dateTime);
+            if (maxDateTime.empty() || dateTime>maxDateTime)
+            {
+                maxDateTime = dateTime;
+            }
+            if (minDateTime.empty() || dateTime<minDateTime)
+            {
+                minDateTime = dateTime;
+            }
+            ies::MapAddCount(profNsCounts, "Count", s2Time::CountNs(beginCount));
 
+            auto beginCheckDateTime = s2Time::Now();
             auto findActiveVersionIndex = FindVersionIndexFromDateTime(dateTime);
             if (!findActiveVersionIndex)
             {
@@ -267,7 +289,9 @@ Csv(const std::string &csvPath,
                 continue;
             }
             auto activeVersionIndex = findActiveVersionIndex.value();
+            ies::MapAddCount(profNsCounts, "CheckDateTime", s2Time::CountNs(beginCheckDateTime));
 
+            auto beginOther = s2Time::Now();
             auto musicId = ToMusicId(versionIndex, musicIndex);
             auto itPair = mMusicScores.emplace(
                 std::piecewise_construct,
@@ -276,6 +300,9 @@ Csv(const std::string &csvPath,
             );
             auto &musicScore = itPair.first->second;
 
+            ies::MapAddCount(profNsCounts, "Other", s2Time::CountNs(beginOther));
+
+            auto beginDifficulty = s2Time::Now();
             for (auto difficulty : DifficultySmartEnum::ToRange())
             {
                 auto level = columns[ToColumnIndex(difficulty, CsvScoreColumn::Level)];
@@ -374,6 +401,8 @@ Csv(const std::string &csvPath,
                     }
                 }
             }
+
+            ies::MapAddCount(profNsCounts, "Difficulty", s2Time::CountNs(beginDifficulty));
         }
 
         mVersion = VersionNames.at(lastVersionIndex);
@@ -410,16 +439,21 @@ Csv(const std::string &csvPath,
             mMusicCount += count;
         }
 
-        if (dateTimes.empty())
+        if (maxDateTime.empty())
         {
             throw std::runtime_error("empty date times in csv.");
         }
 
-        mLastDateTime = *dateTimes.rbegin();
+        mLastDateTime = maxDateTime;
 
-        if (verbose) std::cout << "DateTime [" << *dateTimes.begin() << ", " << mLastDateTime << "].\n";
+        if (verbose) std::cout << "DateTime [" << minDateTime << ", " << maxDateTime << "].\n";
 
         s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "CSV construct");
+
+//        for (auto &[timeName, nsCount] : profNsCounts)
+//        {
+//            s2Time::Print<std::chrono::milliseconds>(nsCount, "    "+timeName);
+//        }
     }
     catch (const std::exception &e)
     {

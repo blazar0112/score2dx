@@ -1,8 +1,11 @@
 # Changelog of score2dx
 
 - Ongoing [2022-03-25]:
-    - Improve CSV parse line mechanism, use array instead of vector.
-        - Improve from 11ms to 9ms when loading CSV.
+    - Improve CSV parse line mechanism:
+        - Use array instead of vector.
+            - Improve from 11ms to 9ms when loading CSV.
+        - Remove unnecessary all date time tracking and only compare csv title mapping.
+            - Improve from 9ms to 7.8ms when loading CSV.
     - MusicScore use array to hold ChartScore to reduce allocate time.
         - Improve from 12ms to 11ms when loading CSV.
     - DjLevel check now only enabled in debug mode checkWithDb when construct CSV.

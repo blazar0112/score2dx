@@ -192,6 +192,21 @@ const
 
 std::optional<std::string>
 MusicDatabase::
+FindCsvDbTitle(const std::string &title)
+const
+{
+    auto &csvMapping = mDatabase["titleMapping"]["csv"];
+    auto it = csvMapping.find(title);
+    if (it!=csvMapping.cend())
+    {
+        return it.value();
+    }
+
+    return std::nullopt;
+}
+
+std::optional<std::string>
+MusicDatabase::
 FindDbTitleMappingSection(const std::string &title)
 const
 {
