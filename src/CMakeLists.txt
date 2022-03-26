@@ -21,7 +21,7 @@ if (WIN32)
     endif()
 endif()
 
-find_package(GTest REQUIRED)
+find_package(GTest CONFIG REQUIRED)
 
 set(ENV{ies_DIR} $ENV{INSTALL_ROOT}/ies/latest/mingw64-11.2.0)
 find_package(ies REQUIRED)
