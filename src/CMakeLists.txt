@@ -1,9 +1,11 @@
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(COMMON_MSVC_FLAGS "/permissive-;/W4;/WX;/Zi;/Zc:__cplusplus;/Zc:preprocessor;/wd5105;/DFMT_HEADER_ONLY")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(COMMON_MSVC_FLAGS "/permissive-;/W4;/WX;/Zi;/Zc:__cplusplus;/Zc:preprocessor;/wd5105;/DFMT_HEADER_ONLY;/utf-8")
 set(COMMON_GCC_FLAGS "-pedantic;-Wall;-Wextra;-Werror;-g;-fPIC;-DFMT_HEADER_ONLY")
 
 if (MSVC)
     set(COMMON_FLAGS ${COMMON_MSVC_FLAGS})
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 else()
     set(COMMON_FLAGS ${COMMON_GCC_FLAGS})
 endif()
@@ -15,39 +17,61 @@ endif()
 if (WIN32)
     if (MSVC)
         set(ENV{GTEST_ROOT})
+        set(TOOLCHAIN_BUILD_TYPE "msvc-vs2019")
     endif()
     if (MINGW)
         set(ENV{GTEST_ROOT} $ENV{INSTALL_ROOT}/gtest/1.10.0/mingw64-10.2.0)
+        set(TOOLCHAIN_BUILD_TYPE "mingw64-11.2.0")
     endif()
 endif()
 
 find_package(GTest CONFIG REQUIRED)
 
-set(ENV{ies_DIR} $ENV{INSTALL_ROOT}/ies/latest/mingw64-11.2.0)
-find_package(ies REQUIRED)
+set(ENV{ies_DIR} $ENV{INSTALL_ROOT}/ies/latest/${TOOLCHAIN_BUILD_TYPE})
+find_package(ies CONFIG REQUIRED)
 file(TO_CMAKE_PATH $ENV{ies_DIR} IES_PATH)
 message(STATUS "Found ies: " ${IES_PATH})
 
-# Header only libraries
-set(FMT_INCLUDE_DIRS $ENV{FMT_ROOT}/include)
-set(JSON_INCLUDE_DIRS $ENV{JSON_ROOT}/include)
-
-set(MINGW_LIBRARY_NAMES
-    gcc_s_seh-1 stdc++-6 winpthread-1
-    curl-4 brotlicommon brotlidec crypto-1_1-x64 idn2-0 nghttp2-14 psl-5 ssh2-1 ssl-1_1-x64 zstd iconv-2
-    intl-8 unistring-2
-)
-set(MINGW_LIBRARIES)
-foreach(LIB ${MINGW_LIBRARY_NAMES})
-    set(MINGW_LIB_PATH $ENV{MINGW64_ROOT}/bin/lib${LIB}.dll)
-    if (EXISTS ${MINGW_LIB_PATH} AND NOT IS_DIRECTORY ${MINGW_LIB_PATH})
-        file(TO_CMAKE_PATH ${MINGW_LIB_PATH} FOUND_MINGW_LIB)
-        list(APPEND MINGW_LIBRARIES ${FOUND_MINGW_LIB})
-        message(STATUS "Found MINGW Lib: ${FOUND_MINGW_LIB}")
+if (MINGW)
+    # Header only libraries
+    file(TO_CMAKE_PATH $ENV{FMT_ROOT}/include FMT_INCLUDE_DIRS)
+    if(EXISTS ${FMT_INCLUDE_DIRS}/fmt/format.h)
+       message(STATUS "Found FMT: " ${FMT_INCLUDE_DIRS})
+    else()
+       message(FATAL_ERROR "Not found FMT in " ${FMT_INCLUDE_DIRS})
     endif()
-endforeach(LIB)
 
-list(APPEND MINGW_LIBRARIES $ENV{MINGW64_ROOT}/bin/zlib1.dll)
+    file(TO_CMAKE_PATH $ENV{JSON_ROOT}/include JSON_INCLUDE_DIRS)
+    if(EXISTS ${JSON_INCLUDE_DIRS}/nlohmann/json.hpp)
+       message(STATUS "Found Nlohmann Json: " ${JSON_INCLUDE_DIRS})
+    else()
+       message(FATAL_ERROR "Not found Nlohmann Json in " ${JSON_INCLUDE_DIRS})
+    endif()
+endif()
+if (MSVC)
+    find_package(fmt CONFIG REQUIRED)
+    find_package(nlohmann_json CONFIG REQUIRED)
+    find_package(CURL CONFIG REQUIRED)
+endif()
+
+if (MINGW)
+    set(MINGW_LIBRARY_NAMES
+        gcc_s_seh-1 stdc++-6 winpthread-1
+        curl-4 brotlicommon brotlidec crypto-1_1-x64 idn2-0 nghttp2-14 psl-5 ssh2-1 ssl-1_1-x64 zstd iconv-2
+        intl-8 unistring-2
+    )
+    set(MINGW_LIBRARIES)
+    foreach(LIB ${MINGW_LIBRARY_NAMES})
+        set(MINGW_LIB_PATH $ENV{MINGW64_ROOT}/bin/lib${LIB}.dll)
+        if (EXISTS ${MINGW_LIB_PATH} AND NOT IS_DIRECTORY ${MINGW_LIB_PATH})
+            file(TO_CMAKE_PATH ${MINGW_LIB_PATH} FOUND_MINGW_LIB)
+            list(APPEND MINGW_LIBRARIES ${FOUND_MINGW_LIB})
+            message(STATUS "Found MINGW Lib: ${FOUND_MINGW_LIB}")
+        endif()
+    endforeach(LIB)
+
+    list(APPEND MINGW_LIBRARIES $ENV{MINGW64_ROOT}/bin/zlib1.dll)
+endif()
 
 set_property(GLOBAL PROPERTY PROP_HEADERS)
 set_property(GLOBAL PROPERTY PROP_SOURCES)
@@ -66,10 +90,12 @@ if (NOT MSVC)
     set_target_properties(score2dx PROPERTIES COMPILE_FLAGS "-m64" LINK_FLAGS "-m64")
 endif()
 set_target_properties(score2dx PROPERTIES CXX_VISIBILITY_PRESET hidden)
-target_include_directories(score2dx SYSTEM PUBLIC
-    ${FMT_INCLUDE_DIRS}
-    ${JSON_INCLUDE_DIRS}
-)
+if (MINGW)
+    target_include_directories(score2dx SYSTEM PRIVATE
+        ${FMT_INCLUDE_DIRS}
+        ${JSON_INCLUDE_DIRS}
+    )
+endif()
 target_include_directories(score2dx PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_BINARY_DIR}/exports>"
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}>
@@ -88,11 +114,21 @@ else()
         $<$<CONFIG:RELEASE>:-O2>
     )
 endif()
-target_link_libraries(score2dx
-    stdc++fs
-    ies::ies
-    curl
-)
+if (MINGW)
+    target_link_libraries(score2dx
+        stdc++fs
+        ies::ies
+        curl
+    )
+endif()
+if (MSVC)
+    target_link_libraries(score2dx
+        ies::ies
+        fmt::fmt-header-only
+        nlohmann_json::nlohmann_json
+        CURL::libcurl
+    )
+endif()
 
 add_custom_command(TARGET score2dx POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -107,23 +143,46 @@ add_custom_command(TARGET score2dx POST_BUILD
 add_executable(experiment app/experiment.cpp)
 set_target_properties(experiment PROPERTIES CXX_STANDARD 20)
 target_compile_options(experiment PUBLIC ${COMMON_FLAGS})
-target_link_libraries(experiment score2dx)
+if (MINGW)
+    target_include_directories(experiment SYSTEM PRIVATE ${FMT_INCLUDE_DIRS} ${JSON_INCLUDE_DIRS})
+    target_link_libraries(experiment PRIVATE score2dx)
+endif()
+if (MSVC)
+    target_link_libraries(experiment PRIVATE score2dx fmt::fmt-header-only nlohmann_json::nlohmann_json)
+endif()
 
 add_executable(interactive app/interactive.cpp)
 set_target_properties(interactive PROPERTIES CXX_STANDARD 20)
 target_compile_options(interactive PUBLIC ${COMMON_FLAGS})
-target_link_libraries(interactive score2dx)
+if (MINGW)
+    target_include_directories(interactive SYSTEM PRIVATE ${FMT_INCLUDE_DIRS} ${JSON_INCLUDE_DIRS})
+    target_link_libraries(interactive PRIVATE score2dx)
+endif()
+if (MSVC)
+    target_link_libraries(interactive PRIVATE score2dx fmt::fmt-header-only nlohmann_json::nlohmann_json)
+endif()
 
 add_executable(test-all app/test-all.cpp ${TEST_SOURCES})
-target_include_directories(test-all PUBLIC ${FMT_INCLUDE_DIRS} ${GTEST_INCLUDE_DIRS})
 set_target_properties(test-all PROPERTIES CXX_STANDARD 20)
 target_compile_options(test-all PUBLIC ${COMMON_FLAGS})
-target_link_libraries(test-all GTest::gtest score2dx)
+if (MINGW)
+    target_include_directories(test-all SYSTEM PRIVATE ${FMT_INCLUDE_DIRS} ${JSON_INCLUDE_DIRS})
+    target_link_libraries(test-all PRIVATE GTest::gtest score2dx)
+endif()
+if (MSVC)
+    target_link_libraries(test-all PRIVATE GTest::gtest score2dx fmt::fmt-header-only nlohmann_json::nlohmann_json)
+endif()
 
 add_executable(iidxme app/iidxme.cpp)
 set_target_properties(iidxme PROPERTIES CXX_STANDARD 20)
 target_compile_options(iidxme PUBLIC ${COMMON_FLAGS})
-target_link_libraries(iidxme score2dx)
+if (MINGW)
+    target_include_directories(iidxme SYSTEM PRIVATE ${FMT_INCLUDE_DIRS} ${JSON_INCLUDE_DIRS})
+    target_link_libraries(iidxme PRIVATE score2dx)
+endif()
+if (MSVC)
+    target_link_libraries(iidxme PRIVATE score2dx fmt::fmt-header-only nlohmann_json::nlohmann_json)
+endif()
 
 # Install
 include(GenerateExportHeader)

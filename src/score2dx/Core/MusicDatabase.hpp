@@ -179,4 +179,7 @@ private:
         GenerateActiveVersions(std::size_t beginVersionIndex);
 };
 
+std::string
+ToString(const ies::IntegralRangeList<std::size_t> &availableVersions);
+
 }

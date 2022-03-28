@@ -192,9 +192,9 @@ const
                               << "] " << title << "\n"
                               << inconsistency
                               << "ChartAvailabe version" << ToString(containingAvailableVersionRange) << "\n";
-                    for (auto &[dateTime, musicScore] : musicScoreByDateTime)
+                    for (auto &[debugDateTime, debugMusicScore] : musicScoreByDateTime)
                     {
-                        musicScore.Print();
+                        debugMusicScore.Print();
                     }
                 }
             }

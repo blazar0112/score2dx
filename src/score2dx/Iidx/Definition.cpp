@@ -2,6 +2,7 @@
 
 #include <cctype>
 #include <algorithm>
+#include <array>
 
 #include "fmt/format.h"
 

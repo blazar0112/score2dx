@@ -183,7 +183,7 @@ const
         auto it = mDatabase["titleMapping"][section].find(title);
         if (it!=mDatabase["titleMapping"][section].cend())
         {
-            return it.value();
+            return {it.value()};
         }
     }
 
@@ -199,7 +199,7 @@ const
     auto it = csvMapping.find(title);
     if (it!=csvMapping.cend())
     {
-        return it.value();
+        return {it.value()};
     }
 
     return std::nullopt;
@@ -491,8 +491,9 @@ MusicDatabase::
 GetAvailableVersions(std::size_t musicId)
 const
 {
-    (void)musicId;
-    ies::IntegralRangeList<std::size_t> availableVersions;
+    auto context = GetDbMusicContext(musicId);
+    auto &versions = context.Data->at("availableVersions");
+    auto availableVersions = ToRangeList(versions);
     return availableVersions;
 }
 
@@ -591,7 +592,7 @@ const
                             auto endVersion = beginVersion;
                             if (versions.size()==2)
                             {
-                                auto endVersion = std::stoull(versions[1]);
+                                endVersion = std::stoull(versions[1]);
                                 if (beginVersion>=endVersion)
                                 {
                                     reason = "begin>=end";
@@ -803,6 +804,31 @@ GenerateActiveVersions(std::size_t beginVersionIndex)
             }
         }
     }
+}
+
+std::string
+ToString(const ies::IntegralRangeList<std::size_t> &availableVersions)
+{
+    std::string s;
+    auto ranges = availableVersions.GetRanges();
+    auto isFirst = true;
+    for (auto &range : ranges)
+    {
+        if (!isFirst) s += ", ";
+
+        if (range.size()==1)
+        {
+            s += ToVersionString(range.GetMin());
+        }
+        else
+        {
+            s += ToVersionString(range.GetMin())+"-"+ToVersionString(range.GetMax());
+        }
+
+        isFirst = false;
+    }
+
+    return s;
 }
 
 }

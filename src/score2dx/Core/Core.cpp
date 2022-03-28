@@ -260,7 +260,7 @@ const
             auto &title = musicInfo.GetField(MusicInfoField::Title);
             auto versionIndex = ToIndexes(musicId).first;
             auto versionName = VersionNames[versionIndex];
-            if (versionIndex==0||versionIndex==0)
+            if (versionIndex==0||versionIndex==1)
             {
                 versionName = "1st&substream";
             }
@@ -397,7 +397,6 @@ Import(const std::string &requiredIidxId,
         (void)checkDateTime;
 
         auto firstVersionItem = data.items().begin();
-        auto firstVersion = firstVersionItem.key();
         auto &firstVersionData = firstVersionItem.value();
         if (firstVersionData.empty())
         {
@@ -405,7 +404,6 @@ Import(const std::string &requiredIidxId,
         }
 
         auto firstMusicItem = firstVersionData.items().begin();
-        auto firstMusic = firstMusicItem.key();
         auto &firstMusicData = firstMusicItem.value();
         if (firstMusicData.empty())
         {
@@ -815,7 +813,11 @@ ExportIidxMeData(const std::string &user)
 
                     auto &metadata = json.at("metadata");
                     std::string title = metadata.at("title");
-                    std::size_t versionIndex = metadata.at("version");
+                    std::size_t metaVersionIndex = metadata.at("version");
+                    if (metaVersionIndex!=versionIndex)
+                    {
+                        throw std::runtime_error("metadata version != url version");
+                    }
 
                     auto dbTitle = title;
                     auto findMappedTitle = mMusicDatabase.FindDbTitle(dbTitle);
@@ -838,7 +840,11 @@ ExportIidxMeData(const std::string &user)
                         std::map<Difficulty, std::set<std::size_t>> noUpdateDateVersionsByDifficulty;
 
                         auto iidxMeStyle = ToString(playStyle).substr(0, 6);
-                        std::transform(iidxMeStyle.begin(), iidxMeStyle.end(), iidxMeStyle.begin(), ::tolower);
+                        std::transform(
+                            iidxMeStyle.begin(), iidxMeStyle.end(),
+                            iidxMeStyle.begin(),
+                            [](unsigned char c) { return static_cast<char>(std::tolower(c)); }
+                        );
 
                         if (!ies::Find(json, iidxMeStyle))
                         {
@@ -1122,7 +1128,11 @@ const
         for (auto playStyle : PlayStyleSmartEnum::ToRange())
         {
             auto iidxMeStyle = ToString(playStyle).substr(0, 6);
-            std::transform(iidxMeStyle.begin(), iidxMeStyle.end(), iidxMeStyle.begin(), ::tolower);
+            std::transform(
+                iidxMeStyle.begin(), iidxMeStyle.end(),
+                iidxMeStyle.begin(),
+                [](unsigned char c) { return static_cast<char>(std::tolower(c)); }
+            );
 
             if (!ies::Find(musicData, iidxMeStyle))
             {

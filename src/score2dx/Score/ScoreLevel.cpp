@@ -175,7 +175,11 @@ ToPrettyString(const ScoreLevelRange &scoreLevelRange)
     auto &[scoreLevel, scoreRange] = scoreLevelRange;
 
     auto prettyScoreLevel = ToString(scoreLevel);
-    std::transform(prettyScoreLevel.begin(), prettyScoreLevel.end(), prettyScoreLevel.begin(), ::toupper);
+    std::transform(
+        prettyScoreLevel.begin(), prettyScoreLevel.end(),
+        prettyScoreLevel.begin(),
+        [](unsigned char c) { return static_cast<char>(std::toupper(c)); }
+    );
     if (scoreLevel==ScoreLevel::Min)
     {
         prettyScoreLevel = "F";

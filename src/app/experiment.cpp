@@ -33,9 +33,17 @@ main(int argc, char* argv[])
 
         //core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391\ME\5483-7391)", true, true);
 
-        //core.AddIidxMeUser("blazar");
+        core.AddIidxMeUser("blazar");
 
-        //auto dbMusic = core.GetMusicDatabase().GetDbMusic(19026);
+        //'' 04021: JIVE INTO THE NIGHT
+        //'' 14000: 2hot2eat
+        std::size_t musicId = 29000;
+        auto context = core.GetMusicDatabase().GetDbMusicContext(musicId);
+
+        auto availableVersions = core.GetMusicDatabase().GetAvailableVersions(musicId);
+        std::cout << "Music [" << score2dx::ToMusicIdString(musicId) << "]\n"
+                  << "Title [" << context.Title << "]\n"
+                  << "AvailableVersions: " << score2dx::ToString(availableVersions) << "\n";
         //std::cout << "dbMusic " << dbMusic.Title << "\n";
 
         /*
