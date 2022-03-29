@@ -49,32 +49,6 @@ GetColumnHeaders()
     return headers;
 }
 
-std::size_t
-SplitCsvLine(const std::string &separators,
-             const std::string &input,
-             std::array<std::string, CsvColumnSize> &columns)
-{
-    std::size_t start = 0;
-    std::size_t end = 0;
-    std::size_t index = 0;
-    while ((start = input.find_first_not_of(separators, end))!=std::string::npos)
-    {
-        end = input.find_first_of(separators, start+1);
-        if (end==std::string::npos)
-        {
-            end = input.length();
-        }
-
-        if (index<CsvColumnSize)
-        {
-            columns[index] = input.substr(start, end-start);
-        }
-        ++index;
-    }
-
-    return index;
-}
-
 Csv::
 Csv(const std::string &csvPath,
     const MusicDatabase &musicDatabase,
@@ -128,193 +102,150 @@ Csv(const std::string &csvPath,
         std::string minDateTime;
         std::string maxDateTime;
 
-        std::array<std::string, CsvColumnSize> columns;
-
         std::map<std::string, s2Time::NsCountType> profNsCounts;
 
-        while (std::getline(csvFile, line))
+        try
         {
-            if (line.empty())
+            while (std::getline(csvFile, line))
             {
-                continue;
-            }
-
-            ++lineCount;
-            if (lineCount==1)
-            {
-                continue;
-            }
-
-            auto beginSplitString = s2Time::Now();
-            auto columnCount = SplitCsvLine(",", line, columns);
-            if (columnCount!=CsvColumnSize)
-            {
-                throw std::runtime_error("incorrect columnn size.");
-            }
-            ies::MapAddCount(profNsCounts, "SplitString", s2Time::CountNs(beginSplitString));
-
-            auto &versionName = columns[static_cast<std::size_t>(CsvMusicColumn::Version)];
-            auto &csvTitle = columns[static_cast<std::size_t>(CsvMusicColumn::Title)];
-
-            auto dbTitle = csvTitle;
-            auto beginFindDbTitle = s2Time::Now();
-            if (auto findMappedTitle = musicDatabase.FindCsvDbTitle(csvTitle))
-            {
-                dbTitle = findMappedTitle.value();
-            }
-            ies::MapAddCount(profNsCounts, "FindDbTitle", s2Time::CountNs(beginFindDbTitle));
-
-            auto beginFindVerIndex = s2Time::Now();
-            std::optional<std::size_t> findVersionIndex;
-            if (versionName==Official1stSubVersionName)
-            {
-                findVersionIndex = musicDatabase.Find1stSubVersionIndex(dbTitle);
-            }
-            else
-            {
-                findVersionIndex = FindVersionIndex(versionName);
-            }
-
-            if (!findVersionIndex)
-            {
-                throw std::runtime_error("cannot find "+versionName+" title "+dbTitle+" version index.");
-            }
-
-            auto versionIndex = findVersionIndex.value();
-            ies::MapAddCount(profNsCounts, "FindVerIndex", s2Time::CountNs(beginFindVerIndex));
-
-            auto beginFindMusicIndex = s2Time::Now();
-            auto findMusicIndex = musicDatabase.FindMusicIndex(versionIndex, dbTitle);
-            if (!findMusicIndex)
-            {
-                if (versionIndex==GetLatestVersionIndex())
-                {
-                    std::cout << "Possible ["+ToVersionString(versionIndex)+"] new music title ["+csvTitle+"] not in database, skipped.\n";
-                    continue;
-                } throw std::runtime_error("music title ["+dbTitle+"] is not listed in it's version ["+ToVersionString(versionIndex)+"] in database");
-            }
-
-            auto musicIndex = findMusicIndex.value();
-            ies::MapAddCount(profNsCounts, "FindMusicIndex", s2Time::CountNs(beginFindMusicIndex));
-
-            /*
-            if (checkWithDatabase)
-            {
-                auto musicId = ToMusicId(versionIndex, musicIndex);
-                auto musicInfo = musicDatabase.GetLatestMusicInfo(musicId);
-
-                auto &dbArtist = musicInfo.GetField(MusicInfoField::Artist);
-                auto &csvArtist = columns[static_cast<std::size_t>(CsvMusicColumn::Artist)];
-                if (csvArtist!=dbArtist)
-                {
-                    std::cout << "[" << dbTitle << "] artist mismatch:\n"
-                              << "CSV [" << csvArtist << "]\n"
-                              << "DB [" << dbArtist << "]\n";
-                }
-
-                auto &dbGenre = musicInfo.GetField(MusicInfoField::Genre);
-                auto &csvGenre = columns[static_cast<std::size_t>(CsvMusicColumn::Genre)];
-                if (csvGenre!=dbGenre)
-                {
-                    std::cout << "[" << dbTitle << "] genre mismatch:\n"
-                              << "CSV [" << csvGenre << "]\n"
-                              << "DB [" << dbGenre << "]\n";
-                }
-            }
-            */
-
-
-            auto beginCount = s2Time::Now();
-            lastVersionIndex = versionIndex;
-            ies::MapIncrementCount(versionMusicCounts, versionIndex);
-
-            auto playCount = std::stoull(columns[static_cast<std::size_t>(CsvMusicColumn::PlayCount)]);
-            mTotalPlayCount += playCount;
-
-            auto &dateTime = columns[DateTimeColumnIndex];
-            if (maxDateTime.empty() || dateTime>maxDateTime)
-            {
-                maxDateTime = dateTime;
-            }
-            if (minDateTime.empty() || dateTime<minDateTime)
-            {
-                minDateTime = dateTime;
-            }
-            ies::MapAddCount(profNsCounts, "Count", s2Time::CountNs(beginCount));
-
-            auto beginCheckDateTime = s2Time::Now();
-            auto findActiveVersionIndex = FindVersionIndexFromDateTime(dateTime);
-            if (!findActiveVersionIndex)
-            {
-                std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
-                          << "DateTime: " << dateTime << " is not supported.\n";
-                continue;
-            }
-            auto activeVersionIndex = findActiveVersionIndex.value();
-            ies::MapAddCount(profNsCounts, "CheckDateTime", s2Time::CountNs(beginCheckDateTime));
-
-            auto beginOther = s2Time::Now();
-            auto musicId = ToMusicId(versionIndex, musicIndex);
-            auto itPair = mMusicScores.emplace(
-                std::piecewise_construct,
-                std::forward_as_tuple(musicId),
-                std::forward_as_tuple(ToMusicId(versionIndex, musicIndex), mPlayStyle, playCount, dateTime)
-            );
-            auto &musicScore = itPair.first->second;
-
-            ies::MapAddCount(profNsCounts, "Other", s2Time::CountNs(beginOther));
-
-            auto beginDifficulty = s2Time::Now();
-            for (auto difficulty : DifficultySmartEnum::ToRange())
-            {
-                auto level = columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::Level)];
-                if (level=="0")
+                if (line.empty())
                 {
                     continue;
                 }
 
+                ++lineCount;
+                if (lineCount==1)
+                {
+                    continue;
+                }
+
+                auto csvMusic = ParseCsvLine(line);
+
+                auto dbTitle = csvMusic.Title;
+                if (auto findMappedTitle = musicDatabase.FindCsvDbTitle(csvMusic.Title))
+                {
+                    dbTitle = findMappedTitle.value();
+                }
+
+                std::optional<std::size_t> findVersionIndex = csvMusic.CsvVersionIndex;
+                if (csvMusic.CsvVersionIndex==1)
+                {
+                    findVersionIndex = musicDatabase.Find1stSubVersionIndex(dbTitle);
+                }
+
+                if (!findVersionIndex)
+                {
+                    throw std::runtime_error("cannot find Ver["+ToVersionString(csvMusic.CsvVersionIndex)+"] title "+dbTitle+" version index.");
+                }
+
+                auto versionIndex = findVersionIndex.value();
+
+                auto findMusicIndex = musicDatabase.FindMusicIndex(versionIndex, dbTitle);
+                if (!findMusicIndex)
+                {
+                    if (versionIndex==GetLatestVersionIndex())
+                    {
+                        std::cout << "Possible ["+ToVersionString(versionIndex)+"] new music title ["+csvMusic.Title+"] not in database, skipped.\n";
+                        continue;
+                    }
+                    throw std::runtime_error("music title ["+dbTitle+"] is not listed in it's version ["+ToVersionString(versionIndex)+"] in database");
+                }
+
+                auto musicIndex = findMusicIndex.value();
+
+                /*
                 if (checkWithDatabase)
                 {
-                    auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
-                    auto findChartInfo = musicDatabase.FindChartInfo(versionIndex, dbTitle, styleDifficulty, activeVersionIndex);
-                    if (!findChartInfo)
+                    auto musicId = ToMusicId(versionIndex, musicIndex);
+                    auto musicInfo = musicDatabase.GetLatestMusicInfo(musicId);
+
+                    auto &dbArtist = musicInfo.GetField(MusicInfoField::Artist);
+                    auto &csvArtist = columns[static_cast<std::size_t>(CsvMusicColumn::Artist)];
+                    if (csvArtist!=dbArtist)
                     {
-                        std::cout << "[" << dbTitle << "] Cannot find chart info.\n";
+                        std::cout << "[" << dbTitle << "] artist mismatch:\n"
+                                  << "CSV [" << csvArtist << "]\n"
+                                  << "DB [" << dbArtist << "]\n";
                     }
-                    else
+
+                    auto &dbGenre = musicInfo.GetField(MusicInfoField::Genre);
+                    auto &csvGenre = columns[static_cast<std::size_t>(CsvMusicColumn::Genre)];
+                    if (csvGenre!=dbGenre)
                     {
-                        auto &chartInfo = findChartInfo.value();
-                        auto csvLevel = std::stoi(level);
-                        if (csvLevel!=chartInfo.Level)
-                        {
-                            std::cout << "[" << dbTitle << "] level mismatch:\n"
-                                      << "CSV [" << csvLevel << "]\n"
-                                      << "DB [" << chartInfo.Level << "]\n";
-                        }
+                        std::cout << "[" << dbTitle << "] genre mismatch:\n"
+                                  << "CSV [" << csvGenre << "]\n"
+                                  << "DB [" << dbGenre << "]\n";
                     }
                 }
+                */
 
-                auto &chartScore = musicScore.EnableChartScore(difficulty);
-                chartScore.ExScore = std::stoi(columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::ExScore)]);
-                chartScore.PGreatCount = std::stoi(columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::PGreatCount)]);
-                chartScore.GreatCount = std::stoi(columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::GreatCount)]);
 
-                auto &missCount = columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::MissCount)];
-                if (missCount!="---")
+                lastVersionIndex = versionIndex;
+                ies::MapIncrementCount(versionMusicCounts, versionIndex);
+
+                mTotalPlayCount += csvMusic.PlayCount;
+
+                auto &dateTime = csvMusic.DateTime;
+                if (maxDateTime.empty() || dateTime>maxDateTime)
                 {
-                    chartScore.MissCount = {std::stoi(missCount)};
+                    maxDateTime = dateTime;
                 }
-                //'' HARD failed will have ex score but no miss count.
-
-                auto clearType = columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::ClearType)];
-                chartScore.ClearType = ConvertToClearType(clearType);
-
-                auto &djLevel = columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::DjLevel)];
-                if (djLevel!="---")
+                if (minDateTime.empty() || dateTime<minDateTime)
                 {
-                    chartScore.DjLevel = ToDjLevel(djLevel);
+                    minDateTime = dateTime;
+                }
+
+                auto findActiveVersionIndex = FindVersionIndexFromDateTime(dateTime);
+                if (!findActiveVersionIndex)
+                {
+                    std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
+                              << "DateTime: " << dateTime << " is not supported.\n";
+                    continue;
+                }
+                auto activeVersionIndex = findActiveVersionIndex.value();
+
+                auto musicId = ToMusicId(versionIndex, musicIndex);
+                auto itPair = mMusicScores.emplace(
+                    std::piecewise_construct,
+                    std::forward_as_tuple(musicId),
+                    std::forward_as_tuple(ToMusicId(versionIndex, musicIndex), mPlayStyle, csvMusic.PlayCount, dateTime)
+                );
+                auto &musicScore = itPair.first->second;
+
+                for (auto difficulty : DifficultySmartEnum::ToRange())
+                {
+                    auto difficultyIndex = static_cast<std::size_t>(difficulty);
+                    auto &csvChartScore = csvMusic.ChartScores[difficultyIndex];
+
+                    if (csvChartScore.Level==0)
+                    {
+                        continue;
+                    }
+
+                    auto &chartScore = musicScore.EnableChartScore(difficulty);
+                    chartScore = csvChartScore;
 
                     if (checkWithDatabase)
+                    {
+                        auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
+                        auto findChartInfo = musicDatabase.FindChartInfo(versionIndex, dbTitle, styleDifficulty, activeVersionIndex);
+                        if (!findChartInfo)
+                        {
+                            std::cout << "[" << dbTitle << "] Cannot find chart info.\n";
+                        }
+                        else
+                        {
+                            auto &chartInfo = findChartInfo.value();
+                            if (chartScore.Level!=chartInfo.Level)
+                            {
+                                std::cout << "[" << dbTitle << "] level mismatch:\n"
+                                          << "CSV [" << chartScore.Level << "]\n"
+                                          << "DB [" << chartInfo.Level << "]\n";
+                            }
+                        }
+                    }
+
+                    if (checkWithDatabase && chartScore.ExScore!=0)
                     {
                         auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
                         auto findChartInfo = musicDatabase.FindChartInfo(
@@ -363,8 +294,12 @@ Csv(const std::string &csvPath,
                     }
                 }
             }
-
-            ies::MapAddCount(profNsCounts, "Difficulty", s2Time::CountNs(beginDifficulty));
+        }
+        catch (const std::exception &e)
+        {
+            throw std::runtime_error("ParseCsvLine exception:\n    "
+                                     +std::string{e.what()}+"\n"
+                                     +"Line ("+std::to_string(lineCount)+"): "+line+"\n");
         }
 
         mVersion = VersionNames.at(lastVersionIndex);

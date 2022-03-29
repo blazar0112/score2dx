@@ -18,7 +18,7 @@ template <typename T>
 void
 CheckedParse(std::string_view column, T &value, const std::string &columnName)
 {
-    auto result = std::from_chars(column.begin(), column.end(), value);
+    auto result = std::from_chars(column.data(), column.data()+column.size(), value);
     if (result.ec!=std::errc())
     {
         throw std::runtime_error("cannot parse column ["+columnName+"].");
@@ -182,6 +182,7 @@ ParseCsvLine(std::string_view csvLine)
                 }
                 case CsvScoreColumn::MissCount:
                 {
+                    //'' HARD failed will have ex score but no miss count.
                     if (column!="---")
                     {
                         int missCount{0};

@@ -1,6 +1,9 @@
 # Changelog of score2dx
 
 - Ongoing [2022-03-25]:
+    - Rewrite CSV parse line mechanism:
+        - Improve from 7.8ms to 5.5ms (MINGW).
+        - MSVC build is slower (8ms).
     - Improve CSV parse line mechanism:
         - Use array instead of vector.
             - Improve from 11ms to 9ms when loading CSV.
