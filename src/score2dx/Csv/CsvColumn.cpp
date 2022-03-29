@@ -76,9 +76,9 @@ ParseCsvLine(std::string_view csvLine)
     std::size_t end = 0;
     std::size_t index = 0;
 
-    while ((start = csvLine.find_first_not_of(",", end))!=std::string_view::npos)
+    while ((start = csvLine.find_first_not_of(',', end))!=std::string_view::npos)
     {
-        end = csvLine.find_first_of(",", start+1);
+        end = csvLine.find(',', start+1);
         if (end==std::string_view::npos)
         {
             end = csvLine.length();

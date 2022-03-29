@@ -1,7 +1,12 @@
 # Changelog of score2dx
 
 - Ongoing [2022-03-25]:
-    - Rewrite CSV parse line mechanism:
+    - Improve CSV parse line mechanism:
+        - Since CSV files are usually 300KB, read entire file is plausible.
+        - MINGW: 4.5ms.
+        - MSVC: 5.2ms.
+    - Improve CSV parse line mechanism:
+        - Rewrite as ParseCsvLine.
         - Improve from 7.8ms to 5.5ms (MINGW).
         - MSVC build is slower (8ms).
     - Improve CSV parse line mechanism:

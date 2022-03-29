@@ -7,6 +7,7 @@
 #include <map>
 #include <set>
 #include <string_view>
+#include <sstream>
 
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/Common/SmartEnum.hxx"
@@ -94,7 +95,6 @@ Csv(const std::string &csvPath,
         //'' Map of {VersionIndex, MusicCount}.
         std::map<std::size_t, int> versionMusicCounts;
         std::ifstream csvFile{csvPath};
-        std::string line;
         int lineCount = 0;
 
         std::size_t lastVersionIndex = 0;
@@ -104,13 +104,24 @@ Csv(const std::string &csvPath,
 
         std::map<std::string, s2Time::NsCountType> profNsCounts;
 
+        auto fileSize = fs::file_size(mPath);
+        std::vector<char> bytes(fileSize);
+        csvFile.read(bytes.data(), fileSize);
+        std::string buffer(bytes.data(), bytes.size());
+        std::string_view bufferView{buffer};
+        auto lineView = bufferView;
+
         try
         {
-            while (std::getline(csvFile, line))
+            std::size_t start = 0;
+            std::size_t end = 0;
+
+            while ((start = bufferView.find_first_not_of('\n', end))!=std::string_view::npos)
             {
-                if (line.empty())
+                end = bufferView.find('\n', start+1);
+                if (end==std::string_view::npos)
                 {
-                    continue;
+                    end = buffer.length();
                 }
 
                 ++lineCount;
@@ -119,7 +130,9 @@ Csv(const std::string &csvPath,
                     continue;
                 }
 
-                auto csvMusic = ParseCsvLine(line);
+                lineView = bufferView.substr(start, end-start);
+
+                auto csvMusic = ParseCsvLine(lineView);
 
                 auto dbTitle = csvMusic.Title;
                 if (auto findMappedTitle = musicDatabase.FindCsvDbTitle(csvMusic.Title))
@@ -299,7 +312,7 @@ Csv(const std::string &csvPath,
         {
             throw std::runtime_error("ParseCsvLine exception:\n    "
                                      +std::string{e.what()}+"\n"
-                                     +"Line ("+std::to_string(lineCount)+"): "+line+"\n");
+                                     +"Line ("+std::to_string(lineCount)+"): "+std::string{lineView}+"\n");
         }
 
         mVersion = VersionNames.at(lastVersionIndex);
