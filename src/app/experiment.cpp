@@ -8,6 +8,7 @@
 
 #include "score2dx/Core/Core.hpp"
 #include "score2dx/Csv/Csv.hpp"
+#include "score2dx/Csv/CsvColumn.hpp"
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/PlayerScore.hpp"
 
@@ -33,7 +34,7 @@ main(int argc, char* argv[])
 
         //core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391\ME\5483-7391)", true, true);
 
-        core.AddIidxMeUser("blazar");
+        //core.AddIidxMeUser("blazar");
 
         //'' 04021: JIVE INTO THE NIGHT
         //'' 14000: 2hot2eat
@@ -45,6 +46,11 @@ main(int argc, char* argv[])
                   << "Title [" << context.Title << "]\n"
                   << "AvailableVersions: " << score2dx::ToString(availableVersions) << "\n";
         //std::cout << "dbMusic " << dbMusic.Title << "\n";
+
+        Print(score2dx::ParseCsvLine("CastHour,Game Changers,HARD MIXTURE,Yuta Imai,6,0,0,0,0,---,NO PLAY,---,4,691,312,67,1,FULLCOMBO CLEAR,AAA,8,1305,562,181,11,EASY CLEAR,AA,11,2018,822,374,63,ASSIST CLEAR,A,0,0,0,0,---,NO PLAY,---,2021-11-27 16:03"));
+        Print(score2dx::ParseCsvLine("CastHour,Blue Bird feat. Kanae Asaba,LATIN FUSION POP,Nhato,4,0,0,0,0,---,NO PLAY,---,4,550,252,46,0,FULLCOMBO CLEAR,AAA,6,1131,515,101,1,FULLCOMBO CLEAR,AAA,8,1526,671,184,3,EASY CLEAR,AA,0,0,0,0,---,NO PLAY,---,2021-11-13 13:57"));
+        Print(score2dx::ParseCsvLine("CastHour,Brave Spirits,MELODIC RIDDIM,MK,3,0,0,0,0,---,NO PLAY,---,4,679,319,41,0,FULLCOMBO CLEAR,AAA,8,1298,588,122,1,FULLCOMBO CLEAR,AAA,10,1848,749,350,21,EASY CLEAR,A,0,0,0,0,---,NO PLAY,---,2021-12-04 15:39"));
+        Print(score2dx::ParseCsvLine("CastHour,DISPARATE,CYBERPUNK,BEMANI Sound Team \"Captain Sonic\",4,0,0,0,0,---,NO PLAY,---,5,980,443,94,1,FULLCOMBO CLEAR,AAA,9,1679,747,185,2,FULLCOMBO CLEAR,AA,11,1881,757,367,59,EASY CLEAR,A,0,0,0,0,---,NO PLAY,---,2021-12-04 15:33"));
 
         /*
         core.AnalyzeActivity("5483-7391", "2019-10-13 00:00", "2019-10-13 23:59");

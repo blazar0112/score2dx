@@ -13,8 +13,6 @@
 namespace score2dx
 {
 
-const std::string Official1stSubVersionName = "1st&substream";
-
 struct DbMusicContext
 {
     std::size_t MusicId;

@@ -8,7 +8,8 @@ ToString(const ChartScore &chartScore)
 {
     std::string s{"ChartScore {"};
 
-    s += "Clear: "+ToString(chartScore.ClearType);
+    s += "Level: "+std::to_string(chartScore.Level);
+    s += ", Clear: "+ToString(chartScore.ClearType);
     s += ", DjLevel: "+ToString(chartScore.DjLevel);
     s += ", Score: "+std::to_string(chartScore.ExScore);
     s += " ("+std::to_string(chartScore.PGreatCount);

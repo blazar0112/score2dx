@@ -17,6 +17,7 @@
 
 #include "nlohmann/json.hpp"
 
+#include "score2dx/Csv/CsvColumn.hpp"
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/MusicScore.hpp"
@@ -27,45 +28,6 @@ namespace s2Time = ies::Time;
 
 namespace score2dx
 {
-
-//'' columns:
-//'' english_header_start_part = ['version', 'title', 'genre', 'artist', 'play count']
-//'' english_header_end_part = ['last play date time']
-//'' difficulty_list = ['beginner', 'normal', 'hyper', 'another', 'leggendaria']
-//'' detail_list = ['level', 'score', 'pgreat', 'great', 'miss count', 'clear type', 'dj level']
-//'' english_header = [difficulty+' '+detail for difficulty in difficulty_list for detail in detail_list]
-//'' english_header = english_header_start_part+english_header+english_header_end_part
-
-//! @brief MusicColumn = ColumnIndex
-IES_SMART_ENUM(CsvMusicColumn,
-    Version,
-    Title,
-    Genre,
-    Artist,
-    PlayCount
-);
-
-//! @brief Each Difficulty have ScoreColumns.
-IES_SMART_ENUM(CsvScoreColumn,
-    Level,
-    ExScore,
-    PGreatCount,
-    GreatCount,
-    MissCount,
-    ClearType,
-    DjLevel
-);
-
-std::size_t
-ToColumnIndex(Difficulty difficulty, CsvScoreColumn scoreColumn)
-{
-    return CsvMusicColumnSmartEnum::Size()
-           +static_cast<std::size_t>(difficulty)*CsvScoreColumnSmartEnum::Size()
-           +static_cast<std::size_t>(scoreColumn);
-}
-
-constexpr std::size_t DateTimeColumnIndex = CsvMusicColumnSmartEnum::Size()+DifficultySmartEnum::Size()*CsvScoreColumnSmartEnum::Size();
-constexpr std::size_t CsvColumnSize = DateTimeColumnIndex+1;
 
 std::map<std::size_t, std::string>
 GetColumnHeaders()
@@ -79,7 +41,7 @@ GetColumnHeaders()
     {
         for (auto scoreColumn : CsvScoreColumnSmartEnum::ToRange())
         {
-            headers[ToColumnIndex(difficulty, scoreColumn)] = ToString(difficulty)+ToString(scoreColumn);
+            headers[ToCsvColumnIndex(difficulty, scoreColumn)] = ToString(difficulty)+ToString(scoreColumn);
         }
     }
     headers[DateTimeColumnIndex] = "DateTime";
@@ -305,7 +267,7 @@ Csv(const std::string &csvPath,
             auto beginDifficulty = s2Time::Now();
             for (auto difficulty : DifficultySmartEnum::ToRange())
             {
-                auto level = columns[ToColumnIndex(difficulty, CsvScoreColumn::Level)];
+                auto level = columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::Level)];
                 if (level=="0")
                 {
                     continue;
@@ -333,21 +295,21 @@ Csv(const std::string &csvPath,
                 }
 
                 auto &chartScore = musicScore.EnableChartScore(difficulty);
-                chartScore.ExScore = std::stoi(columns[ToColumnIndex(difficulty, CsvScoreColumn::ExScore)]);
-                chartScore.PGreatCount = std::stoi(columns[ToColumnIndex(difficulty, CsvScoreColumn::PGreatCount)]);
-                chartScore.GreatCount = std::stoi(columns[ToColumnIndex(difficulty, CsvScoreColumn::GreatCount)]);
+                chartScore.ExScore = std::stoi(columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::ExScore)]);
+                chartScore.PGreatCount = std::stoi(columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::PGreatCount)]);
+                chartScore.GreatCount = std::stoi(columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::GreatCount)]);
 
-                auto &missCount = columns[ToColumnIndex(difficulty, CsvScoreColumn::MissCount)];
+                auto &missCount = columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::MissCount)];
                 if (missCount!="---")
                 {
                     chartScore.MissCount = {std::stoi(missCount)};
                 }
                 //'' HARD failed will have ex score but no miss count.
 
-                auto clearType = columns[ToColumnIndex(difficulty, CsvScoreColumn::ClearType)];
+                auto clearType = columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::ClearType)];
                 chartScore.ClearType = ConvertToClearType(clearType);
 
-                auto &djLevel = columns[ToColumnIndex(difficulty, CsvScoreColumn::DjLevel)];
+                auto &djLevel = columns[ToCsvColumnIndex(difficulty, CsvScoreColumn::DjLevel)];
                 if (djLevel!="---")
                 {
                     chartScore.DjLevel = ToDjLevel(djLevel);

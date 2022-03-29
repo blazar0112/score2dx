@@ -12,6 +12,7 @@ namespace score2dx
 
 struct ChartScore
 {
+    int Level{0};
     ClearType ClearType{ClearType::NO_PLAY};
     DjLevel DjLevel{DjLevel::F};
     int ExScore{0};
