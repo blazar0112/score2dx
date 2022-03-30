@@ -1,6 +1,10 @@
 # Changelog of score2dx
 
-- Ongoing [2022-03-25]:
+- Ongoing [2022-03-31]:
+    - Optimize FindScoreLevelDiff:
+        - Reduce Import and Analyze time:
+        - Import: 270ms -> 162ms.
+        - Analyze: 235ms -> 189ms.
     - Improve CSV parse line mechanism:
         - Since CSV files are usually 300KB, read entire file is plausible.
         - MINGW: 4.5ms.

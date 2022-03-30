@@ -104,18 +104,19 @@ FindScoreLevelDiff(int note, int exScore)
     //'' in set of {0, 1, 2, ..., 16, 17, 18}, form range of [prev, next), find key in set
     //'' if key is even, is [Level, half Level), diff = score - begin, Range = Level Plus (Or At Level)
     //''           odd      [half lower Level, Level), diff = end - score, Range = Level Minus
-    std::set<int> keyScores;
-    for (auto i : IntRange{0, 18+1})
+    //std::set<int> keyScores;
+    std::array<int, 18+1> keyScores;
+    for (auto i : IndexRange{0, keyScores.size()})
     {
         auto keyScore = static_cast<int>(std::ceil(static_cast<double>(maxScore)*i/18));
-        keyScores.emplace(keyScore);
+        keyScores[i] = keyScore;
     }
 
     //'' find range [RLB, UB) contains exScore
     //'' begin is first value <= score. (RLB)
     //'' end is first value > score. (UB)
 
-    auto upperBound = keyScores.upper_bound(exScore);
+    auto upperBound = std::upper_bound(keyScores.begin(), keyScores.end(), exScore);
     //'' is only possible if score >= maxScore.
     if (upperBound==keyScores.end())
     {
@@ -134,7 +135,15 @@ FindScoreLevelDiff(int note, int exScore)
     auto beginScore = *reverseLowerBound;
     auto endScore = *upperBound;
 
-    auto index = std::distance(keyScores.begin(), keyScores.find(beginScore));
+    std::size_t index = 0;
+    for (auto i : IndexRange{0, keyScores.size()})
+    {
+        if (beginScore==keyScores[i])
+        {
+            index = i;
+            break;
+        }
+    }
 
     auto scoreLevel = ScoreLevel::F;
     auto scoreRange = ScoreRange::AtLevel;
