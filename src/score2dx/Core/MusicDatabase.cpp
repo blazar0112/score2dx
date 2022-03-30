@@ -19,42 +19,6 @@ namespace s2Time = ies::Time;
 namespace
 {
 
-//! @brief Convert non-CS availableVersions to range list.
-ies::IntegralRangeList<std::size_t>
-ToRangeList(const std::string &availableVersions)
-{
-    ies::IntegralRangeList<std::size_t> rangeList;
-
-    if (ies::Find(availableVersions, "cs"))
-    {
-        return rangeList;
-    }
-
-    auto tokens = ies::SplitString(", ", availableVersions);
-    for (auto &token : tokens)
-    {
-        if (token.size()==2)
-        {
-            auto versionIndex = std::stoull(token);
-            rangeList.AddRange({versionIndex, versionIndex+1});
-        }
-        //'' for 00-29 like case, note it's range [00, 29], not [00, 29).
-        else if (token.size()==5)
-        {
-            auto beginVersionIndex = std::stoull(token.substr(0, 2));
-            auto endVersionIndex = std::stoull(token.substr(3, 2));
-            rangeList.AddRange({beginVersionIndex, endVersionIndex+1});
-        }
-        else
-        {
-            std::cout << ies::FormatString(tokens) << std::endl;
-            throw std::runtime_error("incorrect availableVersions "+availableVersions);
-        }
-    }
-
-    return rangeList;
-}
-
 /*
 bool
 IsActive(std::size_t activeVersionIndex, const std::string &availableVersions)
@@ -823,6 +787,41 @@ ToString(const ies::IntegralRangeList<std::size_t> &availableVersions)
     }
 
     return s;
+}
+
+ies::IntegralRangeList<std::size_t>
+ToRangeList(const std::string &availableVersions)
+{
+    ies::IntegralRangeList<std::size_t> rangeList;
+
+    if (ies::Find(availableVersions, "cs"))
+    {
+        return rangeList;
+    }
+
+    auto tokens = ies::SplitString(", ", availableVersions);
+    for (auto &token : tokens)
+    {
+        if (token.size()==2)
+        {
+            auto versionIndex = std::stoull(token);
+            rangeList.AddRange({versionIndex, versionIndex+1});
+        }
+        //'' for 00-29 like case, note it's range [00, 29], not [00, 29).
+        else if (token.size()==5)
+        {
+            auto beginVersionIndex = std::stoull(token.substr(0, 2));
+            auto endVersionIndex = std::stoull(token.substr(3, 2));
+            rangeList.AddRange({beginVersionIndex, endVersionIndex+1});
+        }
+        else
+        {
+            std::cout << ies::FormatString(tokens) << std::endl;
+            throw std::runtime_error("incorrect availableVersions "+availableVersions);
+        }
+    }
+
+    return rangeList;
 }
 
 }
