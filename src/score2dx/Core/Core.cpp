@@ -423,6 +423,7 @@ Import(const std::string &requiredIidxId,
                 }
 
                 auto [versionIndex, musicIndex] = mMusicDatabase.FindIndexes(versionName, dbTitle);
+                auto musicId = ToMusicId(versionIndex, musicIndex);
 
                 for (auto &[dateTime, recordData] : musicData.items())
                 {
@@ -430,7 +431,7 @@ Import(const std::string &requiredIidxId,
 
                     MusicScore musicScore
                     {
-                        ToMusicId(versionIndex, musicIndex),
+                        musicId,
                         metaPlayStyle,
                         playCount,
                         dateTime
@@ -479,8 +480,7 @@ Import(const std::string &requiredIidxId,
                         }
 
                         auto findChartInfo = mMusicDatabase.FindChartInfo(
-                            versionIndex,
-                            dbTitle,
+                            musicId,
                             styleDifficulty,
                             activeVersionIndex
                         );
@@ -501,7 +501,7 @@ Import(const std::string &requiredIidxId,
                             throw std::runtime_error("cannot find chart info");
                         }
 
-                        auto &chartInfo = findChartInfo.value();
+                        auto &chartInfo = *findChartInfo;
                         if (chartInfo.Note<=0)
                         {
                             std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
@@ -826,14 +826,14 @@ ExportIidxMeData(const std::string &user)
                         dbTitle = findMappedTitle.value();
                     }
 
-                    auto findMusicIndex = mMusicDatabase.FindMusicIndex(versionIndex, dbTitle);
-                    if (!findMusicIndex)
+                    auto findContext = mMusicDatabase.FindDbMusicContext(versionIndex, dbTitle);
+                    if (!findContext)
                     {
                         std::cout << "IIDXME [" << iidxmeMid << "][" << dbTitle << "] cannot find in music db.\n";
                         continue;
                     }
 
-                    auto musicId = ToMusicId(versionIndex, findMusicIndex.value());
+                    auto &context = *findContext;
 
                     for (auto playStyle : PlayStyleSmartEnum::ToRange())
                     {
@@ -1008,7 +1008,7 @@ ExportIidxMeData(const std::string &user)
                                     chartScore.ExScore = score;
                                 }
 
-                                playerScore.AddChartScore(musicId, playStyle, difficulty, dateTime, chartScore);
+                                playerScore.AddChartScore(context.MusicId, playStyle, difficulty, dateTime, chartScore);
                             }
                         }
                     }
@@ -1089,15 +1089,16 @@ const
             */
         }
 
-        auto findMusicIndex = mMusicDatabase.FindMusicIndex(versionIndex, dbTitle);
-        if (!findMusicIndex)
+        auto findContext = mMusicDatabase.FindDbMusicContext(versionIndex, dbTitle);
+        if (!findContext)
         {
             std::cout << "IIDXME [" << iidxMeMusicId << "][" << dbTitle << "] cannot find in music db.\n";
+            continue;
         }
 
-        auto musicId = ToMusicId(versionIndex, findMusicIndex.value());
+        auto &context = *findContext;
 
-        auto musicInfo = mMusicDatabase.GetLatestMusicInfo(musicId);
+        auto musicInfo = mMusicDatabase.GetLatestMusicInfo(context.MusicId);
         /*
         if (findMappedTitle && !musicInfo.GetField(MusicInfoField::DisplayTitle).empty())
         {

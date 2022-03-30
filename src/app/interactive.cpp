@@ -79,10 +79,10 @@ main(int argc, char* argv[])
                 if (tokens.size()>=2)
                 {
                     auto versionIndex = std::stoull(tokens[1]);
-                    auto &versionMusics = musicDatabase.GetAllTimeMusics().at(versionIndex);
+                    auto &versionMusics = musicDatabase.GetAllTimeMusicContexts().at(versionIndex);
                     for (auto i : IndexRange{0, versionMusics.size()})
                     {
-                        std::cout << "["+fmt::format("{:03}", i)+"] " << versionMusics[i] << "\n";
+                        std::cout << "["+fmt::format("{:03}", i)+"] " << versionMusics[i].Title << "\n";
                     }
                 }
                 else

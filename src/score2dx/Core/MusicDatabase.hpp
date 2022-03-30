@@ -30,9 +30,9 @@ public:
         GetFilename()
         const;
 
-    //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
-        const std::vector<std::vector<std::string>> &
-        GetAllTimeMusics()
+    //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, DbMusicContext}}.
+        const std::vector<std::vector<DbMusicContext>> &
+        GetAllTimeMusicContexts()
         const;
 
     //! @brief Find if title is database title:
@@ -74,11 +74,6 @@ public:
         Find1stSubVersionIndex(const std::string &dbTitle)
         const;
 
-    //! @brief Find music index in version musics.
-        std::optional<std::size_t>
-        FindMusicIndex(std::size_t versionIndex, const std::string &dbTitle)
-        const;
-
     //! @brief Find Pair of {VersionIndex, MusicIndex} by versionName, and dbTitle.
     //! versionName can be Official1stSubVersionName.
         std::pair<std::size_t, std::size_t>
@@ -114,17 +109,13 @@ public:
         FindActiveVersion(std::size_t activeVersionIndex)
         const;
 
-    //! @brief Find title's style difficulty's ChartInfo at activeVersion.
-    //! Does not consider cs music table.
-    //! @return ChartInfo if find, otherwise nullopt if:
+    //! @brief Find music's styleDifficulty ChartInfo at activeVersion.
+    //! @return ChartInfo if find, otherwise nullptr if:
     //!     1. title is not available at that version.
     //!     2. title has no such style difficulty.
     //!     3. that style difficulty is not available at that version.
-    //! @note User need make sure dbTitle is in db by using FindDbTitle before calling this.
-    //! @throw Throws if dbTitle is not in db.
-        std::optional<ChartInfo>
-        FindChartInfo(std::size_t titleVersionIndex,
-                      const std::string &dbTitle,
+        const ChartInfo*
+        FindChartInfo(std::size_t musicId,
                       StyleDifficulty styleDifficulty,
                       std::size_t activeVersionIndex)
         const;
@@ -150,7 +141,11 @@ public:
         CheckValidity()
         const;
 
-        DbMusicContext
+        const DbMusicContext*
+        FindDbMusicContext(std::size_t versionIndex, const std::string &dbTitle)
+        const;
+
+        const DbMusicContext &
         GetDbMusicContext(std::size_t musicId)
         const;
 
@@ -158,8 +153,8 @@ private:
     std::string mDatabaseFilename{"table/MusicDatabase29_2022-03-25.json"};
     Json mDatabase;
 
-    //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
-    std::vector<std::vector<std::string>> mAllTimeMusics;
+    //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, DbMusicContext}}.
+    std::vector<std::vector<DbMusicContext>> mAllTimeMusicContexts;
 
     //! @brief Cache all 00 and 01 musics to lookup version index.
     //! Map of {DbTitle Version="00" or "01", versionIndex}.
@@ -175,6 +170,10 @@ private:
     //! @brief Generate all active versions between version range [begin, latest].
         void
         GenerateActiveVersions(std::size_t beginVersionIndex);
+
+        const std::string &
+        GetTitle(std::size_t musicId)
+        const;
 };
 
 std::string

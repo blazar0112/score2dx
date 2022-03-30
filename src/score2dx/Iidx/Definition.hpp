@@ -107,6 +107,14 @@ ToMusicId(std::size_t versionIndex,
 std::pair<std::size_t, std::size_t>
 ToIndexes(std::size_t musicId);
 
+//! @brief Use ToIndexes() instead if need both versionIndex and musicIndex.
+std::size_t
+GetVersionIndex(std::size_t musicId);
+
+//! @brief Use ToIndexes() instead if need both versionIndex and musicIndex.
+std::size_t
+GetMusicIndex(std::size_t musicId);
+
 std::string
 ToMusicIdString(std::size_t musicId);
 

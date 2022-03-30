@@ -140,6 +140,11 @@ Csv(const std::string &csvPath,
                     dbTitle = findMappedTitle.value();
                 }
 
+                if (csvMusic.CsvVersionIndex==0)
+                {
+                    throw std::runtime_error("cannot find version index.");
+                }
+
                 std::optional<std::size_t> findVersionIndex = csvMusic.CsvVersionIndex;
                 if (csvMusic.CsvVersionIndex==1)
                 {
@@ -153,8 +158,8 @@ Csv(const std::string &csvPath,
 
                 auto versionIndex = findVersionIndex.value();
 
-                auto findMusicIndex = musicDatabase.FindMusicIndex(versionIndex, dbTitle);
-                if (!findMusicIndex)
+                auto findContext = musicDatabase.FindDbMusicContext(versionIndex, dbTitle);
+                if (!findContext)
                 {
                     if (versionIndex==GetLatestVersionIndex())
                     {
@@ -164,7 +169,7 @@ Csv(const std::string &csvPath,
                     throw std::runtime_error("music title ["+dbTitle+"] is not listed in it's version ["+ToVersionString(versionIndex)+"] in database");
                 }
 
-                auto musicIndex = findMusicIndex.value();
+                auto &context = *findContext;
 
                 /*
                 if (checkWithDatabase)
@@ -217,11 +222,10 @@ Csv(const std::string &csvPath,
                 }
                 auto activeVersionIndex = findActiveVersionIndex.value();
 
-                auto musicId = ToMusicId(versionIndex, musicIndex);
                 auto itPair = mMusicScores.emplace(
                     std::piecewise_construct,
-                    std::forward_as_tuple(musicId),
-                    std::forward_as_tuple(ToMusicId(versionIndex, musicIndex), mPlayStyle, csvMusic.PlayCount, dateTime)
+                    std::forward_as_tuple(context.MusicId),
+                    std::forward_as_tuple(context.MusicId, mPlayStyle, csvMusic.PlayCount, dateTime)
                 );
                 auto &musicScore = itPair.first->second;
 
@@ -241,14 +245,14 @@ Csv(const std::string &csvPath,
                     if (checkWithDatabase)
                     {
                         auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
-                        auto findChartInfo = musicDatabase.FindChartInfo(versionIndex, dbTitle, styleDifficulty, activeVersionIndex);
+                        auto findChartInfo = musicDatabase.FindChartInfo(context.MusicId, styleDifficulty, activeVersionIndex);
                         if (!findChartInfo)
                         {
                             std::cout << "[" << dbTitle << "] Cannot find chart info.\n";
                         }
                         else
                         {
-                            auto &chartInfo = findChartInfo.value();
+                            auto &chartInfo = *findChartInfo;
                             if (chartScore.Level!=chartInfo.Level)
                             {
                                 std::cout << "[" << dbTitle << "] level mismatch:\n"
@@ -262,8 +266,7 @@ Csv(const std::string &csvPath,
                     {
                         auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
                         auto findChartInfo = musicDatabase.FindChartInfo(
-                            versionIndex,
-                            dbTitle,
+                            context.MusicId,
                             styleDifficulty,
                             activeVersionIndex
                         );
@@ -277,7 +280,7 @@ Csv(const std::string &csvPath,
                             throw std::runtime_error("cannot find chart info");
                         }
 
-                        auto &chartInfo = findChartInfo.value();
+                        auto &chartInfo = *findChartInfo;
                         if (chartInfo.Note<=0)
                         {
                             std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
