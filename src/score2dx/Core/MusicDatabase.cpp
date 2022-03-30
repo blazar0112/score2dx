@@ -426,13 +426,13 @@ std::optional<ies::IndexRange>
 MusicDatabase::
 FindContainingAvailableVersionRange(std::size_t musicId,
                                     StyleDifficulty styleDifficulty,
-                                    std::size_t versionIndex)
+                                    std::size_t containingVersionIndex)
 const
 {
-    auto dbMusicContext = GetDbMusicContext(musicId);
-    auto &dbMusic = *dbMusicContext.Data;
+    auto &context = GetDbMusicContext(musicId);
+    auto &dbMusic = *context.Data;
 
-    auto findDiffInfo = ies::Find(dbMusic["difficulty"], ToString(styleDifficulty));
+    auto findDiffInfo = ies::Find(dbMusic.at("difficulty"), ToString(styleDifficulty));
     if (!findDiffInfo)
     {
         std::cout << "music id ["+ToMusicIdString(musicId)+"] has not difficulty ["+ToString(styleDifficulty)+"].\n";
@@ -446,7 +446,7 @@ const
         auto rangeList = ToRangeList(chartVersions);
         for (auto range : rangeList.GetRanges())
         {
-            if (range.IsInRange(versionIndex))
+            if (range.IsInRange(containingVersionIndex))
             {
                 return range;
             }

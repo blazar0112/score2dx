@@ -126,10 +126,13 @@ public:
                     std::size_t versionIndex)
         const;
 
+    //! @brief Find avaiableVersionRange contains containingVersionIndex of music.
+    //! e.g. music is available [[15, 20], [24], [28, 29]]
+    //! FindContainingAvailableVersionRange(Ver=17) returns IndexRange{15, 21}.
         std::optional<ies::IndexRange>
         FindContainingAvailableVersionRange(std::size_t musicId,
                                             StyleDifficulty styleDifficulty,
-                                            std::size_t versionIndex)
+                                            std::size_t containingVersionIndex)
         const;
 
         ies::IntegralRangeList<std::size_t>
