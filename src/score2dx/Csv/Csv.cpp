@@ -134,11 +134,14 @@ Csv(const std::string &csvPath,
 
                 auto csvMusic = ParseCsvLine(lineView);
 
-                auto dbTitle = csvMusic.Title;
-                if (auto findMappedTitle = musicDatabase.FindCsvDbTitle(csvMusic.Title))
+                auto dbTitlePtr = &csvMusic.Title;
+                auto findMappedTitle = musicDatabase.FindCsvDbTitle(csvMusic.Title);
+                if (findMappedTitle)
                 {
-                    dbTitle = findMappedTitle.value();
+                    dbTitlePtr = &findMappedTitle.value();
                 }
+
+                auto &dbTitle = *dbTitlePtr;
 
                 if (csvMusic.CsvVersionIndex==0)
                 {

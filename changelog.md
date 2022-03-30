@@ -1,6 +1,10 @@
 # Changelog of score2dx
 
 - Ongoing [2022-03-31]:
+    - Improve CSV parse line mechanism:
+        - Avoid copy dbTitle.
+        - MINGW: 4.109 ms
+        - MSVC: 4.623 ms
     - Add test for ToRangeList and try to optimize FindContainingAvailableVersionRange.
         - Result not better or worse.
         - Note: run in VS debug console may be faster due to locking pages.
