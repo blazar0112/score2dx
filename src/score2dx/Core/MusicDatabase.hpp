@@ -97,10 +97,6 @@ public:
         IsCsMusic(std::size_t musicId)
         const;
 
-        const Json*
-        FindDbMusic(std::size_t versionIndex, const std::string &title)
-        const;
-
         const std::map<std::size_t, ActiveVersion> &
         GetActiveVersions()
         const;
@@ -173,6 +169,10 @@ private:
     //! @brief Generate all active versions between version range [begin, latest].
         void
         GenerateActiveVersions(std::size_t beginVersionIndex);
+
+        const Json*
+        FindDbMusic(std::size_t versionIndex, const std::string &title)
+        const;
 
         const std::string &
         GetTitle(std::size_t musicId)
