@@ -8,24 +8,9 @@
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/Time/TimeUtilFormat.hxx"
 
+#include "score2dx/Core/CheckedParse.hxx"
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Iidx/Version.hpp"
-
-namespace
-{
-
-template <typename T>
-void
-CheckedParse(std::string_view column, T &value, const std::string &columnName)
-{
-    auto result = std::from_chars(column.data(), column.data()+column.size(), value);
-    if (result.ec!=std::errc())
-    {
-        throw std::runtime_error("cannot parse column ["+columnName+"].");
-    }
-}
-
-}
 
 namespace score2dx
 {
