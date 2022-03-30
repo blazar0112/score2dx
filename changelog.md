@@ -1,6 +1,10 @@
 # Changelog of score2dx
 
 - Ongoing [2022-03-31]:
+    - Add test for ToRangeList and try to optimize FindContainingAvailableVersionRange.
+        - Result not better or worse.
+        - Note: run in VS debug console may be faster due to locking pages.
+        - Only count performance run in qtcreator terminal or powershell.
     - Optimize FindScoreLevelDiff:
         - Reduce Import and Analyze time:
         - Import: 270ms -> 162ms.

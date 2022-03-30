@@ -406,10 +406,32 @@ const
 
     auto &diffInfo = findDiffInfo.value().value();
 
+    auto containingVersion = ToVersionString(containingVersionIndex);
+
     for (auto &[chartVersions, chartInfo] : diffInfo.items())
     {
+        std::string_view versionRangesView{chartVersions};
+        if (versionRangesView.size()==2)
+        {
+            if (containingVersion==versionRangesView)
+            {
+                return IndexRange{containingVersionIndex, containingVersionIndex+1};
+            }
+            continue;
+        }
+
+        std::size_t firstVersionIndex = 0;
+        std::size_t lastVersionIndex = 0;
+        CheckedParse(versionRangesView.substr(0, 2), firstVersionIndex, "versionRanges[firstVersionIndex]");
+        CheckedParse(versionRangesView.substr(versionRangesView.size()-2, 2), lastVersionIndex, "versionRanges[lastVersionIndex]");
+        IndexRange maxVersionRange{firstVersionIndex, lastVersionIndex+1};
+        if (!maxVersionRange.IsInRange(containingVersionIndex))
+        {
+            continue;
+        }
+
         auto rangeList = ToRangeList(chartVersions);
-        for (auto range : rangeList.GetRanges())
+        for (auto &range : rangeList.GetRanges())
         {
             if (range.IsInRange(containingVersionIndex))
             {
