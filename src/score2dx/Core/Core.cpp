@@ -260,7 +260,7 @@ const
             auto &title = musicInfo.GetField(MusicInfoField::Title);
             auto versionIndex = ToIndexes(musicId).first;
             auto versionName = VersionNames[versionIndex];
-            if (versionIndex==0||versionIndex==0)
+            if (versionIndex==0||versionIndex==1)
             {
                 versionName = "1st&substream";
             }
@@ -279,9 +279,10 @@ const
                 record["play"] = musicScore.GetPlayCount();
                 auto &scoreData = record["score"];
 
-                for (auto &[difficulty, chartScore] : musicScore.GetChartScores())
+                for (auto &[difficulty, chartScorePtr] : musicScore.GetChartScores())
                 {
                     auto diffAcronym = static_cast<DifficultyAcronym>(difficulty);
+                    auto &chartScore = *chartScorePtr;
 
                     //! @brief [score, pgreat, great, miss, clear, djLevel], same order as CSV.
                     std::array<std::string, 6> difficultyData;
@@ -396,7 +397,6 @@ Import(const std::string &requiredIidxId,
         (void)checkDateTime;
 
         auto firstVersionItem = data.items().begin();
-        auto firstVersion = firstVersionItem.key();
         auto &firstVersionData = firstVersionItem.value();
         if (firstVersionData.empty())
         {
@@ -404,7 +404,6 @@ Import(const std::string &requiredIidxId,
         }
 
         auto firstMusicItem = firstVersionData.items().begin();
-        auto firstMusic = firstMusicItem.key();
         auto &firstMusicData = firstMusicItem.value();
         if (firstMusicData.empty())
         {
@@ -424,6 +423,7 @@ Import(const std::string &requiredIidxId,
                 }
 
                 auto [versionIndex, musicIndex] = mMusicDatabase.FindIndexes(versionName, dbTitle);
+                auto musicId = ToMusicId(versionIndex, musicIndex);
 
                 for (auto &[dateTime, recordData] : musicData.items())
                 {
@@ -431,7 +431,7 @@ Import(const std::string &requiredIidxId,
 
                     MusicScore musicScore
                     {
-                        ToMusicId(versionIndex, musicIndex),
+                        musicId,
                         metaPlayStyle,
                         playCount,
                         dateTime
@@ -449,8 +449,8 @@ Import(const std::string &requiredIidxId,
 
                     for (auto &[difficultyAcronym, scoreData] : recordData["score"].items())
                     {
-                        ChartScore chartScore;
                         auto difficulty = static_cast<Difficulty>(ToDifficultyAcronym(difficultyAcronym));
+                        auto &chartScore = musicScore.EnableChartScore(difficulty);
 
                         //! @brief [score, pgreat, great, miss, clear, djLevel], same order as CSV.
                         std::array<std::string, 6> difficultyData = scoreData;
@@ -480,8 +480,7 @@ Import(const std::string &requiredIidxId,
                         }
 
                         auto findChartInfo = mMusicDatabase.FindChartInfo(
-                            versionIndex,
-                            dbTitle,
+                            musicId,
                             styleDifficulty,
                             activeVersionIndex
                         );
@@ -489,10 +488,12 @@ Import(const std::string &requiredIidxId,
                         if (!findChartInfo)
                         {
                             //'' exported data from script may contain difficulty not existing (yet).
+                            /*
                             if (chartScore.ClearType==ClearType::NO_PLAY)
                             {
                                 continue;
                             }
+                            */
                             std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
                                       << "DateTime: " << dateTime << "\n"
                                       << "ActiveVersion: " << ToVersionString(activeVersionIndex) << "\n"
@@ -500,7 +501,7 @@ Import(const std::string &requiredIidxId,
                             throw std::runtime_error("cannot find chart info");
                         }
 
-                        auto &chartInfo = findChartInfo.value();
+                        auto &chartInfo = *findChartInfo;
                         if (chartInfo.Note<=0)
                         {
                             std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
@@ -531,8 +532,6 @@ Import(const std::string &requiredIidxId,
                             }
                             chartScore.DjLevel = actualDjLevel;
                         }
-
-                        musicScore.AddChartScore(difficulty, chartScore);
                     }
 
                     playerScore.AddMusicScore(musicScore);
@@ -814,7 +813,11 @@ ExportIidxMeData(const std::string &user)
 
                     auto &metadata = json.at("metadata");
                     std::string title = metadata.at("title");
-                    std::size_t versionIndex = metadata.at("version");
+                    std::size_t metaVersionIndex = metadata.at("version");
+                    if (metaVersionIndex!=versionIndex)
+                    {
+                        throw std::runtime_error("metadata version != url version");
+                    }
 
                     auto dbTitle = title;
                     auto findMappedTitle = mMusicDatabase.FindDbTitle(dbTitle);
@@ -823,21 +826,25 @@ ExportIidxMeData(const std::string &user)
                         dbTitle = findMappedTitle.value();
                     }
 
-                    auto findMusicIndex = mMusicDatabase.FindMusicIndex(versionIndex, dbTitle);
-                    if (!findMusicIndex)
+                    auto findContext = mMusicDatabase.FindDbMusicContext(versionIndex, dbTitle);
+                    if (!findContext)
                     {
                         std::cout << "IIDXME [" << iidxmeMid << "][" << dbTitle << "] cannot find in music db.\n";
                         continue;
                     }
 
-                    auto musicId = ToMusicId(versionIndex, findMusicIndex.value());
+                    auto &context = *findContext;
 
                     for (auto playStyle : PlayStyleSmartEnum::ToRange())
                     {
                         std::map<Difficulty, std::set<std::size_t>> noUpdateDateVersionsByDifficulty;
 
                         auto iidxMeStyle = ToString(playStyle).substr(0, 6);
-                        std::transform(iidxMeStyle.begin(), iidxMeStyle.end(), iidxMeStyle.begin(), ::tolower);
+                        std::transform(
+                            iidxMeStyle.begin(), iidxMeStyle.end(),
+                            iidxMeStyle.begin(),
+                            [](unsigned char c) { return static_cast<char>(std::tolower(c)); }
+                        );
 
                         if (!ies::Find(json, iidxMeStyle))
                         {
@@ -1001,7 +1008,7 @@ ExportIidxMeData(const std::string &user)
                                     chartScore.ExScore = score;
                                 }
 
-                                playerScore.AddChartScore(musicId, playStyle, difficulty, dateTime, chartScore);
+                                playerScore.AddChartScore(context.MusicId, playStyle, difficulty, dateTime, chartScore);
                             }
                         }
                     }
@@ -1082,15 +1089,16 @@ const
             */
         }
 
-        auto findMusicIndex = mMusicDatabase.FindMusicIndex(versionIndex, dbTitle);
-        if (!findMusicIndex)
+        auto findContext = mMusicDatabase.FindDbMusicContext(versionIndex, dbTitle);
+        if (!findContext)
         {
             std::cout << "IIDXME [" << iidxMeMusicId << "][" << dbTitle << "] cannot find in music db.\n";
+            continue;
         }
 
-        auto musicId = ToMusicId(versionIndex, findMusicIndex.value());
+        auto &context = *findContext;
 
-        auto musicInfo = mMusicDatabase.GetLatestMusicInfo(musicId);
+        auto musicInfo = mMusicDatabase.GetLatestMusicInfo(context.MusicId);
         /*
         if (findMappedTitle && !musicInfo.GetField(MusicInfoField::DisplayTitle).empty())
         {
@@ -1121,7 +1129,11 @@ const
         for (auto playStyle : PlayStyleSmartEnum::ToRange())
         {
             auto iidxMeStyle = ToString(playStyle).substr(0, 6);
-            std::transform(iidxMeStyle.begin(), iidxMeStyle.end(), iidxMeStyle.begin(), ::tolower);
+            std::transform(
+                iidxMeStyle.begin(), iidxMeStyle.end(),
+                iidxMeStyle.begin(),
+                [](unsigned char c) { return static_cast<char>(std::tolower(c)); }
+            );
 
             if (!ies::Find(musicData, iidxMeStyle))
             {

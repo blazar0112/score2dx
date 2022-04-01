@@ -1,5 +1,37 @@
 # Changelog of score2dx
 
+- Ongoing [2022-03-31]:
+    - Improve CSV parse line mechanism:
+        - Avoid copy dbTitle.
+        - MINGW: 4.109 ms
+        - MSVC: 4.623 ms
+    - Add test for ToRangeList and try to optimize FindContainingAvailableVersionRange.
+        - Result not better or worse.
+        - Note: run in VS debug console may be faster due to locking pages.
+        - Only count performance run in qtcreator terminal or powershell.
+    - Optimize FindScoreLevelDiff:
+        - Reduce Import and Analyze time:
+        - Import: 270ms -> 162ms.
+        - Analyze: 235ms -> 189ms.
+    - Improve CSV parse line mechanism:
+        - Since CSV files are usually 300KB, read entire file is plausible.
+        - MINGW: 4.5ms.
+        - MSVC: 5.2ms.
+    - Improve CSV parse line mechanism:
+        - Rewrite as ParseCsvLine.
+        - Improve from 7.8ms to 5.5ms (MINGW).
+        - MSVC build is slower (8ms).
+    - Improve CSV parse line mechanism:
+        - Use array instead of vector.
+            - Improve from 11ms to 9ms when loading CSV.
+        - Remove unnecessary all date time tracking and only compare csv title mapping.
+            - Improve from 9ms to 7.8ms when loading CSV.
+    - MusicScore use array to hold ChartScore to reduce allocate time.
+        - Improve from 12ms to 11ms when loading CSV.
+    - DjLevel check now only enabled in debug mode checkWithDb when construct CSV.
+        - Improve about 24ms to 12ms when loading CSV, depend on number of Chart with scores.
+    - Update Music DB to count 29078 [2022-03-25].
+
 - 2.7.0 [2022-02-21]:
     - Update dependent library `icl_s2` to rebrand and open-source version `ies`.
     - Update README.

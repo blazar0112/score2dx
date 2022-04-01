@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <map>
 
 #include "ies/Common/SmartEnum.hxx"
@@ -43,19 +44,30 @@ public:
         GetDateTime()
         const;
 
-    //! @brief Add chart score for difficulty, overwrite if exist.
+    //! @brief ChartScore is default disabled, enable to use.
+        ChartScore &
+        EnableChartScore(Difficulty difficulty);
+
+    //! @brief Overwrite difficulty's ChartScore and enable it.
         void
-        AddChartScore(Difficulty difficulty,
+        SetChartScore(Difficulty difficulty,
                       const ChartScore &chartScore);
 
+    //! @brief Disable difficulty and reset its ChartScore.
+        void
+        ResetChartScore(Difficulty difficulty);
+
+    //! @brief Get ChartScore if it is enabled, otherwise nullptr.
         const ChartScore*
-        FindChartScore(Difficulty difficulty)
+        GetChartScore(Difficulty difficulty)
         const;
 
+    //! @brief Get ChartScore if it is enabled, otherwise nullptr.
         ChartScore*
-        FindChartScore(Difficulty difficulty);
+        GetChartScore(Difficulty difficulty);
 
-        const std::map<Difficulty, ChartScore> &
+    //! @brief Get enabled ChartScores.
+        std::map<Difficulty, const ChartScore*>
         GetChartScores()
         const;
 
@@ -75,7 +87,8 @@ private:
     //! @brief DateTime must in format of "YYYY-MM-DD HH:MM"  e.g. "2020-08-22 18:51".
     std::string mDateTime;
 
-    std::map<Difficulty, ChartScore> mChartScores;
+    std::array<ChartScore, DifficultySmartEnum::Size()> mChartScores;
+    std::array<bool, DifficultySmartEnum::Size()> mEnables{};
 };
 
 }

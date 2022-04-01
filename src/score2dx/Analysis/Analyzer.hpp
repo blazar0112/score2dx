@@ -129,6 +129,12 @@ public:
                         const std::string &endDateTime)
         const;
 
+        void
+        AnalyzeHistory(const PlayerScore &playerScore,
+                       std::size_t musicId,
+                       StyleDifficulty styleDifficulty)
+        const;
+
 private:
     const MusicDatabase &mMusicDatabase;
     //! @brief Current active version, default to latest version in music database.

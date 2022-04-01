@@ -47,9 +47,9 @@ BestScoreData::
 InitializeVersionBeginChartScore(Difficulty difficulty,
                                  const ChartScore &chartScore)
 {
-    if (!mVersionBestMusicScore.FindChartScore(difficulty))
+    if (!mVersionBestMusicScore.GetChartScore(difficulty))
     {
-        mVersionBestMusicScore.AddChartScore(difficulty, chartScore);
+        mVersionBestMusicScore.SetChartScore(difficulty, chartScore);
         mChartVersionPlayCounts[difficulty] = 0;
     }
 }
@@ -61,7 +61,7 @@ UpdateChartScore(Difficulty difficulty,
                  const ChartScore &chartScore,
                  std::size_t playCount)
 {
-    if (!mVersionBestMusicScore.FindChartScore(difficulty))
+    if (!mVersionBestMusicScore.GetChartScore(difficulty))
     {
         throw std::runtime_error("UpdateChartScore(): InitializeVersionBeginChartScore first.");
     }
@@ -156,7 +156,7 @@ UpdateChartScore(Difficulty difficulty,
 
         mChartVersionPlayCounts[difficulty] = playCount;
 
-        auto* verBestChartScorePtr = mVersionBestMusicScore.FindChartScore(difficulty);
+        auto* verBestChartScorePtr = mVersionBestMusicScore.GetChartScore(difficulty);
         if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
         auto &versionBestChartScore = *verBestChartScorePtr;
 
@@ -181,7 +181,7 @@ UpdateChartScore(Difficulty difficulty,
             inconsistency += "Current "+ToString(chartScore)+"\n";
         }
 
-        mVersionBestMusicScore.AddChartScore(difficulty, chartScore);
+        mVersionBestMusicScore.SetChartScore(difficulty, chartScore);
         mVersionUpdatedDifficultySet.emplace(difficulty);
     }
 
@@ -205,7 +205,7 @@ FindDiffableChartScoreRecord(DiffableBestScoreType diffableBestScoreType,
                              Difficulty difficulty)
 const
 {
-    auto* verBestChartScorePtr = GetVersionBestMusicScore().FindChartScore(difficulty);
+    auto* verBestChartScorePtr = GetVersionBestMusicScore().GetChartScore(difficulty);
     if (!verBestChartScorePtr) { throw std::runtime_error("verBestChartScorePtr is nullptr"); }
     auto &versionBestChartScore = *verBestChartScorePtr;
 

@@ -2,9 +2,9 @@
     "#meta": {
         "score2dx": "2.7.0",
         "version": "29",
-        "count": "29071",
-        "lastUpdateNewMusic": "n/a",
-        "lastUpdateEvent": "第1回オンラインバトル 2022-02-14"
+        "count": "29078",
+        "lastUpdateNewMusic": "Push on Beats!～音ゲの国のeX-ストリーマー～",
+        "lastUpdateEvent": "ARENAモード「第2回オンラインバトル」 2022-03-17"
     },
     "csMusicTable": {
         "04": {
@@ -28720,6 +28720,12 @@
                             "note": 1269
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 1816
+                        }
+                    },
                     "DPN": {
                         "14-29": {
                             "level": 8,
@@ -28745,7 +28751,7 @@
                         }
                     },
                     "SPL": {
-                        "cs16": {
+                        "29": {
                             "level": 12,
                             "note": 1749
                         }
@@ -86097,6 +86103,12 @@
                             "note": 509
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 11,
+                            "note": 1091
+                        }
+                    },
                     "DPN": {
                         "26-29": {
                             "level": 3,
@@ -86113,6 +86125,12 @@
                         "26-29": {
                             "level": 7,
                             "note": 512
+                        }
+                    },
+                    "SPL": {
+                        "29": {
+                            "level": 11,
+                            "note": 1150
                         }
                     },
                     "SPN": {
@@ -102981,7 +102999,7 @@
                     },
                     "DPN": {
                         "29": {
-                            "level": 5,
+                            "level": 6,
                             "note": 580
                         }
                     },
@@ -103336,6 +103354,356 @@
                     },
                     "genre": {
                         "latest": "SYMPHONIC DUBSTEP"
+                    },
+                    "version": 29
+                }
+            },
+            "ANEMONE": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1175
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 839
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 403
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1069
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 806
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 390
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"HuΣeR × Yvya\" feat.紫村 花澄"
+                    },
+                    "genre": {
+                        "latest": "EMOTIONAL J-POP"
+                    },
+                    "version": 29
+                }
+            },
+            "黒紅掬い": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 9,
+                            "note": 1046
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 617
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 334
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 9,
+                            "note": 916
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 613 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 336
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "猫叉Master feat.霜月はるか"
+                    },
+                    "genre": {
+                        "latest": "SHOWA RETRO"
+                    },
+                    "version": 29
+                }
+            },
+            "Nocturnal 2097": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1488
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 966
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 504
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1479
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 990 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 480
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Dirty Androids"
+                    },
+                    "genre": {
+                        "latest": "DARKSYNTH"
+                    },
+                    "version": 29
+                }
+            },
+            "Legendary Treasures": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1448
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 925
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 593
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1450
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 900 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 576
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"劇団レコード\""
+                    },
+                    "genre": {
+                        "latest": "ADVENTURE TRIP"
+                    },
+                    "version": 29
+                }
+            },
+            "烽火連天の刃": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1778
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1216
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 572
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1771
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1195 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 576
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "OSTER project"
+                    },
+                    "genre": {
+                        "latest": "CYBER TAIGA"
+                    },
+                    "version": 29
+                }
+            },
+            "PLASMA SOUL NIGHT feat. Nana Takahashi / 709sec.": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 2235
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1308
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 725
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 2271
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1356 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 746
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"L.E.D.\""
+                    },
+                    "genre": {
+                        "latest": "LIGHTNING EUROBEAT"
+                    },
+                    "version": 29
+                }
+            },
+            "Push on Beats!～音ゲの国のeX-ストリーマー～": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1766
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1015
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 626
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1748
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1018 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 629
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "MOSAIC.WAV"
+                    },
+                    "genre": {
+                        "latest": "AKIBA-POP"
                     },
                     "version": 29
                 }
@@ -105546,7 +105914,14 @@
             "逆月",
             "2 Beasts Unchained",
             "ABSOLUTE EVIL",
-            "n/a"
+            "n/a",
+            "ANEMONE",
+            "黒紅掬い",
+            "Nocturnal 2097",
+            "Legendary Treasures",
+            "烽火連天の刃",
+            "PLASMA SOUL NIGHT feat. Nana Takahashi / 709sec.",
+            "Push on Beats!～音ゲの国のeX-ストリーマー～"
         ]
     }
 }

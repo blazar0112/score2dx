@@ -2,6 +2,7 @@
 
 #include <cctype>
 #include <algorithm>
+#include <array>
 
 #include "fmt/format.h"
 
@@ -95,9 +96,19 @@ ToMusicId(std::size_t versionIndex,
 std::pair<std::size_t, std::size_t>
 ToIndexes(std::size_t musicId)
 {
-    auto versionIndex = musicId/1000;
-    auto musicIndex = musicId%1000;
-    return {versionIndex, musicIndex};
+    return {GetVersionIndex(musicId), GetMusicIndex(musicId)};
+}
+
+std::size_t
+GetVersionIndex(std::size_t musicId)
+{
+    return musicId/1000;
+}
+
+std::size_t
+GetMusicIndex(std::size_t musicId)
+{
+    return musicId%1000;
 }
 
 std::string

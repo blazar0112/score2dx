@@ -81,7 +81,7 @@ AddChartScore(std::size_t musicId,
     }
 
     auto &musicScore = allTimeMusicScores.at(dateTime);
-    musicScore.AddChartScore(difficulty, chartScore);
+    musicScore.SetChartScore(difficulty, chartScore);
 }
 
 std::map<std::string, const ChartScore*>
@@ -96,10 +96,10 @@ const
     {
         for (auto &[dateTime, musicScore] : findMusic.value()->second)
         {
-            auto chartScore = musicScore.FindChartScore(difficulty);
-            if (chartScore)
+            auto* chartScorePtr = musicScore.GetChartScore(difficulty);
+            if (chartScorePtr)
             {
-                chartScores[dateTime] = chartScore;
+                chartScores[dateTime] = chartScorePtr;
             }
         }
     }

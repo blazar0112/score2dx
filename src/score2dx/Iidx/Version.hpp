@@ -65,6 +65,8 @@ const std::vector<std::string> VersionNames
     "CastHour"
 };
 
+const std::string Official1stSubVersionName = "1st&substream";
+
 //! @brief Find VersionIndex of database VersionName.
 //! e.g. "1st style" => 0, "substream" => 1, "2nd style" => 2.
 std::optional<std::size_t>

@@ -4,6 +4,7 @@
 #include <string>
 
 #include "ies/Common/IntegralRange.hxx"
+#include "ies/Common/IntegralRangeList.hxx"
 
 #include "score2dx/Core/ActiveVersion.hpp"
 #include "score2dx/Core/JsonDefinition.hpp"
@@ -12,7 +13,12 @@
 namespace score2dx
 {
 
-const std::string Official1stSubVersionName = "1st&substream";
+struct DbMusicContext
+{
+    std::size_t MusicId;
+    std::string Title;
+    const Json* Data{nullptr};
+};
 
 class MusicDatabase
 {
@@ -24,9 +30,9 @@ public:
         GetFilename()
         const;
 
-    //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
-        const std::vector<std::vector<std::string>> &
-        GetAllTimeMusics()
+    //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, DbMusicContext}}.
+        const std::vector<std::vector<DbMusicContext>> &
+        GetAllTimeMusicContexts()
         const;
 
     //! @brief Find if title is database title:
@@ -53,6 +59,11 @@ public:
         FindDbTitle(const std::string &title)
         const;
 
+    //! @brief Same as FindDbTitle but only for CSV title.
+        std::optional<std::string>
+        FindCsvDbTitle(const std::string &title)
+        const;
+
         std::optional<std::string>
         FindDbTitleMappingSection(const std::string &title)
         const;
@@ -61,11 +72,6 @@ public:
     //! @return 0 (1st style) or 1 (substream) or nullopt (not found).
         std::optional<std::size_t>
         Find1stSubVersionIndex(const std::string &dbTitle)
-        const;
-
-    //! @brief Find music index in version musics.
-        std::optional<std::size_t>
-        FindMusicIndex(std::size_t versionIndex, const std::string &dbTitle)
         const;
 
     //! @brief Find Pair of {VersionIndex, MusicIndex} by versionName, and dbTitle.
@@ -91,10 +97,6 @@ public:
         IsCsMusic(std::size_t musicId)
         const;
 
-        const Json*
-        FindDbMusic(std::size_t versionIndex, const std::string &title)
-        const;
-
         const std::map<std::size_t, ActiveVersion> &
         GetActiveVersions()
         const;
@@ -103,17 +105,13 @@ public:
         FindActiveVersion(std::size_t activeVersionIndex)
         const;
 
-    //! @brief Find title's style difficulty's ChartInfo at activeVersion.
-    //! Does not consider cs music table.
-    //! @return ChartInfo if find, otherwise nullopt if:
+    //! @brief Find music's styleDifficulty ChartInfo at activeVersion.
+    //! @return ChartInfo if find, otherwise nullptr if:
     //!     1. title is not available at that version.
     //!     2. title has no such style difficulty.
     //!     3. that style difficulty is not available at that version.
-    //! @note User need make sure dbTitle is in db by using FindDbTitle before calling this.
-    //! @throw Throws if dbTitle is not in db.
-        std::optional<ChartInfo>
-        FindChartInfo(std::size_t titleVersionIndex,
-                      const std::string &dbTitle,
+        const ChartInfo*
+        FindChartInfo(std::size_t musicId,
                       StyleDifficulty styleDifficulty,
                       std::size_t activeVersionIndex)
         const;
@@ -124,10 +122,17 @@ public:
                     std::size_t versionIndex)
         const;
 
+    //! @brief Find avaiableVersionRange contains containingVersionIndex of music.
+    //! e.g. music is available [[15, 20], [24], [28, 29]]
+    //! FindContainingAvailableVersionRange(Ver=17) returns IndexRange{15, 21}.
         std::optional<ies::IndexRange>
         FindContainingAvailableVersionRange(std::size_t musicId,
                                             StyleDifficulty styleDifficulty,
-                                            std::size_t versionIndex)
+                                            std::size_t containingVersionIndex)
+        const;
+
+        ies::IntegralRangeList<std::size_t>
+        GetAvailableVersions(std::size_t musicId)
         const;
 
     //! @brief [Debug] Check database validity and print inconsistency.
@@ -135,12 +140,20 @@ public:
         CheckValidity()
         const;
 
+        const DbMusicContext*
+        FindDbMusicContext(std::size_t versionIndex, const std::string &dbTitle)
+        const;
+
+        const DbMusicContext &
+        GetDbMusicContext(std::size_t musicId)
+        const;
+
 private:
-    std::string mDatabaseFilename{"table/MusicDatabase29_2022-02-20.json"};
+    std::string mDatabaseFilename{"table/MusicDatabase29_2022-03-25.json"};
     Json mDatabase;
 
-    //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Title}}.
-    std::vector<std::vector<std::string>> mAllTimeMusics;
+    //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, DbMusicContext}}.
+    std::vector<std::vector<DbMusicContext>> mAllTimeMusicContexts;
 
     //! @brief Cache all 00 and 01 musics to lookup version index.
     //! Map of {DbTitle Version="00" or "01", versionIndex}.
@@ -156,6 +169,21 @@ private:
     //! @brief Generate all active versions between version range [begin, latest].
         void
         GenerateActiveVersions(std::size_t beginVersionIndex);
+
+        const Json*
+        FindDbMusic(std::size_t versionIndex, const std::string &title)
+        const;
+
+        const std::string &
+        GetTitle(std::size_t musicId)
+        const;
 };
+
+std::string
+ToString(const ies::IntegralRangeList<std::size_t> &availableVersions);
+
+//! @brief Convert non-CS availableVersions to range list.
+ies::IntegralRangeList<std::size_t>
+ToRangeList(const std::string &availableVersions);
 
 }
