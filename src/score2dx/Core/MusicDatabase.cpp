@@ -271,17 +271,6 @@ const
     }
     musicInfo.AddField(MusicInfoField::DisplayTitle, displayTitle);
 
-    auto &dbDiffList = dbMusic["difficulty"];
-    for (auto &[diff, diffData] : dbDiffList.items())
-    {
-        auto styleDifficulty = ToStyleDifficulty(diff);
-        auto [playStyle, difficulty] = Split(styleDifficulty);
-        auto &latestChartData = diffData.back();
-        int level = latestChartData["level"];
-        int note = latestChartData["note"];
-        musicInfo.AddChartInfo(playStyle, difficulty, {level, note});
-    }
-
     return musicInfo;
 }
 

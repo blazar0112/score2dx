@@ -27,7 +27,7 @@ main(int argc, char* argv[])
         score2dx::Core core;
 
         //auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391_test)", false, false);
-        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391)", false, false);
+        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391)", false, true);
         if (!succeeded)
         {
             std::cout << "Load directory failed.\n";
@@ -39,13 +39,13 @@ main(int argc, char* argv[])
 
         //'' 04021: JIVE INTO THE NIGHT
         //'' 14000: 2hot2eat
-        std::size_t musicId = 29000;
-        auto context = core.GetMusicDatabase().GetDbMusicContext(musicId);
+//        std::size_t musicId = 29000;
+//        auto context = core.GetMusicDatabase().GetDbMusicContext(musicId);
 
-        auto availableVersions = core.GetMusicDatabase().GetAvailableVersions(musicId);
-        std::cout << "Music [" << score2dx::ToMusicIdString(musicId) << "]\n"
-                  << "Title [" << context.Title << "]\n"
-                  << "AvailableVersions: " << score2dx::ToString(availableVersions) << "\n";
+//        auto availableVersions = core.GetMusicDatabase().GetAvailableVersions(musicId);
+//        std::cout << "Music [" << score2dx::ToMusicIdString(musicId) << "]\n"
+//                  << "Title [" << context.Title << "]\n"
+//                  << "AvailableVersions: " << score2dx::ToString(availableVersions) << "\n";
         //std::cout << "dbMusic " << dbMusic.Title << "\n";
 
 //        Print(score2dx::ParseCsvLine("CastHour,Game Changers,HARD MIXTURE,Yuta Imai,6,0,0,0,0,---,NO PLAY,---,4,691,312,67,1,FULLCOMBO CLEAR,AAA,8,1305,562,181,11,EASY CLEAR,AA,11,2018,822,374,63,ASSIST CLEAR,A,0,0,0,0,---,NO PLAY,---,2021-11-27 16:03"));
