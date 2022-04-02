@@ -114,7 +114,7 @@ const
     auto versionDateTimeRange = GetVersionDateTimeRange(mActiveVersionIndex);
     auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
 
-    for (auto &[chartId, chartInfo] : activeVersion.GetChartInfos())
+    for (auto chartId : activeVersion.GetChartIdList())
     {
         auto [musicId, chartPlayStyle, difficulty] = ToMusicStyleDiffculty(chartId);
         for (auto playStyle : PlayStyleSmartEnum::ToRange())
@@ -128,10 +128,17 @@ const
 
         auto styleDifficulty = ConvertToStyleDifficulty(chartPlayStyle, difficulty);
 
+        auto* chartInfoPtr = mMusicDatabase.FindChartInfo(musicId, styleDifficulty, mActiveVersionIndex);
+        if (!chartInfoPtr)
+        {
+            throw std::runtime_error("cannot find chart info");
+        }
+
+        auto &chartInfo = *chartInfoPtr;
         if (chartInfo.Note<=0)
         {
             std::cout << "[" << ToMusicIdString(musicId)
-                      << "][" << mMusicDatabase.GetLatestMusicInfo(musicId).GetField(MusicInfoField::Title)
+                      << "][" << mMusicDatabase.GetTitle(musicId)
                       << "][" << ToString(styleDifficulty)
                       << "] Note is non-positive\nLevel: " << chartInfo.Level
                       << ", Note: " << chartInfo.Note
@@ -159,6 +166,7 @@ const
         {
             throw std::runtime_error("active version incorrectly include chart version not contained.");
         }
+
         auto &containingAvailableVersionRange = findContainingAvailableRange.value();
 
         auto &musicScores = playerScore.GetMusicScores(chartPlayStyle);
@@ -186,7 +194,7 @@ const
                 auto inconsistency = bestScoreData.UpdateChartScore(difficulty, dateTime, chartScore, musicScore.GetPlayCount());
                 if (!inconsistency.empty())
                 {
-                    auto title = mMusicDatabase.GetLatestMusicInfo(musicId).GetField(MusicInfoField::Title);
+                    auto title = mMusicDatabase.GetTitle(musicId);
                     std::cout << "[" << ToMusicIdString(musicId)
                               << "][" << ToString(styleDifficulty)
                               << "] " << title << "\n"
@@ -301,7 +309,7 @@ const
     auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
     auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
 
-    for (auto &[chartId, chartInfo] : activeVersion.GetChartInfos())
+    for (auto chartId : activeVersion.GetChartIdList())
     {
         auto [musicId, chartPlayStyle, difficulty] = ToMusicStyleDiffculty(chartId);
 
@@ -387,7 +395,7 @@ const
 {
     auto [playStyle, difficulty] = score2dx::Split(styleDifficulty);
     auto chartScores = playerScore.GetChartScores(musicId, playStyle, difficulty);
-    std::cout << "Music ["+mMusicDatabase.GetLatestMusicInfo(musicId).GetField(score2dx::MusicInfoField::Title)+"]:\n";
+    std::cout << "Music ["+mMusicDatabase.GetTitle(musicId)+"]:\n";
     //std::cout << "Available versions: " << mMusicDatabase.
     for (auto &[dateTime, chartScorePtr] : chartScores)
     {

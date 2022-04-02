@@ -12,6 +12,8 @@ namespace score2dx
 {
 
 //! @brief ActiveVersion is a table keep track of Music/Chart availability at a certain version.
+//! @note Information is stored in MusicDatabase's AllTimeMusics, ActiveVersion is auxiliary to
+//! collect all charts available at a version, and filter by level.
 class ActiveVersion
 {
 public:
@@ -24,16 +26,10 @@ public:
         void
         AddDifficulty(std::size_t musicId,
                       StyleDifficulty styleDifficulty,
-                      ChartInfo chartInfo);
+                      const ChartInfo &chartInfo);
 
-        const ChartInfo*
-        FindChartInfo(std::size_t musicId,
-                      StyleDifficulty styleDifficulty)
-        const;
-
-    //! @brief Map of {ChartId, ChartInfo}.
-        const std::map<std::size_t, ChartInfo> &
-        GetChartInfos()
+        const std::set<std::size_t> &
+        GetChartIdList()
         const;
 
     //! @brief Get chart id list which level={level}.
@@ -44,8 +40,8 @@ public:
 private:
     std::size_t mVersionIndex{0};
 
-    //! @brief Map of {ChartId, ChartInfo}.
-    std::map<std::size_t, ChartInfo> mChartInfos;
+    //! @brief Set of {ChartId}.
+    std::set<std::size_t> mChartIds;
 
     //! @brief Array of {Index=Level, ChartIdList}.
     //! @note Level = 0 is unused.

@@ -44,6 +44,10 @@ class Music
 public:
         explicit Music(std::size_t musicId, const std::string &title);
 
+        std::size_t
+        GetMusicId()
+        const;
+
         const MusicInfo &
         GetMusicInfo()
         const;

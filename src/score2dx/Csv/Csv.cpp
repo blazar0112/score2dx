@@ -161,8 +161,8 @@ Csv(const std::string &csvPath,
 
                 auto versionIndex = findVersionIndex.value();
 
-                auto findContext = musicDatabase.FindDbMusicContext(versionIndex, dbTitle);
-                if (!findContext)
+                auto findMusicId = musicDatabase.FindMusicId(versionIndex, dbTitle);
+                if (!findMusicId)
                 {
                     if (versionIndex==GetLatestVersionIndex())
                     {
@@ -172,7 +172,7 @@ Csv(const std::string &csvPath,
                     throw std::runtime_error("music title ["+dbTitle+"] is not listed in it's version ["+ToVersionString(versionIndex)+"] in database");
                 }
 
-                auto &context = *findContext;
+                auto musicId = findMusicId.value();
 
                 /*
                 if (checkWithDatabase)
@@ -227,8 +227,8 @@ Csv(const std::string &csvPath,
 
                 auto itPair = mMusicScores.emplace(
                     std::piecewise_construct,
-                    std::forward_as_tuple(context.MusicId),
-                    std::forward_as_tuple(context.MusicId, mPlayStyle, csvMusic.PlayCount, dateTime)
+                    std::forward_as_tuple(musicId),
+                    std::forward_as_tuple(musicId, mPlayStyle, csvMusic.PlayCount, dateTime)
                 );
                 auto &musicScore = itPair.first->second;
 
@@ -248,7 +248,7 @@ Csv(const std::string &csvPath,
                     if (checkWithDatabase)
                     {
                         auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
-                        auto findChartInfo = musicDatabase.FindChartInfo(context.MusicId, styleDifficulty, activeVersionIndex);
+                        auto findChartInfo = musicDatabase.FindChartInfo(musicId, styleDifficulty, activeVersionIndex);
                         if (!findChartInfo)
                         {
                             std::cout << "[" << dbTitle << "] Cannot find chart info.\n";
@@ -269,7 +269,7 @@ Csv(const std::string &csvPath,
                     {
                         auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
                         auto findChartInfo = musicDatabase.FindChartInfo(
-                            context.MusicId,
+                            musicId,
                             styleDifficulty,
                             activeVersionIndex
                         );

@@ -28,6 +28,7 @@ bool
 IsValidVersion(const std::string &version);
 
 //! @brief Return latest version index, i.e. max index of VersionNames.
+//! @note Use VersionNames.size() to get version count.
 std::size_t
 GetLatestVersionIndex();
 

@@ -20,8 +20,16 @@ Music(std::size_t musicId, const std::string &title)
 
     for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
     {
-        mChartAvailabilityTable[static_cast<std::size_t>(styleDifficulty)].resize(GetLatestVersionIndex()+1);
+        mChartAvailabilityTable[static_cast<std::size_t>(styleDifficulty)].resize(VersionNames.size());
     }
+}
+
+std::size_t
+Music::
+GetMusicId()
+const
+{
+    return mMusicId;
 }
 
 const MusicInfo &

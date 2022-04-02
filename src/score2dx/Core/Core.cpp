@@ -256,8 +256,7 @@ const
 
         for (auto &[musicId, dateTimeScores] : musicScores)
         {
-            auto musicInfo = mMusicDatabase.GetLatestMusicInfo(musicId);
-            auto &title = musicInfo.GetField(MusicInfoField::Title);
+            auto &title = mMusicDatabase.GetTitle(musicId);
             auto versionIndex = ToIndexes(musicId).first;
             auto versionName = VersionNames[versionIndex];
             if (versionIndex==0||versionIndex==1)
@@ -826,14 +825,14 @@ ExportIidxMeData(const std::string &user)
                         dbTitle = findMappedTitle.value();
                     }
 
-                    auto findContext = mMusicDatabase.FindDbMusicContext(versionIndex, dbTitle);
-                    if (!findContext)
+                    auto findMusicId = mMusicDatabase.FindMusicId(versionIndex, dbTitle);
+                    if (!findMusicId)
                     {
                         std::cout << "IIDXME [" << iidxmeMid << "][" << dbTitle << "] cannot find in music db.\n";
                         continue;
                     }
 
-                    auto &context = *findContext;
+                    auto musicId = findMusicId.value();
 
                     for (auto playStyle : PlayStyleSmartEnum::ToRange())
                     {
@@ -1008,7 +1007,7 @@ ExportIidxMeData(const std::string &user)
                                     chartScore.ExScore = score;
                                 }
 
-                                playerScore.AddChartScore(context.MusicId, playStyle, difficulty, dateTime, chartScore);
+                                playerScore.AddChartScore(musicId, playStyle, difficulty, dateTime, chartScore);
                             }
                         }
                     }
@@ -1089,16 +1088,14 @@ const
             */
         }
 
-        auto findContext = mMusicDatabase.FindDbMusicContext(versionIndex, dbTitle);
-        if (!findContext)
+        auto findMusicId = mMusicDatabase.FindMusicId(versionIndex, dbTitle);
+        if (!findMusicId)
         {
             std::cout << "IIDXME [" << iidxMeMusicId << "][" << dbTitle << "] cannot find in music db.\n";
             continue;
         }
 
-        auto &context = *findContext;
-
-        auto musicInfo = mMusicDatabase.GetLatestMusicInfo(context.MusicId);
+        //auto musicInfo = mMusicDatabase.GetLatestMusicInfo(context.MusicId);
         /*
         if (findMappedTitle && !musicInfo.GetField(MusicInfoField::DisplayTitle).empty())
         {
