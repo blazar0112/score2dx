@@ -1,6 +1,7 @@
 #pragma once
 
-#include <map>
+#include <array>
+#include <string>
 
 #include "ies/Common/SmartEnum.hxx"
 
@@ -22,7 +23,7 @@ public:
         MusicInfo() = default;
 
         void
-        AddField(MusicInfoField field, const std::string &fieldString);
+        SetField(MusicInfoField field, const std::string &fieldString);
 
         const std::string &
         GetField(MusicInfoField field)

@@ -10,6 +10,7 @@ set_property(GLOBAL PROPERTY
     ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/ChartInfo.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Definition.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Music.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicInfo.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.cpp
 )
@@ -20,6 +21,7 @@ set_property(GLOBAL PROPERTY
     ${PUBLIC_HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/ChartInfo.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Definition.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Music.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicInfo.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.hpp
 )
@@ -29,5 +31,6 @@ set_property(GLOBAL PROPERTY
     PROP_TEST_SOURCES
     ${TEST_SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/DefinitionTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/MusicTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/VersionTest.cpp
 )

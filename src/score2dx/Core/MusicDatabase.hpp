@@ -179,11 +179,4 @@ private:
         const;
 };
 
-std::string
-ToString(const ies::IntegralRangeList<std::size_t> &availableVersions);
-
-//! @brief Convert non-CS availableVersions to range list.
-ies::IntegralRangeList<std::size_t>
-ToRangeList(const std::string &availableVersions);
-
 }

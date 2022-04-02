@@ -9,6 +9,8 @@ struct ChartInfo
     int Note{0};
 
         ChartInfo(int level, int note);
+
+        auto operator<=>(const ChartInfo&) const = default;
 };
 
 }

@@ -9,7 +9,7 @@ namespace score2dx
 
 void
 MusicInfo::
-AddField(MusicInfoField field, const std::string &fieldString)
+SetField(MusicInfoField field, const std::string &fieldString)
 {
     mFields[static_cast<std::size_t>(field)] = fieldString;
 }

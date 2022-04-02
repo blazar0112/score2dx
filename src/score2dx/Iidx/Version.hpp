@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "ies/Common/IntegralRangeList.hxx"
 #include "ies/Common/RangeSide.hpp"
 #include "ies/Common/SmartEnum.hxx"
 
@@ -108,5 +109,12 @@ FindVersionIndexFromDateTime(const std::string &dateTime);
 //! @return None if dateTime is out of range (before 17).
 VersionDateType
 FindVersionDateType(const std::string &dateTime);
+
+std::string
+ToString(const ies::IntegralRangeList<std::size_t> &availableVersions);
+
+//! @brief Convert non-CS availableVersions to range list.
+ies::IntegralRangeList<std::size_t>
+ToRangeList(const std::string &availableVersions);
 
 }

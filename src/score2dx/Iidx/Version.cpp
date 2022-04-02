@@ -1,6 +1,7 @@
 #include "score2dx/Iidx/Version.hpp"
 
 #include <array>
+#include <iostream>
 #include <map>
 
 #include "fmt/format.h"
@@ -8,6 +9,8 @@
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/Find.hxx"
 #include "ies/String/SplitString.hpp"
+
+#include "score2dx/Core/CheckedParse.hxx"
 
 namespace
 {
@@ -166,6 +169,80 @@ FindVersionDateType(const std::string &dateTime)
     }
 
     return VersionDateType::None;
+}
+
+std::string
+ToString(const ies::IntegralRangeList<std::size_t> &availableVersions)
+{
+    std::string s;
+    auto ranges = availableVersions.GetRanges();
+    auto isFirst = true;
+    for (auto &range : ranges)
+    {
+        if (!isFirst) s += ", ";
+
+        if (range.size()==1)
+        {
+            s += ToVersionString(range.GetMin());
+        }
+        else
+        {
+            s += ToVersionString(range.GetMin())+"-"+ToVersionString(range.GetMax());
+        }
+
+        isFirst = false;
+    }
+
+    return s;
+}
+
+ies::IntegralRangeList<std::size_t>
+ToRangeList(const std::string &availableVersions)
+{
+    ies::IntegralRangeList<std::size_t> rangeList;
+
+    if (ies::Find(availableVersions, "cs"))
+    {
+        return rangeList;
+    }
+
+    std::size_t start = 0;
+    std::size_t end = 0;
+
+    std::string_view view{availableVersions};
+
+    while ((start = view.find_first_not_of(", ", end))!=std::string_view::npos)
+    {
+        end = view.find(',', start+1);
+        if (end==std::string_view::npos)
+        {
+            end = view.length();
+        }
+
+        auto versionRange = view.substr(start, end-start);
+        if (versionRange.size()==2)
+        {
+            std::size_t versionIndex = 0;
+            CheckedParse(versionRange, versionIndex, "versionRange[SingleVersionIndex]");
+            rangeList.AddRange({versionIndex, versionIndex+1});
+        }
+        //'' for 00-29 like case, note it's range [00, 29], not [00, 29).
+        else if (versionRange.size()==5)
+        {
+            std::size_t beginVersionIndex = 0;
+            std::size_t endVersionIndex = 0;
+            CheckedParse(versionRange.substr(0, 2), beginVersionIndex, "versionRange[beginVersionIndex]");
+            CheckedParse(versionRange.substr(3, 2), endVersionIndex, "versionRange[endVersionIndex]");
+            rangeList.AddRange({beginVersionIndex, endVersionIndex+1});
+        }
+        else
+        {
+            std::cout << versionRange << std::endl;
+            throw std::runtime_error("incorrect availableVersions "+availableVersions);
+        }
+    }
+
+    return rangeList;
 }
 
 }

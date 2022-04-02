@@ -5,6 +5,8 @@
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/FormatString.hxx"
 
+#include "score2dx/Iidx/Version.hpp"
+
 namespace score2dx
 {
 
