@@ -260,7 +260,7 @@ const
     auto &dbMusic = *dbMusicContext.Data;
     auto &title = dbMusicContext.Title;
 
-    MusicInfo musicInfo{musicId};
+    MusicInfo musicInfo;
     musicInfo.AddField(MusicInfoField::Title, title);
     musicInfo.AddField(MusicInfoField::Genre, dbMusic["info"]["genre"]["latest"]);
     musicInfo.AddField(MusicInfoField::Artist, dbMusic["info"]["artist"]["latest"]);

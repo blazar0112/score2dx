@@ -8,7 +8,7 @@
 
 #include "score2dx/Core/ActiveVersion.hpp"
 #include "score2dx/Core/JsonDefinition.hpp"
-#include "score2dx/Core/MusicInfo.hpp"
+#include "score2dx/Iidx/MusicInfo.hpp"
 
 namespace score2dx
 {
