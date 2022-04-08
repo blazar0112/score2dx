@@ -1,6 +1,9 @@
 # Changelog of score2dx
 
-- Ongoing [2022-03-31]:
+- Ongoing [2022-04-09]:
+    - Redesign data structure.
+
+- 2.8.0 [2022-04-02]
     - Improve CSV parse line mechanism:
         - Avoid copy dbTitle.
         - MINGW: 4.109 ms
