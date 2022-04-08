@@ -533,7 +533,7 @@ Import(const std::string &requiredIidxId,
                         }
                     }
 
-                    playerScore.AddMusicScore(musicScore);
+                    playerScore.AddMusicScore(musicScore, activeVersionIndex);
                 }
             }
         }
@@ -919,7 +919,7 @@ ExportIidxMeData(const std::string &user)
                                     }
                                     noUpdateDateVersions.emplace(scoreVersionIndex);
 
-                                    if (scoreVersionIndex<GetFirstDateTimeAvailableVersionIndex())
+                                    if (scoreVersionIndex<GetFirstSupportDateTimeVersionIndex())
                                     {
                                         std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
                                                   << "]["+iidxMeStyle
@@ -960,9 +960,10 @@ ExportIidxMeData(const std::string &user)
                                     continue;
                                 }
 
-                                if (scoreVersionIndex<GetFirstDateTimeAvailableVersionIndex())
+                                auto firstSupportVersionIndex = GetFirstSupportDateTimeVersionIndex();
+                                if (scoreVersionIndex<firstSupportVersionIndex)
                                 {
-                                    auto firstDateTime = GetVersionDateTimeRange(GetFirstDateTimeAvailableVersionIndex()).at(ies::RangeSide::Begin);
+                                    auto firstDateTime = GetVersionDateTimeRange(firstSupportVersionIndex).at(ies::RangeSide::Begin);
                                     if (dateTime>=firstDateTime)
                                     {
                                         dateTime = "2009-10-20 23:59";
@@ -1266,7 +1267,7 @@ const
                         }
                         noUpdateDateVersions.emplace(scoreVersionIndex);
 
-                        if (scoreVersionIndex<GetFirstDateTimeAvailableVersionIndex())
+                        if (scoreVersionIndex<GetFirstSupportDateTimeVersionIndex())
                         {
                             std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
                                       << "]["+iidxMeStyle
@@ -1378,7 +1379,7 @@ AddCsvToPlayerScore(const std::string &iidxId,
     for (auto &[musicId, musicScore] : csv.GetScores())
     {
         (void)musicId;
-        playerScore.AddMusicScore(musicScore);
+        playerScore.AddMusicScore(musicScore, csv.GetVersionIndex());
     }
 }
 

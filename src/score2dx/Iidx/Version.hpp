@@ -77,7 +77,7 @@ FindVersionIndex(const std::string &dbVersionName);
 //! @brief Get first version with date time range implemented.
 //! @note Currently it's 17.
 std::size_t
-GetFirstDateTimeAvailableVersionIndex();
+GetFirstSupportDateTimeVersionIndex();
 
 //! @brief Get Version's DateTime range [BeginDateTime, EndDateTime] (including end).
 //! @note Empty string if DateTime is unknown.

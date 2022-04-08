@@ -35,7 +35,8 @@ const
 
 void
 PlayerScore::
-AddMusicScore(const MusicScore &musicScore)
+AddMusicScore(const MusicScore &musicScore,
+              std::size_t sourceVersionIndex)
 {
     auto playStyle = musicScore.GetPlayStyle();
     auto musicId = musicScore.GetMusicId();
@@ -50,6 +51,8 @@ AddMusicScore(const MusicScore &musicScore)
     }
 
     mMusicScores[playStyle][musicId].emplace(dateTime, musicScore);
+
+    mVersionScoreTable.AddMusicScore(musicScore, sourceVersionIndex);
 }
 
 const std::map<size_t, std::map<std::string, MusicScore>> &

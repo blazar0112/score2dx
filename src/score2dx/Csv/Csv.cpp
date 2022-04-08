@@ -322,6 +322,7 @@ Csv(const std::string &csvPath,
         }
 
         mVersion = VersionNames.at(lastVersionIndex);
+        mVersionIndex = lastVersionIndex;
 
         std::size_t totalMusicCount = 0;
         if (verbose)
@@ -399,6 +400,14 @@ GetVersion()
 const
 {
     return mVersion;
+}
+
+std::size_t
+Csv::
+GetVersionIndex()
+const
+{
+    return mVersionIndex;
 }
 
 const std::string &

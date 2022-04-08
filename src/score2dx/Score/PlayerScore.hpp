@@ -8,6 +8,8 @@
 #include "score2dx/Score/ChartScore.hpp"
 #include "score2dx/Score/MusicScore.hpp"
 
+#include "score2dx/Score/VersionScoreTable.hpp"
+
 namespace score2dx
 {
 
@@ -25,7 +27,8 @@ public:
     //! @note Does nothing if exist MusicScore with same date time.
     //! (Not check if adding musicScore and existing MusicScore are same or not.)
         void
-        AddMusicScore(const MusicScore &musicScore);
+        AddMusicScore(const MusicScore &musicScore,
+                      std::size_t sourceVersionIndex);
 
     //! @brief Map of {MusicId, Map of {DateTime, MusicScore}}.
         const std::map<size_t, std::map<std::string, MusicScore>> &
@@ -52,6 +55,8 @@ private:
     std::string mIidxId;
     //! @brief Map of {PlayStyle, Map of {MusicId, Map of {DateTime, MusicScore}}}.
     std::map<PlayStyle, std::map<size_t, std::map<std::string, MusicScore>>> mMusicScores;
+
+    VersionScoreTable mVersionScoreTable;
 };
 
 }

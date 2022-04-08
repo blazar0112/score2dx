@@ -95,7 +95,7 @@ FindVersionIndex(const std::string &dbVersionName)
 }
 
 std::size_t
-GetFirstDateTimeAvailableVersionIndex()
+GetFirstSupportDateTimeVersionIndex()
 {
     return VersionDateTimeRangeMap.begin()->first;
 }

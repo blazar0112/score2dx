@@ -12,6 +12,7 @@ set_property(GLOBAL PROPERTY
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicScore.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/PlayerScore.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ScoreLevel.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/VersionScoreTable.cpp
 )
 
 get_property(PUBLIC_HEADERS GLOBAL PROPERTY PROP_PUBLIC_HEADERS)
@@ -22,6 +23,7 @@ set_property(GLOBAL PROPERTY
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicScore.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/PlayerScore.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ScoreLevel.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/VersionScoreTable.hpp
 )
 
 get_property(TEST_SOURCES GLOBAL PROPERTY PROP_TEST_SOURCES)

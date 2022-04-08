@@ -44,6 +44,10 @@ public:
         GetVersion()
         const;
 
+        std::size_t
+        GetVersionIndex()
+        const;
+
         const std::string &
         GetLastDateTime()
         const;
@@ -66,6 +70,7 @@ private:
     std::string mIidxId;
     PlayStyle mPlayStyle{PlayStyle::SinglePlay};
     std::string mVersion;
+    std::size_t mVersionIndex{0};
 
     std::string mLastDateTime;
     std::size_t mMusicCount{0};

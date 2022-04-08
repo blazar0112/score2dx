@@ -152,7 +152,7 @@ MusicDatabase()
         }
 
         auto stageBegin = s2Time::Now();
-        GenerateActiveVersions(GetFirstDateTimeAvailableVersionIndex());
+        GenerateActiveVersions(GetFirstSupportDateTimeVersionIndex());
         s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(stageBegin), "GenerateActiveVersions");
 
         s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Load music database");
