@@ -18,6 +18,7 @@
 
 #include "nlohmann/json.hpp"
 
+#include "score2dx/Core/ScopeProfiler.hxx"
 #include "score2dx/Csv/CsvColumn.hpp"
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Iidx/Version.hpp"
@@ -25,7 +26,6 @@
 #include "score2dx/Score/ScoreLevel.hpp"
 
 namespace fs = std::filesystem;
-namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -56,6 +56,8 @@ Csv(const std::string &csvPath,
     bool verbose,
     bool checkWithDatabase)
 {
+    ScopeProfiler<std::chrono::milliseconds> profiler{"CSV construct"};
+
     //'' default name [IIDX ID]_[sp|dp]_score.csv
     //'' e.g. 5483-7391_dp_score.csv
     //''      012345678901234567
@@ -69,7 +71,6 @@ Csv(const std::string &csvPath,
 
     try
     {
-        auto begin = s2Time::Now();
         auto path = fs::canonical(csvPath).lexically_normal();
         mPath = path.string();
         if (verbose) std::cout << "Reading CSV file: [" << mPath << "].\n";
@@ -102,7 +103,7 @@ Csv(const std::string &csvPath,
         std::string minDateTime;
         std::string maxDateTime;
 
-        std::map<std::string, s2Time::NsCountType> profNsCounts;
+        std::map<std::string, ies::Time::NsCountType> profNsCounts;
 
         auto fileSize = fs::file_size(mPath);
         std::vector<char> bytes(fileSize);
@@ -364,8 +365,6 @@ Csv(const std::string &csvPath,
         mLastDateTime = maxDateTime;
 
         if (verbose) std::cout << "DateTime [" << minDateTime << ", " << maxDateTime << "].\n";
-
-        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "CSV construct");
 
 //        for (auto &[timeName, nsCount] : profNsCounts)
 //        {

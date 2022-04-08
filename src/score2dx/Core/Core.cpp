@@ -13,6 +13,7 @@
 #include "ies/StdUtil/FormatString.hxx"
 #include "ies/Time/TimeUtilFormat.hxx"
 
+#include "score2dx/Core/ScopeProfiler.hxx"
 #include "score2dx/Iidx/Version.hpp"
 
 namespace fs = std::filesystem;
@@ -85,6 +86,8 @@ LoadDirectory(std::string_view directory,
 
     for (auto &entry : fs::directory_iterator{directory})
     {
+        ScopeProfiler<std::chrono::milliseconds> profiler{"LoadDirectory: file"};
+
         if (entry.is_regular_file()&&entry.path().extension()==".csv")
         {
             if (verbose) std::cout << "\n";
@@ -1362,6 +1365,8 @@ AddCsvToPlayerScore(const std::string &iidxId,
                     PlayStyle playStyle,
                     const std::string &dateTime)
 {
+    ScopeProfiler<std::chrono::milliseconds> profiler{"AddCsvToPlayerScore"};
+
     auto findPlayer = ies::Find(mPlayerCsvs, iidxId);
     if (!findPlayer)
     {
