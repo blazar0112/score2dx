@@ -10,6 +10,7 @@ set_property(GLOBAL PROPERTY
     ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/Analyzer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BestScoreData.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/CareerRecord.cpp
 )
 
 get_property(PUBLIC_HEADERS GLOBAL PROPERTY PROP_PUBLIC_HEADERS)
@@ -18,10 +19,13 @@ set_property(GLOBAL PROPERTY
     ${PUBLIC_HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/Analyzer.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BestScoreData.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/CareerRecord.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ChartScoreRecord.hpp
 )
 
 get_property(TEST_SOURCES GLOBAL PROPERTY PROP_TEST_SOURCES)
 set_property(GLOBAL PROPERTY
     PROP_TEST_SOURCES
     ${TEST_SOURCES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/CareerRecordTest.cpp
 )

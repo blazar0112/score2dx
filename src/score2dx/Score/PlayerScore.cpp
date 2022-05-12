@@ -52,7 +52,7 @@ AddMusicScore(const MusicScore &musicScore,
 
     mMusicScores[playStyle][musicId].emplace(dateTime, musicScore);
 
-    mVersionScoreTable.AddMusicScore(musicScore, sourceVersionIndex);
+    mVersionScoreTables[musicId].AddMusicScore(musicScore, sourceVersionIndex);
 }
 
 const std::map<size_t, std::map<std::string, MusicScore>> &
@@ -108,6 +108,14 @@ const
     }
 
     return chartScores;
+}
+
+const std::map<std::size_t, VersionScoreTable> &
+PlayerScore::
+GetVersionScoreTables()
+const
+{
+    return mVersionScoreTables;
 }
 
 }

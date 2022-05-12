@@ -135,4 +135,28 @@ const
     return verTable[versionIndex];
 }
 
+std::list<std::size_t>
+Music::
+FindSameChartVersions(StyleDifficulty styleDifficulty, std::size_t versionIndex)
+const
+{
+    std::list<std::size_t> versions;
+    auto &availability = GetChartAvailability(styleDifficulty, versionIndex);
+    if (availability.ChartAvailableStatus==ChartStatus::NotAvailable)
+    {
+        return versions;
+    }
+
+    auto &verTable = mChartAvailabilityTable[static_cast<std::size_t>(styleDifficulty)];
+    for (auto ver : IndexRange{0, VersionNames.size()})
+    {
+        if (verTable[ver].ChartIndex==availability.ChartIndex)
+        {
+            versions.emplace_back(ver);
+        }
+    }
+
+    return versions;
+}
+
 }

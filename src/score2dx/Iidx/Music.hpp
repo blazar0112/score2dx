@@ -1,7 +1,9 @@
 #pragma once
 
 #include <array>
+#include <list>
 #include <map>
+#include <set>
 #include <vector>
 
 #include "ies/Common/SmartEnum.hxx"
@@ -36,6 +38,7 @@ struct ChartAvailability
     ChartInfo ChartInfoProp{0, 0};
     //! @brief Two charts are regarded as same chart if they have same notes.
     //! This Index point to unique note chart and can use to identify chart.
+    //! @note ChartInfo may be changed (level change).
     std::size_t ChartIndex{0};
 };
 
@@ -64,14 +67,21 @@ public:
         GetChartAvailability(StyleDifficulty styleDifficulty, std::size_t versionIndex)
         const;
 
+    //! @brief Find versions has same chart as [versionIndex].
+    //! Version can be after [versionIndex]. Must contain versionIndex if available.
+    //! @note Empty if chart is not available at [versionIndex].
+        std::list<std::size_t>
+        FindSameChartVersions(StyleDifficulty styleDifficulty, std::size_t versionIndex)
+        const;
+
 private:
     std::size_t mMusicId;
     MusicInfo mMusicInfo;
 
-    //! Array of {Index=StyleDifficulty, Vector of {Index=VersionIndex, ChartAvailability}}.
+    //! @brief Array of {Index=StyleDifficulty, Vector of {Index=VersionIndex, ChartAvailability}}.
     std::array<std::vector<ChartAvailability>, StyleDifficultySmartEnum::Size()> mChartAvailabilityTable;
 
-    //! Array of {Index=StyleDifficulty, Vector of {Index=ChartIndex, ChartNote}}.
+    //! @brief Array of {Index=StyleDifficulty, Vector of {Index=ChartIndex, ChartNote}}.
     std::array<std::vector<int>, StyleDifficultySmartEnum::Size()> mChartNoteByIndex;
 };
 

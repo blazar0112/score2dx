@@ -6,38 +6,11 @@
 
 #include "ies/Common/SmartEnum.hxx"
 
+#include "score2dx/Analysis/ChartScoreRecord.hpp"
 #include "score2dx/Score/MusicScore.hpp"
 
 namespace score2dx
 {
-
-IES_SMART_ENUM(DiffableBestScoreType,
-    ExScore,
-    Miss
-);
-
-IES_SMART_ENUM(BestScoreType,
-    BestExScore,
-    SecondBestExScore,
-    BestMiss,
-    SecondBestMiss
-);
-
-struct ChartScoreRecord
-{
-    ChartScore ChartScoreProp;
-    std::size_t VersionIndex{0};
-    std::string DateTime;
-
-        ChartScoreRecord() = default;
-        ChartScoreRecord(const ChartScore &chartScore,
-                         std::size_t versionIndex,
-                         const std::string &dateTime)
-        :   ChartScoreProp(chartScore),
-            VersionIndex(versionIndex),
-            DateTime(dateTime)
-        {}
-};
 
 //! @brief BestScoreData help track career best and active version best score data of one music in a style.
 //! This is only auxiliary data, logic and database usage keep in Analyzer.

@@ -6,6 +6,7 @@
 #include "ies/StdUtil/Find.hxx"
 #include "ies/Time/TimeUtilFormat.hxx"
 
+#include "score2dx/Core/ScopeProfiler.hxx"
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/ScoreLevel.hpp"
 
@@ -259,6 +260,209 @@ const
     }
 
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Analyze");
+
+    return analysis;
+}
+
+ScoreAnalysis
+Analyzer::
+AnalyzeV2(const PlayerScore &playerScore)
+const
+{
+    ScopeProfiler<std::chrono::milliseconds> profiler{"AnalyzeV2"};
+
+    ScoreAnalysis analysis;
+    analysis.CareerRecordPtr = std::make_unique<CareerRecord>(mActiveVersionIndex);
+    auto &careerRecord = *analysis.CareerRecordPtr;
+
+    for (auto playStyle : PlayStyleSmartEnum::ToRange())
+    {
+        analysis.StatisticsByStyle[playStyle];
+        analysis.StatisticsByStyleLevel[playStyle];
+    }
+
+    for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
+    {
+        if (styleDifficulty==StyleDifficulty::SPB||styleDifficulty==StyleDifficulty::DPB)
+        {
+            continue;
+        }
+        analysis.StatisticsByStyleDifficulty[styleDifficulty];
+    }
+
+    analysis.StatisticsByVersionStyle.resize(mActiveVersionIndex+1);
+    analysis.StatisticsByVersionStyleDifficulty.resize(mActiveVersionIndex+1);
+    for (auto versionIndex : IndexRange{0, mActiveVersionIndex+1})
+    {
+        for (auto playStyle : PlayStyleSmartEnum::ToRange())
+        {
+            analysis.StatisticsByVersionStyle[versionIndex][playStyle];
+        }
+
+        for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
+        {
+            if (styleDifficulty==StyleDifficulty::SPB||styleDifficulty==StyleDifficulty::DPB)
+            {
+                continue;
+            }
+            analysis.StatisticsByVersionStyleDifficulty[versionIndex][styleDifficulty];
+        }
+    }
+
+    auto* activeVersionPtr = mMusicDatabase.FindActiveVersion(mActiveVersionIndex);
+    if (!activeVersionPtr)
+    {
+        throw std::runtime_error("invalid active version");
+    }
+
+    auto &activeVersion = *activeVersionPtr;
+
+    //! @brief Map of {MusicId, Set of {SameMusicId active ChartId}}.
+    std::map<std::size_t, std::set<std::size_t>> musicIdSortedChartIdSets;
+
+    for (auto chartId : activeVersion.GetChartIdList())
+    {
+        auto [musicId, chartPlayStyle, difficulty] = ToMusicStyleDiffculty(chartId);
+        musicIdSortedChartIdSets[musicId].emplace(chartId);
+    }
+
+    auto &versionScoreTables = playerScore.GetVersionScoreTables();
+    for (auto &[musicId, chartIdSet] : musicIdSortedChartIdSets)
+    {
+        auto &music = mMusicDatabase.GetMusic(musicId);
+
+        auto findScoreTable = ies::Find(versionScoreTables, musicId);
+
+        for (auto chartId : chartIdSet)
+        {
+            auto [chartMusicId, chartPlayStyle, difficulty] = ToMusicStyleDiffculty(chartId);
+            auto styleDifficulty = ConvertToStyleDifficulty(chartPlayStyle, difficulty);
+
+            auto &availability = music.GetChartAvailability(styleDifficulty, mActiveVersionIndex);
+            if (availability.ChartAvailableStatus==ChartStatus::NotAvailable
+                ||availability.ChartAvailableStatus==ChartStatus::Removed)
+            {
+                throw std::runtime_error("active chart is not available.");
+            }
+
+            auto* chartInfoPtr = mMusicDatabase.FindChartInfo(musicId, styleDifficulty, mActiveVersionIndex);
+            if (!chartInfoPtr)
+            {
+                throw std::runtime_error("cannot find chart info");
+            }
+
+            auto &chartInfo = *chartInfoPtr;
+            if (chartInfo.Note<=0)
+            {
+                std::cout << "[" << ToMusicIdString(musicId)
+                          << "][" << mMusicDatabase.GetTitle(musicId)
+                          << "][" << ToString(styleDifficulty)
+                          << "] Note is non-positive\nLevel: " << chartInfo.Level
+                          << ", Note: " << chartInfo.Note
+                          << ".\n";
+                continue;
+            }
+
+            auto sameChartVersions = music.FindSameChartVersions(styleDifficulty, mActiveVersionIndex);
+
+            std::map<std::string, ChartScore> activeVersionScores;
+            std::map<std::size_t, ChartScoreRecord> nonActiveVersionRecords;
+
+            for (auto versionIndex : sameChartVersions)
+            {
+                if (versionIndex!=mActiveVersionIndex)
+                {
+                    if (findScoreTable)
+                    {
+                        auto &versionScoreTable = findScoreTable.value()->second;
+                        auto &musicScores = versionScoreTable.GetMusicScores(chartPlayStyle, versionIndex);
+                        if (!musicScores.empty())
+                        {
+                            auto bestMusicScoreIt = musicScores.rbegin();
+                            if (auto* chartScorePtr = bestMusicScoreIt->second.GetChartScore(difficulty))
+                            {
+                                nonActiveVersionRecords.emplace
+                                (
+                                    std::piecewise_construct,
+                                    std::forward_as_tuple(versionIndex),
+                                    std::forward_as_tuple(*chartScorePtr, versionIndex, bestMusicScoreIt->first)
+                                );
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (findScoreTable)
+                    {
+                        auto &versionScoreTable = findScoreTable.value()->second;
+                        auto &musicScores = versionScoreTable.GetMusicScores(chartPlayStyle, versionIndex);
+                        for (auto &[dateTime, musicScore] : musicScores)
+                        {
+                            if (auto* chartScorePtr = musicScore.GetChartScore(difficulty))
+                            {
+                                activeVersionScores[dateTime] = *chartScorePtr;
+                            }
+                        }
+                    }
+                }
+            }
+
+            careerRecord.Add(chartId, activeVersionScores, nonActiveVersionRecords);
+
+            ChartScore versionBestChartScore;
+            auto* versionBestRecordPtr = careerRecord.GetRecord(chartId, BestType::VersionBest, RecordType::Score);
+            if (versionBestRecordPtr)
+            {
+                versionBestChartScore = versionBestRecordPtr->ChartScoreProp;
+            }
+
+            auto [scoreLevel, scoreRange] = FindScoreLevelRange(chartInfo.Note, versionBestChartScore.ExScore);
+            auto category = ScoreLevelCategory::AMinus;
+            if (scoreLevel>=ScoreLevel::A)
+            {
+                if (scoreLevel==ScoreLevel::AA) { category = ScoreLevelCategory::AAMinus; }
+                if (scoreLevel==ScoreLevel::AAA) { category = ScoreLevelCategory::AAAMinus; }
+                if (scoreLevel==ScoreLevel::Max) { category = ScoreLevelCategory::MaxMinus; }
+                if (scoreRange!=ScoreRange::LevelMinus)
+                {
+                    category = static_cast<ScoreLevelCategory>(static_cast<int>(category)+1);
+                }
+            }
+
+            auto versionIndex = ToIndexes(musicId).first;
+            if (versionIndex>mActiveVersionIndex)
+            {
+                throw std::runtime_error("versionIndex>mActiverVersionIndex");
+            }
+
+            if (styleDifficulty==StyleDifficulty::SPB||styleDifficulty==StyleDifficulty::DPB)
+            {
+                continue;
+            }
+
+            std::set<Statistics*> analysisStatsList
+            {
+                &analysis.StatisticsByStyle[chartPlayStyle],
+                &analysis.StatisticsByStyleLevel[chartPlayStyle][chartInfo.Level],
+                &analysis.StatisticsByStyleDifficulty[styleDifficulty],
+                &analysis.StatisticsByVersionStyle[versionIndex][chartPlayStyle],
+                &analysis.StatisticsByVersionStyleDifficulty[versionIndex][styleDifficulty]
+            };
+
+            for (auto stats : analysisStatsList)
+            {
+                stats->ChartIdList.emplace(chartId);
+                stats->ChartIdListByClearType[versionBestChartScore.ClearType].emplace(chartId);
+                if (versionBestChartScore.ClearType!=ClearType::NO_PLAY
+                    &&versionBestChartScore.ExScore!=0)
+                {
+                    stats->ChartIdListByDjLevel[versionBestChartScore.DjLevel].emplace(chartId);
+                    stats->ChartIdListByScoreLevelCategory[category].emplace(chartId);
+                }
+            }
+        }
+    }
 
     return analysis;
 }

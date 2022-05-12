@@ -51,12 +51,18 @@ public:
         GetChartScores(std::size_t musicId, PlayStyle playStyle, Difficulty difficulty)
         const;
 
+    //! @brief Get VersionScoreTables: Map of {MusicId, VersionScoreTable}.
+        const std::map<std::size_t, VersionScoreTable> &
+        GetVersionScoreTables()
+        const;
+
 private:
     std::string mIidxId;
     //! @brief Map of {PlayStyle, Map of {MusicId, Map of {DateTime, MusicScore}}}.
     std::map<PlayStyle, std::map<size_t, std::map<std::string, MusicScore>>> mMusicScores;
 
-    VersionScoreTable mVersionScoreTable;
+    //! @brief Map of {MusicId, VersionScoreTable}.
+    std::map<std::size_t, VersionScoreTable> mVersionScoreTables;
 };
 
 }

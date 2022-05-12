@@ -2,6 +2,7 @@
 
 #include <array>
 #include <map>
+#include <memory>
 #include <set>
 #include <vector>
 
@@ -9,6 +10,7 @@
 #include "ies/Common/SmartEnum.hxx"
 
 #include "score2dx/Analysis/BestScoreData.hpp"
+#include "score2dx/Analysis/CareerRecord.hpp"
 #include "score2dx/Core/MusicDatabase.hpp"
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Score/PlayerScore.hpp"
@@ -78,6 +80,8 @@ struct ScoreAnalysis
     //! @brief Map of {MusicId, Map of {PlayStyle, BestScoreData}}.
     std::map<std::size_t, std::map<PlayStyle, BestScoreData>> MusicBestScoreData;
 
+    std::unique_ptr<CareerRecord> CareerRecordPtr;
+
     //! @brief Map of {PlayStyle, Statistics}.
     //! @note It should be equivalent to
     //!     Sum of levels in StatisticsByStyleLevel
@@ -112,6 +116,10 @@ public:
 
         ScoreAnalysis
         Analyze(const PlayerScore &playerScore)
+        const;
+
+        ScoreAnalysis
+        AnalyzeV2(const PlayerScore &playerScore)
         const;
 
     //! @brief Analyze activity during current active version date time range.

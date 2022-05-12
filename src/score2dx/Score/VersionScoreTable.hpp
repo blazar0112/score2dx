@@ -11,6 +11,7 @@
 namespace score2dx
 {
 
+//! @brief Manage a music's MusicScore by version.
 class VersionScoreTable
 {
 public:
@@ -31,8 +32,6 @@ public:
 private:
     //! @brief Array of {Index=PlayStyle, Vector of {Index=ScoreSourceVersionIndex, Map of {OriginDateTime, MusicScore}}}.
     std::array<std::vector<std::map<std::string, MusicScore>>, PlayStyleSmartEnum::Size()> mScoreTimeLineTable;
-
-    std::string mFirstSupportVersionBeginDateTime;
 };
 
 }

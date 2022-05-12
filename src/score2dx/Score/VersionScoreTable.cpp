@@ -10,12 +10,10 @@ namespace score2dx
 VersionScoreTable::
 VersionScoreTable()
 {
-    auto firstVersionIndex = GetFirstSupportDateTimeVersionIndex();
     for (auto playStyle : PlayStyleSmartEnum::ToRange())
     {
         mScoreTimeLineTable[static_cast<std::size_t>(playStyle)].resize(VersionNames.size());
     }
-    mFirstSupportVersionBeginDateTime = GetVersionDateTimeRange(firstVersionIndex).at(ies::RangeSide::Begin);
 }
 
 void
@@ -30,7 +28,7 @@ AddMusicScore(const MusicScore &musicScore, std::size_t sourceVersionIndex)
         throw std::runtime_error("requires non-empty datetime.");
     }
 
-    if (dateTime<mFirstSupportVersionBeginDateTime)
+    if (dateTime<GetVersionDateTimeRange(GetFirstSupportDateTimeVersionIndex()).at(ies::RangeSide::Begin))
     {
         throw std::runtime_error("cannot add music score because datetime before first support version.");
     }
