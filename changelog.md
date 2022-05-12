@@ -1,7 +1,8 @@
 # Changelog of score2dx
 
-- Ongoing [2022-04-09]:
+- Ongoing [2022-05-13]:
     - Redesign data structure.
+        - Add VersionScoreTable and CareerRecord as new design instead of BestScoreData.
 
 - 2.8.0 [2022-04-02]
     - Improve CSV parse line mechanism:

@@ -621,7 +621,6 @@ Analyze(const std::string &iidxId,
 {
     mPlayerAnalyses.erase(iidxId);
     mPlayerAnalyses.emplace(iidxId, mAnalyzer.Analyze(playerScore));
-    mAnalyzer.AnalyzeV2(playerScore);
     mPlayerVersionActivityAnalyses.erase(iidxId);
     mPlayerVersionActivityAnalyses.emplace(iidxId, mAnalyzer.AnalyzeVersionActivity(playerScore));
 }

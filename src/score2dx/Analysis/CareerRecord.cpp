@@ -144,8 +144,16 @@ Add(std::size_t chartId,
         {
             bestRecord.CareerBestByRecordType[scoreIndex] = bestRecord.VersionBest.get();
 
+            const ChartScore* previousChartScorePtr = nullptr;
             for (auto &[dateTime, chartScore] : activeVersionScores)
             {
+                if (previousChartScorePtr && *previousChartScorePtr==chartScore)
+                {
+                    continue;
+                }
+                previousChartScorePtr = &chartScore;
+
+                if (IsTrivial(chartScore)) continue;
                 if (dateTime==bestRecord.VersionBest->DateTime) break;
 
                 if (!careerSecondBestRecordByType[scoreIndex] && !versionSecondBestRecordByType[scoreIndex])
@@ -180,7 +188,10 @@ Add(std::size_t chartId,
 
             if (versionSecondBestRecordByType[scoreIndex])
             {
-                bestRecord.OtherBestByRecordType[scoreIndex] = std::make_unique<ChartScoreRecord>(*versionSecondBestRecordByType[scoreIndex]);
+                if (!IsValueEqual(versionSecondBestRecordByType[scoreIndex]->ChartScoreProp, careerBestRecordByType[scoreIndex]->ChartScoreProp))
+                {
+                    bestRecord.OtherBestByRecordType[scoreIndex] = std::make_unique<ChartScoreRecord>(*versionSecondBestRecordByType[scoreIndex]);
+                }
             }
         }
         else
@@ -235,7 +246,10 @@ Add(std::size_t chartId,
 
             if (versionSecondBestRecordByType[missIndex])
             {
-                bestRecord.OtherBestByRecordType[missIndex] = std::make_unique<ChartScoreRecord>(*versionSecondBestRecordByType[missIndex]);
+                if (!IsValueEqual(versionSecondBestRecordByType[missIndex]->ChartScoreProp, careerBestRecordByType[missIndex]->ChartScoreProp))
+                {
+                    bestRecord.OtherBestByRecordType[missIndex] = std::make_unique<ChartScoreRecord>(*versionSecondBestRecordByType[missIndex]);
+                }
             }
         }
         else

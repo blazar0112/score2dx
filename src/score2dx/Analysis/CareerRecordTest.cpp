@@ -17,6 +17,7 @@ TEST(CareerRecord, VersionBest)
     CareerRecord careerRecord{29};
     careerRecord.Add(12345, {{"2022-04-01 13:59", {}}}, {});
     EXPECT_EQ(nullptr, careerRecord.GetRecord(12345, BestType::OtherBest, RecordType::Score));
+    EXPECT_NE(nullptr, careerRecord.GetRecord(12345, BestType::VersionBest, RecordType::Score));
     ASSERT_TRUE(careerRecord.IsVersionBestCareerBest(12345, RecordType::Score));
 }
 

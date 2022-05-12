@@ -9,7 +9,6 @@
 #include "ies/Common/RangeSide.hpp"
 #include "ies/Common/SmartEnum.hxx"
 
-#include "score2dx/Analysis/BestScoreData.hpp"
 #include "score2dx/Analysis/CareerRecord.hpp"
 #include "score2dx/Core/MusicDatabase.hpp"
 #include "score2dx/Iidx/Definition.hpp"
@@ -77,9 +76,6 @@ struct ActivityAnalysis
 //! @note BestScore includes SPB data, but Statistics do not include SPB.
 struct ScoreAnalysis
 {
-    //! @brief Map of {MusicId, Map of {PlayStyle, BestScoreData}}.
-    std::map<std::size_t, std::map<PlayStyle, BestScoreData>> MusicBestScoreData;
-
     std::unique_ptr<CareerRecord> CareerRecordPtr;
 
     //! @brief Map of {PlayStyle, Statistics}.
@@ -116,10 +112,6 @@ public:
 
         ScoreAnalysis
         Analyze(const PlayerScore &playerScore)
-        const;
-
-        ScoreAnalysis
-        AnalyzeV2(const PlayerScore &playerScore)
         const;
 
     //! @brief Analyze activity during current active version date time range.
