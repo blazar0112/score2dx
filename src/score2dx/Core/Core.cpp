@@ -213,13 +213,6 @@ const
 {
     try
     {
-        auto &musicScores = playerScore.GetMusicScores(playStyle);
-        if (musicScores.empty())
-        {
-            std::cout << "["+ToString(playStyle)+"] music score is empty.\n";
-            return;
-        }
-
         auto playStyleAcronym = static_cast<PlayStyleAcronym>(playStyle);
 
         auto GetCurrentDate = []() -> std::string
@@ -257,55 +250,58 @@ const
 
         auto &data = exportData["data"];
 
-        for (auto &[musicId, dateTimeScores] : musicScores)
+        for (auto &[musicId, versionScoreTable] : playerScore.GetVersionScoreTables())
         {
             auto &title = mMusicDatabase.GetTitle(musicId);
             auto versionIndex = ToIndexes(musicId).first;
             auto versionName = VersionNames[versionIndex];
             if (versionIndex==0||versionIndex==1)
             {
-                versionName = "1st&substream";
+                versionName = Official1stSubVersionName;
             }
 
             auto &versionData = data[versionName];
             auto &titleData = versionData[title];
 
-            for (auto &[dateTime, musicScore] : dateTimeScores)
+            for (auto scoreVersionIndex : GetSupportScoreVersionRange())
             {
-                if (dateTime>lastDateTime)
+                for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, playStyle))
                 {
-                    lastDateTime = dateTime;
-                }
-
-                auto &record = titleData[dateTime];
-                record["play"] = musicScore.GetPlayCount();
-                auto &scoreData = record["score"];
-
-                for (auto &[difficulty, chartScorePtr] : musicScore.GetChartScores())
-                {
-                    auto diffAcronym = static_cast<DifficultyAcronym>(difficulty);
-                    auto &chartScore = *chartScorePtr;
-
-                    //! @brief [score, pgreat, great, miss, clear, djLevel], same order as CSV.
-                    std::array<std::string, 6> difficultyData;
-
-                    difficultyData[0] = std::to_string(chartScore.ExScore);
-                    difficultyData[1] = std::to_string(chartScore.PGreatCount);
-                    difficultyData[2] = std::to_string(chartScore.GreatCount);
-                    difficultyData[3] = "---";
-                    if (chartScore.MissCount)
+                    if (dateTime>lastDateTime)
                     {
-                        difficultyData[3] = std::to_string(chartScore.MissCount.value());
+                        lastDateTime = dateTime;
                     }
 
-                    difficultyData[4] = ToString(chartScore.ClearType);
-                    difficultyData[5] = ToString(chartScore.DjLevel);
-                    if (chartScore.ExScore==0)
-                    {
-                        difficultyData[5] = "---";
-                    }
+                    auto &record = titleData[dateTime];
+                    record["play"] = musicScore.GetPlayCount();
+                    auto &scoreData = record["score"];
 
-                    scoreData[ToString(diffAcronym)] = difficultyData;
+                    for (auto &[difficulty, chartScorePtr] : musicScore.GetChartScores())
+                    {
+                        auto diffAcronym = static_cast<DifficultyAcronym>(difficulty);
+                        auto &chartScore = *chartScorePtr;
+
+                        //! @brief [score, pgreat, great, miss, clear, djLevel], same order as CSV.
+                        std::array<std::string, 6> difficultyData;
+
+                        difficultyData[0] = std::to_string(chartScore.ExScore);
+                        difficultyData[1] = std::to_string(chartScore.PGreatCount);
+                        difficultyData[2] = std::to_string(chartScore.GreatCount);
+                        difficultyData[3] = "---";
+                        if (chartScore.MissCount)
+                        {
+                            difficultyData[3] = std::to_string(chartScore.MissCount.value());
+                        }
+
+                        difficultyData[4] = ToString(chartScore.ClearType);
+                        difficultyData[5] = ToString(chartScore.DjLevel);
+                        if (chartScore.ExScore==0)
+                        {
+                            difficultyData[5] = "---";
+                        }
+
+                        scoreData[ToString(diffAcronym)] = difficultyData;
+                    }
                 }
             }
         }
@@ -439,15 +435,15 @@ Import(const std::string &requiredIidxId,
                         dateTime
                     };
 
-                    auto findActiveVersionIndex = FindVersionIndexFromDateTime(dateTime);
-                    if (!findActiveVersionIndex)
+                    auto findScoreVersionIndex = FindVersionIndexFromDateTime(dateTime);
+                    if (!findScoreVersionIndex)
                     {
                         std::cout << "Data contains date time not supported.\n"
                                   << recordData << "\n";
                         continue;
                     }
 
-                    auto activeVersionIndex = findActiveVersionIndex.value();
+                    auto scoreVersionIndex = findScoreVersionIndex.value();
 
                     for (auto &[difficultyAcronym, scoreData] : recordData["score"].items())
                     {
@@ -484,7 +480,7 @@ Import(const std::string &requiredIidxId,
                         auto findChartInfo = mMusicDatabase.FindChartInfo(
                             musicId,
                             styleDifficulty,
-                            activeVersionIndex
+                            scoreVersionIndex
                         );
 
                         if (!findChartInfo)
@@ -498,7 +494,7 @@ Import(const std::string &requiredIidxId,
                             */
                             std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
                                       << "DateTime: " << dateTime << "\n"
-                                      << "ActiveVersion: " << ToVersionString(activeVersionIndex) << "\n"
+                                      << "ScoreVersion: " << ToVersionString(scoreVersionIndex) << "\n"
                                       << "StyleDifficulty: " << ToString(styleDifficulty) << "\n";
                             throw std::runtime_error("cannot find chart info");
                         }
@@ -508,7 +504,7 @@ Import(const std::string &requiredIidxId,
                         {
                             std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
                                       << "DateTime: " << dateTime << "\n"
-                                      << "ActiveVersion: " << ToVersionString(activeVersionIndex) << "\n"
+                                      << "ScoreVersion: " << ToVersionString(scoreVersionIndex) << "\n"
                                       << "StyleDifficulty: " << ToString(styleDifficulty) << "\n";
                             throw std::runtime_error("DB chart info note is non-positive.");
                         }
@@ -528,7 +524,7 @@ Import(const std::string &requiredIidxId,
                                           << ", Actual DJ Level: " << ToString(actualDjLevel)
                                           << ", Data DJ Level: " << ToString(chartScore.DjLevel)
                                           << "\nDateTime: " << dateTime
-                                          << ", ActiveVersion: " << ToVersionString(activeVersionIndex)
+                                          << ", ScoreVersion: " << ToVersionString(scoreVersionIndex)
                                           << "."
                                           << std::endl;
                             }
@@ -536,7 +532,7 @@ Import(const std::string &requiredIidxId,
                         }
                     }
 
-                    playerScore.AddMusicScore(musicScore, activeVersionIndex);
+                    playerScore.AddMusicScore(scoreVersionIndex, musicScore);
                 }
             }
         }
@@ -1011,7 +1007,7 @@ ExportIidxMeData(const std::string &user)
                                     chartScore.ExScore = score;
                                 }
 
-                                playerScore.AddChartScore(musicId, playStyle, difficulty, dateTime, chartScore);
+                                playerScore.AddChartScore(scoreVersionIndex, musicId, playStyle, difficulty, dateTime, chartScore);
                             }
                         }
                     }
@@ -1384,7 +1380,7 @@ AddCsvToPlayerScore(const std::string &iidxId,
     for (auto &[musicId, musicScore] : csv.GetScores())
     {
         (void)musicId;
-        playerScore.AddMusicScore(musicScore, csv.GetVersionIndex());
+        playerScore.AddMusicScore(csv.GetVersionIndex(), musicScore);
     }
 }
 

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "ies/Common/IntegralRange.hxx"
 #include "ies/Common/IntegralRangeList.hxx"
 #include "ies/Common/RangeSide.hpp"
 #include "ies/Common/SmartEnum.hxx"
@@ -78,6 +79,9 @@ FindVersionIndex(const std::string &dbVersionName);
 //! @note Currently it's 17.
 std::size_t
 GetFirstSupportDateTimeVersionIndex();
+
+const ies::IndexRange &
+GetSupportScoreVersionRange();
 
 //! @brief Get Version's DateTime range [BeginDateTime, EndDateTime] (including end).
 //! @note Empty string if DateTime is unknown.

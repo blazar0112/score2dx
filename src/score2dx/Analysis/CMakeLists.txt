@@ -9,7 +9,6 @@ set_property(GLOBAL PROPERTY
     PROP_SOURCES
     ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/Analyzer.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/BestScoreData.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/CareerRecord.cpp
 )
 
@@ -18,7 +17,6 @@ set_property(GLOBAL PROPERTY
     PROP_PUBLIC_HEADERS
     ${PUBLIC_HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/Analyzer.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/BestScoreData.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/CareerRecord.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ChartScoreRecord.hpp
 )

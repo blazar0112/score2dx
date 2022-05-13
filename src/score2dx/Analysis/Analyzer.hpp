@@ -33,16 +33,14 @@ struct Statistics
     //! So sum of ChartIdListByDjLevel/ChartIdListByScoreLevelRange may only be part of total ChartIdList.
     std::set<std::size_t> ChartIdList;
 
-    //! @brief Map of {ClearType, ChartIdList}.
-    std::map<ClearType, std::set<std::size_t>> ChartIdListByClearType;
+    //! @brief Arry of {Index=ClearType, ChartIdList}.
+    std::array<std::set<std::size_t>, ClearTypeSmartEnum::Size()> ChartIdListByClearType;
 
-    //! @brief Map of {DjLevel, ChartIdList}.
-    std::map<DjLevel, std::set<std::size_t>> ChartIdListByDjLevel;
+    //! @brief Array of {Index=DjLevel, ChartIdList}.
+    std::array<std::set<std::size_t>, DjLevelSmartEnum::Size()> ChartIdListByDjLevel;
 
-    //! @brief Map of {ScoreLevelCategory, ChartIdList}.
-    std::map<ScoreLevelCategory, std::set<std::size_t>> ChartIdListByScoreLevelCategory;
-
-        Statistics();
+    //! @brief Array of {Index=ScoreLevelCategory, ChartIdList}.
+    std::array<std::set<std::size_t>, ScoreLevelCategorySmartEnum::Size()> ChartIdListByScoreLevelCategory;
 };
 
 struct ActivityData
@@ -78,24 +76,24 @@ struct ScoreAnalysis
 {
     std::unique_ptr<CareerRecord> CareerRecordPtr;
 
-    //! @brief Map of {PlayStyle, Statistics}.
+    //! @brief Array of {Index=PlayStyle, Statistics}.
     //! @note It should be equivalent to
     //!     Sum of levels in StatisticsByStyleLevel
     //!     Sum of difficulty in StatisticsByStyleDifficulty (of each style)
     //!     Sum of difficulty and version in StatisticsByVersionStyleDifficulty (of each style)
-    std::map<PlayStyle, Statistics> StatisticsByStyle;
+    std::array<Statistics, PlayStyleSmartEnum::Size()> StatisticsByStyle;
 
-    //! @brief Vector of {Index=VersionIndex, Map of {Style, Statistics}}.
-    std::vector<std::map<PlayStyle, Statistics>> StatisticsByVersionStyle;
+    //! @brief Vector of {Index=VersionIndex, Array of {Index=Style, Statistics}}.
+    std::vector<std::array<Statistics, PlayStyleSmartEnum::Size()>> StatisticsByVersionStyle;
 
-    //! @brief Map of {PlayStyle, Array of {Index=Level, Statistics}}. Level = 0 is unused.
-    std::map<PlayStyle, std::array<Statistics, MaxLevel+1>> StatisticsByStyleLevel;
+    //! @brief Array of {Index=PlayStyle, Array of {Index=Level, Statistics}}. Level = 0 is unused.
+    std::array<std::array<Statistics, MaxLevel+1>, PlayStyleSmartEnum::Size()> StatisticsByStyleLevel;
 
-    //! @brief Map of {StyleDifficulty, Statistics}.
-    std::map<StyleDifficulty, Statistics> StatisticsByStyleDifficulty;
+    //! @brief Array of {Index=StyleDifficulty, Statistics}.
+    std::array<Statistics, StyleDifficultySmartEnum::Size()> StatisticsByStyleDifficulty;
 
-    //! @brief Vector of {Index=VersionIndex, Map of {StyleDifficulty, Statistics}}.
-    std::vector<std::map<StyleDifficulty, Statistics>> StatisticsByVersionStyleDifficulty;
+    //! @brief Vector of {Index=VersionIndex, Array of {Index=StyleDifficulty, Statistics}}.
+    std::vector<std::array<Statistics, StyleDifficultySmartEnum::Size()>> StatisticsByVersionStyleDifficulty;
 };
 
 class Analyzer
@@ -123,16 +121,11 @@ public:
         const;
 
     //! @brief Analyze activity during specific date time range.
+    //! @note DateTimeRange need inside a version (the activeVersion).
         ActivityAnalysis
         AnalyzeActivity(const PlayerScore &playerScore,
                         const std::string &beginDateTime,
                         const std::string &endDateTime)
-        const;
-
-        void
-        AnalyzeHistory(const PlayerScore &playerScore,
-                       std::size_t musicId,
-                       StyleDifficulty styleDifficulty)
         const;
 
 private:

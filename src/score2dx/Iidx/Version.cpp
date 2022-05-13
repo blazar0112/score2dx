@@ -100,6 +100,13 @@ GetFirstSupportDateTimeVersionIndex()
     return VersionDateTimeRangeMap.begin()->first;
 }
 
+const ies::IndexRange &
+GetSupportScoreVersionRange()
+{
+    static ies::IndexRange ScoreVersionRange{GetFirstSupportDateTimeVersionIndex(), VersionNames.size()};
+    return ScoreVersionRange;
+}
+
 std::map<ies::RangeSide, std::string>
 GetVersionDateTimeRange(std::size_t versionIndex)
 {

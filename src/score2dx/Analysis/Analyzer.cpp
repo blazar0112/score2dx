@@ -15,25 +15,6 @@ namespace s2Time = ies::Time;
 namespace score2dx
 {
 
-Statistics::
-Statistics()
-{
-    for (auto clearType : ClearTypeSmartEnum::ToRange())
-    {
-        ChartIdListByClearType[clearType];
-    }
-
-    for (auto djLevel : DjLevelSmartEnum::ToRange())
-    {
-        ChartIdListByDjLevel[djLevel];
-    }
-
-    for (auto scoreLevelCategory : ScoreLevelCategorySmartEnum::ToRange())
-    {
-        ChartIdListByScoreLevelCategory[scoreLevelCategory];
-    }
-}
-
 Analyzer::
 Analyzer(const MusicDatabase &musicDatabase)
 :   mMusicDatabase(musicDatabase)
@@ -72,39 +53,8 @@ const
     analysis.CareerRecordPtr = std::make_unique<CareerRecord>(mActiveVersionIndex);
     auto &careerRecord = *analysis.CareerRecordPtr;
 
-    for (auto playStyle : PlayStyleSmartEnum::ToRange())
-    {
-        analysis.StatisticsByStyle[playStyle];
-        analysis.StatisticsByStyleLevel[playStyle];
-    }
-
-    for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
-    {
-        if (styleDifficulty==StyleDifficulty::SPB||styleDifficulty==StyleDifficulty::DPB)
-        {
-            continue;
-        }
-        analysis.StatisticsByStyleDifficulty[styleDifficulty];
-    }
-
     analysis.StatisticsByVersionStyle.resize(mActiveVersionIndex+1);
     analysis.StatisticsByVersionStyleDifficulty.resize(mActiveVersionIndex+1);
-    for (auto versionIndex : IndexRange{0, mActiveVersionIndex+1})
-    {
-        for (auto playStyle : PlayStyleSmartEnum::ToRange())
-        {
-            analysis.StatisticsByVersionStyle[versionIndex][playStyle];
-        }
-
-        for (auto styleDifficulty : StyleDifficultySmartEnum::ToRange())
-        {
-            if (styleDifficulty==StyleDifficulty::SPB||styleDifficulty==StyleDifficulty::DPB)
-            {
-                continue;
-            }
-            analysis.StatisticsByVersionStyleDifficulty[versionIndex][styleDifficulty];
-        }
-    }
 
     auto* activeVersionPtr = mMusicDatabase.FindActiveVersion(mActiveVersionIndex);
     if (!activeVersionPtr)
@@ -172,7 +122,7 @@ const
                     if (findScoreTable)
                     {
                         auto &versionScoreTable = findScoreTable.value()->second;
-                        auto &musicScores = versionScoreTable.GetMusicScores(chartPlayStyle, versionIndex);
+                        auto &musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
                         if (!musicScores.empty())
                         {
                             auto bestMusicScoreIt = musicScores.rbegin();
@@ -193,7 +143,7 @@ const
                     if (findScoreTable)
                     {
                         auto &versionScoreTable = findScoreTable.value()->second;
-                        auto &musicScores = versionScoreTable.GetMusicScores(chartPlayStyle, versionIndex);
+                        auto &musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
                         for (auto &[dateTime, musicScore] : musicScores)
                         {
                             if (auto* chartScorePtr = musicScore.GetChartScore(difficulty))
@@ -240,22 +190,22 @@ const
 
             std::set<Statistics*> analysisStatsList
             {
-                &analysis.StatisticsByStyle[chartPlayStyle],
-                &analysis.StatisticsByStyleLevel[chartPlayStyle][chartInfo.Level],
-                &analysis.StatisticsByStyleDifficulty[styleDifficulty],
-                &analysis.StatisticsByVersionStyle[versionIndex][chartPlayStyle],
-                &analysis.StatisticsByVersionStyleDifficulty[versionIndex][styleDifficulty]
+                &analysis.StatisticsByStyle[static_cast<std::size_t>(chartPlayStyle)],
+                &analysis.StatisticsByStyleLevel[static_cast<std::size_t>(chartPlayStyle)][chartInfo.Level],
+                &analysis.StatisticsByStyleDifficulty[static_cast<std::size_t>(styleDifficulty)],
+                &analysis.StatisticsByVersionStyle[versionIndex][static_cast<std::size_t>(chartPlayStyle)],
+                &analysis.StatisticsByVersionStyleDifficulty[versionIndex][static_cast<std::size_t>(styleDifficulty)]
             };
 
             for (auto stats : analysisStatsList)
             {
                 stats->ChartIdList.emplace(chartId);
-                stats->ChartIdListByClearType[versionBestChartScore.ClearType].emplace(chartId);
+                stats->ChartIdListByClearType[static_cast<std::size_t>(versionBestChartScore.ClearType)].emplace(chartId);
                 if (versionBestChartScore.ClearType!=ClearType::NO_PLAY
                     &&versionBestChartScore.ExScore!=0)
                 {
-                    stats->ChartIdListByDjLevel[versionBestChartScore.DjLevel].emplace(chartId);
-                    stats->ChartIdListByScoreLevelCategory[category].emplace(chartId);
+                    stats->ChartIdListByDjLevel[static_cast<std::size_t>(versionBestChartScore.DjLevel)].emplace(chartId);
+                    stats->ChartIdListByScoreLevelCategory[static_cast<std::size_t>(category)].emplace(chartId);
                 }
             }
         }
@@ -293,21 +243,21 @@ const
         activityAnalysis.ActivitySnapshotByDateTime[playStyle];
     }
 
-    auto findVersionIndex = FindVersionIndexFromDateTime(beginDateTime);
-    if (!findVersionIndex)
+    auto findActiveVersionIndex = FindVersionIndexFromDateTime(beginDateTime);
+    if (!findActiveVersionIndex)
     {
         return activityAnalysis;
     }
-    auto versionIndex = findVersionIndex.value();
+    auto activeVersionIndex = findActiveVersionIndex.value();
 
-    auto* activeVersionPtr = mMusicDatabase.FindActiveVersion(versionIndex);
+    auto* activeVersionPtr = mMusicDatabase.FindActiveVersion(activeVersionIndex);
     if (!activeVersionPtr)
     {
         throw std::runtime_error("invalid active version");
     }
 
     auto &activeVersion = *activeVersionPtr;
-    auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
+    auto versionDateTimeRange = GetVersionDateTimeRange(activeVersionIndex);
     auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
 
     for (auto chartId : activeVersion.GetChartIdList())
@@ -335,48 +285,52 @@ const
 
         snapshotMusicScore.SetChartScore(difficulty, findChartScoreBeforeTime.value());
 
-        auto findMusicScores = ies::Find(playerScore.GetMusicScores(chartPlayStyle), musicId);
-        if (!findMusicScores)
+        auto findVersionScoreTable = ies::Find(playerScore.GetVersionScoreTables(), musicId);
+        if (!findVersionScoreTable)
         {
             continue;
         }
+        auto &versionScoreTable = findVersionScoreTable.value()->second;
 
         std::string previousDateTime;
-        for (auto &[dateTime, musicScore] : findMusicScores.value()->second)
+        for (auto scoreVersionIndex : GetSupportScoreVersionRange())
         {
-            if (dateTime>=versionBeginDateTime && dateTime<beginDateTime)
+            for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, chartPlayStyle))
             {
-                snapshotMusicScore.SetPlayCount(musicScore.GetPlayCount());
-            }
-
-            if (dateTime>=beginDateTime
-                && (endDateTime.empty() || dateTime<=endDateTime))
-            {
-                auto* chartScorePtr = musicScore.GetChartScore(difficulty);
-                if (chartScorePtr)
+                if (dateTime>=versionBeginDateTime && dateTime<beginDateTime)
                 {
-                    auto &activityMusicScoreById = activityAnalysis.ActivityByDateTime[chartPlayStyle][dateTime];
-                    if (!ies::Find(activityMusicScoreById, musicId))
-                    {
-                        activityMusicScoreById.emplace(musicId, musicScore);
-                        auto &activitySnapshot = activityAnalysis.ActivitySnapshotByDateTime[chartPlayStyle];
-                        auto &activityData = activitySnapshot[dateTime][musicId];
-                        activityData.CurrentMusicScore = &activityMusicScoreById.at(musicId);
-                        if (previousDateTime.empty())
-                        {
-                            activityData.PreviousMusicScore = &snapshotMusicScore;
-                        }
-                        else
-                        {
-                            auto &previousActivityData = activitySnapshot.at(previousDateTime).at(musicId);
-                            activityData.PreviousMusicScore = previousActivityData.CurrentMusicScore;
-                        }
+                    snapshotMusicScore.SetPlayCount(musicScore.GetPlayCount());
+                }
 
-                        if (!activityData.PreviousMusicScore)
+                if (dateTime>=beginDateTime
+                    && (endDateTime.empty() || dateTime<=endDateTime))
+                {
+                    auto* chartScorePtr = musicScore.GetChartScore(difficulty);
+                    if (chartScorePtr)
+                    {
+                        auto &activityMusicScoreById = activityAnalysis.ActivityByDateTime[chartPlayStyle][dateTime];
+                        if (!ies::Find(activityMusicScoreById, musicId))
                         {
-                            throw std::runtime_error("activityData.PreviousMusicScore is nullptr");
+                            activityMusicScoreById.emplace(musicId, musicScore);
+                            auto &activitySnapshot = activityAnalysis.ActivitySnapshotByDateTime[chartPlayStyle];
+                            auto &activityData = activitySnapshot[dateTime][musicId];
+                            activityData.CurrentMusicScore = &activityMusicScoreById.at(musicId);
+                            if (previousDateTime.empty())
+                            {
+                                activityData.PreviousMusicScore = &snapshotMusicScore;
+                            }
+                            else
+                            {
+                                auto &previousActivityData = activitySnapshot.at(previousDateTime).at(musicId);
+                                activityData.PreviousMusicScore = previousActivityData.CurrentMusicScore;
+                            }
+
+                            if (!activityData.PreviousMusicScore)
+                            {
+                                throw std::runtime_error("activityData.PreviousMusicScore is nullptr");
+                            }
+                            previousDateTime = dateTime;
                         }
-                        previousDateTime = dateTime;
                     }
                 }
             }
@@ -385,36 +339,6 @@ const
 
     s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "AnalyzeActivity");
     return activityAnalysis;
-}
-
-void
-Analyzer::
-AnalyzeHistory(const PlayerScore &playerScore,
-               std::size_t musicId,
-               StyleDifficulty styleDifficulty)
-const
-{
-    auto [playStyle, difficulty] = score2dx::Split(styleDifficulty);
-    auto chartScores = playerScore.GetChartScores(musicId, playStyle, difficulty);
-    std::cout << "Music ["+mMusicDatabase.GetTitle(musicId)+"]:\n";
-    //std::cout << "Available versions: " << mMusicDatabase.
-    for (auto &[dateTime, chartScorePtr] : chartScores)
-    {
-        auto &chartScore = *chartScorePtr;
-        std::cout   << "Record ["+dateTime+"] Clear: "+ToString(chartScore.ClearType)
-                    << ", DJ Level: "+ToString(chartScore.DjLevel)
-                    << ", EX Score: " << chartScore.ExScore
-                    << ", MissCount: ";
-        if (chartScore.MissCount)
-        {
-            std::cout << chartScore.MissCount.value();
-        }
-        else
-        {
-            std::cout << "N/A";
-        }
-        std::cout << std::endl;
-    }
 }
 
 std::optional<ChartScore>
@@ -427,11 +351,12 @@ FindChartScoreByTime(const PlayerScore &playerScore,
                      FindChartScoreOption option)
 const
 {
-    auto findMusicScoresById = ies::Find(playerScore.GetMusicScores(playStyle), musicId);
-    if (!findMusicScoresById)
+    auto findVersionScoreTable = ies::Find(playerScore.GetVersionScoreTables(), musicId);
+    if (!findVersionScoreTable)
     {
         return ChartScore{};
     }
+    auto &versionScoreTable = findVersionScoreTable.value()->second;
 
     auto findVersionIndex = FindVersionIndexFromDateTime(dateTime);
     if (!findVersionIndex)
@@ -440,9 +365,10 @@ const
     }
     auto versionIndex = findVersionIndex.value();
 
-    if ((musicId/1000)>versionIndex)
+    //'' note: there's Copula music previewed in Pendual event. So +1 to guranteed invalid case.
+    if ((musicId/1000)>versionIndex+1)
     {
-        std::cout << "(musicId/1000)>versionIndex, Id [" << ToMusicIdString(musicId) << ", ver [" << ToVersionString(versionIndex) << "].\n";
+        std::cout << "(musicId/1000)>versionIndex+1, Id [" << ToMusicIdString(musicId) << ", ver [" << ToVersionString(versionIndex) << "].\n";
         return std::nullopt;
     }
 
@@ -456,37 +382,35 @@ const
     auto &containingAvailableVersionRange = findContainingAvailableRange.value();
 
     ChartScore chartScore;
-    auto &musicScoreById = findMusicScoresById.value()->second;
+
     auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
     auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
-    for (auto &[recordDateTime, musicScore] : musicScoreById)
+    for (auto scoreVersionIndex : containingAvailableVersionRange)
     {
-        auto* chartScorePtr = musicScore.GetChartScore(difficulty);
-        if (!chartScorePtr) { continue; }
-
-        auto findRecordVersionIndex = FindVersionIndexFromDateTime(recordDateTime);
-        if (!findRecordVersionIndex) { continue; }
-        auto recordVersionIndex = findRecordVersionIndex.value();
-
-        if (recordDateTime<versionBeginDateTime
-            && containingAvailableVersionRange.IsInRange(recordVersionIndex))
+        for (auto &[recordDateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, playStyle))
         {
-            chartScore.ClearType = chartScorePtr->ClearType;
-        }
+            auto* chartScorePtr = musicScore.GetChartScore(difficulty);
+            if (!chartScorePtr) { continue; }
 
-        if ((recordDateTime<dateTime
-            || (option==FindChartScoreOption::AtDateTime
-                &&recordDateTime==dateTime))
-            && recordDateTime>=versionBeginDateTime)
-        {
-            chartScore = *chartScorePtr;
-        }
+            if (recordDateTime<versionBeginDateTime)
+            {
+                chartScore.ClearType = chartScorePtr->ClearType;
+            }
 
-        if (recordDateTime>dateTime
-            || (option==FindChartScoreOption::BeforeDateTime
-                &&recordDateTime==dateTime))
-        {
-            break;
+            if ((recordDateTime<dateTime
+                || (option==FindChartScoreOption::AtDateTime
+                    &&recordDateTime==dateTime))
+                && recordDateTime>=versionBeginDateTime)
+            {
+                chartScore = *chartScorePtr;
+            }
+
+            if (recordDateTime>dateTime
+                || (option==FindChartScoreOption::BeforeDateTime
+                    &&recordDateTime==dateTime))
+            {
+                break;
+            }
         }
     }
 

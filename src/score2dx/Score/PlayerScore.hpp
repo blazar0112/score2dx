@@ -27,29 +27,18 @@ public:
     //! @note Does nothing if exist MusicScore with same date time.
     //! (Not check if adding musicScore and existing MusicScore are same or not.)
         void
-        AddMusicScore(const MusicScore &musicScore,
-                      std::size_t sourceVersionIndex);
-
-    //! @brief Map of {MusicId, Map of {DateTime, MusicScore}}.
-        const std::map<size_t, std::map<std::string, MusicScore>> &
-        GetMusicScores(PlayStyle playStyle)
-        const;
+        AddMusicScore(std::size_t scoreVersionIndex,
+                      const MusicScore &musicScore);
 
     //! @brief Add ChartScore, because it's from iidxme data or manually input.
     //! @note Update if already exist StyleDifficulty's ChartScore in MusicScore.
         void
-        AddChartScore(std::size_t musicId,
+        AddChartScore(std::size_t scoreVersionIndex,
+                      std::size_t musicId,
                       PlayStyle playStyle,
                       Difficulty difficulty,
                       const std::string &dateTime,
                       const ChartScore &chartScore);
-
-    //! @brief Get all historic ChartScore of a styleDifficulty of musicId from CSV files,
-    //! sorted by DateTime of CSV.
-    //! @return Map of {DateTime, matching musicId style difficulty ChartScore}.
-        std::map<std::string, const ChartScore*>
-        GetChartScores(std::size_t musicId, PlayStyle playStyle, Difficulty difficulty)
-        const;
 
     //! @brief Get VersionScoreTables: Map of {MusicId, VersionScoreTable}.
         const std::map<std::size_t, VersionScoreTable> &
@@ -58,8 +47,6 @@ public:
 
 private:
     std::string mIidxId;
-    //! @brief Map of {PlayStyle, Map of {MusicId, Map of {DateTime, MusicScore}}}.
-    std::map<PlayStyle, std::map<size_t, std::map<std::string, MusicScore>>> mMusicScores;
 
     //! @brief Map of {MusicId, VersionScoreTable}.
     std::map<std::size_t, VersionScoreTable> mVersionScoreTables;

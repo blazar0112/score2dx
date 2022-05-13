@@ -15,23 +15,44 @@ namespace score2dx
 class VersionScoreTable
 {
 public:
-        VersionScoreTable();
+        explicit VersionScoreTable(std::size_t musicId);
 
     //! @brief Add MusicScore from sourceVersion.
     //! @note Because it's possible to play older version before inherit data.
-    //! If score version is after sourceVersionIndex, then it's recognize as from sourceVersion
+    //! If score datetime is after scoreVersionIndex, then it's recognize as from scoreVersionIndex
     //! and adjust to end of sourceVersion.
-    //! Version of MusicScore datetime cannot be before source version.
+    //! MusicScore's datetime cannot be version before score version.
+    //! TimeLine use origin datetime as key to keep original score order.
+    //! (need consider if play old version machine after new version released before transfering data)
         void
-        AddMusicScore(const MusicScore &musicScore, std::size_t sourceVersionIndex);
+        AddMusicScore(std::size_t scoreVersionIndex,
+                      const MusicScore &musicScore);
 
+    //! @brief Add ChartScore from sourceVersion.
+    //! @note Will adjust MusicScore datetime with same rule described in AddMusicScore.
+        void
+        AddChartScore(std::size_t scoreVersionIndex,
+                      const std::string &dateTime,
+                      PlayStyle playStyle,
+                      Difficulty difficulty,
+                      const ChartScore &chartScore);
+
+    //! @brief Get all music score in version by timeline.
+    //! @note MusicScore datetime may adjust to version end if exceeds version end.
+    //! However timeline key is unadjusted datetime.
         const std::map<std::string, MusicScore> &
-        GetMusicScores(PlayStyle playStyle, std::size_t versionIndex)
+        GetMusicScores(std::size_t scoreVersionIndex,
+                       PlayStyle playStyle)
         const;
 
 private:
-    //! @brief Array of {Index=PlayStyle, Vector of {Index=ScoreSourceVersionIndex, Map of {OriginDateTime, MusicScore}}}.
+    std::size_t mMusicId;
+    //! @brief Array of {Index=PlayStyle, Vector of {Index=ScoreVersionIndex, Map of {OriginDateTime, MusicScore}}}.
     std::array<std::vector<std::map<std::string, MusicScore>>, PlayStyleSmartEnum::Size()> mScoreTimeLineTable;
 };
+
+std::string
+AdjustDateTime(std::size_t scoreVersionIndex,
+               const std::string &dateTime);
 
 }
