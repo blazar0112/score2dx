@@ -940,7 +940,7 @@ ExportIidxMeData(const std::string &user)
                                         continue;
                                     }
 
-                                    dateTime = GetVersionDateTimeRange(scoreVersionIndex).at(ies::RangeSide::End);
+                                    dateTime = GetVersionDateTimeRange(scoreVersionIndex).Get(ies::RangeSide::End);
                                 }
                                 else
                                 {
@@ -962,7 +962,7 @@ ExportIidxMeData(const std::string &user)
                                 auto firstSupportVersionIndex = GetFirstSupportDateTimeVersionIndex();
                                 if (scoreVersionIndex<firstSupportVersionIndex)
                                 {
-                                    auto firstDateTime = GetVersionDateTimeRange(firstSupportVersionIndex).at(ies::RangeSide::Begin);
+                                    auto &firstDateTime = GetVersionDateTimeRange(firstSupportVersionIndex).Get(ies::RangeSide::Begin);
                                     if (dateTime>=firstDateTime)
                                     {
                                         dateTime = "2009-10-20 23:59";
@@ -970,7 +970,7 @@ ExportIidxMeData(const std::string &user)
                                 }
                                 else if (scoreVersionIndex!=GetLatestVersionIndex())
                                 {
-                                    auto versionEndDateTime = GetVersionDateTimeRange(scoreVersionIndex).at(ies::RangeSide::End);
+                                    auto &versionEndDateTime = GetVersionDateTimeRange(scoreVersionIndex).Get(ies::RangeSide::End);
                                     if (dateTime>versionEndDateTime)
                                     {
                                         std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
@@ -1288,7 +1288,7 @@ const
                             continue;
                         }
 
-                        dateTime = GetVersionDateTimeRange(scoreVersionIndex).at(ies::RangeSide::End);
+                        dateTime = GetVersionDateTimeRange(scoreVersionIndex).Get(ies::RangeSide::End);
                     }
                     else
                     {

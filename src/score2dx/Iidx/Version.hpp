@@ -10,6 +10,8 @@
 #include "ies/Common/RangeSide.hpp"
 #include "ies/Common/SmartEnum.hxx"
 
+#include "score2dx/Iidx/VersionDateTimeRange.hpp"
+
 namespace score2dx
 {
 
@@ -102,7 +104,7 @@ GetSupportScoreVersionRange();
 //!
 //! @note Current version, IIDX 29's EndDateTime is empty.
 //!
-std::map<ies::RangeSide, std::string>
+const VersionDateTimeRange &
 GetVersionDateTimeRange(std::size_t versionIndex);
 
 //! @brief Find version index from date time. Possible value range: [17, latest].

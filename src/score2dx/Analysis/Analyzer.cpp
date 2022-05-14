@@ -219,8 +219,8 @@ Analyzer::
 AnalyzeVersionActivity(const PlayerScore &playerScore)
 const
 {
-    auto timeRange = GetVersionDateTimeRange(mActiveVersionIndex);
-    return AnalyzeActivity(playerScore, timeRange.at(ies::RangeSide::Begin), timeRange.at(ies::RangeSide::End));
+    auto &timeRange = GetVersionDateTimeRange(mActiveVersionIndex);
+    return AnalyzeActivity(playerScore, timeRange.Get(ies::RangeSide::Begin), timeRange.Get(ies::RangeSide::End));
 }
 
 ActivityAnalysis
@@ -257,8 +257,8 @@ const
     }
 
     auto &activeVersion = *activeVersionPtr;
-    auto versionDateTimeRange = GetVersionDateTimeRange(activeVersionIndex);
-    auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
+    auto &versionDateTimeRange = GetVersionDateTimeRange(activeVersionIndex);
+    auto &versionBeginDateTime = versionDateTimeRange.Get(ies::RangeSide::Begin);
 
     for (auto chartId : activeVersion.GetChartIdList())
     {
@@ -383,8 +383,8 @@ const
 
     ChartScore chartScore;
 
-    auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
-    auto &versionBeginDateTime = versionDateTimeRange.at(ies::RangeSide::Begin);
+    auto &versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
+    auto &versionBeginDateTime = versionDateTimeRange.Get(ies::RangeSide::Begin);
     for (auto scoreVersionIndex : containingAvailableVersionRange)
     {
         for (auto &[recordDateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, playStyle))

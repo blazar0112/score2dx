@@ -15,10 +15,10 @@
 namespace
 {
 
-//! @brief Map of {VersionIndex, Array of [BeginDateTime, EndDateTime]}.
+//! @brief Map of {VersionIndex, VersionDateTimeRange{BeginDateTime, EndDateTime}}.
 //! EndDateTime = 23:59 of day before next version release day.
 //! @note tricoro use Ver.UP release date, not tricoro-machine limited release date (2012-09-19).
-const std::map<std::size_t, std::array<std::string, ies::RangeSideSmartEnum::Size()>> VersionDateTimeRangeMap
+const std::map<std::size_t, score2dx::VersionDateTimeRange> VersionDateTimeRangeMap
 {
     {29, {"2021-10-13 00:00", ""}},
     {28, {"2020-10-28 00:00", "2021-10-12 23:59"}},
@@ -107,28 +107,27 @@ GetSupportScoreVersionRange()
     return ScoreVersionRange;
 }
 
-std::map<ies::RangeSide, std::string>
+const VersionDateTimeRange &
 GetVersionDateTimeRange(std::size_t versionIndex)
 {
-    std::map<ies::RangeSide, std::string> range;
-
     if (auto findVersion = ies::Find(VersionDateTimeRangeMap, versionIndex))
     {
-        auto &dateTimeArray = findVersion.value()->second;
-        for (auto rangeSide : ies::RangeSideSmartEnum::ToRange())
-        {
-            range[rangeSide] = dateTimeArray[static_cast<std::size_t>(rangeSide)];
-        }
+        return findVersion.value()->second;
     }
 
-    return range;
+    throw std::runtime_error("versionIndex has not supported date time range.");
 }
 
 std::optional<std::size_t>
 FindVersionIndexFromDateTime(const std::string &dateTime)
 {
+    if (VersionDateTimeRangeMap.empty())
+    {
+        throw std::runtime_error("VersionDateTimeRangeMap.empty()");
+    }
+
     auto &[firstVersionIndex, firstVersionDateTimeRange] = *VersionDateTimeRangeMap.begin();
-    auto &firstVersionBeginDateTime = firstVersionDateTimeRange[static_cast<int>(ies::RangeSide::Begin)];
+    auto &firstVersionBeginDateTime = firstVersionDateTimeRange.Get(ies::RangeSide::Begin);
     if (dateTime<firstVersionBeginDateTime)
     {
         return std::nullopt;
@@ -137,7 +136,7 @@ FindVersionIndexFromDateTime(const std::string &dateTime)
     auto versionIndex = firstVersionIndex;
     for (auto &[ver, dateTimeRange] : VersionDateTimeRangeMap)
     {
-        if (dateTime>=dateTimeRange[static_cast<int>(ies::RangeSide::Begin)])
+        if (dateTime>=dateTimeRange.Get(ies::RangeSide::Begin))
         {
             versionIndex = ver;
         }
@@ -161,16 +160,16 @@ FindVersionDateType(const std::string &dateTime)
     }
     auto versionIndex = findVersionIndex.value();
 
-    auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
+    auto &versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
     auto tokens = ies::SplitString(" ", dateTime);
     auto &date = tokens[0];
 
-    if (ies::Find(versionDateTimeRange.at(ies::RangeSide::Begin), date))
+    if (ies::Find(versionDateTimeRange.Get(ies::RangeSide::Begin), date))
     {
         return VersionDateType::VersionBegin;
     }
 
-    if (ies::Find(versionDateTimeRange.at(ies::RangeSide::End), date))
+    if (ies::Find(versionDateTimeRange.Get(ies::RangeSide::End), date))
     {
         return VersionDateType::VersionEnd;
     }

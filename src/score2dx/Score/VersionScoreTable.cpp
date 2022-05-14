@@ -86,18 +86,18 @@ AdjustDateTime(std::size_t scoreVersionIndex,
         throw std::runtime_error("requires non-empty datetime.");
     }
 
-    if (dateTime<GetVersionDateTimeRange(GetFirstSupportDateTimeVersionIndex()).at(ies::RangeSide::Begin))
+    if (dateTime<GetVersionDateTimeRange(GetFirstSupportDateTimeVersionIndex()).Get(ies::RangeSide::Begin))
     {
         throw std::runtime_error("datetime before first support version.");
     }
 
-    auto versionDateTimeRange = GetVersionDateTimeRange(scoreVersionIndex);
-    if (dateTime<versionDateTimeRange.at(ies::RangeSide::Begin))
+    auto &versionDateTimeRange = GetVersionDateTimeRange(scoreVersionIndex);
+    if (dateTime<versionDateTimeRange.Get(ies::RangeSide::Begin))
     {
         throw std::runtime_error("datetime before source version.");
     }
 
-    auto &versionEnd = versionDateTimeRange.at(ies::RangeSide::End);
+    auto &versionEnd = versionDateTimeRange.Get(ies::RangeSide::End);
     if (!versionEnd.empty() && dateTime>versionEnd)
     {
         return versionEnd;

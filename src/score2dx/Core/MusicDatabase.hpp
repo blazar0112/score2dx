@@ -1,7 +1,9 @@
 #pragma once
 
 #include <optional>
+#include <map>
 #include <string>
+#include <unordered_map>
 
 #include "ies/Common/IntegralRange.hxx"
 #include "ies/Common/IntegralRangeList.hxx"
@@ -139,9 +141,9 @@ private:
     //! Map of {DbTitle Version="00" or "01", versionIndex}.
     std::map<std::string, std::size_t> m1stSubVersionIndexMap;
 
-    //! @brief Since index is unchanged after loading, cache all music index.
-    //! Map of {VersionIndex, Map of {DbTitle, MusicIndex}}.
-    std::map<std::size_t, std::map<std::string, std::size_t>> mVersionMusicIndexMap;
+    //! @brief Vector of {Index=VersionIndex, Map of {DbTitle, MusicIndex}}.
+    //! @note Since index is unchanged after loading, cache all music index.
+    std::vector<std::unordered_map<std::string, std::size_t>> mTitleMusicIndexByVersion;
 
     //! @brief Map of {VersionIndex, ActiveVersion}.
     std::map<std::size_t, ActiveVersion> mActiveVersions;
@@ -153,7 +155,6 @@ private:
         const Json*
         FindDbMusic(std::size_t versionIndex, const std::string &title)
         const;
-
 };
 
 }

@@ -71,6 +71,8 @@ MusicDatabase()
 
         auto versionCount = VersionNames.size();
         mAllTimeMusics.resize(versionCount);
+        mTitleMusicIndexByVersion.resize(versionCount);
+
         auto &dbAllTimeMusics = mDatabase.at("version");
         for (auto versionIndex : IndexRange{0, versionCount})
         {
@@ -80,7 +82,7 @@ MusicDatabase()
             auto &verMusicTable = mAllTimeMusics[versionIndex];
             verMusicTable.reserve(dbVersionMusics.size());
 
-            auto &musicIndexMap = mVersionMusicIndexMap[versionIndex];
+            auto &musicIndexMap = mTitleMusicIndexByVersion[versionIndex];
 
             std::size_t musicIndex = 0;
             for (auto &item : dbVersionMusics.items())
@@ -213,12 +215,12 @@ MusicDatabase::
 FindMusicId(std::size_t versionIndex, const std::string &dbTitle)
 const
 {
-    if (versionIndex>=mVersionMusicIndexMap.size())
+    if (versionIndex>=mTitleMusicIndexByVersion.size())
     {
         throw std::runtime_error("versionIndex out of range.");
     }
 
-    if (auto findIndex = ies::Find(mVersionMusicIndexMap.at(versionIndex), dbTitle))
+    if (auto findIndex = ies::Find(mTitleMusicIndexByVersion[versionIndex], dbTitle))
     {
         return ToMusicId(versionIndex, findIndex.value()->second);
     }
@@ -313,7 +315,7 @@ const
 
     versionIndex = findVersionIndex.value();
 
-    auto &versionTitleMap = mVersionMusicIndexMap.at(versionIndex);
+    auto &versionTitleMap = mTitleMusicIndexByVersion[versionIndex];
     auto findTitle = ies::Find(versionTitleMap, dbTitle);
     if (!findTitle)
     {
@@ -391,13 +393,15 @@ const
 {
     auto &music = GetMusic(musicId);
     auto &availability = music.GetChartAvailability(styleDifficulty, availableVersionIndex);
-    if (availability.ChartAvailableStatus==ChartStatus::BeginAvailable
-        ||availability.ChartAvailableStatus==ChartStatus::Available)
-    {
-        return &availability.ChartInfoProp;
-    }
 
-    return nullptr;
+    switch (availability.ChartAvailableStatus)
+    {
+        case ChartStatus::BeginAvailable:
+        case ChartStatus::Available:
+            return &availability.ChartInfoProp;
+        default:
+            return nullptr;
+    }
 }
 
 std::optional<ies::IndexRange>

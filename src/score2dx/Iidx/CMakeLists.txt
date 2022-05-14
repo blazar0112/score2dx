@@ -13,6 +13,7 @@ set_property(GLOBAL PROPERTY
     ${CMAKE_CURRENT_SOURCE_DIR}/Music.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicInfo.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/VersionDateTimeRange.cpp
 )
 
 get_property(PUBLIC_HEADERS GLOBAL PROPERTY PROP_PUBLIC_HEADERS)
@@ -24,6 +25,7 @@ set_property(GLOBAL PROPERTY
     ${CMAKE_CURRENT_SOURCE_DIR}/Music.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicInfo.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/VersionDateTimeRange.hpp
 )
 
 get_property(TEST_SOURCES GLOBAL PROPERTY PROP_TEST_SOURCES)
