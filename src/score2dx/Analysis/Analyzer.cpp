@@ -188,7 +188,7 @@ const
                 continue;
             }
 
-            std::set<Statistics*> analysisStatsList
+            std::vector<Statistics*> analysisStatsPtrVec
             {
                 &analysis.StatisticsByStyle[static_cast<std::size_t>(chartPlayStyle)],
                 &analysis.StatisticsByStyleLevel[static_cast<std::size_t>(chartPlayStyle)][chartInfo.Level],
@@ -197,7 +197,7 @@ const
                 &analysis.StatisticsByVersionStyleDifficulty[versionIndex][static_cast<std::size_t>(styleDifficulty)]
             };
 
-            for (auto stats : analysisStatsList)
+            for (auto stats : analysisStatsPtrVec)
             {
                 stats->ChartIdList.emplace(chartId);
                 stats->ChartIdListByClearType[static_cast<std::size_t>(versionBestChartScore.ClearType)].emplace(chartId);
