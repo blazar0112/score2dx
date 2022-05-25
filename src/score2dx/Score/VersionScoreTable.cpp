@@ -77,6 +77,36 @@ const
     return mScoreTimeLineTable[playStyleIndex][scoreVersionIndex];
 }
 
+const ChartScore*
+VersionScoreTable::
+GetBestChartScore(std::size_t scoreVersionIndex,
+                  PlayStyle playStyle,
+                  Difficulty difficulty)
+const
+{
+    auto &musicScores = GetMusicScores(scoreVersionIndex, playStyle);
+    if (musicScores.empty()) return nullptr;
+
+    auto &bestMusicScore = musicScores.rbegin()->second;
+    auto* lastChartScore = bestMusicScore.GetChartScore(difficulty);
+    if (lastChartScore)
+    {
+        return lastChartScore;
+    }
+
+    const ChartScore* bestChartScore = nullptr;
+    for (auto &[dateTime, musicScore] : musicScores)
+    {
+        auto* chartScore = musicScore.GetChartScore(difficulty);
+        if (chartScore)
+        {
+            bestChartScore = chartScore;
+        }
+    }
+
+    return bestChartScore;
+}
+
 std::string
 AdjustDateTime(std::size_t scoreVersionIndex,
                const std::string &dateTime)

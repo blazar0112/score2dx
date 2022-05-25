@@ -45,6 +45,12 @@ public:
                        PlayStyle playStyle)
         const;
 
+        const ChartScore*
+        GetBestChartScore(std::size_t scoreVersionIndex,
+                          PlayStyle playStyle,
+                          Difficulty difficulty)
+        const;
+
 private:
     std::size_t mMusicId;
     //! @brief Array of {Index=PlayStyle, Vector of {Index=ScoreVersionIndex, Map of {OriginDateTime, MusicScore}}}.

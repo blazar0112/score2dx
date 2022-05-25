@@ -147,6 +147,11 @@ LoadDirectory(std::string_view directory,
         }
     }
 
+    {
+        ScopeProfiler<std::chrono::milliseconds> profiler{"Propagate"};
+        playerScore.Propagate();
+    }
+
     if (verbose)
     {
         auto &playerCsvs = mPlayerCsvs.at(iidxId);
@@ -756,7 +761,7 @@ ExportIidxMeData(const std::string &user)
     }
 
     auto &iidxId = mIidxMeUserIdMap.at(user);
-    PlayerScore playerScore{iidxId};
+    PlayerScore playerScore{mMusicDatabase, iidxId};
 
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
         +[](char* bufptr, std::size_t size, std::size_t nitems, void* userp)
@@ -1347,7 +1352,13 @@ void
 Core::
 CreatePlayer(const std::string &iidxId)
 {
-    mPlayerScores.emplace(iidxId, iidxId);
+    mPlayerScores.emplace
+    (
+        std::piecewise_construct,
+        std::forward_as_tuple(iidxId),
+        std::forward_as_tuple(mMusicDatabase, iidxId)
+    );
+
     mPlayerCsvs[iidxId];
     for (auto playStyle : PlayStyleSmartEnum::ToRange())
     {

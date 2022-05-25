@@ -4,10 +4,10 @@
 #include <memory>
 #include <string>
 
+#include "score2dx/Core/MusicDatabase.hpp"
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Score/ChartScore.hpp"
 #include "score2dx/Score/MusicScore.hpp"
-
 #include "score2dx/Score/VersionScoreTable.hpp"
 
 namespace score2dx
@@ -17,7 +17,7 @@ namespace score2dx
 class PlayerScore
 {
 public:
-        explicit PlayerScore(const std::string &iidxId);
+        PlayerScore(const MusicDatabase &musicDatabase, const std::string &iidxId);
 
         const std::string &
         GetIidxId()
@@ -40,16 +40,27 @@ public:
                       const std::string &dateTime,
                       const ChartScore &chartScore);
 
+    //! @brief Propagate clear mark since AddMusic/ChartScore does not propagate now.
+    //! Use after add all scores.
+        void
+        Propagate();
+
     //! @brief Get VersionScoreTables: Map of {MusicId, VersionScoreTable}.
         const std::map<std::size_t, VersionScoreTable> &
         GetVersionScoreTables()
         const;
 
 private:
+    const MusicDatabase &mMusicDatabase;
     std::string mIidxId;
 
     //! @brief Map of {MusicId, VersionScoreTable}.
     std::map<std::size_t, VersionScoreTable> mVersionScoreTables;
+
+    //! @brief Progate same containing versions' score clear type.
+        void
+        PropagateClear(std::size_t musicId,
+                       PlayStyle playStyle);
 };
 
 }
