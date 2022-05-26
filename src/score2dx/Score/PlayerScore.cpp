@@ -1,10 +1,13 @@
 #include "score2dx/Score/PlayerScore.hpp"
 
 #include <iostream>
+#include <optional>
 #include <stdexcept>
 
 #include "ies/StdUtil/Find.hxx"
 #include "ies/Time/TimeUtilFormat.hxx"
+
+#include "score2dx/Iidx/Version.hpp"
 
 namespace s2Time = ies::Time;
 
@@ -12,16 +15,13 @@ namespace score2dx
 {
 
 PlayerScore::
-PlayerScore(const std::string &iidxId)
-:   mIidxId(iidxId)
+PlayerScore(const MusicDatabase &musicDatabase, const std::string &iidxId)
+:   mMusicDatabase(musicDatabase),
+    mIidxId(iidxId)
 {
     if (!IsIidxId(iidxId))
     {
         throw std::runtime_error("["+iidxId+"] is not a valid IIDX ID.");
-    }
-    for (auto playStyle : PlayStyleSmartEnum::ToRange())
-    {
-        mMusicScores[playStyle];
     }
 }
 
@@ -35,76 +35,103 @@ const
 
 void
 PlayerScore::
-AddMusicScore(const MusicScore &musicScore)
+AddMusicScore(std::size_t scoreVersionIndex,
+              const MusicScore &musicScore)
 {
-    auto playStyle = musicScore.GetPlayStyle();
     auto musicId = musicScore.GetMusicId();
-    auto &dateTime = musicScore.GetDateTime();
-
-    if (auto findMusicId = ies::Find(mMusicScores.at(playStyle), musicId))
-    {
-        if (auto findMusicScore = ies::Find(findMusicId.value()->second, dateTime))
-        {
-            return;
-        }
-    }
-
-    mMusicScores[playStyle][musicId].emplace(dateTime, musicScore);
-}
-
-const std::map<size_t, std::map<std::string, MusicScore>> &
-PlayerScore::
-GetMusicScores(PlayStyle playStyle)
-const
-{
-    return mMusicScores.at(playStyle);
+    auto [it, flag] = mVersionScoreTables.emplace(musicId, musicId);
+    auto &scoreTable = it->second;
+    scoreTable.AddMusicScore(scoreVersionIndex, musicScore);
 }
 
 void
 PlayerScore::
-AddChartScore(std::size_t musicId,
+AddChartScore(std::size_t scoreVersionIndex,
+              std::size_t musicId,
               PlayStyle playStyle,
               Difficulty difficulty,
               const std::string &dateTime,
               const ChartScore &chartScore)
 {
-    auto &allTimeMusicScores = mMusicScores[playStyle][musicId];
-    auto findMusicScore = ies::Find(allTimeMusicScores, dateTime);
-    if (!findMusicScore)
-    {
-        auto [versionIndex, musicIndex] = ToIndexes(musicId);
-        allTimeMusicScores.emplace(
-            std::piecewise_construct,
-            std::forward_as_tuple(dateTime),
-            std::forward_as_tuple(ToMusicId(versionIndex, musicIndex), playStyle, 0, dateTime)
-        );
-    }
-
-    auto &musicScore = allTimeMusicScores.at(dateTime);
-    musicScore.SetChartScore(difficulty, chartScore);
+    auto [it, flag] = mVersionScoreTables.emplace(musicId, musicId);
+    auto &scoreTable = it->second;
+    scoreTable.AddChartScore(scoreVersionIndex, dateTime, playStyle, difficulty, chartScore);
 }
 
-std::map<std::string, const ChartScore*>
+void
 PlayerScore::
-GetChartScores(std::size_t musicId, PlayStyle playStyle, Difficulty difficulty)
-const
+Propagate()
 {
-    std::map<std::string, const ChartScore*> chartScores;
-
-    auto findMusic = ies::Find(mMusicScores.at(playStyle), musicId);
-    if (findMusic)
+    for (auto &[musicId, versionScoreTable] : mVersionScoreTables)
     {
-        for (auto &[dateTime, musicScore] : findMusic.value()->second)
+        auto &music = mMusicDatabase.GetMusic(musicId);
+
+        for (auto playStyle : PlayStyleSmartEnum::ToRange())
         {
-            auto* chartScorePtr = musicScore.GetChartScore(difficulty);
-            if (chartScorePtr)
+            for (auto difficulty : DifficultySmartEnum::ToRange())
             {
-                chartScores[dateTime] = chartScorePtr;
+                auto styleDifficulty = ConvertToStyleDifficulty(playStyle, difficulty);
+
+                std::optional<std::size_t> previousClearVersionIndex;
+                for (auto scoreVersionIndex : GetSupportScoreVersionRange())
+                {
+                    auto &availability = music.GetChartAvailability(styleDifficulty, scoreVersionIndex);
+                    if (availability.ChartAvailableStatus!=ChartStatus::BeginAvailable
+                        &&availability.ChartAvailableStatus!=ChartStatus::Available)
+                    {
+                        previousClearVersionIndex = std::nullopt;
+                        continue;
+                    }
+
+                    auto* chartScorePtr = versionScoreTable.GetBestChartScore(scoreVersionIndex, playStyle, difficulty);
+                    if (chartScorePtr)
+                    {
+                        previousClearVersionIndex = scoreVersionIndex;
+                        continue;
+                    }
+
+                    if (!previousClearVersionIndex)
+                    {
+                        continue;
+                    }
+
+                    auto &beginDateTime = GetVersionDateTimeRange(scoreVersionIndex).Get(ies::RangeSide::Begin);
+                    ChartScore chartScore;
+
+                    auto* previousBestChartScorePtr = versionScoreTable.GetBestChartScore(previousClearVersionIndex.value(), playStyle, difficulty);
+                    if (!previousBestChartScorePtr)
+                    {
+                        if (!previousClearVersionIndex) continue;
+                        std::cout << "previousClearVersionIndex = " << previousClearVersionIndex.value() << "\n";
+                        for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(previousClearVersionIndex.value(), playStyle))
+                        {
+                            std::cout << "[" << dateTime << "]: \n";
+                            musicScore.Print();
+                        }
+                        std::cout << ToString(difficulty) << "\n";
+                        std::cout << std::flush;
+                        throw std::runtime_error("previous clear should have best chart score.");
+                    }
+
+                    chartScore.Level = availability.ChartInfoProp.Level;
+                    chartScore.ClearType = previousBestChartScorePtr->ClearType;
+
+                    versionScoreTable.AddChartScore(scoreVersionIndex, beginDateTime, playStyle, difficulty, chartScore);
+
+                    previousClearVersionIndex = scoreVersionIndex;
+                }
             }
         }
     }
-
-    return chartScores;
 }
+
+const std::map<std::size_t, VersionScoreTable> &
+PlayerScore::
+GetVersionScoreTables()
+const
+{
+    return mVersionScoreTables;
+}
+
 
 }

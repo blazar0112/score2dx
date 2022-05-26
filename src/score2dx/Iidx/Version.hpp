@@ -5,8 +5,12 @@
 #include <string>
 #include <vector>
 
+#include "ies/Common/IntegralRange.hxx"
+#include "ies/Common/IntegralRangeList.hxx"
 #include "ies/Common/RangeSide.hpp"
 #include "ies/Common/SmartEnum.hxx"
+
+#include "score2dx/Iidx/VersionDateTimeRange.hpp"
 
 namespace score2dx
 {
@@ -27,6 +31,7 @@ bool
 IsValidVersion(const std::string &version);
 
 //! @brief Return latest version index, i.e. max index of VersionNames.
+//! @note Use VersionNames.size() to get version count.
 std::size_t
 GetLatestVersionIndex();
 
@@ -75,7 +80,10 @@ FindVersionIndex(const std::string &dbVersionName);
 //! @brief Get first version with date time range implemented.
 //! @note Currently it's 17.
 std::size_t
-GetFirstDateTimeAvailableVersionIndex();
+GetFirstSupportDateTimeVersionIndex();
+
+const ies::IndexRange &
+GetSupportScoreVersionRange();
 
 //! @brief Get Version's DateTime range [BeginDateTime, EndDateTime] (including end).
 //! @note Empty string if DateTime is unknown.
@@ -96,7 +104,7 @@ GetFirstDateTimeAvailableVersionIndex();
 //!
 //! @note Current version, IIDX 29's EndDateTime is empty.
 //!
-std::map<ies::RangeSide, std::string>
+const VersionDateTimeRange &
 GetVersionDateTimeRange(std::size_t versionIndex);
 
 //! @brief Find version index from date time. Possible value range: [17, latest].
@@ -108,5 +116,12 @@ FindVersionIndexFromDateTime(const std::string &dateTime);
 //! @return None if dateTime is out of range (before 17).
 VersionDateType
 FindVersionDateType(const std::string &dateTime);
+
+std::string
+ToString(const ies::IntegralRangeList<std::size_t> &availableVersions);
+
+//! @brief Convert non-CS availableVersions to range list.
+ies::IntegralRangeList<std::size_t>
+ToRangeList(const std::string &availableVersions);
 
 }

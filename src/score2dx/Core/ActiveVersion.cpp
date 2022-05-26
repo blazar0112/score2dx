@@ -25,7 +25,7 @@ void
 ActiveVersion::
 AddDifficulty(std::size_t musicId,
               StyleDifficulty styleDifficulty,
-              ChartInfo chartInfo)
+              const ChartInfo &chartInfo)
 {
     if (static_cast<std::size_t>(chartInfo.Level)>=mChartIdListByLevel.size())
     {
@@ -34,29 +34,16 @@ AddDifficulty(std::size_t musicId,
 
     auto chartId = ToChartId(musicId, styleDifficulty);
 
+    mChartIds.emplace(chartId);
     mChartIdListByLevel[chartInfo.Level].emplace(chartId);
-    mChartInfos.emplace(chartId, std::move(chartInfo));
 }
 
-const ChartInfo*
+const std::set<std::size_t> &
 ActiveVersion::
-FindChartInfo(std::size_t musicId,
-              StyleDifficulty styleDifficulty)
+GetChartIdList()
 const
 {
-    auto chartId = ToChartId(musicId, styleDifficulty);
-    auto findChartInfo = ies::Find(mChartInfos, chartId);
-    if (!findChartInfo) { return nullptr; }
-
-    return &(findChartInfo.value()->second);
-}
-
-const std::map<std::size_t, ChartInfo> &
-ActiveVersion::
-GetChartInfos()
-const
-{
-    return mChartInfos;
+    return mChartIds;
 }
 
 const std::set<std::size_t> &

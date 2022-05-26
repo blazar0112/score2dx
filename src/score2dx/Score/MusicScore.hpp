@@ -44,6 +44,9 @@ public:
         GetDateTime()
         const;
 
+        void
+        SetDateTime(const std::string &dateTime);
+
     //! @brief ChartScore is default disabled, enable to use.
         ChartScore &
         EnableChartScore(Difficulty difficulty);

@@ -26,7 +26,16 @@ struct ChartScore
 std::string
 ToString(const ChartScore &chartScore);
 
+//! @brief See if chartScore is a default initialized ChartScore.
 bool
 IsDefault(const ChartScore &chartScore);
+
+//! @brief See if chartScore is trivial, that is everything default initialized except Level.
+bool
+IsTrivial(const ChartScore &chartScore);
+
+//! @brief See if two chartScores are equivalent in value fields (ExScore/PGreatCount/GreatCount/MissCount).
+bool
+IsValueEqual(const ChartScore &lhs, const ChartScore &rhs);
 
 }

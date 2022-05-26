@@ -1,6 +1,7 @@
 #include "score2dx/Iidx/Version.hpp"
 
 #include <array>
+#include <iostream>
 #include <map>
 
 #include "fmt/format.h"
@@ -9,13 +10,15 @@
 #include "ies/StdUtil/Find.hxx"
 #include "ies/String/SplitString.hpp"
 
+#include "score2dx/Core/CheckedParse.hxx"
+
 namespace
 {
 
-//! @brief Map of {VersionIndex, Array of [BeginDateTime, EndDateTime]}.
+//! @brief Map of {VersionIndex, VersionDateTimeRange{BeginDateTime, EndDateTime}}.
 //! EndDateTime = 23:59 of day before next version release day.
 //! @note tricoro use Ver.UP release date, not tricoro-machine limited release date (2012-09-19).
-const std::map<std::size_t, std::array<std::string, ies::RangeSideSmartEnum::Size()>> VersionDateTimeRangeMap
+const std::map<std::size_t, score2dx::VersionDateTimeRange> VersionDateTimeRangeMap
 {
     {29, {"2021-10-13 00:00", ""}},
     {28, {"2020-10-28 00:00", "2021-10-12 23:59"}},
@@ -92,33 +95,39 @@ FindVersionIndex(const std::string &dbVersionName)
 }
 
 std::size_t
-GetFirstDateTimeAvailableVersionIndex()
+GetFirstSupportDateTimeVersionIndex()
 {
     return VersionDateTimeRangeMap.begin()->first;
 }
 
-std::map<ies::RangeSide, std::string>
+const ies::IndexRange &
+GetSupportScoreVersionRange()
+{
+    static ies::IndexRange ScoreVersionRange{GetFirstSupportDateTimeVersionIndex(), VersionNames.size()};
+    return ScoreVersionRange;
+}
+
+const VersionDateTimeRange &
 GetVersionDateTimeRange(std::size_t versionIndex)
 {
-    std::map<ies::RangeSide, std::string> range;
-
     if (auto findVersion = ies::Find(VersionDateTimeRangeMap, versionIndex))
     {
-        auto &dateTimeArray = findVersion.value()->second;
-        for (auto rangeSide : ies::RangeSideSmartEnum::ToRange())
-        {
-            range[rangeSide] = dateTimeArray[static_cast<std::size_t>(rangeSide)];
-        }
+        return findVersion.value()->second;
     }
 
-    return range;
+    throw std::runtime_error("versionIndex has not supported date time range.");
 }
 
 std::optional<std::size_t>
 FindVersionIndexFromDateTime(const std::string &dateTime)
 {
+    if (VersionDateTimeRangeMap.empty())
+    {
+        throw std::runtime_error("VersionDateTimeRangeMap.empty()");
+    }
+
     auto &[firstVersionIndex, firstVersionDateTimeRange] = *VersionDateTimeRangeMap.begin();
-    auto &firstVersionBeginDateTime = firstVersionDateTimeRange[static_cast<int>(ies::RangeSide::Begin)];
+    auto &firstVersionBeginDateTime = firstVersionDateTimeRange.Get(ies::RangeSide::Begin);
     if (dateTime<firstVersionBeginDateTime)
     {
         return std::nullopt;
@@ -127,7 +136,7 @@ FindVersionIndexFromDateTime(const std::string &dateTime)
     auto versionIndex = firstVersionIndex;
     for (auto &[ver, dateTimeRange] : VersionDateTimeRangeMap)
     {
-        if (dateTime>=dateTimeRange[static_cast<int>(ies::RangeSide::Begin)])
+        if (dateTime>=dateTimeRange.Get(ies::RangeSide::Begin))
         {
             versionIndex = ver;
         }
@@ -151,21 +160,95 @@ FindVersionDateType(const std::string &dateTime)
     }
     auto versionIndex = findVersionIndex.value();
 
-    auto versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
+    auto &versionDateTimeRange = GetVersionDateTimeRange(versionIndex);
     auto tokens = ies::SplitString(" ", dateTime);
     auto &date = tokens[0];
 
-    if (ies::Find(versionDateTimeRange.at(ies::RangeSide::Begin), date))
+    if (ies::Find(versionDateTimeRange.Get(ies::RangeSide::Begin), date))
     {
         return VersionDateType::VersionBegin;
     }
 
-    if (ies::Find(versionDateTimeRange.at(ies::RangeSide::End), date))
+    if (ies::Find(versionDateTimeRange.Get(ies::RangeSide::End), date))
     {
         return VersionDateType::VersionEnd;
     }
 
     return VersionDateType::None;
+}
+
+std::string
+ToString(const ies::IntegralRangeList<std::size_t> &availableVersions)
+{
+    std::string s;
+    auto ranges = availableVersions.GetRanges();
+    auto isFirst = true;
+    for (auto &range : ranges)
+    {
+        if (!isFirst) s += ", ";
+
+        if (range.size()==1)
+        {
+            s += ToVersionString(range.GetMin());
+        }
+        else
+        {
+            s += ToVersionString(range.GetMin())+"-"+ToVersionString(range.GetMax());
+        }
+
+        isFirst = false;
+    }
+
+    return s;
+}
+
+ies::IntegralRangeList<std::size_t>
+ToRangeList(const std::string &availableVersions)
+{
+    ies::IntegralRangeList<std::size_t> rangeList;
+
+    if (ies::Find(availableVersions, "cs"))
+    {
+        return rangeList;
+    }
+
+    std::size_t start = 0;
+    std::size_t end = 0;
+
+    std::string_view view{availableVersions};
+
+    while ((start = view.find_first_not_of(", ", end))!=std::string_view::npos)
+    {
+        end = view.find(',', start+1);
+        if (end==std::string_view::npos)
+        {
+            end = view.length();
+        }
+
+        auto versionRange = view.substr(start, end-start);
+        if (versionRange.size()==2)
+        {
+            std::size_t versionIndex = 0;
+            CheckedParse(versionRange, versionIndex, "versionRange[SingleVersionIndex]");
+            rangeList.AddRange({versionIndex, versionIndex+1});
+        }
+        //'' for 00-29 like case, note it's range [00, 29], not [00, 29).
+        else if (versionRange.size()==5)
+        {
+            std::size_t beginVersionIndex = 0;
+            std::size_t endVersionIndex = 0;
+            CheckedParse(versionRange.substr(0, 2), beginVersionIndex, "versionRange[beginVersionIndex]");
+            CheckedParse(versionRange.substr(3, 2), endVersionIndex, "versionRange[endVersionIndex]");
+            rangeList.AddRange({beginVersionIndex, endVersionIndex+1});
+        }
+        else
+        {
+            std::cout << versionRange << std::endl;
+            throw std::runtime_error("incorrect availableVersions "+availableVersions);
+        }
+    }
+
+    return rangeList;
 }
 
 }

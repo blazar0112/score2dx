@@ -4,9 +4,11 @@
 #include <memory>
 #include <string>
 
+#include "score2dx/Core/MusicDatabase.hpp"
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Score/ChartScore.hpp"
 #include "score2dx/Score/MusicScore.hpp"
+#include "score2dx/Score/VersionScoreTable.hpp"
 
 namespace score2dx
 {
@@ -15,7 +17,7 @@ namespace score2dx
 class PlayerScore
 {
 public:
-        explicit PlayerScore(const std::string &iidxId);
+        PlayerScore(const MusicDatabase &musicDatabase, const std::string &iidxId);
 
         const std::string &
         GetIidxId()
@@ -25,33 +27,40 @@ public:
     //! @note Does nothing if exist MusicScore with same date time.
     //! (Not check if adding musicScore and existing MusicScore are same or not.)
         void
-        AddMusicScore(const MusicScore &musicScore);
-
-    //! @brief Map of {MusicId, Map of {DateTime, MusicScore}}.
-        const std::map<size_t, std::map<std::string, MusicScore>> &
-        GetMusicScores(PlayStyle playStyle)
-        const;
+        AddMusicScore(std::size_t scoreVersionIndex,
+                      const MusicScore &musicScore);
 
     //! @brief Add ChartScore, because it's from iidxme data or manually input.
     //! @note Update if already exist StyleDifficulty's ChartScore in MusicScore.
         void
-        AddChartScore(std::size_t musicId,
+        AddChartScore(std::size_t scoreVersionIndex,
+                      std::size_t musicId,
                       PlayStyle playStyle,
                       Difficulty difficulty,
                       const std::string &dateTime,
                       const ChartScore &chartScore);
 
-    //! @brief Get all historic ChartScore of a styleDifficulty of musicId from CSV files,
-    //! sorted by DateTime of CSV.
-    //! @return Map of {DateTime, matching musicId style difficulty ChartScore}.
-        std::map<std::string, const ChartScore*>
-        GetChartScores(std::size_t musicId, PlayStyle playStyle, Difficulty difficulty)
+    //! @brief Propagate clear mark since AddMusic/ChartScore does not propagate now.
+    //! Use after add all scores.
+        void
+        Propagate();
+
+    //! @brief Get VersionScoreTables: Map of {MusicId, VersionScoreTable}.
+        const std::map<std::size_t, VersionScoreTable> &
+        GetVersionScoreTables()
         const;
 
 private:
+    const MusicDatabase &mMusicDatabase;
     std::string mIidxId;
-    //! @brief Map of {PlayStyle, Map of {MusicId, Map of {DateTime, MusicScore}}}.
-    std::map<PlayStyle, std::map<size_t, std::map<std::string, MusicScore>>> mMusicScores;
+
+    //! @brief Map of {MusicId, VersionScoreTable}.
+    std::map<std::size_t, VersionScoreTable> mVersionScoreTables;
+
+    //! @brief Progate same containing versions' score clear type.
+        void
+        PropagateClear(std::size_t musicId,
+                       PlayStyle playStyle);
 };
 
 }

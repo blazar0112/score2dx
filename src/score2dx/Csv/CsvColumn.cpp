@@ -95,7 +95,7 @@ ParseCsvLine(std::string_view csvLine)
                         break;
                     }
 
-                    for (auto i : IndexRange{2, GetLatestVersionIndex()+1})
+                    for (auto i : IndexRange{2, VersionNames.size()})
                     {
                         if (column==VersionNames[i])
                         {

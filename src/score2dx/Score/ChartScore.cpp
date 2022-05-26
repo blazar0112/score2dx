@@ -35,4 +35,33 @@ IsDefault(const ChartScore &chartScore)
     return chartScore==defaultChartScore;
 }
 
+bool
+IsTrivial(const ChartScore &chartScore)
+{
+    static const ChartScore defaultChartScore;
+    auto isTrivial =
+    (
+        chartScore.ClearType==defaultChartScore.ClearType
+        && chartScore.DjLevel==defaultChartScore.DjLevel
+        && chartScore.ExScore==defaultChartScore.ExScore
+        && chartScore.PGreatCount==defaultChartScore.PGreatCount
+        && chartScore.GreatCount==defaultChartScore.GreatCount
+        && !chartScore.MissCount.has_value()
+    );
+    return isTrivial;
+}
+
+bool
+IsValueEqual(const ChartScore &lhs, const ChartScore &rhs)
+{
+    auto isValueEqual =
+    (
+        lhs.ExScore==rhs.ExScore
+        &&lhs.PGreatCount==rhs.PGreatCount
+        &&lhs.GreatCount==rhs.GreatCount
+        &&lhs.MissCount==rhs.MissCount
+    );
+    return isValueEqual;
+}
+
 }

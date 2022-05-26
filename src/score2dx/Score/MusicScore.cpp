@@ -17,7 +17,6 @@ MusicScore(std::size_t musicId,
     mPlayCount(playCount),
     mDateTime(std::move(dateTime))
 {
-    //! @todo: check date time.
 }
 
 std::size_t
@@ -57,6 +56,13 @@ GetDateTime()
 const
 {
     return mDateTime;
+}
+
+void
+MusicScore::
+SetDateTime(const std::string &dateTime)
+{
+    mDateTime = dateTime;
 }
 
 ChartScore &

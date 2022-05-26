@@ -11,7 +11,6 @@ set_property(GLOBAL PROPERTY
     ${CMAKE_CURRENT_SOURCE_DIR}/ActiveVersion.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Core.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicDatabase.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/MusicInfo.cpp
 )
 
 get_property(PUBLIC_HEADERS GLOBAL PROPERTY PROP_PUBLIC_HEADERS)
@@ -19,10 +18,11 @@ set_property(GLOBAL PROPERTY
     PROP_PUBLIC_HEADERS
     ${PUBLIC_HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/ActiveVersion.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/CheckedParse.hxx
     ${CMAKE_CURRENT_SOURCE_DIR}/Core.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/JsonDefinition.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicDatabase.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/MusicInfo.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ScopeProfiler.hxx
 )
 
 get_property(TEST_SOURCES GLOBAL PROPERTY PROP_TEST_SOURCES)

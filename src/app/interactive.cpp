@@ -5,6 +5,7 @@
 #include "fmt/format.h"
 
 #include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/StdUtil/Find.hxx"
 #include "ies/String/SplitString.hpp"
 #include "ies/Time/TimeUtilFormat.hxx"
 
@@ -79,10 +80,10 @@ main(int argc, char* argv[])
                 if (tokens.size()>=2)
                 {
                     auto versionIndex = std::stoull(tokens[1]);
-                    auto &versionMusics = musicDatabase.GetAllTimeMusicContexts().at(versionIndex);
+                    auto &versionMusics = musicDatabase.GetAllTimeMusics().at(versionIndex);
                     for (auto i : IndexRange{0, versionMusics.size()})
                     {
-                        std::cout << "["+fmt::format("{:03}", i)+"] " << versionMusics[i].Title << "\n";
+                        std::cout << "["+fmt::format("{:03}", i)+"] " << versionMusics[i].GetMusicInfo().GetField(score2dx::MusicInfoField::Title) << "\n";
                     }
                 }
                 else
@@ -98,8 +99,7 @@ main(int argc, char* argv[])
                 if (tokens.size()>=2)
                 {
                     auto musicId = std::stoull(tokens[1]);
-                    auto musicInfo = musicDatabase.GetLatestMusicInfo(musicId);
-                    musicInfo.Print();
+                    musicDatabase.GetMusic(musicId).GetMusicInfo().Print();
                 }
                 else
                 {
@@ -117,24 +117,38 @@ main(int argc, char* argv[])
                     auto styleDifficulty = score2dx::ToStyleDifficulty(tokens[2]);
                     auto [playStyle, difficulty] = score2dx::Split(styleDifficulty);
                     auto &playerScore = core.GetPlayerScores().at("5483-7391");
-                    auto chartScores = playerScore.GetChartScores(musicId, playStyle, difficulty);
-                    std::cout << "Music ["+musicDatabase.GetLatestMusicInfo(musicId).GetField(score2dx::MusicInfoField::Title)+"]:\n";
-                    for (auto &[dateTime, chartScorePtr] : chartScores)
+                    std::cout << "Music ["+musicDatabase.GetTitle(musicId)+"]:\n";
+
+                    auto findVersionScoreTable = ies::Find(playerScore.GetVersionScoreTables(), musicId);
+                    if (!findVersionScoreTable)
                     {
-                        auto &chartScore = *chartScorePtr;
-                        std::cout   << "["+dateTime+"] Clear: "+ToString(chartScore.ClearType)
-                                    << ", DJ Level: "+ToString(chartScore.DjLevel)
-                                    << ", EX Score: " << chartScore.ExScore
-                                    << ", MissCount: ";
-                        if (chartScore.MissCount)
+                        std::cout << "No score available.\n";
+                        continue;
+                    }
+
+                    auto &versionScoreTable = findVersionScoreTable.value()->second;
+                    for (auto scoreVersionIndex : score2dx::GetSupportScoreVersionRange())
+                    {
+                        for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, playStyle))
                         {
-                            std::cout << chartScore.MissCount.value();
+                            auto* chartScorePtr = musicScore.GetChartScore(difficulty);
+                            if (!chartScorePtr) continue;
+
+                            auto &chartScore = *chartScorePtr;
+                            std::cout   << "["+dateTime+"] Clear: "+ToString(chartScore.ClearType)
+                                        << ", DJ Level: "+ToString(chartScore.DjLevel)
+                                        << ", EX Score: " << chartScore.ExScore
+                                        << ", MissCount: ";
+                            if (chartScore.MissCount)
+                            {
+                                std::cout << chartScore.MissCount.value();
+                            }
+                            else
+                            {
+                                std::cout << "N/A";
+                            }
+                            std::cout << std::endl;
                         }
-                        else
-                        {
-                            std::cout << "N/A";
-                        }
-                        std::cout << std::endl;
                     }
                 }
                 else

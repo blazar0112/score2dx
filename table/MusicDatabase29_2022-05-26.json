@@ -1,10 +1,10 @@
 {
     "#meta": {
-        "score2dx": "2.7.0",
+        "score2dx": "3.0.0",
         "version": "29",
-        "count": "29078",
-        "lastUpdateNewMusic": "Push on Beats!～音ゲの国のeX-ストリーマー～",
-        "lastUpdateEvent": "ARENAモード「第2回オンラインバトル」 2022-03-17"
+        "count": "29086",
+        "lastUpdateNewMusic": "WHA",
+        "lastUpdateEvent": "PLATFORM 4 Beat Showcase 2022-05-12"
     },
     "csMusicTable": {
         "04": {
@@ -103341,10 +103341,34 @@
                             "note": 1929
                         }
                     },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1018
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 622
+                        }
+                    },
                     "SPA": {
                         "29": {
                             "level": 12,
                             "note": 1867
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1028
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 632
                         }
                     }
                 },
@@ -103704,6 +103728,382 @@
                     },
                     "genre": {
                         "latest": "AKIBA-POP"
+                    },
+                    "version": 29
+                }
+            },
+            "Smalt #28598F": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1705
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1190
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 577
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1725
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1192 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 552
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "REMO-CON"
+                    },
+                    "genre": {
+                        "latest": "TECH DANCE"
+                    },
+                    "version": 29
+                }
+            },
+            "RAGE feat.H14 of LEONAIR": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1841
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1886
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "DJ Mass MAD Izm*"
+                    },
+                    "genre": {
+                        "latest": "MIXTURE"
+                    },
+                    "version": 29
+                }
+            },
+            "アクマフカ": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1229
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 774
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 382
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1168
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 780 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 382
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Pizuya's Cell"
+                    },
+                    "genre": {
+                        "latest": "ROCK"
+                    },
+                    "version": 29
+                }
+            },
+            "Emera": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1266
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 861
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 482
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1179
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 831 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 450
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "PON"
+                    },
+                    "genre": {
+                        "latest": "EDM STYLE"
+                    },
+                    "version": 29
+                }
+            },
+            "Pout": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1323
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 961
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 548
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1317
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 892 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 542
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"SYUNN\""
+                    },
+                    "genre": {
+                        "latest": "FUTURE BASS"
+                    },
+                    "version": 29
+                }
+            },
+            "天邪鬼": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1758
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 906
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 514
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1693
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 870 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 500
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Qlarabelle"
+                    },
+                    "genre": {
+                        "latest": "HARD DANCE"
+                    },
+                    "version": 29
+                }
+            },
+            "Flying Castle": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1889
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1132
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 547
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1877
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1162 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 548
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "lapix"
+                    },
+                    "genre": {
+                        "latest": "COLOUR CORE"
+                    },
+                    "version": 29
+                }
+            },
+            "WHA": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1928
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1127
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 687
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1946
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1206 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 627
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "かめりあ involving ななひら"
+                    },
+                    "genre": {
+                        "latest": "CROSSO-WHA-R"
                     },
                     "version": 29
                 }
@@ -105921,7 +106321,15 @@
             "Legendary Treasures",
             "烽火連天の刃",
             "PLASMA SOUL NIGHT feat. Nana Takahashi / 709sec.",
-            "Push on Beats!～音ゲの国のeX-ストリーマー～"
+            "Push on Beats!～音ゲの国のeX-ストリーマー～",
+            "Smalt #28598F",
+            "RAGE feat.H14 of LEONAIR",
+            "アクマフカ",
+            "Emera",
+            "Pout",
+            "天邪鬼",
+            "Flying Castle",
+            "WHA"
         ]
     }
 }

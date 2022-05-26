@@ -1,6 +1,14 @@
 # Changelog of score2dx
 
-- Ongoing [2022-03-31]:
+- 3.0.0 [2022-05-26]:
+    - Redesign data structure.
+        - Add VersionScoreTable and CareerRecord as new design instead of BestScoreData.
+        - VersionDateTimeRange is now a proper class.
+        - Score related class interface update.
+    - Result: improve Analyze from 189 to 46ms.
+    - Update DB to count 29086 [2022-05-26].
+
+- 2.8.0 [2022-04-02]
     - Improve CSV parse line mechanism:
         - Avoid copy dbTitle.
         - MINGW: 4.109 ms
