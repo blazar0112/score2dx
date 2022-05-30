@@ -184,6 +184,17 @@ if (MSVC)
     target_link_libraries(iidxme PRIVATE score2dx fmt::fmt-header-only nlohmann_json::nlohmann_json)
 endif()
 
+add_executable(regression app/regression.cpp)
+set_target_properties(regression PROPERTIES CXX_STANDARD 20)
+target_compile_options(regression PUBLIC ${COMMON_FLAGS})
+if (MINGW)
+    target_include_directories(regression SYSTEM PRIVATE ${FMT_INCLUDE_DIRS} ${JSON_INCLUDE_DIRS})
+    target_link_libraries(regression PRIVATE score2dx)
+endif()
+if (MSVC)
+    target_link_libraries(regression PRIVATE score2dx fmt::fmt-header-only nlohmann_json::nlohmann_json)
+endif()
+
 # Install
 include(GenerateExportHeader)
 generate_export_header(score2dx EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/exports/score2dx/score2dx_export.h)

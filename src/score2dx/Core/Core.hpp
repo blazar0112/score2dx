@@ -109,14 +109,14 @@ public:
         const;
 
     //! @brief Return IIDX ID if user exist, empty if user not found.
-    //! Throw if cannot CURL has error.
+    //! Throw if CURL has error.
         std::string
         AddIidxMeUser(const std::string &user);
 
     //! @brief Get data of IIDX ME user and export to
     //!     ME/<IIDX_ID>/score2dx_export_<PlayStyleAcronym>_<CurrentDate>[_<suffix>].json
         void
-        ExportIidxMeData(const std::string &user);
+        ExportIidxMeData(const std::string &user, std::size_t endVersionIndex=30);
 
         void
         CheckIidxMeDataTable()
