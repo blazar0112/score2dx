@@ -396,29 +396,20 @@ Import(const std::string &requiredIidxId,
             throw std::runtime_error("data has empty entry.");
         }
 
+        /*
         auto checkDateTime = (metadata["dateTimeType"]=="scriptUpdateDate");
         (void)checkDateTime;
-
-        auto firstVersionItem = data.items().begin();
-        auto &firstVersionData = firstVersionItem.value();
-        if (firstVersionData.empty())
-        {
-            throw std::runtime_error("first version has empty music.");
-        }
-
-        auto firstMusicItem = firstVersionData.items().begin();
-        auto &firstMusicData = firstMusicItem.value();
-        if (firstMusicData.empty())
-        {
-            throw std::runtime_error("first version first music has empty date time.");
-        }
-
-        auto firstDateTime = firstMusicData.items().begin().key();
+        */
 
         for (auto &[versionName, versionData] : data.items())
         {
             for (auto &[title, musicData] : versionData.items())
             {
+                if (musicData.is_null())
+                {
+                    continue;
+                }
+
                 std::string dbTitle = title;
                 if (auto findMappedTitle = mMusicDatabase.FindDbTitle(title))
                 {
@@ -743,7 +734,7 @@ AddIidxMeUser(const std::string &user)
 
 void
 Core::
-ExportIidxMeData(const std::string &user)
+ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
 {
     auto begin = s2Time::Now();
     auto* curl = curl_easy_init();
@@ -775,8 +766,7 @@ ExportIidxMeData(const std::string &user)
 
     auto urlPrefix = "https://api.iidx.me/user/data/music?user="+user+"&mid=";
 
-    //for (auto versionIndex: IndexRange{29, 30})
-    for (auto versionIndex: IndexRange{0, 30})
+    for (auto versionIndex: IndexRange{0, endVersionIndex})
     {
         std::size_t noEntryCount = 0;
         for (auto iidxMeMusicIndex : IndexRange{1, 150})

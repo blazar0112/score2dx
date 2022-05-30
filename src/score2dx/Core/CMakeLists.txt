@@ -9,6 +9,7 @@ set_property(GLOBAL PROPERTY
     PROP_SOURCES
     ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/ActiveVersion.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ChromeDriver.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Core.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicDatabase.cpp
 )
@@ -18,6 +19,7 @@ set_property(GLOBAL PROPERTY
     PROP_PUBLIC_HEADERS
     ${PUBLIC_HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/ActiveVersion.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ChromeDriver.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/CheckedParse.hxx
     ${CMAKE_CURRENT_SOURCE_DIR}/Core.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/JsonDefinition.hpp

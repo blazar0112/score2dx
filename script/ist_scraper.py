@@ -9,6 +9,7 @@ import os
 import pytz
 import subprocess
 import re
+import sys
 
 iidx_id_pattern = re.compile('^\d\d\d\d-\d\d\d\d$')
 version_pattern = re.compile('\d\d')
@@ -203,17 +204,17 @@ def scrap_ist():
         setup_chrome_driver_path()
         if not os.path.isfile(chrome_driver_path):
             log('cannot locate chromedriver at path: '+os.path.abspath(chrome_driver_path))
-            return
+            raise
 
         log('chromedriver path: '+os.path.abspath(chrome_driver_path))
 
         if not check_chrome_driver_version():
-            return
+            raise
 
         config = load_config()
         if not config:
             log('load config error.')
-            return
+            raise
 
         iidx_id = config['id']
         scrap_styles = [PlayStyle[s] for s in config['scrap_styles']]
@@ -222,7 +223,7 @@ def scrap_ist():
         for scrap_version in scrap_versions:
             if scrap_version<17:
                 log('not support before version 17.')
-                return
+                raise
 
         log('scrap IST data of IIDX ID: '+iidx_id
             +', style: '+str(config['scrap_styles'])
@@ -285,7 +286,7 @@ def scrap_ist():
                 sign_error_elements = first_page_html.xpath("/html/body[@class='sign error-page-wrapper background-color background-image']")
                 if sign_error_elements:
                     log('error: page 404, check IIDX ID')
-                    return
+                    raise
 
                 last_page = 1
 

@@ -1,5 +1,10 @@
 # Changelog of score2dx
 
+- Ongoing [2022-05-30]:
+    - Update for ME Json format change: added null data music.
+    - Add regression tests.
+    - Add ChromeDriver version check interface.
+    
 - 3.0.0 [2022-05-26]:
     - Redesign data structure.
         - Add VersionScoreTable and CareerRecord as new design instead of BestScoreData.
