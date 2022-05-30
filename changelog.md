@@ -1,6 +1,6 @@
 # Changelog of score2dx
 
-- Ongoing [2022-05-30]:
+- 3.1.0 [2022-05-30]:
     - Update for ME Json format change: added null data music.
     - Add regression tests.
     - Add ChromeDriver version check interface.
