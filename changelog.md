@@ -1,5 +1,9 @@
 # Changelog of score2dx
 
+- 3.1.1 [2022-06-08]:
+    - Update DB to count 29086 [2022-06-08].
+        - Update for Arena 3 and 4 events.
+
 - 3.1.0 [2022-05-30]:
     - Update for ME Json format change: added null data music.
     - Add regression tests.
