@@ -4,7 +4,7 @@
         "version": "29",
         "count": "29086",
         "lastUpdateNewMusic": "WHA",
-        "lastUpdateEvent": "PLATFORM 4 Beat Showcase 2022-05-12"
+        "lastUpdateEvent": "第4回オンラインバトル 2022-06-02"
     },
     "csMusicTable": {
         "04": {
@@ -15013,42 +15013,58 @@
                 }
             },
             "Somebody Like You": {
-                "availableVersions": "07-09",
+                "availableVersions": "07-09, 29",
                 "difficulty": {
                     "DPA": {
-                        "07-09": {
+                        "29": {
                             "level": 9,
-                            "note": 741
+                            "note": 937
                         }
                     },
                     "DPH": {
                         "07-09": {
                             "level": 6,
                             "note": 609
+                        },
+                        "29": {
+                            "level": 7,
+                            "note": 603
                         }
                     },
                     "DPN": {
                         "07-09": {
                             "level": 5,
                             "note": 560
+                        },
+                        "29": {
+                            "level": 4,
+                            "note": 375
                         }
                     },
                     "SPA": {
-                        "07-09": {
-                            "level": 8,
-                            "note": 761
+                        "29": {
+                            "level": 9,
+                            "note": 933
                         }
                     },
                     "SPH": {
                         "07-09": {
                             "level": 7,
                             "note": 678
+                        },
+                        "29": {
+                            "level": 7,
+                            "note": 606
                         }
                     },
                     "SPN": {
                         "07-09": {
                             "level": 5,
                             "note": 453
+                        },
+                        "29": {
+                            "level": 4,
+                            "note": 376
                         }
                     }
                 },
@@ -38299,6 +38315,12 @@
                             "note": 985
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 1864
+                        }
+                    },
                     "DPN": {
                         "15-29": {
                             "level": 7,
@@ -38324,7 +38346,7 @@
                         }
                     },
                     "SPL": {
-                        "cs15": {
+                        "29": {
                             "level": 12,
                             "note": 1888
                         }
@@ -49453,6 +49475,12 @@
                             "note": 487
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 11,
+                            "note": 1316
+                        }
+                    },
                     "DPN": {
                         "18-29": {
                             "level": 3,
@@ -49475,6 +49503,12 @@
                         "18-29": {
                             "level": 7,
                             "note": 596
+                        }
+                    },
+                    "SPL": {
+                        "29": {
+                            "level": 11,
+                            "note": 1320
                         }
                     },
                     "SPN": {
@@ -52237,6 +52271,12 @@
                             "note": 793
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 2010
+                        }
+                    },
                     "DPN": {
                         "19-29": {
                             "level": 5,
@@ -52253,6 +52293,12 @@
                         "19-29": {
                             "level": 7,
                             "note": 617
+                        }
+                    },
+                    "SPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 2027
                         }
                     },
                     "SPN": {
