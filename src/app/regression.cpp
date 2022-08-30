@@ -64,6 +64,7 @@ TestChrome()
     score2dx::ScopeProfiler<std::chrono::milliseconds> profiler{"TestChrome"};
     try
     {
+        //'' intended to use gui path in case forget update gui.
         std::string chromeDriverPath = R"(D:\build\score2dx-gui\qtc-Release\src\chromedriver.exe)";
         auto driverVersion = score2dx::CheckChromeDriverVersion(chromeDriverPath);
         if (driverVersion==0)

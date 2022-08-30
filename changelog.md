@@ -1,5 +1,8 @@
 # Changelog of score2dx
 
+- 3.2.0 [2022-08-31]:
+    - Update default DB to cout 29092 [2022-08-31].
+
 - 3.1.1 [2022-06-08]:
     - Update DB to count 29086 [2022-06-08].
         - Update for Arena 3 and 4 events.
