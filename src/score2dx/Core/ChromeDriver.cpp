@@ -4,6 +4,7 @@
 #include <cstdlib>
 
 #include <iostream>
+#include <fstream>
 #include <filesystem>
 #include <memory>
 
@@ -19,30 +20,30 @@ int
 CheckChromeDriverVersion(const std::string &driverPath)
 {
     auto command = driverPath+" -v";
+    std::string logFilename = "chromedriver.log";
+    auto sysCommand = command+" >"+logFilename;
+    std::system(sysCommand.c_str());
 
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe{popen(command.c_str(), "r"), pclose};
-    if (!pipe)
+    std::ifstream logFile{logFilename};
+
+    if (!logFile)
     {
-        std::cerr << "popen() failed." << std::endl;
+        std::cerr << "Open log file [" << logFilename << "] failed." << std::endl;
         return 0;
     }
 
-    while (std::fgets(buffer.data(), buffer.size(), pipe.get()))
-    {
-        result += buffer.data();
-    }
+    std::string output;
+    std::getline(logFile, output);
 
-    if (result.empty())
+    if (output.empty())
     {
         return 0;
     }
 
-    auto tokens = ies::SplitString(" ", result);
+    auto tokens = ies::SplitString(" ", output);
     if (tokens.size()!=3)
     {
-        std::cerr << "Incorrect chrome driver -v result:\n" << result << std::endl;
+        std::cerr << "Incorrect chrome driver -v result:\n" << output << std::endl;
         return 0;
     }
 
@@ -60,7 +61,7 @@ CheckChromeDriverVersion(const std::string &driverPath)
         auto version = std::stoi(versions[0]);
         return version;
     }
-    catch (const std::exception &e)
+    catch (const std::exception &)
     {
         std::cerr << "Parse chrome driver -v version string failed:\n" << versionString << std::endl;
         return 0;
@@ -105,7 +106,7 @@ CheckChromeBrowserVersion()
                     auto version = std::stoi(versions[0]);
                     return version;
                 }
-                catch (const std::exception &e)
+                catch (const std::exception &)
                 {
                     std::cerr << "Parse chrome browser version string failed:\n" << versionDirectory << std::endl;
                     return 0;
