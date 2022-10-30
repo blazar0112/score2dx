@@ -33,6 +33,9 @@ endif()
 find_package(fmt CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
+
+find_package(ies CONFIG REQUIRED)
+
 # MINGW directly use MSYS2 installed
 if (MINGW)
     find_package(CURL REQUIRED)
@@ -40,11 +43,6 @@ endif()
 if (MSVC)
     find_package(CURL CONFIG REQUIRED)
 endif()
-
-set(ENV{ies_DIR} $ENV{INSTALL_ROOT}/ies/latest/${TOOLCHAIN_BUILD_TYPE})
-find_package(ies CONFIG REQUIRED)
-file(TO_CMAKE_PATH $ENV{ies_DIR} IES_PATH)
-message(STATUS "Found ies: " ${IES_PATH})
 
 if (MINGW)
     set(MINGW_LIBRARY_NAMES
