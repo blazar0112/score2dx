@@ -1,5 +1,12 @@
 # Changelog of score2dx
 
+- 3.2.0 [2022-10-30]:
+    - Update default DB to count 29098 [2022-10-19].
+    - Change impl CheckChromeDriverVersion depend on popen which is not portable in MSVC.
+        - Now use file-based solution.
+    - Update cmake to follow ies cmake writing.
+    - Update default DB to count 29092 [2022-08-31].
+
 - 3.1.1 [2022-06-08]:
     - Update DB to count 29086 [2022-06-08].
         - Update for Arena 3 and 4 events.

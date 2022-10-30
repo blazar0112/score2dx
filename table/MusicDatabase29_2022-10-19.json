@@ -2,9 +2,9 @@
     "#meta": {
         "score2dx": "3.0.0",
         "version": "29",
-        "count": "29086",
-        "lastUpdateNewMusic": "WHA",
-        "lastUpdateEvent": "第4回オンラインバトル 2022-06-02"
+        "count": "29098",
+        "lastUpdateNewMusic": "hard-wired",
+        "lastUpdateEvent": "第7回オンラインバトル 2022-09-29"
     },
     "csMusicTable": {
         "04": {
@@ -23800,9 +23800,13 @@
                         }
                     },
                     "DPN": {
-                        "10-11, 29": {
+                        "10-11": {
                             "level": 5,
                             "note": 597
+                        },
+                        "29": {
+                            "level": 5,
+                            "note": 591
                         }
                     },
                     "SPA": {
@@ -29566,28 +29570,42 @@
                 }
             },
             "mind the gap": {
-                "availableVersions": "12-14",
+                "availableVersions": "12-14, 29",
                 "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 9,
+                            "note": 856
+                        }
+                    },
                     "DPH": {
                         "12-14": {
                             "level": 8,
                             "note": 550
+                        },
+                        "29": {
+                            "level": 8,
+                            "note": 564
                         }
                     },
                     "DPN": {
                         "12-14": {
                             "level": 4,
                             "note": 380
+                        },
+                        "29": {
+                            "level": 6,
+                            "note": 378
                         }
                     },
                     "SPA": {
-                        "12-14": {
+                        "12-14, 29": {
                             "level": 9,
                             "note": 840
                         }
                     },
                     "SPH": {
-                        "12-14": {
+                        "12-14, 29": {
                             "level": 7,
                             "note": 550
                         }
@@ -29595,6 +29613,10 @@
                     "SPN": {
                         "12-14": {
                             "level": 4,
+                            "note": 395
+                        },
+                        "29": {
+                            "level": 5,
                             "note": 395
                         }
                     }
@@ -39670,6 +39692,12 @@
                             "note": 801
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 1719
+                        }
+                    },
                     "DPN": {
                         "15-29": {
                             "level": 7,
@@ -39695,7 +39723,7 @@
                         }
                     },
                     "SPL": {
-                        "cs15": {
+                        "29": {
                             "level": 12,
                             "note": 1597
                         }
@@ -51447,40 +51475,52 @@
                 }
             },
             "GIGANT": {
-                "availableVersions": "19-22",
+                "availableVersions": "19-22, 29",
                 "difficulty": {
                     "DPA": {
-                        "19-22": {
+                        "19-22, 29": {
                             "level": 10,
                             "note": 1068
                         }
                     },
                     "DPH": {
-                        "19-22": {
+                        "19-22, 29": {
                             "level": 7,
                             "note": 678
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 1481
+                        }
+                    },
                     "DPN": {
-                        "19-22": {
+                        "19-22, 29": {
                             "level": 3,
                             "note": 316
                         }
                     },
                     "SPA": {
-                        "19-22": {
+                        "19-22, 29": {
                             "level": 9,
                             "note": 890
                         }
                     },
                     "SPH": {
-                        "19-22": {
+                        "19-22, 29": {
                             "level": 6,
                             "note": 601
                         }
                     },
+                    "SPL": {
+                        "29": {
+                            "level": 11,
+                            "note": 1484
+                        }
+                    },
                     "SPN": {
-                        "19-22": {
+                        "19-22, 29": {
                             "level": 3,
                             "note": 297
                         }
@@ -55689,6 +55729,12 @@
                             "note": 1173
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 2076
+                        }
+                    },
                     "DPN": {
                         "20-29": {
                             "level": 5,
@@ -55705,6 +55751,12 @@
                         "20-29": {
                             "level": 9,
                             "note": 942
+                        }
+                    },
+                    "SPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 2023
                         }
                     },
                     "SPN": {
@@ -76944,6 +76996,12 @@
                             "note": 675
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 1512
+                        }
+                    },
                     "DPN": {
                         "24-29": {
                             "level": 3,
@@ -76960,6 +77018,12 @@
                         "24-29": {
                             "level": 7,
                             "note": 720
+                        }
+                    },
+                    "SPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 1566
                         }
                     },
                     "SPN": {
@@ -91468,6 +91532,12 @@
                             "note": 815
                         }
                     },
+                    "DPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 2145
+                        }
+                    },                    
                     "DPN": {
                         "27-29": {
                             "level": 5,
@@ -91484,6 +91554,12 @@
                         "27-29": {
                             "level": 8,
                             "note": 821
+                        }
+                    },
+                    "SPL": {
+                        "29": {
+                            "level": 12,
+                            "note": 2204
                         }
                     },
                     "SPN": {
@@ -103246,7 +103322,7 @@
                     "DPN": {
                         "29": {
                             "level": 7,
-                            "note": 767
+                            "note": 768
                         }
                     },
                     "SPA": {
@@ -103837,10 +103913,34 @@
                             "note": 1841
                         }
                     },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1146 
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 585
+                        }
+                    },
                     "SPA": {
                         "29": {
                             "level": 12,
                             "note": 1886
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1149 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 559
                         }
                     }
                 },
@@ -104150,6 +104250,624 @@
                     },
                     "genre": {
                         "latest": "CROSSO-WHA-R"
+                    },
+                    "version": 29
+                }
+            },
+            "ピアノ独奏無言歌 \"灰燼\"": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 2174
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1300
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 618
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1977
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1256 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 608
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"Virkato Wakhmaninov\""
+                    },
+                    "genre": {
+                        "latest": "THRENODY"
+                    },
+                    "version": 29
+                }
+            },
+            "Divine Heaven": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1567
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 983
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 472
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1503
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1006 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 476
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Absolute The 4th"
+                    },
+                    "genre": {
+                        "latest": "BIG ANTHEM"
+                    },
+                    "version": 29
+                }
+            },
+            "VR - Virtual Reality (prod.by Snail's House)": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 9,
+                            "note": 938
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 6,
+                            "note": 585
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 3,
+                            "note": 311
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 9,
+                            "note": 918
+                        }
+                    },
+                    "SPB": {
+                        "29": {
+                            "level": 1,
+                            "note": 158
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 6,
+                            "note": 589 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 3,
+                            "note": 312
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "KMNZ"
+                    },
+                    "genre": {
+                        "latest": "DANCE MUSIC"
+                    },
+                    "version": 29
+                }
+            },
+            "あいつら全員同窓会": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1081
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 644
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 377
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1031
+                        }
+                    },
+                    "SPB": {
+                        "29": {
+                            "level": 2,
+                            "note": 185
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 625 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 327
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "ずっと真夜中でいいのに。"
+                    },
+                    "genre": {
+                        "latest": "J-POP"
+                    },
+                    "version": 29
+                }
+            },
+            "グッバイ宣言": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1571
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 931
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 558
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1557
+                        }
+                    },
+                    "SPB": {
+                        "29": {
+                            "level": 3,
+                            "note": 293
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 905 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 554
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by uno(IOSYS) & Liqo feat. Chiyoko"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 29
+                }
+            },
+            "GRAVITON": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1813
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1073
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 610
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1762
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1040 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 597
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"L.E.D.\""
+                    },
+                    "genre": {
+                        "latest": "NEUROFUNK"
+                    },
+                    "version": 29
+                }
+            },
+            "AMICABLE": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1242
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 811
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 533
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1259
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 8,
+                            "note": 809 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 519
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"Sota F.\""
+                    },
+                    "genre": {
+                        "latest": "FUTURE POP"
+                    },
+                    "version": 29
+                }
+            },
+            "Get set,Go! feat.Kanae Asaba": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1115
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 766
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 432
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 10,
+                            "note": 1069
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 7,
+                            "note": 740 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 4,
+                            "note": 425
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "MK"
+                    },
+                    "genre": {
+                        "latest": "FUTURE BOUNCE"
+                    },
+                    "version": 29
+                }
+            },
+            "10000 MILES AWAY": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1504
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 874
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 535
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 11,
+                            "note": 1494
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 842 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 525
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "AJURIKA"
+                    },
+                    "genre": {
+                        "latest": "DRUMSTEP"
+                    },
+                    "version": 29
+                }
+            },
+            "雪上断火": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1439
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 956
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 530
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1544
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 940 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 6,
+                            "note": 511
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Des-ROW・組"
+                    },
+                    "genre": {
+                        "latest": "HIP ROCK3"
+                    },
+                    "version": 29
+                }
+            },
+            "Arkadia": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1872
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1071
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 584
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1873
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 9,
+                            "note": 1071 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 5,
+                            "note": 591
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Hommarju ft.Mayumi Morinaga"
+                    },
+                    "genre": {
+                        "latest": "FREEFORM HARDCORE"
+                    },
+                    "version": 29
+                }
+            },
+            "hard-wired": {
+                "availableVersions": "29",
+                "difficulty": {
+                    "DPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1949
+                        }
+                    },
+                    "DPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1185
+                        }
+                    },
+                    "DPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 813
+                        }
+                    },
+                    "SPA": {
+                        "29": {
+                            "level": 12,
+                            "note": 1901
+                        }
+                    },
+                    "SPH": {
+                        "29": {
+                            "level": 10,
+                            "note": 1208 
+                        }
+                    },
+                    "SPN": {
+                        "29": {
+                            "level": 7,
+                            "note": 821
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Yuta Imai ≡ Blacklolita"
+                    },
+                    "genre": {
+                        "latest": "HIDEOUT"
                     },
                     "version": 29
                 }
@@ -106375,7 +107093,19 @@
             "Pout",
             "天邪鬼",
             "Flying Castle",
-            "WHA"
+            "WHA",
+            "ピアノ独奏無言歌 \"灰燼\"",
+            "Divine Heaven",
+            "VR - Virtual Reality (prod.by Snail's House)",
+            "あいつら全員同窓会",
+            "グッバイ宣言",
+            "GRAVITON",
+            "AMICABLE",
+            "Get set,Go! feat.Kanae Asaba",
+            "10000 MILES AWAY",
+            "雪上断火",
+            "Arkadia",
+            "hard-wired"
         ]
     }
 }
