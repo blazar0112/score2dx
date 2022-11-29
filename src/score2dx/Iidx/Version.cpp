@@ -115,7 +115,7 @@ GetVersionDateTimeRange(std::size_t versionIndex)
         return findVersion.value()->second;
     }
 
-    throw std::runtime_error("versionIndex has not supported date time range.");
+    throw std::runtime_error("versionIndex ["+std::to_string(versionIndex)+"] has not supported date time range.");
 }
 
 std::optional<std::size_t>

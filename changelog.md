@@ -1,5 +1,13 @@
 # Changelog of score2dx
 
+- 3.3.0 [2022-11-30]:
+    - Still in IIDX 29 mode, fix issues when using against IIDX 30 CSV and ME.
+    - Fix loading IIDX30 CSV with 29 DB issues.
+        - Title update in IIDX30 CSV
+        - Correctly ignore IIDX30 version name.
+    - Fix ExportIidxMeData not correctly handle iidx.me version = 30 problem.
+    - Update default DB to 2022-11-29 with title fixes.
+
 - 3.2.0 [2022-10-30]:
     - Update default DB to count 29098 [2022-10-19].
     - Change impl CheckChromeDriverVersion depend on popen which is not portable in MSVC.

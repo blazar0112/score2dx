@@ -146,7 +146,8 @@ Csv(const std::string &csvPath,
 
                 if (csvMusic.CsvVersionIndex==0)
                 {
-                    throw std::runtime_error("cannot find version index.");
+                    std::cerr << "Cannot find version for line [" << lineView << "], skipped.\n";
+                    continue;
                 }
 
                 std::optional<std::size_t> findVersionIndex = csvMusic.CsvVersionIndex;
