@@ -131,7 +131,7 @@ public:
         const;
 
 private:
-    std::string mDatabaseFilename{"table/MusicDatabase29_2022-10-19.json"};
+    std::string mDatabaseFilename{"table/MusicDatabase29_2022-11-29.json"};
     Json mDatabase;
 
     //! @brief Vector of {Index=VersionIndex, Vector of {Index=MusicIndex, Music}}.
@@ -156,5 +156,9 @@ private:
         FindDbMusic(std::size_t versionIndex, const std::string &title)
         const;
 };
+
+void
+UpgradeMusicDatabase(const std::string &currentFilename,
+                     const std::string &newFilename);
 
 }

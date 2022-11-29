@@ -924,7 +924,7 @@ ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
                                         continue;
                                     }
 
-                                    if (scoreVersionIndex==GetLatestVersionIndex())
+                                    if (scoreVersionIndex>=GetLatestVersionIndex())
                                     {
                                         std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
                                                   << "]["+iidxMeStyle
@@ -963,7 +963,7 @@ ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
                                         dateTime = "2009-10-20 23:59";
                                     }
                                 }
-                                else if (scoreVersionIndex!=GetLatestVersionIndex())
+                                else if (scoreVersionIndex<GetLatestVersionIndex())
                                 {
                                     auto &versionEndDateTime = GetVersionDateTimeRange(scoreVersionIndex).Get(ies::RangeSide::End);
                                     if (dateTime>versionEndDateTime)
@@ -978,6 +978,17 @@ ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
                                                   << "]\n";
                                         dateTime = versionEndDateTime;
                                     }
+                                }
+                                else if (scoreVersionIndex>GetLatestVersionIndex())
+                                {
+                                    std::cout << "IIDXME [" << iidxMeMusicId << "][" << title
+                                              << "]["+iidxMeStyle
+                                              << "]["+chartIndex
+                                              << "]["+ToString(styleDifficulty)
+                                              << "] has score ["+scoreIndex
+                                              << "] but is not in supported version [" << versionIndex
+                                              << "]\n";
+                                    continue;
                                 }
 
                                 ChartScore chartScore;
