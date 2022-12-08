@@ -1,5 +1,10 @@
 # Changelog of score2dx
 
+- Ongoing [2022-12-09]:
+    - Update score2dx to IIDX30 RESIDENT.
+    - Add UpgradeMusicDatabase to upgrade DB version, no longer use python script.
+    - Update default DB to count 30053 [2022-12-09].   
+
 - 3.3.0 [2022-11-30]:
     - Still in IIDX 29 mode, fix issues when using against IIDX 30 CSV and ME.
     - Fix loading IIDX30 CSV with 29 DB issues.

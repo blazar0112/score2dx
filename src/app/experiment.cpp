@@ -7,6 +7,7 @@
 #include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Core/Core.hpp"
+#include "score2dx/Core/MusicDatabase.hpp"
 #include "score2dx/Csv/Csv.hpp"
 #include "score2dx/Csv/CsvColumn.hpp"
 #include "score2dx/Iidx/Version.hpp"
@@ -33,6 +34,8 @@ main(int argc, char* argv[])
         {
             std::cout << "Load directory failed.\n";
         }
+
+        //score2dx::UpgradeMusicDatabase("table/MusicDatabase29_2022-11-29.json", "table/MusicDatabase30_2022-11-29.json");
 
         //core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391\ME\5483-7391)", true, true);
 

@@ -20,7 +20,8 @@ namespace
 //! @note tricoro use Ver.UP release date, not tricoro-machine limited release date (2012-09-19).
 const std::map<std::size_t, score2dx::VersionDateTimeRange> VersionDateTimeRangeMap
 {
-    {29, {"2021-10-13 00:00", ""}},
+    {30, {"2022-10-19 00:00", ""}},
+    {29, {"2021-10-13 00:00", "2022-10-18 23:59"}},
     {28, {"2020-10-28 00:00", "2021-10-12 23:59"}},
     {27, {"2019-10-16 00:00", "2020-10-27 23:59"}},
     {26, {"2018-11-07 00:00", "2019-10-15 23:59"}},

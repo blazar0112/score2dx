@@ -724,4 +724,108 @@ GenerateActiveVersions(std::size_t beginVersionIndex)
     }
 }
 
+void
+UpgradeMusicDatabase(const std::string &currentFilename,
+                     const std::string &newFilename)
+{
+    std::cout << "Loading current music table from " << currentFilename << "\n";
+
+    Json inputDb;
+    {
+        std::ifstream databaseFile{currentFilename};
+        if (!databaseFile)
+        {
+            throw std::runtime_error("cannot find music table: "+currentFilename);
+        }
+        databaseFile >> inputDb;
+    }
+
+    const auto &db = inputDb;
+
+    std::string versionStr = db["#meta"]["version"];
+    auto version = std::stoull(versionStr);
+    auto nextVersion = version+1;
+    auto nextVersionStr = ToVersionString(nextVersion);
+
+    std::cout << "Version: " << versionStr << "\n"
+              << "NextVersion: " << nextVersionStr << "\n";
+
+    Json nextDb;
+    nextDb["#meta"] = db["#meta"];
+    nextDb["#meta"]["version"] = nextVersionStr;
+
+    nextDb["csMusicTable"] = db["csMusicTable"];
+    nextDb["titleMapping"] = db["titleMapping"];
+    nextDb["version"] = db["version"];
+    std::vector<std::string> versionMusic;
+    nextDb["version"][nextVersionStr] = versionMusic;
+    versionMusic = nextDb["version"][versionStr];
+    std::sort(versionMusic.begin(), versionMusic.end());
+    nextDb["version"][versionStr] = versionMusic;
+
+    nextDb["musicTable"] = db["musicTable"];
+
+    auto ReplaceString = [](std::string &s, const std::string &from, const std::string &to)
+    {
+        auto pos = s.find(from, 0);
+        if (pos!=std::string::npos)
+        {
+            s.replace(pos, from.size(), to);
+        }
+    };
+
+    auto UpdateVersionRangeList =
+        [&versionStr, &nextVersionStr, &ReplaceString]
+        (std::string versionRangeList)
+        -> std::string
+    {
+        if (ies::Find(versionRangeList, versionStr))
+        {
+            //'' e.g. [start-29] to [start-30]
+            if (ies::Find(versionRangeList, "-"+versionStr))
+            {
+                ReplaceString(versionRangeList, versionStr, nextVersionStr);
+            }
+            //'' e.g. [29] to [29-30], [..., 29] to [..., 29-30]
+            else
+            {
+                ReplaceString(versionRangeList, versionStr, versionStr+"-"+nextVersionStr);
+            }
+        }
+        return versionRangeList;
+    };
+
+    for (auto &[verStr, verMusicInfoMap] : nextDb["musicTable"].items())
+    {
+        for (auto &[title, musicInfo] : verMusicInfoMap.items())
+        {
+            auto updatedAvailableVersions = UpdateVersionRangeList(musicInfo["availableVersions"]);
+            musicInfo["availableVersions"] = updatedAvailableVersions;
+            Json updatedDifficulty;
+            for (auto &[chartDifficulty, history] : musicInfo["difficulty"].items())
+            {
+                auto &updatedHistory = updatedDifficulty[chartDifficulty];
+                updatedHistory = Json::object();
+                for (auto &[versionRangeList, chartInfo] : history.items())
+                {
+                    auto updatedVersionRangeList = UpdateVersionRangeList(versionRangeList);
+                    updatedHistory[updatedVersionRangeList] = chartInfo;
+                }
+            }
+
+            musicInfo["difficulty"] = updatedDifficulty;
+        }
+    }
+
+    nextDb["musicTable"][nextVersionStr] = Json::object();
+
+    std::ofstream outputFile{newFilename};
+    if (!outputFile)
+    {
+        throw std::runtime_error("cannot create new music database file: "+newFilename);
+    }
+
+    outputFile << std::setw(4) << nextDb;
+}
+
 }
