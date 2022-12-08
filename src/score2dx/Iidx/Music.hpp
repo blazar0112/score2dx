@@ -70,7 +70,7 @@ public:
     //! @brief Find versions has same chart as [versionIndex].
     //! Version can be after [versionIndex]. Must contain versionIndex if available.
     //! @note Empty if chart is not available at [versionIndex].
-        std::list<std::size_t>
+        std::vector<std::size_t>
         FindSameChartVersions(StyleDifficulty styleDifficulty, std::size_t versionIndex)
         const;
 

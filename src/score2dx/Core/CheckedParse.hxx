@@ -11,12 +11,12 @@ namespace score2dx
 //! @brief Use from_chars to parse value directly from string_view, throws if error.
 template <typename T>
 void
-CheckedParse(std::string_view valueView, T &value, const std::string &valueName)
+CheckedParse(std::string_view valueView, T& value, std::string_view valueName)
 {
     auto result = std::from_chars(valueView.data(), valueView.data()+valueView.size(), value);
     if (result.ec!=std::errc())
     {
-        throw std::runtime_error("cannot parse value ["+valueName+"].");
+        throw std::runtime_error("cannot parse value ["+std::string{valueName}+"].");
     }
 }
 

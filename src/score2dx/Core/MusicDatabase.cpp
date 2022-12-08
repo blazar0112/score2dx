@@ -759,7 +759,7 @@ UpgradeMusicDatabase(const std::string &currentFilename,
     nextDb["version"] = db["version"];
     std::vector<std::string> versionMusic;
     nextDb["version"][nextVersionStr] = versionMusic;
-    versionMusic = nextDb["version"][versionStr];
+    versionMusic = nextDb["version"][versionStr].get<decltype(versionMusic)>();
     std::sort(versionMusic.begin(), versionMusic.end());
     nextDb["version"][versionStr] = versionMusic;
 
