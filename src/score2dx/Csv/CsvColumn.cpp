@@ -3,14 +3,45 @@
 #include <algorithm>
 #include <charconv>
 #include <iostream>
+#include <map>
+#include <unordered_map>
 #include <vector>
 
 #include "ies/Common/IntegralRangeUsing.hpp"
+#include "ies/StdUtil/Find.hxx"
 #include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Core/CheckedParse.hxx"
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Iidx/Version.hpp"
+
+namespace
+{
+
+struct StringViewComparator
+{
+    using is_transparent = std::true_type;
+
+    bool operator()(std::string_view l, std::string_view r) const noexcept
+    {
+        return l==r;
+    }
+};
+
+struct StringViewHash
+{
+    using is_transparent = std::true_type;
+
+    auto operator()(std::string_view sv) const noexcept
+    {
+        return std::hash<std::string_view>()(sv);
+    }
+};
+
+std::unordered_map<std::string, std::size_t, StringViewHash, StringViewComparator> CsvClearTypeIndexMap;
+std::unordered_map<std::string, std::size_t, StringViewHash, StringViewComparator> DjLevelIndexMap;
+
+}
 
 namespace score2dx
 {
@@ -29,23 +60,20 @@ ParseCsvLine(std::string_view csvLine)
     //auto begin = ies::Time::Now();
 
     static std::size_t PreviousParsedVersionIndex = 0;
-    static std::vector<std::string> CsvClearTypes;
-    if (CsvClearTypes.empty())
+
+    if (CsvClearTypeIndexMap.empty())
     {
-        CsvClearTypes.reserve(ClearTypeSmartEnum::Size());
         for (auto clearType : ClearTypeSmartEnum::ToRange())
         {
-            CsvClearTypes.emplace_back(ToSpaceSeparated(clearType));
+            CsvClearTypeIndexMap.emplace(ToSpaceSeparated(clearType), static_cast<std::size_t>(clearType));
         }
     }
 
-    static std::vector<std::string> DjLevels;
-    if (DjLevels.empty())
+    if (DjLevelIndexMap.empty())
     {
-        DjLevels.reserve(DjLevelSmartEnum::Size());
         for (auto djLevel : DjLevelSmartEnum::ToRange())
         {
-            DjLevels.emplace_back(ToString(djLevel));
+            DjLevelIndexMap.emplace(ToString(djLevel), static_cast<std::size_t>(djLevel));
         }
     }
 
@@ -178,28 +206,24 @@ ParseCsvLine(std::string_view csvLine)
                 }
                 case CsvScoreColumn::ClearType:
                 {
-                    for (auto i : IndexRange{0, CsvClearTypes.size()})
+                    auto findClearTypeIndex = ies::Find(CsvClearTypeIndexMap, column);
+                    if (!findClearTypeIndex)
                     {
-                        if (column==CsvClearTypes[i])
-                        {
-                            chartScore.ClearType = static_cast<ClearType>(i);
-                            break;
-                        }
+                        throw std::runtime_error("Incorrect CSV clear type ["+std::string{column}+"].");
                     }
+                    chartScore.ClearType = static_cast<ClearType>(findClearTypeIndex.value()->second);
                     break;
                 }
                 case CsvScoreColumn::DjLevel:
                 {
                     if (column!="---")
                     {
-                        for (auto i : IndexRange{0, DjLevels.size()})
+                        auto findDjLevelIndex = ies::Find(DjLevelIndexMap, column);
+                        if (!findDjLevelIndex)
                         {
-                            if (column==DjLevels[i])
-                            {
-                                chartScore.DjLevel = static_cast<DjLevel>(i);
-                                break;
-                            }
+                            throw std::runtime_error("Incorrect CSV dj level ["+std::string{column}+"].");
                         }
+                        chartScore.DjLevel = static_cast<DjLevel>(findDjLevelIndex.value()->second);
                     }
                     break;
                 }

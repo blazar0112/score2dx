@@ -114,6 +114,28 @@ Csv(const std::string &csvPath,
 
         try
         {
+            auto lastLineBegin = bufferView.find_last_of('\n', bufferView.size()-2);
+            if (lastLineBegin==std::string_view::npos)
+            {
+                throw std::runtime_error("CSV has less than two lines.");
+            }
+            lastLineBegin = lastLineBegin+1;
+
+            auto lastLineFirstComma = bufferView.find_first_of(',', lastLineBegin);
+            if (lastLineFirstComma==std::string_view::npos)
+            {
+                throw std::runtime_error("CSV last line has no comma.");
+            }
+            //std::cout << "Last version = [" << bufferView.substr(lastLineBegin, lastLineFirstComma-lastLineBegin) << "]\n";
+            auto csvVersion = buffer.substr(lastLineBegin, lastLineFirstComma-lastLineBegin);
+            auto findCsvVersionIndex = FindVersionIndex(csvVersion);
+            if (!findCsvVersionIndex)
+            {
+                throw std::runtime_error("Cannot find index of CSV version ["+csvVersion+"].");
+            }
+
+            auto activeVersionIndex = findCsvVersionIndex.value();
+
             std::size_t start = 0;
             std::size_t end = 0;
 
@@ -202,7 +224,6 @@ Csv(const std::string &csvPath,
                 }
                 */
 
-
                 lastVersionIndex = versionIndex;
                 ies::MapIncrementCount(versionMusicCounts, versionIndex);
 
@@ -217,15 +238,6 @@ Csv(const std::string &csvPath,
                 {
                     minDateTime = dateTime;
                 }
-
-                auto findActiveVersionIndex = FindVersionIndexFromDateTime(dateTime);
-                if (!findActiveVersionIndex)
-                {
-                    std::cout << ToVersionString(versionIndex) << " Title [" << dbTitle << "]\n"
-                              << "DateTime: " << dateTime << " is not supported.\n";
-                    continue;
-                }
-                auto activeVersionIndex = findActiveVersionIndex.value();
 
                 auto itPair = mMusicScores.emplace(
                     std::piecewise_construct,
