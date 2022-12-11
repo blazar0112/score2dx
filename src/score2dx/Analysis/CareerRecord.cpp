@@ -1,6 +1,7 @@
 #include "score2dx/Analysis/CareerRecord.hpp"
 
 #include <iostream>
+#include <numeric>
 
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/Find.hxx"
@@ -11,6 +12,23 @@
 namespace score2dx
 {
 
+bool
+IsBetterRecord(
+    RecordType recordType,
+    const ChartScore& lhs,
+    const ChartScore& rhs)
+{
+    if (recordType==RecordType::Score)
+    {
+        return lhs.ExScore>rhs.ExScore;
+    }
+    else
+    {
+        lhs.MissCount && rhs.MissCount && lhs.MissCount<rhs.MissCount;
+    }
+    return false;
+}
+
 CareerRecord::
 CareerRecord(std::size_t activeVersionIndex)
 :   mActiveVersionIndex(activeVersionIndex)
@@ -20,8 +38,7 @@ CareerRecord(std::size_t activeVersionIndex)
 void
 CareerRecord::
 Add(std::size_t chartId,
-    const std::map<std::string, ChartScore> &activeVersionScores,
-    const std::map<std::size_t, ChartScoreRecord> &nonActiveVersionRecords)
+    const std::map<std::size_t, std::vector<ChartScoreRecord>>& versionRecords)
 {
     auto findBestRecord = ies::Find(mBestRecordByChartId, chartId);
     if (findBestRecord)
@@ -30,232 +47,111 @@ Add(std::size_t chartId,
     }
 
     std::unique_ptr<ChartScoreRecord> versionBestRecord;
-    if (!activeVersionScores.empty())
+    if (auto findActiveRecords = ies::Find(versionRecords, mActiveVersionIndex))
     {
-        auto &[dateTime, chartScore] = *activeVersionScores.rbegin();
-        versionBestRecord = std::make_unique<ChartScoreRecord>(chartScore, mActiveVersionIndex, dateTime);
+        auto& activeVersionRecords = findActiveRecords.value()->second;
+        if (!activeVersionRecords.empty())
+        {
+            auto& latestRecord = activeVersionRecords.back();
+            versionBestRecord = std::make_unique<ChartScoreRecord>(latestRecord);
+        }
     }
 
-    std::map<std::size_t, const ChartScoreRecord*> versionRecords;
-    for (auto &[versionIndex, record] : nonActiveVersionRecords)
+    std::vector<const ChartScoreRecord*> recordPtrVector;
+    auto recordCount = std::accumulate(
+        versionRecords.begin(), versionRecords.end(),
+        0u,
+        [](std::size_t count, auto& pair)
+        {
+            return pair.second.size()+count;
+        }
+    );
+    recordPtrVector.reserve(recordCount);
+
+    for (auto& [versionIndex, records] : versionRecords)
     {
-        versionRecords[versionIndex] = &record;
+        for (auto &record : records)
+        {
+            recordPtrVector.emplace_back(&record);
+        }
     }
+
+    auto constexpr RecordTypeSize = RecordTypeSmartEnum::Size();
+
+    std::array<const ChartScoreRecord*, RecordTypeSize> bestRecords{ nullptr, nullptr };
+    std::array<const ChartScoreRecord*, RecordTypeSize> secondBestRecords{ nullptr, nullptr };
+
+    for (auto* recordPtr : recordPtrVector)
+    {
+        auto& chartScoreRecord = *recordPtr;
+        auto& chartScore = chartScoreRecord.ChartScoreProp;
+
+        for (auto recordType : RecordTypeSmartEnum::ToRange())
+        {
+            auto recordTypeIndex = static_cast<std::size_t>(recordType);
+            std::array<bool, RecordTypeSmartEnum::Size()> typeUpdated{false, false};
+
+            if (!bestRecords[recordTypeIndex])
+            {
+                if (recordType!=RecordType::Miss || chartScore.MissCount)
+                {
+                    bestRecords[recordTypeIndex] = recordPtr;
+                    typeUpdated[recordTypeIndex] = true;
+                }
+            }
+
+            if (!typeUpdated[recordTypeIndex] && bestRecords[recordTypeIndex])
+            {
+                if (IsBetterRecord(recordType, chartScore, bestRecords[recordTypeIndex]->ChartScoreProp))
+                {
+                    secondBestRecords[recordTypeIndex] = bestRecords[recordTypeIndex];
+                    bestRecords[recordTypeIndex] = recordPtr;
+                    typeUpdated[recordTypeIndex] = true;
+                }
+            }
+
+            if (!typeUpdated[recordTypeIndex] && !secondBestRecords[recordTypeIndex])
+            {
+                if (recordType!=RecordType::Miss || chartScore.MissCount)
+                {
+                    secondBestRecords[recordTypeIndex] = recordPtr;
+                    typeUpdated[recordTypeIndex] = true;
+                }
+            }
+
+            if (!typeUpdated[recordTypeIndex] && secondBestRecords[recordTypeIndex])
+            {
+                if (IsBetterRecord(recordType, chartScore, secondBestRecords[recordTypeIndex]->ChartScoreProp))
+                {
+                    secondBestRecords[recordTypeIndex] = recordPtr;
+                    typeUpdated[recordTypeIndex] = true;
+                }
+            }
+        }
+    }
+
+    auto& bestRecord = mBestRecordByChartId[chartId];
     if (versionBestRecord)
     {
-        versionRecords[mActiveVersionIndex] = versionBestRecord.get();
+        bestRecord.VersionBest = std::move(versionBestRecord);
     }
 
-    std::array<const ChartScoreRecord*, RecordTypeSmartEnum::Size()> careerBestRecordByType
+    for (auto recordType : RecordTypeSmartEnum::ToRange())
     {
-        nullptr, nullptr
-    };
-
-    std::array<const ChartScoreRecord*, RecordTypeSmartEnum::Size()> careerSecondBestRecordByType
-    {
-        nullptr, nullptr
-    };
-
-    auto scoreIndex = static_cast<std::size_t>(RecordType::Score);
-    auto missIndex = static_cast<std::size_t>(RecordType::Miss);
-
-    for (auto &[versionIndex, recordPtr] : versionRecords)
-    {
-        auto &record = *recordPtr;
-        auto &chartScore = record.ChartScoreProp;
-
-        auto scoreUpdated = false;
-        auto missUpdated = false;
-
-        if (!careerBestRecordByType[scoreIndex])
+        auto recordTypeIndex = static_cast<std::size_t>(recordType);
+        if (!bestRecords[recordTypeIndex]) { continue; }
+        if (bestRecords[recordTypeIndex]->VersionIndex==mActiveVersionIndex)
         {
-            careerBestRecordByType[scoreIndex] = recordPtr;
-            scoreUpdated = true;
-        }
-
-        if (!careerBestRecordByType[missIndex] && chartScore.MissCount)
-        {
-            careerBestRecordByType[missIndex] = recordPtr;
-            missUpdated = true;
-        }
-
-        if (!scoreUpdated && careerBestRecordByType[scoreIndex])
-        {
-            if (chartScore.ExScore>careerBestRecordByType[scoreIndex]->ChartScoreProp.ExScore)
+            if (secondBestRecords[recordTypeIndex])
             {
-                careerSecondBestRecordByType[scoreIndex] = careerBestRecordByType[scoreIndex];
-                careerBestRecordByType[scoreIndex] = recordPtr;
-                scoreUpdated = true;
+                bestRecord.OtherBestByRecordType[recordTypeIndex] = std::make_unique<ChartScoreRecord>(*secondBestRecords[recordTypeIndex]);
             }
-        }
-
-        if (!missUpdated && careerBestRecordByType[missIndex])
-        {
-            if (chartScore.MissCount && chartScore.MissCount<careerBestRecordByType[missIndex]->ChartScoreProp.MissCount)
-            {
-                careerSecondBestRecordByType[missIndex] = careerBestRecordByType[missIndex];
-                careerBestRecordByType[missIndex] = recordPtr;
-                missUpdated = true;
-            }
-        }
-
-        if (!scoreUpdated && !careerSecondBestRecordByType[scoreIndex])
-        {
-            careerSecondBestRecordByType[scoreIndex] = recordPtr;
-            scoreUpdated = true;
-        }
-
-        if (!missUpdated && !careerSecondBestRecordByType[missIndex] && chartScore.MissCount)
-        {
-            careerSecondBestRecordByType[missIndex] = recordPtr;
-            missUpdated = true;
-        }
-
-        if (!scoreUpdated && careerSecondBestRecordByType[scoreIndex])
-        {
-            if (chartScore.ExScore>careerSecondBestRecordByType[scoreIndex]->ChartScoreProp.ExScore)
-            {
-                careerSecondBestRecordByType[scoreIndex] = recordPtr;
-                scoreUpdated = true;
-            }
-        }
-
-        if (!missUpdated && careerSecondBestRecordByType[missIndex])
-        {
-            if (chartScore.MissCount && chartScore.MissCount<careerSecondBestRecordByType[missIndex]->ChartScoreProp.MissCount)
-            {
-                careerSecondBestRecordByType[missIndex] = recordPtr;
-                missUpdated = true;
-            }
-        }
-    }
-
-    auto &bestRecord = mBestRecordByChartId[chartId];
-    if (versionBestRecord)
-    {
-        bestRecord.VersionBest = std::make_unique<ChartScoreRecord>(*versionBestRecord);
-    }
-
-    std::array<std::unique_ptr<ChartScoreRecord>, RecordTypeSmartEnum::Size()> versionSecondBestRecordByType;
-
-    if (careerBestRecordByType[scoreIndex])
-    {
-        if (careerBestRecordByType[scoreIndex]->VersionIndex==mActiveVersionIndex)
-        {
-            bestRecord.CareerBestByRecordType[scoreIndex] = bestRecord.VersionBest.get();
-
-            const ChartScore* previousChartScorePtr = nullptr;
-            for (auto &[dateTime, chartScore] : activeVersionScores)
-            {
-                if (previousChartScorePtr && *previousChartScorePtr==chartScore)
-                {
-                    continue;
-                }
-                previousChartScorePtr = &chartScore;
-
-                if (IsTrivial(chartScore)) continue;
-                if (dateTime==bestRecord.VersionBest->DateTime) break;
-
-                if (!careerSecondBestRecordByType[scoreIndex] && !versionSecondBestRecordByType[scoreIndex])
-                {
-                    versionSecondBestRecordByType[scoreIndex] = std::make_unique<ChartScoreRecord>(chartScore, mActiveVersionIndex, dateTime);
-                    continue;
-                }
-
-                if (!careerSecondBestRecordByType[scoreIndex])
-                {
-                    if (chartScore.ExScore>versionSecondBestRecordByType[scoreIndex]->ChartScoreProp.ExScore)
-                    {
-                        versionSecondBestRecordByType[scoreIndex] = std::make_unique<ChartScoreRecord>(chartScore, mActiveVersionIndex, dateTime);
-                    }
-                    continue;
-                }
-
-                if (chartScore.ExScore>careerSecondBestRecordByType[scoreIndex]->ChartScoreProp.ExScore)
-                {
-                    if (!versionSecondBestRecordByType[scoreIndex])
-                    {
-                        versionSecondBestRecordByType[scoreIndex] = std::make_unique<ChartScoreRecord>(chartScore, mActiveVersionIndex, dateTime);
-                        continue;
-                    }
-
-                    if (chartScore.ExScore>versionSecondBestRecordByType[scoreIndex]->ChartScoreProp.ExScore)
-                    {
-                        versionSecondBestRecordByType[scoreIndex] = std::make_unique<ChartScoreRecord>(chartScore, mActiveVersionIndex, dateTime);
-                    }
-                }
-            }
-
-            if (versionSecondBestRecordByType[scoreIndex])
-            {
-                if (!IsValueEqual(versionSecondBestRecordByType[scoreIndex]->ChartScoreProp, careerBestRecordByType[scoreIndex]->ChartScoreProp))
-                {
-                    bestRecord.OtherBestByRecordType[scoreIndex] = std::make_unique<ChartScoreRecord>(*versionSecondBestRecordByType[scoreIndex]);
-                }
-            }
+            bestRecord.CareerBestByRecordType[recordTypeIndex] = bestRecord.VersionBest.get();
         }
         else
         {
-            bestRecord.OtherBestByRecordType[scoreIndex] = std::make_unique<ChartScoreRecord>(*careerBestRecordByType[scoreIndex]);
-            bestRecord.CareerBestByRecordType[scoreIndex] = bestRecord.OtherBestByRecordType[scoreIndex].get();
-        }
-    }
-
-    if (careerBestRecordByType[missIndex])
-    {
-        if (careerBestRecordByType[missIndex]->VersionIndex==mActiveVersionIndex)
-        {
-            bestRecord.CareerBestByRecordType[missIndex] = bestRecord.VersionBest.get();
-
-            for (auto &[dateTime, chartScore] : activeVersionScores)
-            {
-                if (dateTime==bestRecord.VersionBest->DateTime) break;
-
-                if (!careerSecondBestRecordByType[missIndex] && !versionSecondBestRecordByType[missIndex])
-                {
-                    if (chartScore.MissCount)
-                    {
-                        versionSecondBestRecordByType[missIndex] = std::make_unique<ChartScoreRecord>(chartScore, mActiveVersionIndex, dateTime);
-                    }
-                    continue;
-                }
-
-                if (!careerSecondBestRecordByType[missIndex])
-                {
-                    if (chartScore.MissCount && chartScore.MissCount<versionSecondBestRecordByType[missIndex]->ChartScoreProp.MissCount)
-                    {
-                        versionSecondBestRecordByType[missIndex] = std::make_unique<ChartScoreRecord>(chartScore, mActiveVersionIndex, dateTime);
-                    }
-                    continue;
-                }
-
-                if (chartScore.MissCount && chartScore.MissCount<careerSecondBestRecordByType[missIndex]->ChartScoreProp.MissCount)
-                {
-                    if (!versionSecondBestRecordByType[missIndex])
-                    {
-                        versionSecondBestRecordByType[missIndex] = std::make_unique<ChartScoreRecord>(chartScore, mActiveVersionIndex, dateTime);
-                        continue;
-                    }
-
-                    if (chartScore.MissCount<versionSecondBestRecordByType[missIndex]->ChartScoreProp.MissCount)
-                    {
-                        versionSecondBestRecordByType[missIndex] = std::make_unique<ChartScoreRecord>(chartScore, mActiveVersionIndex, dateTime);
-                    }
-                }
-            }
-
-            if (versionSecondBestRecordByType[missIndex])
-            {
-                if (!IsValueEqual(versionSecondBestRecordByType[missIndex]->ChartScoreProp, careerBestRecordByType[missIndex]->ChartScoreProp))
-                {
-                    bestRecord.OtherBestByRecordType[missIndex] = std::make_unique<ChartScoreRecord>(*versionSecondBestRecordByType[missIndex]);
-                }
-            }
-        }
-        else
-        {
-            bestRecord.OtherBestByRecordType[missIndex] = std::make_unique<ChartScoreRecord>(*careerBestRecordByType[missIndex]);
-            bestRecord.CareerBestByRecordType[missIndex] = bestRecord.OtherBestByRecordType[missIndex].get();
+            bestRecord.OtherBestByRecordType[recordTypeIndex] = std::make_unique<ChartScoreRecord>(*bestRecords[recordTypeIndex]);
+            bestRecord.CareerBestByRecordType[recordTypeIndex] = bestRecord.OtherBestByRecordType[recordTypeIndex].get();
         }
     }
 }
@@ -267,7 +163,7 @@ GetRecord(std::size_t chartId,
           RecordType recordType)
 const
 {
-    auto &bestRecord = GetBestRecord(chartId);
+    auto& bestRecord = GetBestRecord(chartId);
     if (bestType==BestType::VersionBest)
     {
         return bestRecord.VersionBest.get();
@@ -288,7 +184,7 @@ IsVersionBestCareerBest(std::size_t chartId,
                         RecordType recordType)
 const
 {
-    auto &bestRecord = GetBestRecord(chartId);
+    auto& bestRecord = GetBestRecord(chartId);
     if (bestRecord.VersionBest)
     {
         return bestRecord.CareerBestByRecordType[static_cast<std::size_t>(recordType)]
@@ -297,14 +193,14 @@ const
     return false;
 }
 
-BestRecord &
+BestRecord&
 CareerRecord::
 GetBestRecord(std::size_t chartId)
 {
-    return const_cast<BestRecord &>(std::as_const(*this).GetBestRecord(chartId));
+    return const_cast<BestRecord&>(std::as_const(*this).GetBestRecord(chartId));
 }
 
-const BestRecord &
+const BestRecord&
 CareerRecord::
 GetBestRecord(std::size_t chartId)
 const

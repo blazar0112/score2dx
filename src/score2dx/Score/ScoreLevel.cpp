@@ -105,7 +105,7 @@ FindScoreLevelDiff(int note, int exScore)
     //'' if key is even, is [Level, half Level), diff = score - begin, Range = Level Plus (Or At Level)
     //''           odd      [half lower Level, Level), diff = end - score, Range = Level Minus
     //std::set<int> keyScores;
-    std::array<int, 18+1> keyScores;
+    std::array<int, 18+1> keyScores{};
     for (auto i : IndexRange{0, keyScores.size()})
     {
         auto keyScore = static_cast<int>(std::ceil(static_cast<double>(maxScore)*i/18));

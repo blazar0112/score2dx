@@ -19,6 +19,20 @@ IES_SMART_ENUM(RecordType,
     Miss
 );
 
+//! @brief Check if lhs is better than rhs chart score of type.
+//! @note For miss, must exist to compare, return false if miss not exist.
+bool
+IsBetterRecord(
+    RecordType recordType,
+    const ChartScore& lhs,
+    const ChartScore& rhs);
+
+//! @brief
+//! Active version maybe not latest! can switch to activate previous version.
+//! All record can be null.
+//! VersionBest: best record of current active version
+//! OtherBest: best record other than Version best, can be Version 2nd best or other version best.
+//! CareerBest: best between VersionBest and OtherBest.
 IES_SMART_ENUM(BestType,
     VersionBest,
     OtherBest,
@@ -42,8 +56,7 @@ public:
     //! @note Compare and only leave best/second-best here.
         void
         Add(std::size_t chartId,
-            const std::map<std::string, ChartScore> &activeVersionScores,
-            const std::map<std::size_t, ChartScoreRecord> &nonActiveVersionRecords);
+            const std::map<std::size_t, std::vector<ChartScoreRecord>>& versionRecords);
 
         const ChartScoreRecord*
         GetRecord(std::size_t chartId,
@@ -61,10 +74,10 @@ private:
     //! @brief Map of {ChartId, BestRecord}.
     std::map<std::size_t, BestRecord> mBestRecordByChartId;
 
-        BestRecord &
+        BestRecord&
         GetBestRecord(std::size_t chartId);
 
-        const BestRecord &
+        const BestRecord&
         GetBestRecord(std::size_t chartId)
         const;
 };

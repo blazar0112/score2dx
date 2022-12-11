@@ -51,9 +51,13 @@ main(int argc, char* argv[])
 
         auto &musicDatabase = core.GetMusicDatabase();
 
-        std::string command;
-        while (std::getline(std::cin, command))
+        bool quit = false;
+        while (!quit)
         {
+            std::string command;
+            std::cout << "> ";
+            std::getline(std::cin, command);
+
             if (command=="h")
             {
                 PrintHelp();
@@ -62,7 +66,8 @@ main(int argc, char* argv[])
 
             if (command=="q")
             {
-                break;
+                quit = true;
+                continue;
             }
 
             if (command=="pv")

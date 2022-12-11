@@ -30,13 +30,14 @@ AddMusicScore(std::size_t scoreVersionIndex,
     auto playStyleIndex = static_cast<std::size_t>(musicScore.GetPlayStyle());
     auto &dateTime = musicScore.GetDateTime();
 
-    auto adjustedDateTime = AdjustDateTime(scoreVersionIndex, dateTime);
+    //auto adjustedDateTime = AdjustDateTime(scoreVersionIndex, dateTime);
 
     //'' note: timeline table record origin datetime since it's organized by version.
-    auto [it, flag] = mScoreTimeLineTable[playStyleIndex][scoreVersionIndex].emplace(dateTime, musicScore);
-    auto &tableMusicScore = it->second;
+    //auto [it, flag] = mScoreTimeLineTable[playStyleIndex][scoreVersionIndex].emplace(dateTime, musicScore);
+    mScoreTimeLineTable[playStyleIndex][scoreVersionIndex].emplace(dateTime, musicScore);
+    //auto &tableMusicScore = it->second;
 
-    tableMusicScore.SetDateTime(adjustedDateTime);
+    //tableMusicScore.SetDateTime(adjustedDateTime);
 }
 
 void
@@ -48,7 +49,7 @@ AddChartScore(std::size_t scoreVersionIndex,
               const ChartScore &chartScore)
 {
     auto playStyleIndex = static_cast<std::size_t>(playStyle);
-    auto adjustedDateTime = AdjustDateTime(scoreVersionIndex, dateTime);
+    //auto adjustedDateTime = AdjustDateTime(scoreVersionIndex, dateTime);
 
     auto [it, flag] = mScoreTimeLineTable[playStyleIndex][scoreVersionIndex].emplace
     (
@@ -58,7 +59,7 @@ AddChartScore(std::size_t scoreVersionIndex,
     );
     auto &musicScore = it->second;
     musicScore.SetChartScore(difficulty, chartScore);
-    musicScore.SetDateTime(adjustedDateTime);
+    //musicScore.SetDateTime(adjustedDateTime);
 }
 
 const std::map<std::string, MusicScore> &

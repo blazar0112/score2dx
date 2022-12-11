@@ -112,50 +112,43 @@ const
 
             auto sameChartVersions = music.FindSameChartVersions(styleDifficulty, mActiveVersionIndex);
 
-            std::map<std::string, ChartScore> activeVersionScores;
-            std::map<std::size_t, ChartScoreRecord> nonActiveVersionRecords;
+            std::map<std::size_t, std::vector<ChartScoreRecord>> versionRecords;
 
-            for (auto versionIndex : sameChartVersions)
+            if (findScoreTable)
             {
-                if (versionIndex!=mActiveVersionIndex)
+                for (auto versionIndex : sameChartVersions)
                 {
-                    if (findScoreTable)
+                    if (versionIndex!=mActiveVersionIndex)
                     {
-                        auto &versionScoreTable = findScoreTable.value()->second;
-                        auto &musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
+                        auto& versionScoreTable = findScoreTable.value()->second;
+                        auto& musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
                         if (!musicScores.empty())
                         {
                             auto bestMusicScoreIt = musicScores.rbegin();
                             if (auto* chartScorePtr = bestMusicScoreIt->second.GetChartScore(difficulty))
                             {
-                                nonActiveVersionRecords.emplace
-                                (
-                                    std::piecewise_construct,
-                                    std::forward_as_tuple(versionIndex),
-                                    std::forward_as_tuple(*chartScorePtr, versionIndex, bestMusicScoreIt->first)
-                                );
+                                versionRecords[versionIndex] = {ChartScoreRecord{*chartScorePtr, versionIndex, bestMusicScoreIt->first}};
                             }
                         }
                     }
-                }
-                else
-                {
-                    if (findScoreTable)
+                    else
                     {
-                        auto &versionScoreTable = findScoreTable.value()->second;
-                        auto &musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
-                        for (auto &[dateTime, musicScore] : musicScores)
+                        auto& versionScoreTable = findScoreTable.value()->second;
+                        auto& musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
+                        auto& records = versionRecords[versionIndex];
+                        records.reserve(musicScores.size());
+                        for (auto& [dateTime, musicScore] : musicScores)
                         {
                             if (auto* chartScorePtr = musicScore.GetChartScore(difficulty))
                             {
-                                activeVersionScores[dateTime] = *chartScorePtr;
+                                records.emplace_back(ChartScoreRecord{*chartScorePtr, versionIndex, dateTime});
                             }
                         }
                     }
                 }
             }
 
-            careerRecord.Add(chartId, activeVersionScores, nonActiveVersionRecords);
+            careerRecord.Add(chartId, versionRecords);
 
             ChartScore versionBestChartScore;
             auto* versionBestRecordPtr = careerRecord.GetRecord(chartId, BestType::VersionBest, RecordType::Score);
