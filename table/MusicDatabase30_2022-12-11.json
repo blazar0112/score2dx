@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "30053",
-        "lastUpdateEvent": "WORLD TOURISM 2022-11-10",
-        "lastUpdateNewMusic": "STAR BEAT",
+        "count": "30058",
+        "lastUpdateEvent": "RESIDENT PARTY - RESIDENT OPENING PARTY 2022-12-08",
+        "lastUpdateNewMusic": "LOUDER ROLLING THUNDER",
         "score2dx": "3.0.0",
         "version": "30"
     },
@@ -107593,6 +107593,256 @@
                     },
                     "version": 30
                 }
+            },
+            "あるビー！ feat.ころねぽち": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1474
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 885
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 502
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1457
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 900
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 500
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "ヒゲドライバー"
+                    },
+                    "genre": {
+                        "latest": "ピコピコ電波ソング"
+                    },
+                    "version": 30
+                }
+            },
+            "DIAMOND JACKAL": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1213
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 800
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 531
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1313
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 839
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 540
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Akira Complex"
+                    },
+                    "genre": {
+                        "latest": "ENIGMATIC BASS HARDCORE"
+                    },
+                    "version": 30
+                }
+            },
+            "Fading Stars": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1292
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 874
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 581
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1367
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 831
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 553
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Nhato"
+                    },
+                    "genre": {
+                        "latest": "TRANCE"
+                    },
+                    "version": 30
+                }
+            },
+            "Peaktime Booster": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1572
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 909
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 588
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1663
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 959
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 588
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "らっぷびと Prod. by RoughSketch & NUE"
+                    },
+                    "genre": {
+                        "latest": "RAPCORE"
+                    },
+                    "version": 30
+                }
+            },
+            "LOUDER ROLLING THUNDER": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1650
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1026
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 635
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1767
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1029
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 555
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"Dustup Vs. L.E.D.-G\""
+                    },
+                    "genre": {
+                        "latest": "MASSIVE MIXTURE"
+                    },
+                    "version": 30
+                }
             }
         }
     },
@@ -107741,7 +107991,8 @@
             "踊る！福神漬 (CALCUTTA)": "踊る！福神漬(CALCUTTA)",
             "野球の遊び方　そしてその歴史　〜決定版〜": "野球の遊び方　そしてその歴史　～決定版～",
             "麗 〜うらら〜": "麗 ～うらら～",
-            "いつかオトナになれるといいね": "いつかオトナになれるといいね。"
+            "いつかオトナになれるといいね": "いつかオトナになれるといいね。",
+            "あるビー！feat.ころねぽち": "あるビー！ feat.ころねぽち"
         }
     },
     "version": {
@@ -109885,7 +110136,12 @@
             "Ōu Legends",
             "Next Level",
             "Red Soul",
-            "STAR BEAT"
+            "STAR BEAT",
+            "あるビー！ feat.ころねぽち",
+            "DIAMOND JACKAL",
+            "Fading Stars",
+            "Peaktime Booster",
+            "LOUDER ROLLING THUNDER"
         ]
     }
 }
