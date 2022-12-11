@@ -1,9 +1,13 @@
 # Changelog of score2dx
 
+- 4.1.0 [2022-12-12]:
+    - Update default DB to count 30058 [2022-12-11].
+    - Fix CareedRecord incorrect set other best when best at active version.
+
 - 4.0.0 [2022-12-09]:
-    - Update score2dx to IIDX30 RESIDENT.
+    - Update score2dx IIDX data model to IIDX30 RESIDENT.
     - Add UpgradeMusicDatabase to upgrade DB version, no longer use python script.
-    - Update default DB to count 30058 [2022-12-11].   
+    - Update default DB to count 30053 [2022-12-09].
 
 - 3.3.0 [2022-11-30]:
     - Still in IIDX 29 mode, fix issues when using against IIDX 30 CSV and ME.

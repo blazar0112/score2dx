@@ -10,13 +10,13 @@ TEST(Version, IsValidVersion)
     EXPECT_FALSE(IsValidVersion("abc"));
     EXPECT_FALSE(IsValidVersion("c9"));
     EXPECT_TRUE(IsValidVersion("00"));
-    EXPECT_FALSE(IsValidVersion("30"));
-    ASSERT_TRUE(IsValidVersion("29"));
+    EXPECT_FALSE(IsValidVersion("31"));
+    ASSERT_TRUE(IsValidVersion("30"));
 }
 
 TEST(Version, GetLatestVersionIndex)
 {
-    ASSERT_EQ(29u, GetLatestVersionIndex());
+    ASSERT_EQ(30u, GetLatestVersionIndex());
 }
 
 TEST(Version, FindVersionIndex)

@@ -49,7 +49,7 @@ AddChartScore(std::size_t scoreVersionIndex,
               const ChartScore &chartScore)
 {
     auto playStyleIndex = static_cast<std::size_t>(playStyle);
-    auto adjustedDateTime = AdjustDateTime(scoreVersionIndex, dateTime);
+    //auto adjustedDateTime = AdjustDateTime(scoreVersionIndex, dateTime);
 
     auto [it, flag] = mScoreTimeLineTable[playStyleIndex][scoreVersionIndex].emplace
     (
@@ -59,7 +59,7 @@ AddChartScore(std::size_t scoreVersionIndex,
     );
     auto &musicScore = it->second;
     musicScore.SetChartScore(difficulty, chartScore);
-    musicScore.SetDateTime(adjustedDateTime);
+    //musicScore.SetDateTime(adjustedDateTime);
 }
 
 const std::map<std::string, MusicScore> &
