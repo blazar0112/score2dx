@@ -3,11 +3,7 @@
 #include <iostream>
 #include <numeric>
 
-#include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/Find.hxx"
-#include "ies/Time/TimeUtilFormat.hxx"
-
-#include "score2dx/Iidx/Version.hpp"
 
 namespace score2dx
 {
@@ -76,7 +72,7 @@ Add(std::size_t chartId,
         }
     }
 
-    auto constexpr RecordTypeSize = RecordTypeSmartEnum::Size();
+    constexpr auto RecordTypeSize = RecordTypeSmartEnum::Size();
 
     std::array<const ChartScoreRecord*, RecordTypeSize> bestRecords{ nullptr, nullptr };
     std::array<const ChartScoreRecord*, RecordTypeSize> secondBestRecords{ nullptr, nullptr };
@@ -89,42 +85,41 @@ Add(std::size_t chartId,
         for (auto recordType : RecordTypeSmartEnum::ToRange())
         {
             auto recordTypeIndex = static_cast<std::size_t>(recordType);
-            std::array<bool, RecordTypeSmartEnum::Size()> typeUpdated{false, false};
+            auto recordUpdated = false;
 
             if (!bestRecords[recordTypeIndex])
             {
                 if (recordType!=RecordType::Miss || chartScore.MissCount)
                 {
                     bestRecords[recordTypeIndex] = recordPtr;
-                    typeUpdated[recordTypeIndex] = true;
+                    recordUpdated = true;
                 }
             }
 
-            if (!typeUpdated[recordTypeIndex] && bestRecords[recordTypeIndex])
+            if (!recordUpdated && bestRecords[recordTypeIndex])
             {
                 if (IsBetterRecord(recordType, chartScore, bestRecords[recordTypeIndex]->ChartScoreProp))
                 {
                     secondBestRecords[recordTypeIndex] = bestRecords[recordTypeIndex];
                     bestRecords[recordTypeIndex] = recordPtr;
-                    typeUpdated[recordTypeIndex] = true;
+                    recordUpdated = true;
                 }
             }
 
-            if (!typeUpdated[recordTypeIndex] && !secondBestRecords[recordTypeIndex])
+            if (!recordUpdated && !secondBestRecords[recordTypeIndex])
             {
                 if (recordType!=RecordType::Miss || chartScore.MissCount)
                 {
                     secondBestRecords[recordTypeIndex] = recordPtr;
-                    typeUpdated[recordTypeIndex] = true;
+                    recordUpdated = true;
                 }
             }
 
-            if (!typeUpdated[recordTypeIndex] && secondBestRecords[recordTypeIndex])
+            if (!recordUpdated && secondBestRecords[recordTypeIndex])
             {
                 if (IsBetterRecord(recordType, chartScore, secondBestRecords[recordTypeIndex]->ChartScoreProp))
                 {
                     secondBestRecords[recordTypeIndex] = recordPtr;
-                    typeUpdated[recordTypeIndex] = true;
                 }
             }
         }

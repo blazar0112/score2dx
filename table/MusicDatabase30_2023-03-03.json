@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "30067",
-        "lastUpdateEvent": "「X-record」第3弾 2023-02-02",
-        "lastUpdateNewMusic": "恋愛＝精度×認識力",
+        "count": "30071",
+        "lastUpdateEvent": "楽曲4曲配信 2023-02-22",
+        "lastUpdateNewMusic": "マツケンサンバII",
         "score2dx": "3.0.0",
         "version": "30"
     },
@@ -21107,34 +21107,56 @@
                 }
             },
             "fun": {
-                "availableVersions": "09-11",
+                "availableVersions": "09-11, 30",
                 "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 950
+                        }
+                    },
                     "DPH": {
-                        "09-11": {
+                        "09-10": {
+                            "level": 6,
+                            "note": 586
+                        },
+                        "11": {
                             "level": 7,
-                            "note": 581
+                            "note": 586
+                        },
+                        "30": {
+                            "level": 7,
+                            "note": 574
                         }
                     },
                     "DPN": {
                         "09-11": {
                             "level": 4,
                             "note": 311
+                        },
+                        "30": {
+                            "level": 4,
+                            "note": 295
                         }
                     },
                     "SPA": {
-                        "09-11": {
+                        "30": {
                             "level": 10,
                             "note": 950
                         }
                     },
                     "SPH": {
-                        "09-11": {
+                        "09-10": {
+                            "level": 6,
+                            "note": 586
+                        },
+                        "11, 30": {
                             "level": 7,
                             "note": 586
                         }
                     },
                     "SPN": {
-                        "09-11": {
+                        "09-11, 30": {
                             "level": 4,
                             "note": 311
                         }
@@ -30833,7 +30855,11 @@
                 "availableVersions": "13-22, 30",
                 "difficulty": {
                     "DPA": {
-                        "13-22": {
+                        "13-14": {
+                            "level": 10,
+                            "note": 969
+                        },
+                        "15-22": {
                             "level": 9,
                             "note": 969
                         },
@@ -89067,6 +89093,12 @@
                             "note": 1070
                         }
                     },
+                    "DPL": {
+                        "30": {
+                            "level": 12,
+                            "note": 2046
+                        }
+                    },
                     "DPN": {
                         "26-30": {
                             "level": 5,
@@ -89083,6 +89115,12 @@
                         "26-30": {
                             "level": 10,
                             "note": 1190
+                        }
+                    },
+                    "SPL": {
+                        "30": {
+                            "level": 12,
+                            "note": 2023
                         }
                     },
                     "SPN": {
@@ -101366,7 +101404,7 @@
                     "version": 29
                 }
             },
-            "Get set,Go! feat.Kanae Asaba": {
+            "Get set, Go! feat.Kanae Asaba": {
                 "availableVersions": "29-30",
                 "difficulty": {
                     "DPA": {
@@ -107462,7 +107500,7 @@
                     "version": 30
                 }
             },
-            "Ōu Legends": {
+            "Ou Legends": {
                 "availableVersions": "30",
                 "difficulty": {
                     "DPA": {
@@ -107506,6 +107544,7 @@
                     "artist": {
                         "latest": "かめりあ"
                     },
+                    "displayTitle": "Ōu Legends",
                     "genre": {
                         "latest": "TOHOKU NEURO DENSETSU"
                     },
@@ -108361,6 +108400,230 @@
                     },
                     "version": 30
                 }
+            },
+            "新時代": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1165
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 7,
+                            "note": 631
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 379
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1171
+                        }
+                    },
+                    "SPB": {
+                        "30": {
+                            "level": 2,
+                            "note": 168
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 7,
+                            "note": 633
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 379
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by Nhato feat. 花たん"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 30
+                }
+            },
+            "神っぽいな": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1079
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 740
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 411
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1078
+                        }
+                    },
+                    "SPB": {
+                        "30": {
+                            "level": 2,
+                            "note": 186
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 734
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 392
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by uno(IOSYS) & NUE feat. Chiyoko"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 30
+                }
+            },
+            "KING": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1581
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 987
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 460
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1553
+                        }
+                    },
+                    "SPB": {
+                        "30": {
+                            "level": 2,
+                            "note": 226
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 997
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 475
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by SOUND HOLIC feat. はるの"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 30
+                }
+            },
+            "マツケンサンバII": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1473
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 911
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 571
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1460
+                        }
+                    },
+                    "SPB": {
+                        "30": {
+                            "level": 3,
+                            "note": 202
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 923
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 570
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by Ryu☆ feat. BEMANI Sound Team \"ショッチョー\" & イオシスコーラス隊"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 30
+                }
             }
         }
     },
@@ -108373,6 +108636,7 @@
             "COLOSSEUM ": "COLOSSEUM",
             "Cyber Force -DJ Yoshitaka Remix- ": "Cyber Force -DJ Yoshitaka Remix-",
             "Erosion Mark  ": "Erosion Mark",
+            "Get set， Go! feat.Kanae Asaba": "Get set, Go! feat.Kanae Asaba",
             "Idola ": "Idola",
             "POLKAMAИIA": "POLKAMANIA",
             "ROCK女 feat. 大山愛未， Ken": "ROCK女 feat. 大山愛未, Ken",
@@ -108391,6 +108655,7 @@
             "LOVE♡SHINE": "LOVE SHINE",
             "Love♡km": "Love km",
             "Mächö Mönky": "Macho Monky",
+            "Ōu Legends": "Ou Legends",
             "Präludium": "Praludium",
             "Punch Love♡仮面": "Punch Love 仮面",
             "Pārvatī": "Parvati",
@@ -110531,7 +110796,7 @@
             "Flying Castle",
             "GRAVITON",
             "Game Changers",
-            "Get set,Go! feat.Kanae Asaba",
+            "Get set, Go! feat.Kanae Asaba",
             "GiGaGaHell",
             "HEARTACHE",
             "Harmonia",
@@ -110652,7 +110917,7 @@
             "Get On Your Feet",
             "OVER VOLTAGE",
             "Hat Surprise (Season 2)",
-            "Ōu Legends",
+            "Ou Legends",
             "Next Level",
             "Red Soul",
             "STAR BEAT",
@@ -110669,7 +110934,11 @@
             "Level 4",
             "ZENITH",
             "The Clown of 24stairs",
-            "恋愛＝精度×認識力"
+            "恋愛＝精度×認識力",
+            "新時代",
+            "神っぽいな",
+            "KING",
+            "マツケンサンバII"
         ]
     }
 }

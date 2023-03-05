@@ -51,6 +51,20 @@ public:
                           Difficulty difficulty)
         const;
 
+    //! @brief Check inconsistency score in each version (does not propagate) and remove inconsistent or redundant music score.
+    //! @note Because how Export is written, there maybe MusicScore only store a single ChartScore.
+    //! This function propagate ChartScore inside a version, cross version clear type will propagate later.
+    //! e.g.     N H A
+    //! t1         c1
+    //! t2           c2
+    //! t3         c3
+    //! will be modified to like CSV updates
+    //! t1         c1
+    //! t2         c1c2
+    //! t3         c3c2
+        void
+        CleanupInVersionScores();
+
 private:
     std::size_t mMusicId;
     //! @brief Array of {Index=PlayStyle, Vector of {Index=ScoreVersionIndex, Map of {OriginDateTime, MusicScore}}}.

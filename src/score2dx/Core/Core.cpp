@@ -419,7 +419,7 @@ Import(const std::string &requiredIidxId,
                 auto [versionIndex, musicIndex] = mMusicDatabase.FindIndexes(versionName, dbTitle);
                 auto musicId = ToMusicId(versionIndex, musicIndex);
 
-                for (auto &[dateTime, recordData] : musicData.items())
+                for (auto& [dateTime, recordData] : musicData.items())
                 {
                     auto playCount = static_cast<std::size_t>(recordData["play"]);
 
@@ -440,6 +440,17 @@ Import(const std::string &requiredIidxId,
                     }
 
                     auto scoreVersionIndex = findScoreVersionIndex.value();
+                    auto* activeVersionPtr = mMusicDatabase.FindActiveVersion(scoreVersionIndex);
+                    if (!activeVersionPtr)
+                    {
+                        throw std::runtime_error("cannot find active versioin");
+                    }
+                    auto& activeVersion = *activeVersionPtr;
+                    auto& availableChartDifficulties = activeVersion.GetAvailableCharts(musicId, metaPlayStyle);
+                    for (auto difficulty : availableChartDifficulties)
+                    {
+                        musicScore.EnableChartScore(difficulty);
+                    }
 
                     for (auto &[difficultyAcronym, scoreData] : recordData["score"].items())
                     {

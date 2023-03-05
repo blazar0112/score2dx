@@ -10,6 +10,7 @@ set_property(GLOBAL PROPERTY
     ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/Analyzer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/CareerRecord.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ChartScoreRecord.cpp
 )
 
 get_property(PUBLIC_HEADERS GLOBAL PROPERTY PROP_PUBLIC_HEADERS)

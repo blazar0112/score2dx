@@ -74,11 +74,13 @@ const
     }
 
     auto &versionScoreTables = playerScore.GetVersionScoreTables();
-    for (auto &[musicId, chartIdSet] : musicIdSortedChartIdSets)
+    for (auto& [musicId, chartIdSet] : musicIdSortedChartIdSets)
     {
-        auto &music = mMusicDatabase.GetMusic(musicId);
+        auto& music = mMusicDatabase.GetMusic(musicId);
 
         auto findScoreTable = ies::Find(versionScoreTables, musicId);
+        if (!findScoreTable) { continue; }
+        auto& versionScoreTable = findScoreTable.value()->second;
 
         for (auto chartId : chartIdSet)
         {
@@ -114,35 +116,30 @@ const
 
             std::map<std::size_t, std::vector<ChartScoreRecord>> versionRecords;
 
-            if (findScoreTable)
+            for (auto versionIndex : sameChartVersions)
             {
-                for (auto versionIndex : sameChartVersions)
+                if (versionIndex!=mActiveVersionIndex)
                 {
-                    if (versionIndex!=mActiveVersionIndex)
+                    auto& musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
+                    if (!musicScores.empty())
                     {
-                        auto& versionScoreTable = findScoreTable.value()->second;
-                        auto& musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
-                        if (!musicScores.empty())
+                        auto bestMusicScoreIt = musicScores.rbegin();
+                        if (auto* chartScorePtr = bestMusicScoreIt->second.GetChartScore(difficulty))
                         {
-                            auto bestMusicScoreIt = musicScores.rbegin();
-                            if (auto* chartScorePtr = bestMusicScoreIt->second.GetChartScore(difficulty))
-                            {
-                                versionRecords[versionIndex] = {ChartScoreRecord{*chartScorePtr, versionIndex, bestMusicScoreIt->first}};
-                            }
+                            versionRecords[versionIndex] = {ChartScoreRecord{*chartScorePtr, versionIndex, bestMusicScoreIt->first}};
                         }
                     }
-                    else
+                }
+                else
+                {
+                    auto& musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
+                    auto& records = versionRecords[versionIndex];
+                    records.reserve(musicScores.size());
+                    for (auto& [dateTime, musicScore] : musicScores)
                     {
-                        auto& versionScoreTable = findScoreTable.value()->second;
-                        auto& musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
-                        auto& records = versionRecords[versionIndex];
-                        records.reserve(musicScores.size());
-                        for (auto& [dateTime, musicScore] : musicScores)
+                        if (auto* chartScorePtr = musicScore.GetChartScore(difficulty))
                         {
-                            if (auto* chartScorePtr = musicScore.GetChartScore(difficulty))
-                            {
-                                records.emplace_back(ChartScoreRecord{*chartScorePtr, versionIndex, dateTime});
-                            }
+                            records.emplace_back(ChartScoreRecord{*chartScorePtr, versionIndex, dateTime});
                         }
                     }
                 }

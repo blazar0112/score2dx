@@ -26,6 +26,7 @@ PrintHelp()
                 << "pm <versionIndex>: print verion music list with format [musicIndex] title.\n"
                 << "pi <musicId>: print music info of musicId.\n"
                 << "ps <musicId> <styleDifficulty>: print scores of musicId.\n"
+                << "pr <musicId> <styleDifficulty>: print analyzed record of musicId.\n"
                 << "\n"
                 << "Note: musicId is <versionIndex><musicIndex> e.g. musicId 28001, versionIndex=28, musicIndex=001.\n"
                 << "styleDifficulty format is <SP|DP><B|N|H|A|L>.\n";
@@ -160,6 +161,56 @@ main(int argc, char* argv[])
                 {
                     std::cout << "incorrect command format: "+command+"\n";
                 }
+                continue;
+            }
+
+            if (command.starts_with("pr"))
+            {
+                auto tokens = ies::SplitString(" ", command);
+                if (tokens.size()<3)
+                {
+                    std::cout << "incorrect command format: "+command+"\n";
+                    continue;
+                }
+
+                auto* analysisPtr = core.FindAnalysis("5483-7391");
+                if (!analysisPtr)
+                {
+                    std::cout << "no analysis for 5483-7391\n";
+                    continue;
+                }
+
+                auto& analysis = *analysisPtr;
+                if (!analysis.CareerRecordPtr)
+                {
+                    std::cout << "no carreer record analysis for 5483-7391\n";
+                    continue;
+                }
+
+                auto& careerRecord = *analysis.CareerRecordPtr;
+                auto musicId = std::stoull(tokens[1]);
+                auto styleDifficulty = score2dx::ToStyleDifficulty(tokens[2]);
+                auto chartId = score2dx::ToChartId(musicId, styleDifficulty);
+                for (auto recordType : score2dx::RecordTypeSmartEnum::ToRange())
+                {
+                    std::cout << score2dx::RecordTypeSmartEnum::GetName() << ": [" << ToString(recordType) << "]\n";
+                    for (auto bestType : score2dx::BestTypeSmartEnum::ToRange())
+                    {
+                        std::cout << "    " << ToString(bestType) << ": ";
+                        auto* recordPtr = careerRecord.GetRecord(chartId, bestType, recordType);
+                        if (!recordPtr)
+                        {
+                            std::cout << "(nullptr)";
+                        }
+                        else
+                        {
+                            auto& record = *recordPtr;
+                            std::cout << ToString(record);
+                        }
+                        std::cout << "\n";
+                    }
+                }
+
                 continue;
             }
         }

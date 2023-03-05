@@ -65,6 +65,7 @@ Propagate()
     for (auto &[musicId, versionScoreTable] : mVersionScoreTables)
     {
         auto &music = mMusicDatabase.GetMusic(musicId);
+        versionScoreTable.CleanupInVersionScores();
 
         for (auto playStyle : PlayStyleSmartEnum::ToRange())
         {

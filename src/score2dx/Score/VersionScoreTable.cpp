@@ -4,6 +4,8 @@
 
 #include "score2dx/Iidx/Version.hpp"
 
+#include "ies/Common/IntegralRangeUsing.hpp"
+
 namespace score2dx
 {
 
@@ -106,6 +108,28 @@ const
     }
 
     return bestChartScore;
+}
+
+void
+VersionScoreTable::
+CleanupInVersionScores()
+{
+    for (auto playStyle : PlayStyleSmartEnum::ToRange())
+    {
+        auto playStyleIndex = static_cast<std::size_t>(playStyle);
+        auto& styleTimeLineTable = mScoreTimeLineTable[playStyleIndex];
+        for (auto scoreVersionIndex : IndexRange{0, styleTimeLineTable.size()})
+        {
+            auto& versionScores = styleTimeLineTable[scoreVersionIndex];
+            std::size_t currentCount = 0;
+            for (auto& [dateTime, musicScore] : versionScores)
+            {
+                auto count = musicScore.GetEnableCount();
+                currentCount = count;
+                (void)currentCount;
+            }
+        }
+    }
 }
 
 std::string

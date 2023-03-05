@@ -1,8 +1,7 @@
 #include "score2dx/Score/MusicScore.hpp"
 
 #include <iostream>
-
-#include "ies/StdUtil/Find.hxx"
+#include <numeric>
 
 namespace score2dx
 {
@@ -146,6 +145,21 @@ const
                     << std::to_string(chartScore->ExScore)
                     << "\n";
     }
+}
+
+std::size_t
+MusicScore::
+GetEnableCount()
+const
+{
+    return  std::accumulate(
+                mEnables.begin(), mEnables.end(), 0u,
+                [](std::size_t count, bool enable)
+                {
+                    if (enable) { count +=1; }
+                    return count;
+                }
+            );
 }
 
 }

@@ -78,6 +78,10 @@ public:
         Print()
         const;
 
+        std::size_t
+        GetEnableCount()
+        const;
+
 private:
     //! @brief MusicId = VersionIndex*1000+{MusicIndex in version music list}.
     //! e.g. "Elisha"'s VersionIndex is 17, MusicIndex is 0, MusicId is 17000.

@@ -35,4 +35,7 @@ struct ChartScoreRecord
         {}
 };
 
+std::string
+ToString(const ChartScoreRecord& chartScoreRecord);
+
 }
