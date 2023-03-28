@@ -4,13 +4,6 @@
 #include <optional>
 #include <stdexcept>
 
-#include "ies/StdUtil/Find.hxx"
-#include "ies/Time/TimeUtilFormat.hxx"
-
-#include "score2dx/Iidx/Version.hpp"
-
-namespace s2Time = ies::Time;
-
 namespace score2dx
 {
 
@@ -39,11 +32,13 @@ AddMusicScore(std::size_t scoreVersionIndex,
               const MusicScore &musicScore)
 {
     auto musicId = musicScore.GetMusicId();
-    auto [it, flag] = mVersionScoreTables.emplace(musicId, musicId);
-    auto &scoreTable = it->second;
+    auto& music = mMusicDatabase.GetMusic(musicId);
+    auto [it, flag] = mVersionScoreTables.emplace(musicId, music);
+    auto& scoreTable = it->second;
     scoreTable.AddMusicScore(scoreVersionIndex, musicScore);
 }
 
+/*
 void
 PlayerScore::
 AddChartScore(std::size_t scoreVersionIndex,
@@ -53,15 +48,18 @@ AddChartScore(std::size_t scoreVersionIndex,
               const std::string &dateTime,
               const ChartScore &chartScore)
 {
-    auto [it, flag] = mVersionScoreTables.emplace(musicId, musicId);
-    auto &scoreTable = it->second;
+    auto& music = mMusicDatabase.GetMusic(musicId);
+    auto [it, flag] = mVersionScoreTables.emplace(musicId, music);
+    auto& scoreTable = it->second;
     scoreTable.AddChartScore(scoreVersionIndex, dateTime, playStyle, difficulty, chartScore);
 }
+*/
 
 void
 PlayerScore::
 Propagate()
 {
+/*
     for (auto &[musicId, versionScoreTable] : mVersionScoreTables)
     {
         auto &music = mMusicDatabase.GetMusic(musicId);
@@ -124,6 +122,7 @@ Propagate()
             }
         }
     }
+*/
 }
 
 const std::map<std::size_t, VersionScoreTable> &

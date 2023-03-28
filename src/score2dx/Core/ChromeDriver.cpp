@@ -20,7 +20,7 @@ int
 CheckChromeDriverVersion(const std::string &driverPath)
 {
     auto command = driverPath+" -v";
-    std::string logFilename = "chromedriver.log";
+    const std::string logFilename = "chromedriver.log";
     auto sysCommand = command+" >"+logFilename;
     std::system(sysCommand.c_str());
 
@@ -78,8 +78,8 @@ CheckChromeBrowserVersion()
         return 0;
     }
 
-    fs::path programFilesPath{programFilesEnv};
-    auto chromeBrowserPath = programFilesPath / R"(Google\Chrome\Application)";
+    const fs::path programFilesPath{programFilesEnv};
+    const auto chromeBrowserPath = programFilesPath / R"(Google\Chrome\Application)";
 
     if (!fs::is_directory(chromeBrowserPath))
     {

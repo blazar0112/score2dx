@@ -10,11 +10,13 @@ MusicScore::
 MusicScore(std::size_t musicId,
            PlayStyle playStyle,
            std::size_t playCount,
-           std::string dateTime)
-:   mMusicId(musicId),
-    mPlayStyle(playStyle),
-    mPlayCount(playCount),
-    mDateTime(std::move(dateTime))
+           std::string dateTime,
+           ScoreSource scoreSource)
+:   mMusicId(musicId)
+,   mPlayStyle(playStyle)
+,   mPlayCount(playCount)
+,   mDateTime(std::move(dateTime))
+,   mScoreSource(scoreSource)
 {
 }
 
@@ -109,6 +111,7 @@ ChartScore*
 MusicScore::
 GetChartScore(Difficulty difficulty)
 {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
     return const_cast<ChartScore*>(std::as_const(*this).GetChartScore(difficulty));
 }
 

@@ -90,23 +90,23 @@ LoadDirectory(std::string_view directory,
 
         if (entry.is_regular_file()&&entry.path().extension()==".csv")
         {
-            if (verbose) std::cout << "\n";
+            if (verbose) { std::cout << "\n"; }
             auto filename = entry.path().filename().string();
 
             auto [isValid, invalidReason] = IsValidCsvFilename(filename);
             if (!isValid)
             {
-                if (verbose) std::cout << "Skip CSV ["+filename+"] with invalid filename: "+invalidReason+".\n";
+                if (verbose) { std::cout << "Skip CSV ["+filename+"] with invalid filename: "+invalidReason+".\n"; }
                 continue;
             }
 
             if (!filename.starts_with(iidxId))
             {
-                if (verbose) std::cout << "Skip CSV ["+filename+"] with unmatch IIDX ID.\n";
+                if (verbose) { std::cout << "Skip CSV ["+filename+"] with unmatch IIDX ID.\n"; }
                 continue;
             }
 
-            if (verbose) std::cout << "Load CSV [" << filename << "]\n";
+            if (verbose) { std::cout << "Load CSV [" << filename << "]\n"; }
             std::unique_ptr<Csv> csvPtr;
             try
             {
@@ -371,7 +371,7 @@ Import(const std::string &requiredIidxId,
             std::cout << "warning: filename playstyle not agreed with metadata in exported json.\n";
         }
 
-        std::string iidxId = metadata["id"];
+        const std::string iidxId = metadata["id"];
         if (iidxId!=requiredIidxId)
         {
             if (verbose)
@@ -423,12 +423,15 @@ Import(const std::string &requiredIidxId,
                 {
                     auto playCount = static_cast<std::size_t>(recordData["play"]);
 
+                    //'' design changed, all existing Json are assumed dumped from IIDX ME.
+                    //'' until new Json format that dump ScoreSource also.
                     MusicScore musicScore
                     {
                         musicId,
                         metaPlayStyle,
                         playCount,
-                        dateTime
+                        dateTime,
+                        ScoreSource::Me
                     };
 
                     auto findScoreVersionIndex = FindVersionIndexFromDateTime(dateTime);
@@ -469,7 +472,7 @@ Import(const std::string &requiredIidxId,
 
                         auto styleDifficulty = ConvertToStyleDifficulty(metaPlayStyle, difficulty);
 
-                        if (chartScore.MissCount==0&&chartScore.ClearType!=ClearType::FULLCOMBO_CLEAR)
+                        if (chartScore.MissCount && chartScore.MissCount==0 && chartScore.ClearType!=ClearType::FULLCOMBO_CLEAR)
                         {
                             if (verbose)
                             {
@@ -484,7 +487,7 @@ Import(const std::string &requiredIidxId,
                             chartScore.MissCount = std::nullopt;
                         }
 
-                        auto findChartInfo = mMusicDatabase.FindChartInfo(
+                        auto* findChartInfo = mMusicDatabase.FindChartInfo(
                             musicId,
                             styleDifficulty,
                             scoreVersionIndex
@@ -903,7 +906,7 @@ ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
                                     continue;
                                 }
 
-                                std::size_t scoreVersionIndex = scoreData.at("version");
+                                const std::size_t scoreVersionIndex = scoreData.at("version");
                                 if (scoreVersionIndex==GetLatestVersionIndex()&&scoreData.at("score").is_null())
                                 {
                                     continue;
@@ -1005,26 +1008,28 @@ ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
                                 ChartScore chartScore;
                                 if (!scoreData.at("clear").is_null())
                                 {
-                                    int iClear = scoreData.at("clear");
+                                    const int iClear = scoreData.at("clear");
                                     chartScore.ClearType = static_cast<ClearType>(iClear);
                                 }
                                 if (!scoreData.at("miss").is_null())
                                 {
-                                    int miss = scoreData.at("miss");
+                                    const int miss = scoreData.at("miss");
                                     chartScore.MissCount = miss;
                                 }
                                 if (!scoreData.at("rank").is_null())
                                 {
-                                    int iDjLevel = scoreData.at("rank");
+                                    const int iDjLevel = scoreData.at("rank");
                                     chartScore.DjLevel = static_cast<DjLevel>(iDjLevel);
                                 }
                                 if (!scoreData.at("score").is_null())
                                 {
-                                    int score = scoreData.at("score");
+                                    const int score = scoreData.at("score");
                                     chartScore.ExScore = score;
                                 }
 
-                                playerScore.AddChartScore(scoreVersionIndex, musicId, playStyle, difficulty, dateTime, chartScore);
+                                MusicScore musicScore{musicId, playStyle, 0, dateTime, ScoreSource::Me};
+                                musicScore.SetChartScore(difficulty, chartScore);
+                                playerScore.AddMusicScore(scoreVersionIndex, musicScore);
                             }
                         }
                     }
@@ -1075,7 +1080,7 @@ const
 {
     auto begin = s2Time::Now();
     //std::string iidxMeDataTableFilename = R"(E:\project_document\score2dx\iidxme\iidxme_datatable.json)";
-    std::string iidxMeDataTableFilename = R"(E:\project_document\score2dx\iidxme\iidxme_datatable_delmitz.json)";
+    const std::string iidxMeDataTableFilename = R"(E:\project_document\score2dx\iidxme\iidxme_datatable_delmitz.json)";
     std::cout << "iidxMeDataTableFilename = " << iidxMeDataTableFilename << "\n";
     std::ifstream tableFile{iidxMeDataTableFilename};
     Json iidxMeTable;
@@ -1084,8 +1089,8 @@ const
     for (auto &[iidxMeMusicId, musicData] : iidxMeTable.items())
     {
         auto &metadata = musicData.at("metadata");
-        std::string title = metadata.at("title");
-        std::size_t versionIndex = metadata.at("version");
+        const std::string title = metadata.at("title");
+        const std::size_t versionIndex = metadata.at("version");
 
         std::string dbTitle = title;
         auto findMappedTitle = mMusicDatabase.FindDbTitle(dbTitle);
@@ -1165,7 +1170,7 @@ const
                     std::cout << "IIDXME [" << iidxMeMusicId << "][" << title << "]["+iidxMeStyle+"]["+chartIndex+"] chartData lack key diff.\n";
                 }
 
-                int iideMeDiff = chartData.at("diff");
+                const int iideMeDiff = chartData.at("diff");
                 auto difficulty = static_cast<Difficulty>(iideMeDiff-1);
                 auto styleDifficulty = ConvertToStyleDifficulty(playStyle, difficulty);
                 auto &noUpdateDateVersions = noUpdateDateVersionsByDifficulty[difficulty];
@@ -1203,7 +1208,7 @@ const
                         continue;
                     }
 
-                    std::size_t scoreVersionIndex = scoreData.at("version");
+                    const std::size_t scoreVersionIndex = scoreData.at("version");
                     if (scoreVersionIndex==GetLatestVersionIndex()&&scoreData.at("score").is_null())
                     {
                         continue;
@@ -1327,22 +1332,22 @@ const
                     ChartScore chartScore;
                     if (!scoreData.at("clear").is_null())
                     {
-                        int iClear = scoreData.at("clear");
+                        const int iClear = scoreData.at("clear");
                         chartScore.ClearType = static_cast<ClearType>(iClear);
                     }
                     if (!scoreData.at("miss").is_null())
                     {
-                        int miss = scoreData.at("miss");
+                        const int miss = scoreData.at("miss");
                         chartScore.MissCount = miss;
                     }
                     if (!scoreData.at("rank").is_null())
                     {
-                        int iDjLevel = scoreData.at("rank");
+                        const int iDjLevel = scoreData.at("rank");
                         chartScore.DjLevel = static_cast<DjLevel>(iDjLevel);
                     }
                     if (!scoreData.at("score").is_null())
                     {
-                        int score = scoreData.at("score");
+                        const int score = scoreData.at("score");
                         chartScore.ExScore = score;
                     }
 

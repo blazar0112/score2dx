@@ -3,10 +3,6 @@
 #include <gtest/gtest.h>
 
 #include "ies/Common/IntegralRangeUsing.hpp"
-#include "ies/StdUtil/FormatString.hxx"
-#include "ies/Time/TimeUtilFormat.hxx"
-
-namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -19,7 +15,7 @@ TEST(ScoreLevel, KeyScore)
     //! HalfKeyScore            3334 <- choose to be HalfKeyScore of AAA
     //!                  [   AA+ )[  AAA- )
 
-    int n = 2000;
+    constexpr int n = 2000;
 
     EXPECT_EQ(IntRange(3334, 3556), IntRange(FindHalfKeyScore(n, ScoreLevel::AAA), FindKeyScore(n, ScoreLevel::AAA)));
     ASSERT_EQ(IntRange(3778, 4000), IntRange(FindHalfKeyScore(n, ScoreLevel::Max), FindKeyScore(n, ScoreLevel::Max)));
@@ -33,7 +29,7 @@ TEST(ScoreLevel, FindScoreLevelDiff)
 
     using SLRD = std::pair<ScoreLevelRange, int>;
 
-    int n = 2000;
+    constexpr int n = 2000;
 
     //'' KeyScores:
     //'' index ScoreLevelRange KeyScore(Center)
@@ -82,7 +78,7 @@ TEST(ScoreLevel, FindScoreLevelDiff)
 
 TEST(ScoreLevel, ToScoreLevelDiffString)
 {
-    int n = 2000;
+    constexpr int n = 2000;
 
     EXPECT_EQ("MAX+0", ToScoreLevelDiffString(n, 4000));
     EXPECT_EQ("MAX-100", ToScoreLevelDiffString(n, 3900));

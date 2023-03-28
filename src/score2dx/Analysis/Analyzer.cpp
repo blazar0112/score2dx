@@ -187,7 +187,7 @@ const
                 &analysis.StatisticsByVersionStyleDifficulty[versionIndex][static_cast<std::size_t>(styleDifficulty)]
             };
 
-            for (auto stats : analysisStatsPtrVec)
+            for (auto* stats : analysisStatsPtrVec)
             {
                 stats->ChartIdList.emplace(chartId);
                 stats->ChartIdListByClearType[static_cast<std::size_t>(versionBestChartScore.ClearType)].emplace(chartId);
@@ -267,7 +267,7 @@ const
             snapshotMusicScores.emplace(
                 std::piecewise_construct,
                 std::forward_as_tuple(musicId),
-                std::forward_as_tuple(musicId, chartPlayStyle, 0, "")
+                std::forward_as_tuple(musicId, chartPlayStyle, 0, "", ScoreSource::Auxiliary)
             );
         }
 

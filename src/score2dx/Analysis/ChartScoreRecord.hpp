@@ -28,10 +28,10 @@ struct ChartScoreRecord
         ChartScoreRecord() = default;
         ChartScoreRecord(const ChartScore &chartScore,
                          std::size_t versionIndex,
-                         const std::string &dateTime)
+                         std::string dateTime)
         :   ChartScoreProp(chartScore),
             VersionIndex(versionIndex),
-            DateTime(dateTime)
+            DateTime(std::move(dateTime))
         {}
 };
 

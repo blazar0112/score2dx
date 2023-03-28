@@ -10,13 +10,17 @@ namespace score2dx
 {
 
 VersionScoreTable::
-VersionScoreTable(std::size_t musicId)
-:   mMusicId(musicId)
+VersionScoreTable(const Music& music)
+:   mMusic(music)
+,   mMusicId(music.GetMusicId())
 {
     for (auto playStyle : PlayStyleSmartEnum::ToRange())
     {
         mScoreTimeLineTable[static_cast<std::size_t>(playStyle)].resize(VersionNames.size());
     }
+
+    auto versions = mMusic.GetChartFirstAvailableVersions(StyleDifficulty::DPA);
+    (void)versions;
 }
 
 void
@@ -42,6 +46,7 @@ AddMusicScore(std::size_t scoreVersionIndex,
     //tableMusicScore.SetDateTime(adjustedDateTime);
 }
 
+/*
 void
 VersionScoreTable::
 AddChartScore(std::size_t scoreVersionIndex,
@@ -63,6 +68,7 @@ AddChartScore(std::size_t scoreVersionIndex,
     musicScore.SetChartScore(difficulty, chartScore);
     //musicScore.SetDateTime(adjustedDateTime);
 }
+*/
 
 const std::map<std::string, MusicScore> &
 VersionScoreTable::
@@ -88,7 +94,7 @@ GetBestChartScore(std::size_t scoreVersionIndex,
 const
 {
     auto &musicScores = GetMusicScores(scoreVersionIndex, playStyle);
-    if (musicScores.empty()) return nullptr;
+    if (musicScores.empty()) { return nullptr; }
 
     auto &bestMusicScore = musicScores.rbegin()->second;
     auto* lastChartScore = bestMusicScore.GetChartScore(difficulty);

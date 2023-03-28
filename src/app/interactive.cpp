@@ -138,7 +138,7 @@ main(int argc, char* argv[])
                         for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, playStyle))
                         {
                             auto* chartScorePtr = musicScore.GetChartScore(difficulty);
-                            if (!chartScorePtr) continue;
+                            if (!chartScorePtr) { continue; }
 
                             auto &chartScore = *chartScorePtr;
                             std::cout   << "["+dateTime+"] Clear: "+ToString(chartScore.ClearType)

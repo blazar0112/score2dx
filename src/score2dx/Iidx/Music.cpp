@@ -121,6 +121,49 @@ AddAvailability(StyleDifficulty styleDifficulty,
     }
 }
 
+std::vector<std::size_t>
+Music::
+GetChartFirstAvailableVersions(StyleDifficulty styleDifficulty)
+const
+{
+    std::vector<std::size_t> chartFirstVersions;
+    auto& chartNotes = mChartNoteByIndex[static_cast<std::size_t>(styleDifficulty)];
+    if (chartNotes.empty())
+    {
+        return chartFirstVersions;
+    }
+
+    chartFirstVersions.reserve(chartNotes.size());
+
+    auto& verTable = mChartAvailabilityTable[static_cast<std::size_t>(styleDifficulty)];
+    //'' note: assume chart index is incrementally labelled.
+    for (auto& availability : verTable)
+    {
+        if (availability.ChartIndex<chartFirstVersions.size())
+        {
+            continue;
+        }
+
+        if (availability.ChartIndex==chartFirstVersions.size())
+        {
+            chartFirstVersions.emplace_back(availability.ChartIndex);
+            continue;
+        }
+
+        if (availability.ChartIndex>chartFirstVersions.size())
+        {
+            throw std::runtime_error("chart index is not incrementall when traversing by version.");
+        }
+    }
+
+    if (chartFirstVersions.size()!=chartNotes.size())
+    {
+        throw std::runtime_error("chartFirstVersions.size()!=chartNotes.size()");
+    }
+
+    return chartFirstVersions;
+}
+
 const ChartAvailability &
 Music::
 GetChartAvailability(StyleDifficulty styleDifficulty, std::size_t versionIndex)

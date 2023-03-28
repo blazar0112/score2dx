@@ -63,6 +63,17 @@ public:
         AddAvailability(StyleDifficulty styleDifficulty,
                         const std::map<std::string, ChartInfo> &chartInfoByChartVersions);
 
+    //! @brief Get first version of each chart first available. Vector of {Index=ChartIndex, FirstVersionIndexChartAvailable}.
+    //! @example
+    //! Chart 0: {0, 1, 4, 5} (remove at 2, revived at 4)
+    //!       1: {2, 3} (replace Chart[0] in 2, removed at 4)
+    //! GetChartFirstAvailableVersions(): {0, 2}
+    //! FindSameChartVersions(styleDifficulty, 0): {0, 1, 4, 5}
+    //! FindSameChartVersions(styleDifficulty, 1): {2, 3}
+        std::vector<std::size_t>
+        GetChartFirstAvailableVersions(StyleDifficulty styleDifficulty)
+        const;
+
         const ChartAvailability &
         GetChartAvailability(StyleDifficulty styleDifficulty, std::size_t versionIndex)
         const;

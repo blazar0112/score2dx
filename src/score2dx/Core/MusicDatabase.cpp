@@ -42,7 +42,7 @@ MusicDatabase()
         auto begin = s2Time::Now();
 
         {
-            std::string usingDbFilename{"table/usingDB.txt"};
+            const std::string usingDbFilename{"table/usingDB.txt"};
             std::ifstream usingDbFile{usingDbFilename};
             if (usingDbFile)
             {
@@ -87,19 +87,19 @@ MusicDatabase()
             std::size_t musicIndex = 0;
             for (auto &item : dbVersionMusics.items())
             {
-                auto &title = item.value();
+                auto& title = item.value();
                 auto musicId = ToMusicId(versionIndex, musicIndex);
                 verMusicTable.emplace_back(musicId, title);
-                auto &music = verMusicTable.back();
+                auto& music = verMusicTable.back();
 
-                auto findDbMusic = FindDbMusic(versionIndex, title);
+                auto* findDbMusic = FindDbMusic(versionIndex, title);
                 if (!findDbMusic)
                 {
                     std::cout << "version ["+ToVersionString(versionIndex)+"] title ["+std::string{title}+"].\n";
                     throw std::runtime_error("cannot find music in main table and cs table.");
                 }
 
-                auto &dbMusic = *findDbMusic;
+                auto& dbMusic = *findDbMusic;
 
                 music.SetMusicInfoField(MusicInfoField::Genre, dbMusic["info"]["genre"]["latest"]);
                 music.SetMusicInfoField(MusicInfoField::Artist, dbMusic["info"]["artist"]["latest"]);

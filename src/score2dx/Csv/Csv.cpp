@@ -242,7 +242,7 @@ Csv(const std::string &csvPath,
                 auto itPair = mMusicScores.emplace(
                     std::piecewise_construct,
                     std::forward_as_tuple(musicId),
-                    std::forward_as_tuple(musicId, mPlayStyle, csvMusic.PlayCount, dateTime)
+                    std::forward_as_tuple(musicId, mPlayStyle, csvMusic.PlayCount, dateTime, ScoreSource::OfficialCsv)
                 );
                 auto &musicScore = itPair.first->second;
 

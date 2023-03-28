@@ -18,11 +18,8 @@ IsBetterRecord(
     {
         return lhs.ExScore>rhs.ExScore;
     }
-    else
-    {
-        lhs.MissCount && rhs.MissCount && lhs.MissCount<rhs.MissCount;
-    }
-    return false;
+
+    return lhs.MissCount && rhs.MissCount && lhs.MissCount<rhs.MissCount;
 }
 
 CareerRecord::
@@ -192,6 +189,7 @@ BestRecord&
 CareerRecord::
 GetBestRecord(std::size_t chartId)
 {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
     return const_cast<BestRecord&>(std::as_const(*this).GetBestRecord(chartId));
 }
 

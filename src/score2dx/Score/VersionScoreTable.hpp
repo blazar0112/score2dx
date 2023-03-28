@@ -6,16 +6,17 @@
 #include <vector>
 
 #include "score2dx/Iidx/Definition.hpp"
+#include "score2dx/Iidx/Music.hpp"
 #include "score2dx/Score/MusicScore.hpp"
 
 namespace score2dx
 {
 
-//! @brief Manage a music's MusicScore by version.
+//! @brief Manage a Music's MusicScore by version.
 class VersionScoreTable
 {
 public:
-        explicit VersionScoreTable(std::size_t musicId);
+        explicit VersionScoreTable(const Music& music);
 
     //! @brief Add MusicScore from sourceVersion.
     //! @note Because it's possible to play older version before inherit data.
@@ -28,6 +29,7 @@ public:
         AddMusicScore(std::size_t scoreVersionIndex,
                       const MusicScore &musicScore);
 
+/*
     //! @brief Add ChartScore from sourceVersion.
     //! @note Will adjust MusicScore datetime with same rule described in AddMusicScore.
         void
@@ -36,6 +38,10 @@ public:
                       PlayStyle playStyle,
                       Difficulty difficulty,
                       const ChartScore &chartScore);
+*/
+
+        void
+        Compile();
 
     //! @brief Get all music score in version by timeline.
     //! @note MusicScore datetime may adjust to version end if exceeds version end.
@@ -66,7 +72,9 @@ public:
         CleanupInVersionScores();
 
 private:
+    const Music& mMusic;
     std::size_t mMusicId;
+
     //! @brief Array of {Index=PlayStyle, Vector of {Index=ScoreVersionIndex, Map of {OriginDateTime, MusicScore}}}.
     std::array<std::vector<std::map<std::string, MusicScore>>, PlayStyleSmartEnum::Size()> mScoreTimeLineTable;
 };

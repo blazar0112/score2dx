@@ -30,6 +30,7 @@ public:
         AddMusicScore(std::size_t scoreVersionIndex,
                       const MusicScore &musicScore);
 
+/*
     //! @brief Add ChartScore, because it's from iidxme data or manually input.
     //! @note Update if already exist StyleDifficulty's ChartScore in MusicScore.
         void
@@ -39,6 +40,7 @@ public:
                       Difficulty difficulty,
                       const std::string &dateTime,
                       const ChartScore &chartScore);
+*/
 
     //! @brief Propagate clear mark since AddMusic/ChartScore does not propagate now.
     //! Use after add all scores.
