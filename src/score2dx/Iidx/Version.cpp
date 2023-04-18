@@ -104,7 +104,7 @@ GetFirstSupportDateTimeVersionIndex()
 const ies::IndexRange &
 GetSupportScoreVersionRange()
 {
-    static ies::IndexRange ScoreVersionRange{GetFirstSupportDateTimeVersionIndex(), VersionNames.size()};
+    static const ies::IndexRange ScoreVersionRange{GetFirstSupportDateTimeVersionIndex(), VersionNames.size()};
     return ScoreVersionRange;
 }
 
@@ -186,7 +186,7 @@ ToString(const ies::IntegralRangeList<std::size_t> &availableVersions)
     auto isFirst = true;
     for (auto &range : ranges)
     {
-        if (!isFirst) s += ", ";
+        if (!isFirst) { s += ", "; }
 
         if (range.size()==1)
         {
@@ -216,7 +216,7 @@ ToRangeList(const std::string &availableVersions)
     std::size_t start = 0;
     std::size_t end = 0;
 
-    std::string_view view{availableVersions};
+    const std::string_view view{availableVersions};
 
     while ((start = view.find_first_not_of(", ", end))!=std::string_view::npos)
     {

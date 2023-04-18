@@ -10,11 +10,8 @@
 #include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Core/Core.hpp"
-#include "score2dx/Csv/Csv.hpp"
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/PlayerScore.hpp"
-
-namespace s2Time = ies::Time;
 
 void
 PrintHelp()

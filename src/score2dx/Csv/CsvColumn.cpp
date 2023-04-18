@@ -241,7 +241,7 @@ ParseCsvLine(std::string_view csvLine)
 }
 
 void
-Print(const CsvMusic csvMusic)
+Print(const CsvMusic& csvMusic)
 {
     std::cout << "CsvMusic:\n"
               << "VersionIndex: " << csvMusic.CsvVersionIndex << "\n"
@@ -253,7 +253,7 @@ Print(const CsvMusic csvMusic)
     for (auto difficulty : DifficultySmartEnum::ToRange())
     {
         auto difficultyIndex = static_cast<std::size_t>(difficulty);
-        auto &chartScore = csvMusic.ChartScores[difficultyIndex];
+        auto& chartScore = csvMusic.ChartScores[difficultyIndex];
         std::cout << "[" << ToString(difficulty) << "]: " << ToString(chartScore) << "\n";
     }
 }

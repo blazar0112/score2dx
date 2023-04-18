@@ -29,7 +29,7 @@ TEST(Music, AddAvailability)
 {
     Music music{1000, "BRILLIANT 2U"};
     //'' modified to test more case
-    std::map<std::string, ChartInfo> dphChartInfos
+    const std::map<std::string, ChartInfo> dphChartInfos
     {
         {"01-04", {4, 363}},
         {"05, 10", {6, 363}},

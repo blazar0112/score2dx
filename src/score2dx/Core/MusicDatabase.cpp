@@ -115,8 +115,8 @@ MusicDatabase()
                     std::map<std::string, ChartInfo> chartInfoByChartVersions;
                     for (auto &[chartVersions, dbChartInfo] : diffInfo.items())
                     {
-                        int level = dbChartInfo["level"];
-                        int note = dbChartInfo["note"];
+                        const int level = dbChartInfo["level"];
+                        const int note = dbChartInfo["note"];
                         chartInfoByChartVersions.emplace(chartVersions, ChartInfo{level, note});
                     }
 
@@ -132,7 +132,7 @@ MusicDatabase()
             }
         }
 
-        std::string countString = mDatabase.at("#meta").at("count");
+        const std::string countString = mDatabase.at("#meta").at("count");
         auto count = std::stoull(countString);
         auto latestVersionIndex = count/1000;
         auto latestVersionCount = count%1000;
@@ -540,7 +540,7 @@ const
 
                         for (auto i : IndexRange{0, versionRange.size()})
                         {
-                            if (i==2) continue;
+                            if (i==2) { continue; }
                             if (!std::isdigit(static_cast<unsigned char>(versionRange[i])))
                             {
                                 reason = "!isdigit";
