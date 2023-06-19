@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "30081",
-        "lastUpdateEvent": "「ARENAモード」第3回オンラインバトル 2023-04-20",
-        "lastUpdateNewMusic": "栄冠のカンパネラ",
+        "count": "30083",
+        "lastUpdateEvent": "「ARENAモード」第4回オンラインバトル 2023-06-01",
+        "lastUpdateNewMusic": "Somnidiscotheque",
         "score2dx": "3.0.0",
         "version": "30"
     },
@@ -38798,6 +38798,12 @@
                             "note": 965
                         }
                     },
+                    "DPL": {
+                        "30": {
+                            "level": 12,
+                            "note": 1560
+                        }
+                    },
                     "DPN": {
                         "15-30": {
                             "level": 6,
@@ -38823,7 +38829,7 @@
                         }
                     },
                     "SPL": {
-                        "cs15": {
+                        "30": {
                             "level": 12,
                             "note": 1518
                         }
@@ -60423,6 +60429,12 @@
                             "note": 686
                         }
                     },
+                    "DPL": {
+                        "30": {
+                            "level": 11,
+                            "note": 1571
+                        }
+                    },
                     "DPN": {
                         "21-30": {
                             "level": 3,
@@ -60439,6 +60451,12 @@
                         "21-30": {
                             "level": 7,
                             "note": 686
+                        }
+                    },
+                    "SPL": {
+                        "30": {
+                            "level": 11,
+                            "note": 1560
                         }
                     },
                     "SPN": {
@@ -105778,7 +105796,7 @@
                     "SPN": {
                         "30": {
                             "level": 5,
-                            "note": 558
+                            "note": 550
                         }
                     }
                 },
@@ -108744,10 +108762,34 @@
                             "note": 2137
                         }
                     },
+                    "DPH": {
+                        "30": {
+                            "level": 11,
+                            "note": 1364
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 7,
+                            "note": 777
+                        }
+                    },
                     "SPA": {
                         "30": {
                             "level": 12,
                             "note": 2216
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 11,
+                            "note": 1332
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 7,
+                            "note": 753
                         }
                     }
                 },
@@ -109157,6 +109199,82 @@
                     },
                     "genre": {
                         "latest": "TRIUMPHAL MARCH"
+                    },
+                    "version": 30
+                }
+            },
+            "BIGWAVERS": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1777
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 1042
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 599
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1796
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 963
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 587
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BlackY"
+                    },
+                    "genre": {
+                        "latest": "EMOTIONAL HARDCORE SUMMERS"
+                    },
+                    "version": 30
+                }
+            },
+            "Somnidiscotheque": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1788
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1776
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "夢路 歩"
+                    },
+                    "genre": {
+                        "latest": "SUBCONSCIOUS FRAGMENT"
                     },
                     "version": 30
                 }
@@ -111484,7 +111602,9 @@
             "STRAIGHT TO THE STARS",
             "glacia",
             "Chaotoxin",
-            "栄冠のカンパネラ"
+            "栄冠のカンパネラ",
+            "BIGWAVERS",
+            "Somnidiscotheque"
         ]
     }
 }
