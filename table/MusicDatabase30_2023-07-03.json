@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "30083",
-        "lastUpdateEvent": "「ARENAモード」第4回オンラインバトル 2023-06-01",
-        "lastUpdateNewMusic": "Somnidiscotheque",
+        "count": "30089",
+        "lastUpdateEvent": "「RESIDENT PARTY」IIDX SUMMER PARTY 2023-06-22",
+        "lastUpdateNewMusic": "Xerulean",
         "score2dx": "3.0.0",
         "version": "30"
     },
@@ -109278,6 +109278,306 @@
                     },
                     "version": 30
                 }
+            },
+            "■□模様": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1380
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 809
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 527
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1337
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 782
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 495
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"PHQUASE\" feat.紫崎 雪"
+                    },
+                    "genre": {
+                        "latest": "ALTERNATIVE SHIBUYA E-POP"
+                    },
+                    "version": 30
+                }
+            },
+            "7 Colors": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 997
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 7,
+                            "note": 597
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 318
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 970
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 7,
+                            "note": 607
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 318
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "kors k feat.吉河順央"
+                    },
+                    "genre": {
+                        "latest": "PRISM EURO"
+                    },
+                    "version": 30
+                }
+            },
+            "Ambush Ace": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1477
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 959
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 528
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1492
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 1075
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 542
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Xecon"
+                    },
+                    "genre": {
+                        "latest": "ELECTRO FUSION"
+                    },
+                    "version": 30
+                }
+            },
+            "神のシナリオ": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1630
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 904
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 589
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1652
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 882
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 593
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "AJURIKA"
+                    },
+                    "genre": {
+                        "latest": "MELODIC DUBSTEP"
+                    },
+                    "version": 30
+                }
+            },
+            "ぞうしょく！？マイデンティティ": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1787
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1165
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 645
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1851
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1177
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 645
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "DJ SHARPNEL feat.みらい"
+                    },
+                    "genre": {
+                        "latest": "バーチャルマルチコア"
+                    },
+                    "version": 30
+                }
+            },
+            "Xerulean": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1804
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1043
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 7,
+                            "note": 709
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1802
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1049
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 7,
+                            "note": 690
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"ZAQUVA\""
+                    },
+                    "genre": {
+                        "latest": "HAPPY HARDCORE"
+                    },
+                    "version": 30
+                }
             }
         }
     },
@@ -111604,7 +111904,13 @@
             "Chaotoxin",
             "栄冠のカンパネラ",
             "BIGWAVERS",
-            "Somnidiscotheque"
+            "Somnidiscotheque",
+            "■□模様",
+            "7 Colors",
+            "Ambush Ace",
+            "神のシナリオ",
+            "ぞうしょく！？マイデンティティ",
+            "Xerulean"
         ]
     }
 }
