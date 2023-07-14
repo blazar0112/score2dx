@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "30089",
-        "lastUpdateEvent": "「RESIDENT PARTY」IIDX SUMMER PARTY 2023-06-22",
-        "lastUpdateNewMusic": "Xerulean",
+        "count": "30090",
+        "lastUpdateEvent": "「WORLD TOURISM」BPL S3 TOURISM 2023-07-13",
+        "lastUpdateNewMusic": "FLARE -炎舞- ft.Nana Takahashi",
         "score2dx": "3.0.0",
         "version": "30"
     },
@@ -14651,8 +14651,14 @@
                 }
             },
             "MAX 300": {
-                "availableVersions": "07-26",
+                "availableVersions": "07-26, 30",
                 "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1496
+                        }
+                    },
                     "DPH": {
                         "07-09": {
                             "level": 7,
@@ -14671,12 +14677,26 @@
                         "12-26": {
                             "level": 10,
                             "note": 982
+                        },
+                        "30": {
+                            "level": 10,
+                            "note": 982
                         }
                     },
                     "DPN": {
                         "07-26": {
                             "level": 6,
                             "note": 566
+                        },
+                        "30": {
+                            "level": 7,
+                            "note": 566
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1429
                         }
                     },
                     "SPB": {
@@ -14703,6 +14723,10 @@
                         "12-26": {
                             "level": 10,
                             "note": 982
+                        },
+                        "30": {
+                            "level": 10,
+                            "note": 982
                         }
                     },
                     "SPN": {
@@ -14717,6 +14741,10 @@
                         "13-26": {
                             "level": 8,
                             "note": 571
+                        },
+                        "30": {
+                            "level": 7,
+                            "note": 570
                         }
                     }
                 },
@@ -72192,6 +72220,12 @@
                             "note": 923
                         }
                     },
+                    "DPL": {
+                        "30": {
+                            "level": 12,
+                            "note": 2139
+                        }
+                    },
                     "DPN": {
                         "23-30": {
                             "level": 2,
@@ -72208,6 +72242,12 @@
                         "23-30": {
                             "level": 8,
                             "note": 883
+                        }
+                    },
+                    "SPL": {
+                        "30": {
+                            "level": 12,
+                            "note": 2115
                         }
                     },
                     "SPN": {
@@ -109578,6 +109618,56 @@
                     },
                     "version": 30
                 }
+            },
+            "FLARE -炎舞- ft.Nana Takahashi": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1337
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 970
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 575
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1455
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 961
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 573
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"dj TAKA\" Vs SOUND HOLIC"
+                    },
+                    "genre": {
+                        "latest": "BPL S3 THEME"
+                    },
+                    "version": 30
+                }
             }
         }
     },
@@ -111910,7 +112000,8 @@
             "Ambush Ace",
             "神のシナリオ",
             "ぞうしょく！？マイデンティティ",
-            "Xerulean"
+            "Xerulean",
+            "FLARE -炎舞- ft.Nana Takahashi"
         ]
     }
 }
