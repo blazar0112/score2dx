@@ -32,4 +32,5 @@ set_property(GLOBAL PROPERTY
     PROP_TEST_SOURCES
     ${TEST_SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/ScoreLevelTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/VersionScoreTableTest.cpp
 )

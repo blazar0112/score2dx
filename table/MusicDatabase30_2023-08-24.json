@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "30090",
-        "lastUpdateEvent": "「WORLD TOURISM」BPL S3 TOURISM 2023-07-13",
-        "lastUpdateNewMusic": "FLARE -炎舞- ft.Nana Takahashi",
+        "count": "30097",
+        "lastUpdateEvent": "「BEMANI PRO LEAGUE -SEASON3- Triple Tribe」2023-08-17",
+        "lastUpdateNewMusic": "suspicions",
         "score2dx": "3.0.0",
         "version": "30"
     },
@@ -27658,6 +27658,12 @@
                             "note": 733
                         }
                     },
+                    "DPL": {
+                        "30": {
+                            "level": 11,
+                            "note": 1647
+                        }
+                    },
                     "DPN": {
                         "12-30": {
                             "level": 7,
@@ -27677,7 +27683,7 @@
                         }
                     },
                     "SPL": {
-                        "cs16": {
+                        "30": {
                             "level": 11,
                             "note": 1637
                         }
@@ -59533,6 +59539,12 @@
                             "note": 839
                         }
                     },
+                    "DPL": {
+                        "30": {
+                            "level": 12,
+                            "note": 1621
+                        }
+                    },
                     "DPN": {
                         "21-30": {
                             "level": 5,
@@ -59549,6 +59561,12 @@
                         "21-30": {
                             "level": 8,
                             "note": 833
+                        }
+                    },
+                    "SPL": {
+                        "30": {
+                            "level": 12,
+                            "note": 1640
                         }
                     },
                     "SPN": {
@@ -109302,10 +109320,34 @@
                             "note": 1788
                         }
                     },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1038
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 682
+                        }
+                    },
                     "SPA": {
                         "30": {
                             "level": 12,
                             "note": 1776
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1053
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 680
                         }
                     }
                 },
@@ -109665,6 +109707,356 @@
                     },
                     "genre": {
                         "latest": "BPL S3 THEME"
+                    },
+                    "version": 30
+                }
+            },
+            "24h Endurance Race": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1915
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1160
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 634
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1743
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1096
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 504
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"Risk Junk\""
+                    },
+                    "genre": {
+                        "latest": "HARDCORE"
+                    },
+                    "version": 30
+                }
+            },
+            "パーフェクトイーター": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1541
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 1060
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 599
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1531
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 1057
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 591
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"PON\" feat.かなたん"
+                    },
+                    "genre": {
+                        "latest": "ROCK"
+                    },
+                    "version": 30
+                }
+            },
+            "Caldwell 99": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1338
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 961
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 541
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1293
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 975
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 530
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BlackY"
+                    },
+                    "genre": {
+                        "latest": "STARRY BASS HOUSE"
+                    },
+                    "version": 30
+                }
+            },
+            "チェイスチェイスジョーカーズのうた (オニスタイルリミックス)": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1386
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 923
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 502
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1427
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 876
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 498
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "ちよこ & 一ノ瀬 月琉 Prod. by RoughSketch & NUE"
+                    },
+                    "genre": {
+                        "latest": "ウラシュダイカ"
+                    },
+                    "version": 30
+                }
+            },
+            "CODE -CRiMSON-": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1563
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 933
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 699
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1516
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 971
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 668
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Shiron"
+                    },
+                    "genre": {
+                        "latest": "NRG SCHRANZ"
+                    },
+                    "version": 30
+                }
+            },
+            "MAX 360": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1610
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1190
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 615
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1610
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1192
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 616
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"[x]\""
+                    },
+                    "genre": {
+                        "latest": "HARDCORE TECHNO"
+                    },
+                    "version": 30
+                }
+            },
+            "suspicions": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1914
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1224
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 666
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1908
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1174
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 609
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"猫叉Master VS dj TAKA\""
+                    },
+                    "genre": {
+                        "latest": "JAZZ CORE"
                     },
                     "version": 30
                 }
@@ -112001,7 +112393,14 @@
             "神のシナリオ",
             "ぞうしょく！？マイデンティティ",
             "Xerulean",
-            "FLARE -炎舞- ft.Nana Takahashi"
+            "FLARE -炎舞- ft.Nana Takahashi",
+            "24h Endurance Race",
+            "パーフェクトイーター",
+            "Caldwell 99",
+            "チェイスチェイスジョーカーズのうた (オニスタイルリミックス)",
+            "CODE -CRiMSON-",
+            "MAX 360",
+            "suspicions"
         ]
     }
 }
