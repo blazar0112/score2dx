@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "30097",
-        "lastUpdateEvent": "「BEMANI PRO LEAGUE -SEASON3- Triple Tribe」2023-08-17",
-        "lastUpdateNewMusic": "suspicions",
+        "count": "30103",
+        "lastUpdateEvent": "「RESIDENT PARTY AUTUMN MUSIC PARTY」2023-09-07",
+        "lastUpdateNewMusic": "VØID",
         "score2dx": "3.0.0",
         "version": "30"
     },
@@ -110060,6 +110060,306 @@
                     },
                     "version": 30
                 }
+            },
+            "Dreaming Dream": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1118
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 7,
+                            "note": 705
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 426
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1143
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 7,
+                            "note": 719
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 423
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "MK feat. 柴咲ほたる"
+                    },
+                    "genre": {
+                        "latest": "DANCE POP"
+                    },
+                    "version": 30
+                }
+            },
+            "少年リップルズ": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1284
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 970
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 482
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1242
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 903
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 451
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "常盤ゆう"
+                    },
+                    "genre": {
+                        "latest": "EMOCTRO"
+                    },
+                    "version": 30
+                }
+            },
+            "Swing My Wonderland": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1500
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 1147
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 662
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1570
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 1178
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 662
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "lapix"
+                    },
+                    "genre": {
+                        "latest": "ULTRA JAZZFUNKTION"
+                    },
+                    "version": 30
+                }
+            },
+            "#CMFLG": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1562
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1152
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 625
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1748
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1186
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 601
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Qlarabelle"
+                    },
+                    "genre": {
+                        "latest": "HARD TRIBAL"
+                    },
+                    "version": 30
+                }
+            },
+            "Always We Trust In You": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1692
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 925
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 630
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1625
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 951
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 607
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "nora2r"
+                    },
+                    "genre": {
+                        "latest": "EMOTIONAL HAPPY EUPHORIA"
+                    },
+                    "version": 30
+                }
+            },
+            "VØID": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1709
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 991
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 7,
+                            "note": 685
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1712
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1028
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 7,
+                            "note": 684
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"Darker Vs. JUSTICE\""
+                    },
+                    "genre": {
+                        "latest": "EXTREME EXPERIMENTAL"
+                    },
+                    "version": 30
+                }
             }
         }
     },
@@ -112400,7 +112700,13 @@
             "チェイスチェイスジョーカーズのうた (オニスタイルリミックス)",
             "CODE -CRiMSON-",
             "MAX 360",
-            "suspicions"
+            "suspicions",
+            "Dreaming Dream",
+            "少年リップルズ",
+            "Swing My Wonderland",
+            "#CMFLG",
+            "Always We Trust In You",
+            "VØID"
         ]
     }
 }
