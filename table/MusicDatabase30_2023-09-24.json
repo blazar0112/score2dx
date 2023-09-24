@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "30103",
-        "lastUpdateEvent": "「RESIDENT PARTY AUTUMN MUSIC PARTY」2023-09-07",
-        "lastUpdateNewMusic": "VØID",
+        "count": "30108",
+        "lastUpdateEvent": "「LiveAct TOURISM 2」2023-09-21",
+        "lastUpdateNewMusic": "惑星☆ロリポップ",
         "score2dx": "3.0.0",
         "version": "30"
     },
@@ -110360,6 +110360,256 @@
                     },
                     "version": 30
                 }
+            },
+            "異心前進♪ぴょんぴょんぴょん ": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1269
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 833
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 555
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1260
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 847
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 560
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "天土"
+                    },
+                    "genre": {
+                        "latest": "EUROBEAT"
+                    },
+                    "version": 30
+                }
+            },
+            "mathematical good-bye": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1407
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 911
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 576
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1427
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 925
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 589
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "三代目 ADULTIC TEACHERS feat. BEMANI Sound Team \"スコーピオン志村\""
+                    },
+                    "genre": {
+                        "latest": "ハードコア"
+                    },
+                    "version": 30
+                }
+            },
+            "Stylus": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 12,
+                            "note": 1741
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 10,
+                            "note": 1019
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 648
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1440
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 9,
+                            "note": 993
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 6,
+                            "note": 627
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"HuΣeR\""
+                    },
+                    "genre": {
+                        "latest": "STYLISH TECHNO"
+                    },
+                    "version": 30
+                }
+            },
+            "Shamshir": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1129
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 749
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 552
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 10,
+                            "note": 1132
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 751
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 5,
+                            "note": 557
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Blacklolita"
+                    },
+                    "genre": {
+                        "latest": "G-HOUSE"
+                    },
+                    "version": 30
+                }
+            },
+            "惑星☆ロリポップ": {
+                "availableVersions": "30",
+                "difficulty": {
+                    "DPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1459
+                        }
+                    },
+                    "DPH": {
+                        "30": {
+                            "level": 7,
+                            "note": 790
+                        }
+                    },
+                    "DPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 413
+                        }
+                    },
+                    "SPA": {
+                        "30": {
+                            "level": 11,
+                            "note": 1425
+                        }
+                    },
+                    "SPH": {
+                        "30": {
+                            "level": 8,
+                            "note": 806
+                        }
+                    },
+                    "SPN": {
+                        "30": {
+                            "level": 4,
+                            "note": 397
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "SOUND HOLIC feat. Nana Takahashi"
+                    },
+                    "genre": {
+                        "latest": "ANIMTRIBE POP"
+                    },
+                    "version": 30
+                }
             }
         }
     },
@@ -112706,7 +112956,12 @@
             "Swing My Wonderland",
             "#CMFLG",
             "Always We Trust In You",
-            "VØID"
+            "VØID",
+            "異心前進♪ぴょんぴょんぴょん ",
+            "mathematical good-bye",
+            "Stylus",
+            "Shamshir",
+            "惑星☆ロリポップ"
         ]
     }
 }
