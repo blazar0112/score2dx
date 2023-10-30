@@ -1,5 +1,12 @@
 # Changelog of score2dx
 
+- 4.3.0 [Ongoing]:
+    - Upgrade DB to 31000.
+    - Adjust clang-tidy config.
+
+- 4.2.0 [2023-10-30]:
+    - Update IIDX 30 final DB and prepare to upgrade to 31.
+
 - 4.1.0 [2022-12-12]:
     - Update default DB to count 30058 [2022-12-11].
     - Fix CareedRecord incorrect set other best when best at active version.

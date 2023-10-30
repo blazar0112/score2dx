@@ -10,6 +10,7 @@ namespace score2dx
 {
 
 inline constexpr int MaxLevel = 12;
+inline constexpr std::size_t MusicIdPerVersion = 1000;
 
 IES_SMART_ENUM(PlayStyle,
     SinglePlay,

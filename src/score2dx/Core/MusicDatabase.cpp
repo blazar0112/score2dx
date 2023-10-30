@@ -752,6 +752,7 @@ UpgradeMusicDatabase(const std::string &currentFilename,
 
     Json nextDb;
     nextDb["#meta"] = db["#meta"];
+    nextDb["#meta"]["count"] = ToMusicIdString(ToMusicId(nextVersion, 0));
     nextDb["#meta"]["version"] = nextVersionStr;
 
     nextDb["csMusicTable"] = db["csMusicTable"];
