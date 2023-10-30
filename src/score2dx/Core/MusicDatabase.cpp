@@ -42,7 +42,7 @@ MusicDatabase()
         auto begin = s2Time::Now();
 
         {
-            std::string usingDbFilename{"table/usingDB.txt"};
+            const std::string usingDbFilename{"table/usingDB.txt"};
             std::ifstream usingDbFile{usingDbFilename};
             if (usingDbFile)
             {
@@ -87,19 +87,19 @@ MusicDatabase()
             std::size_t musicIndex = 0;
             for (auto &item : dbVersionMusics.items())
             {
-                auto &title = item.value();
+                auto& title = item.value();
                 auto musicId = ToMusicId(versionIndex, musicIndex);
                 verMusicTable.emplace_back(musicId, title);
-                auto &music = verMusicTable.back();
+                auto& music = verMusicTable.back();
 
-                auto findDbMusic = FindDbMusic(versionIndex, title);
+                auto* findDbMusic = FindDbMusic(versionIndex, title);
                 if (!findDbMusic)
                 {
                     std::cout << "version ["+ToVersionString(versionIndex)+"] title ["+std::string{title}+"].\n";
                     throw std::runtime_error("cannot find music in main table and cs table.");
                 }
 
-                auto &dbMusic = *findDbMusic;
+                auto& dbMusic = *findDbMusic;
 
                 music.SetMusicInfoField(MusicInfoField::Genre, dbMusic["info"]["genre"]["latest"]);
                 music.SetMusicInfoField(MusicInfoField::Artist, dbMusic["info"]["artist"]["latest"]);
@@ -115,8 +115,8 @@ MusicDatabase()
                     std::map<std::string, ChartInfo> chartInfoByChartVersions;
                     for (auto &[chartVersions, dbChartInfo] : diffInfo.items())
                     {
-                        int level = dbChartInfo["level"];
-                        int note = dbChartInfo["note"];
+                        const int level = dbChartInfo["level"];
+                        const int note = dbChartInfo["note"];
                         chartInfoByChartVersions.emplace(chartVersions, ChartInfo{level, note});
                     }
 
@@ -132,7 +132,7 @@ MusicDatabase()
             }
         }
 
-        std::string countString = mDatabase.at("#meta").at("count");
+        const std::string countString = mDatabase.at("#meta").at("count");
         auto count = std::stoull(countString);
         auto latestVersionIndex = count/1000;
         auto latestVersionCount = count%1000;
@@ -540,7 +540,7 @@ const
 
                         for (auto i : IndexRange{0, versionRange.size()})
                         {
-                            if (i==2) continue;
+                            if (i==2) { continue; }
                             if (!std::isdigit(static_cast<unsigned char>(versionRange[i])))
                             {
                                 reason = "!isdigit";

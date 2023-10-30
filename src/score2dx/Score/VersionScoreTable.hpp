@@ -6,16 +6,17 @@
 #include <vector>
 
 #include "score2dx/Iidx/Definition.hpp"
+#include "score2dx/Iidx/Music.hpp"
 #include "score2dx/Score/MusicScore.hpp"
 
 namespace score2dx
 {
 
-//! @brief Manage a music's MusicScore by version.
+//! @brief Manage a Music's MusicScore by version.
 class VersionScoreTable
 {
 public:
-        explicit VersionScoreTable(std::size_t musicId);
+        explicit VersionScoreTable(const Music& music);
 
     //! @brief Add MusicScore from sourceVersion.
     //! @note Because it's possible to play older version before inherit data.
@@ -28,6 +29,7 @@ public:
         AddMusicScore(std::size_t scoreVersionIndex,
                       const MusicScore &musicScore);
 
+/*
     //! @brief Add ChartScore from sourceVersion.
     //! @note Will adjust MusicScore datetime with same rule described in AddMusicScore.
         void
@@ -36,6 +38,10 @@ public:
                       PlayStyle playStyle,
                       Difficulty difficulty,
                       const ChartScore &chartScore);
+*/
+
+        void
+        Compile();
 
     //! @brief Get all music score in version by timeline.
     //! @note MusicScore datetime may adjust to version end if exceeds version end.
@@ -51,8 +57,24 @@ public:
                           Difficulty difficulty)
         const;
 
+    //! @brief Check inconsistency score in each version (does not propagate) and remove inconsistent or redundant music score.
+    //! @note Because how Export is written, there maybe MusicScore only store a single ChartScore.
+    //! This function propagate ChartScore inside a version, cross version clear type will propagate later.
+    //! e.g.     N H A
+    //! t1         c1
+    //! t2           c2
+    //! t3         c3
+    //! will be modified to like CSV updates
+    //! t1         c1
+    //! t2         c1c2
+    //! t3         c3c2
+        void
+        CleanupInVersionScores();
+
 private:
+    const Music& mMusic;
     std::size_t mMusicId;
+
     //! @brief Array of {Index=PlayStyle, Vector of {Index=ScoreVersionIndex, Map of {OriginDateTime, MusicScore}}}.
     std::array<std::vector<std::map<std::string, MusicScore>>, PlayStyleSmartEnum::Size()> mScoreTimeLineTable;
 };

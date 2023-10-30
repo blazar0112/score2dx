@@ -73,7 +73,7 @@ Csv(const std::string &csvPath,
     {
         auto path = fs::canonical(csvPath).lexically_normal();
         mPath = path.string();
-        if (verbose) std::cout << "Reading CSV file: [" << mPath << "].\n";
+        if (verbose) { std::cout << "Reading CSV file: [" << mPath << "].\n"; }
 
         mFilename = path.filename().string();
         auto [isValid, invalidReason] = IsValidCsvFilename(mFilename);
@@ -84,14 +84,14 @@ Csv(const std::string &csvPath,
 
         mIidxId = mFilename.substr(0, 9);
 
-        if (verbose) std::cout << "IIDX ID [" << mIidxId << "].\n";
+        if (verbose) { std::cout << "IIDX ID [" << mIidxId << "].\n"; }
 
         if (mFilename[10]=='d')
         {
             mPlayStyle = PlayStyle::DoublePlay;
         }
 
-        if (verbose) std::cout << "PlayStyle [" << ToString(mPlayStyle) << "].\n";
+        if (verbose) { std::cout << "PlayStyle [" << ToString(mPlayStyle) << "].\n"; }
 
         //'' Map of {VersionIndex, MusicCount}.
         std::map<std::size_t, int> versionMusicCounts;
@@ -157,7 +157,7 @@ Csv(const std::string &csvPath,
 
                 auto csvMusic = ParseCsvLine(lineView);
 
-                auto dbTitlePtr = &csvMusic.Title;
+                auto* dbTitlePtr = &csvMusic.Title;
                 auto findMappedTitle = musicDatabase.FindCsvDbTitle(csvMusic.Title);
                 if (findMappedTitle)
                 {
@@ -242,7 +242,7 @@ Csv(const std::string &csvPath,
                 auto itPair = mMusicScores.emplace(
                     std::piecewise_construct,
                     std::forward_as_tuple(musicId),
-                    std::forward_as_tuple(musicId, mPlayStyle, csvMusic.PlayCount, dateTime)
+                    std::forward_as_tuple(musicId, mPlayStyle, csvMusic.PlayCount, dateTime, ScoreSource::OfficialCsv)
                 );
                 auto &musicScore = itPair.first->second;
 
@@ -262,7 +262,7 @@ Csv(const std::string &csvPath,
                     if (checkWithDatabase)
                     {
                         auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
-                        auto findChartInfo = musicDatabase.FindChartInfo(musicId, styleDifficulty, activeVersionIndex);
+                        auto* findChartInfo = musicDatabase.FindChartInfo(musicId, styleDifficulty, activeVersionIndex);
                         if (!findChartInfo)
                         {
                             std::cout << "[" << dbTitle << "] Cannot find chart info.\n";
@@ -282,7 +282,7 @@ Csv(const std::string &csvPath,
                     if (checkWithDatabase && chartScore.ExScore!=0)
                     {
                         auto styleDifficulty = ConvertToStyleDifficulty(mPlayStyle, difficulty);
-                        auto findChartInfo = musicDatabase.FindChartInfo(
+                        auto* findChartInfo = musicDatabase.FindChartInfo(
                             musicId,
                             styleDifficulty,
                             activeVersionIndex
@@ -377,7 +377,7 @@ Csv(const std::string &csvPath,
 
         mLastDateTime = maxDateTime;
 
-        if (verbose) std::cout << "DateTime [" << minDateTime << ", " << maxDateTime << "].\n";
+        if (verbose) { std::cout << "DateTime [" << minDateTime << ", " << maxDateTime << "].\n"; }
 
 //        for (auto &[timeName, nsCount] : profNsCounts)
 //        {

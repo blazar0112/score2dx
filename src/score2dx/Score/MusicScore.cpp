@@ -1,8 +1,7 @@
 #include "score2dx/Score/MusicScore.hpp"
 
 #include <iostream>
-
-#include "ies/StdUtil/Find.hxx"
+#include <numeric>
 
 namespace score2dx
 {
@@ -11,11 +10,13 @@ MusicScore::
 MusicScore(std::size_t musicId,
            PlayStyle playStyle,
            std::size_t playCount,
-           std::string dateTime)
-:   mMusicId(musicId),
-    mPlayStyle(playStyle),
-    mPlayCount(playCount),
-    mDateTime(std::move(dateTime))
+           std::string dateTime,
+           ScoreSource scoreSource)
+:   mMusicId(musicId)
+,   mPlayStyle(playStyle)
+,   mPlayCount(playCount)
+,   mDateTime(std::move(dateTime))
+,   mScoreSource(scoreSource)
 {
 }
 
@@ -110,6 +111,7 @@ ChartScore*
 MusicScore::
 GetChartScore(Difficulty difficulty)
 {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
     return const_cast<ChartScore*>(std::as_const(*this).GetChartScore(difficulty));
 }
 
@@ -146,6 +148,21 @@ const
                     << std::to_string(chartScore->ExScore)
                     << "\n";
     }
+}
+
+std::size_t
+MusicScore::
+GetEnableCount()
+const
+{
+    return  std::accumulate(
+                mEnables.begin(), mEnables.end(), 0u,
+                [](std::size_t count, bool enable)
+                {
+                    if (enable) { count +=1; }
+                    return count;
+                }
+            );
 }
 
 }

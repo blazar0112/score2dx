@@ -13,7 +13,7 @@ class ScopeProfiler
 {
 public:
         ScopeProfiler(std::string timeName)
-        :   mTimeName(timeName)
+        :   mTimeName(std::move(timeName))
         {
             static_assert(Type::IsDurationV<T>, "type can only be duration");
             mBegin = ies::Time::Now();

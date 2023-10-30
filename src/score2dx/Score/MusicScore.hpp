@@ -7,6 +7,7 @@
 
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Score/ChartScore.hpp"
+#include "score2dx/Score/ScoreSource.hpp"
 
 namespace score2dx
 {
@@ -21,7 +22,8 @@ public:
         MusicScore(std::size_t musicId,
                    PlayStyle playStyle,
                    std::size_t playCount,
-                   std::string dateTime);
+                   std::string dateTime,
+                   ScoreSource scoreSource);
 
     //! @brief MusicId = VersionIndex*1000+{MusicIndex in version music list}.
     //! e.g. "Elisha"'s VersionIndex is 17, MusicIndex is 0, MusicId is 17000.
@@ -78,6 +80,10 @@ public:
         Print()
         const;
 
+        std::size_t
+        GetEnableCount()
+        const;
+
 private:
     //! @brief MusicId = VersionIndex*1000+{MusicIndex in version music list}.
     //! e.g. "Elisha"'s VersionIndex is 17, MusicIndex is 0, MusicId is 17000.
@@ -89,6 +95,8 @@ private:
 
     //! @brief DateTime must in format of "YYYY-MM-DD HH:MM"  e.g. "2020-08-22 18:51".
     std::string mDateTime;
+
+    ScoreSource mScoreSource{ScoreSource::Unknown};
 
     std::array<ChartScore, DifficultySmartEnum::Size()> mChartScores;
     std::array<bool, DifficultySmartEnum::Size()> mEnables{};

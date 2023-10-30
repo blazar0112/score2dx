@@ -131,7 +131,7 @@ public:
 private:
     const MusicDatabase &mMusicDatabase;
     //! @brief Current active version, default to latest version in music database.
-    std::size_t mActiveVersionIndex;
+    std::size_t mActiveVersionIndex{0};
 
     //! @brief Find Status of ChartScore at given time, consider active version, version change, availibilty.
     //! Not found if:

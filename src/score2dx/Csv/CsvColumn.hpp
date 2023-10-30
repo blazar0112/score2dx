@@ -63,6 +63,6 @@ CsvMusic
 ParseCsvLine(std::string_view csvLine);
 
 void
-Print(const CsvMusic csvMusic);
+Print(const CsvMusic& csvMusic);
 
 }

@@ -26,15 +26,20 @@ public:
         void
         AddDifficulty(std::size_t musicId,
                       StyleDifficulty styleDifficulty,
-                      const ChartInfo &chartInfo);
+                      const ChartInfo& chartInfo);
 
-        const std::set<std::size_t> &
+        const std::set<std::size_t>&
         GetChartIdList()
         const;
 
     //! @brief Get chart id list which level={level}.
-        const std::set<std::size_t> &
+        const std::set<std::size_t>&
         GetChartIdList(int level)
+        const;
+
+        const std::set<Difficulty>&
+        GetAvailableCharts(std::size_t musicId,
+                           PlayStyle playStyle)
         const;
 
 private:
@@ -46,6 +51,9 @@ private:
     //! @brief Array of {Index=Level, ChartIdList}.
     //! @note Level = 0 is unused.
     std::array<std::set<std::size_t>, MaxLevel+1> mChartIdListByLevel;
+
+    //! @brief Map of {MusicId, Array{Index=PlayStyle, AvailableDifficulties}}.
+    std::map<std::size_t, std::array<std::set<Difficulty>, PlayStyleSmartEnum::Size()>> mMusicAvailableCharts;
 };
 
 }

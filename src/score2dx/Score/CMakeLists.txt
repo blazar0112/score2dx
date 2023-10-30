@@ -23,6 +23,7 @@ set_property(GLOBAL PROPERTY
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicScore.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/PlayerScore.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ScoreLevel.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ScoreSource.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/VersionScoreTable.hpp
 )
 
@@ -31,4 +32,5 @@ set_property(GLOBAL PROPERTY
     PROP_TEST_SOURCES
     ${TEST_SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/ScoreLevelTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/VersionScoreTableTest.cpp
 )

@@ -1,17 +1,14 @@
 #include "score2dx/Score/ScoreLevel.hpp"
 
+#include <cmath>
+
 #include <algorithm>
 #include <iostream>
 #include <set>
 #include <stdexcept>
 
 #include "ies/Common/IntegralRangeUsing.hpp"
-#include "ies/StdUtil/Find.hxx"
-#include "ies/StdUtil/FormatString.hxx"
 #include "ies/StdUtil/ReverseEqualRange.hxx"
-#include "ies/Time/TimeUtilFormat.hxx"
-
-namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -81,7 +78,7 @@ FindScoreLevelDiff(int note, int exScore)
 
     auto maxScore = note*2;
     if (exScore<0) exScore = 0;
-    if (exScore>maxScore) exScore = maxScore;
+    if (exScore>maxScore) { exScore = maxScore; }
 
     if (exScore==maxScore)
     {
