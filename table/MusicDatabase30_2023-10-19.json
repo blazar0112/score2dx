@@ -1,7 +1,7 @@
 {
     "#meta": {
         "count": "30108",
-        "lastUpdateEvent": "「LiveAct TOURISM 2」2023-09-21",
+        "lastUpdateEvent": "「ARENA 第7回」2023-09-28",
         "lastUpdateNewMusic": "惑星☆ロリポップ",
         "score2dx": "3.0.0",
         "version": "30"
@@ -47430,6 +47430,12 @@
                             "note": 1183
                         }
                     },
+                    "DPL": {
+                        "30": {
+                            "level": 12,
+                            "note": 2156
+                        }
+                    },
                     "DPN": {
                         "18-30": {
                             "level": 7,
@@ -47446,6 +47452,12 @@
                         "18-30": {
                             "level": 10,
                             "note": 1165
+                        }
+                    },
+                    "SPL": {
+                        "30": {
+                            "level": 12,
+                            "note": 2135
                         }
                     },
                     "SPN": {
@@ -56720,28 +56732,28 @@
                 }
             },
             "Reflection Into the EDEN": {
-                "availableVersions": "20-23",
+                "availableVersions": "20-23, 30",
                 "difficulty": {
                     "DPA": {
-                        "20-23": {
+                        "20-23, 30": {
                             "level": 10,
                             "note": 1283
                         }
                     },
                     "DPH": {
-                        "20-23": {
+                        "20-23, 30": {
                             "level": 7,
                             "note": 806
                         }
                     },
                     "DPN": {
-                        "20-23": {
+                        "20-23, 30": {
                             "level": 5,
                             "note": 539
                         }
                     },
                     "SPA": {
-                        "20-23": {
+                        "20-23, 30": {
                             "level": 10,
                             "note": 1100
                         }
@@ -56753,13 +56765,13 @@
                         }
                     },
                     "SPH": {
-                        "20-23": {
+                        "20-23, 30": {
                             "level": 7,
                             "note": 740
                         }
                     },
                     "SPN": {
-                        "20-23": {
+                        "20-23, 30": {
                             "level": 4,
                             "note": 404
                         }
