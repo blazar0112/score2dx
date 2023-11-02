@@ -68,7 +68,8 @@ const std::vector<std::string> VersionNames
     "HEROIC VERSE",
     "BISTROVER",
     "CastHour",
-    "RESIDENT"
+    "RESIDENT",
+    "EPOLIS"
 };
 
 const std::string Official1stSubVersionName = "1st&substream";

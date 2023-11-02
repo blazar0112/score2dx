@@ -5,16 +5,17 @@
 #include <iostream>
 #include <string>
 
+#include "ies/Time/ScopeTimePrinter.hxx"
+
 #include "score2dx/Core/Core.hpp"
 #include "score2dx/Core/ChromeDriver.hpp"
-#include "score2dx/Core/ScopeProfiler.hxx"
 
 namespace fs = std::filesystem;
 
 bool
 TestMusicDatabase()
 {
-    score2dx::ScopeProfiler<std::chrono::milliseconds> profiler{"TestMusicDatabase"};
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"TestMusicDatabase"};
     try
     {
         score2dx::Core core;
@@ -31,7 +32,7 @@ TestMusicDatabase()
 bool
 TestLoadDirectory()
 {
-    score2dx::ScopeProfiler<std::chrono::milliseconds> profiler{"TestLoadDirectory"};
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"TestLoadDirectory"};
     try
     {
         score2dx::Core core;
@@ -53,7 +54,7 @@ TestLoadDirectory()
 bool
 TestChrome()
 {
-    score2dx::ScopeProfiler<std::chrono::milliseconds> profiler{"TestChrome"};
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"TestChrome"};
     try
     {
         //'' intended to use gui path in case forget update gui.
@@ -94,7 +95,7 @@ TestChrome()
 bool
 TestIst()
 {
-    score2dx::ScopeProfiler<std::chrono::seconds> profiler{"TestIst"};
+    ies::Time::ScopeTimePrinter<std::chrono::seconds> timePrinter{"TestIst"};
     try
     {
         score2dx::Core core;
@@ -132,7 +133,7 @@ TestIst()
 bool
 TestMeUser()
 {
-    score2dx::ScopeProfiler<std::chrono::milliseconds> profiler{"TestMeUser"};
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"TestMeUser"};
     try
     {
         score2dx::Core core;
@@ -156,7 +157,7 @@ TestMeUser()
 bool
 TestMeExport()
 {
-    score2dx::ScopeProfiler<std::chrono::seconds> profiler{"TestMeExport"};
+    ies::Time::ScopeTimePrinter<std::chrono::seconds> timePrinter{"TestMeExport"};
     try
     {
         score2dx::Core core;
@@ -180,7 +181,7 @@ main(int argc, char* argv[])
     (void)argc;
     (void)argv;
 
-    score2dx::ScopeProfiler<std::chrono::seconds> profiler{"regression"};
+    ies::Time::ScopeTimePrinter<std::chrono::seconds> timePrinter{"regression"};
 
     try
     {

@@ -24,7 +24,6 @@ set_property(GLOBAL PROPERTY
     ${CMAKE_CURRENT_SOURCE_DIR}/Core.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/JsonDefinition.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicDatabase.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/ScopeProfiler.hxx
 )
 
 get_property(TEST_SOURCES GLOBAL PROPERTY PROP_TEST_SOURCES)

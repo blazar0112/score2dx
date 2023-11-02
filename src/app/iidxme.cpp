@@ -6,6 +6,7 @@
 
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/Find.hxx"
+#include "ies/Time/ScopeTimePrinter.hxx"
 #include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Core/Core.hpp"
@@ -24,7 +25,8 @@ main(int argc, char* argv[])
 
     try
     {
-        auto begin = s2Time::Now();
+        ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"iidxme.exe"};
+
         auto* curl = curl_easy_init();
         auto* slist = curl_slist_append(nullptr, "Iidxme-Api-Key: 295d293051a911ecbf630242ac130002");
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist);
@@ -139,7 +141,6 @@ main(int argc, char* argv[])
         curl_easy_cleanup(curl);
 
         std::cout << std::endl;
-        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "iidxme.exe");
         return 0;
     }
     catch (const std::exception &e)

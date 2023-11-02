@@ -4,6 +4,7 @@
 
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/Find.hxx"
+#include "ies/Time/ScopeTimePrinter.hxx"
 #include "ies/Time/TimeUtilFormat.hxx"
 
 #include "score2dx/Core/Core.hpp"
@@ -13,8 +14,6 @@
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/PlayerScore.hpp"
 
-namespace s2Time = ies::Time;
-
 int
 main(int argc, char* argv[])
 {
@@ -23,7 +22,7 @@ main(int argc, char* argv[])
 
     try
     {
-        auto begin = s2Time::Now();
+        ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"experiment.exe"};
 
         score2dx::Core core;
 
@@ -87,7 +86,6 @@ main(int argc, char* argv[])
 
         //core.GetMusicDatabase().CheckValidity();
 
-        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "experiment.exe");
         return 0;
     }
     catch (const std::exception &e)

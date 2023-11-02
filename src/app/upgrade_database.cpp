@@ -14,7 +14,7 @@ main(int argc, char* argv[])
 
     try
     {
-        ies::Time::ScopeTimePrinter<std::chrono::milliseconds> mainTimePrinter{"experiment.exe"};
+        ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"experiment.exe"};
 
         score2dx::UpgradeMusicDatabase(
             R"(E:\projects\score2dx\table\MusicDatabase30_2023-10-19.json)",

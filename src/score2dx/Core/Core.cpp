@@ -10,14 +10,12 @@
 
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/Find.hxx"
-#include "ies/StdUtil/FormatString.hxx"
+#include "ies/Time/ScopeTimePrinter.hxx"
 #include "ies/Time/TimeUtilFormat.hxx"
 
-#include "score2dx/Core/ScopeProfiler.hxx"
 #include "score2dx/Iidx/Version.hpp"
 
 namespace fs = std::filesystem;
-namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -57,6 +55,7 @@ LoadDirectory(std::string_view directory,
               bool verbose,
               bool checkWithDatabase)
 {
+    fmt::print("Core::LoadDirectory(): load from [{}]\n", directory);
     if (!fs::exists(directory)||!fs::is_directory(directory))
     {
         if (verbose)
@@ -86,7 +85,7 @@ LoadDirectory(std::string_view directory,
 
     for (auto &entry : fs::directory_iterator{directory})
     {
-        ScopeProfiler<std::chrono::milliseconds> profiler{"LoadDirectory: file"};
+        ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"LoadDirectory: file"};
 
         if (entry.is_regular_file()&&entry.path().extension()==".csv")
         {
@@ -148,7 +147,7 @@ LoadDirectory(std::string_view directory,
     }
 
     {
-        ScopeProfiler<std::chrono::milliseconds> profiler{"Propagate"};
+        ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"Propagate"};
         playerScore.Propagate();
     }
 
@@ -331,7 +330,7 @@ Import(const std::string &requiredIidxId,
 {
     try
     {
-        auto begin = s2Time::Now();
+        ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"Import"};
 
         if (!fs::exists(exportedFilename)||fs::is_directory(exportedFilename))
         {
@@ -546,8 +545,6 @@ Import(const std::string &requiredIidxId,
                 }
             }
         }
-
-        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Import");
     }
     catch (const std::exception &e)
     {
@@ -686,7 +683,7 @@ std::string
 Core::
 AddIidxMeUser(const std::string &user)
 {
-    auto begin = s2Time::Now();
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"AddIidxMeUser"};
 
     if (auto findId = ies::Find(mIidxMeUserIdMap, user))
     {
@@ -737,8 +734,6 @@ AddIidxMeUser(const std::string &user)
         throw std::runtime_error("empty IidxMe found");
     }
 
-    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "AddIidxMeUser");
-
     std::cout << "IIDXME user ["+user+"] IIDX ID ["+iidxId+"].\n";
 
     mIidxMeUserIdMap[user] = iidxId;
@@ -750,7 +745,7 @@ void
 Core::
 ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
 {
-    auto begin = s2Time::Now();
+    ies::Time::ScopeTimePrinter<std::chrono::seconds> timePrinter{"ExportIidxMeData"};
     auto* curl = curl_easy_init();
     auto* slist = curl_slist_append(nullptr, "Iidxme-Api-Key: 295d293051a911ecbf630242ac130002");
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist);
@@ -801,7 +796,7 @@ ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
 
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
 
-            auto curlBegin = s2Time::Now();
+            auto curlBegin = ies::Time::Now();
             auto errorCode = curl_easy_perform(curl);
 
             if (errorCode!=CURLE_OK)
@@ -1045,8 +1040,8 @@ ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
                 ++noEntryCount;
             }
 
-            s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(curlBegin), iidxMeMusicIdString+" done.");
-            while (s2Time::CountNs(curlBegin)<200'000'000)
+            ies::Time::Print<std::chrono::milliseconds>(ies::Time::CountNs(curlBegin), iidxMeMusicIdString+" done.");
+            while (ies::Time::CountNs(curlBegin)<200'000'000)
             {
                 continue;
             }
@@ -1070,7 +1065,6 @@ ExportIidxMeData(const std::string &user, std::size_t endVersionIndex)
     }
 
     std::cout << std::endl;
-    s2Time::Print<std::chrono::seconds>(s2Time::CountNs(begin), "ExportIidxMeData");
 }
 
 void
@@ -1078,7 +1072,7 @@ Core::
 CheckIidxMeDataTable()
 const
 {
-    auto begin = s2Time::Now();
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"CheckIidxMeDataTable"};
     //std::string iidxMeDataTableFilename = R"(E:\project_document\score2dx\iidxme\iidxme_datatable.json)";
     const std::string iidxMeDataTableFilename = R"(E:\project_document\score2dx\iidxme\iidxme_datatable_delmitz.json)";
     std::cout << "iidxMeDataTableFilename = " << iidxMeDataTableFilename << "\n";
@@ -1361,8 +1355,6 @@ const
             }
         }
     }
-
-    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "CheckIidxMeDataTable");
 }
 
 void
@@ -1389,7 +1381,7 @@ AddCsvToPlayerScore(const std::string &iidxId,
                     PlayStyle playStyle,
                     const std::string &dateTime)
 {
-    ScopeProfiler<std::chrono::milliseconds> profiler{"AddCsvToPlayerScore"};
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"AddCsvToPlayerScore"};
 
     auto findPlayer = ies::Find(mPlayerCsvs, iidxId);
     if (!findPlayer)

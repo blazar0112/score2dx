@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "31000",
-        "lastUpdateEvent": "「ARENA 第7回」2023-09-28",
-        "lastUpdateNewMusic": "惑星☆ロリポップ",
+        "count": "31040",
+        "lastUpdateEvent": "「beatmania IIDX 31 EPOLIS」順次稼動開始 2023-10-18",
+        "lastUpdateNewMusic": "れとりば！",
         "score2dx": "3.0.0",
         "version": "31"
     },
@@ -110624,7 +110624,1948 @@
                 }
             }
         },
-        "31": {}
+        "31": {
+            "Aeterna": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1258
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 789
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 507
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1285
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 797
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 498
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "satella feat. Risa Yuzuki"
+                    },
+                    "genre": {
+                        "latest": "UNSUNG FANTASIA"
+                    },
+                    "version": 31
+                }
+            },
+            "Bitter & Lucky": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1369
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 873
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 456
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1287
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 704
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 443
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "DÉ DÉ MOUSE"
+                    },
+                    "genre": {
+                        "latest": "NU SYNTH BASS"
+                    },
+                    "version": 31
+                }
+            },
+            "Chemical Colours": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1426
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1021
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 547
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1416
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1035
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 526
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Blacklolita x BEMANI Sound Team \"Expander\""
+                    },
+                    "genre": {
+                        "latest": "COLOUR TECHCORE"
+                    },
+                    "version": 31
+                }
+            },
+            "Dahlia": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1030
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 694
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1095
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 665
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BlackY"
+                    },
+                    "genre": {
+                        "latest": "HARD RENAISSANCE"
+                    },
+                    "version": 31
+                }
+            },
+            "DAZZLE ATTACK": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1419
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 858
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 500
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1435
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 847
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 494
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Yuta Imai"
+                    },
+                    "genre": {
+                        "latest": "HAPPY HARDCORE TAKEOVER"
+                    },
+                    "version": 31
+                }
+            },
+            "Deep Sea Mystery": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1057
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 815
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 566
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 997
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 749
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 567
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Dirty Androids"
+                    },
+                    "genre": {
+                        "latest": "NEO 90's AMBIENT JUNGLE"
+                    },
+                    "version": 31
+                }
+            },
+            "Echoes of Sunfall": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1410
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 817
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 537
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1518
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 838
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 522
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "nora2r"
+                    },
+                    "genre": {
+                        "latest": "ETHNIC HARDSOUND"
+                    },
+                    "version": 31
+                }
+            },
+            "frequent": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1260
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 655
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1178
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 665
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"dj TAKA\""
+                    },
+                    "genre": {
+                        "latest": "MUSIC GAME TRADITIONAL"
+                    },
+                    "version": 31
+                }
+            },
+            "GAME ON": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1070
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 656
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1141
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 696
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "DJ Mass MAD Izm* feat.H14 of LEONAIR"
+                    },
+                    "genre": {
+                        "latest": "MIXTURE"
+                    },
+                    "version": 31
+                }
+            },
+            "Get Higher": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1259
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 909
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 509
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1171
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 889
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 496
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"劇団レコード\""
+                    },
+                    "genre": {
+                        "latest": "ADVENTURE TRIP"
+                    },
+                    "version": 31
+                }
+            },
+            "Ghost Pulse": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 877
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 517
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 852
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 537
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "crayvxn"
+                    },
+                    "genre": {
+                        "latest": "NEOTRANCE"
+                    },
+                    "version": 31
+                }
+            },
+            "GloriosA": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1322
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 920
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 601
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1437
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1015
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 622
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "KARUT"
+                    },
+                    "genre": {
+                        "latest": "XYMPHONIC TECHCORE"
+                    },
+                    "version": 31
+                }
+            },
+            "Iris": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1163
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 809
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 488
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1109
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 775
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 421
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"HuΣeR\" feat.紫村 花澄"
+                    },
+                    "genre": {
+                        "latest": "EMOTIONAL J-POP"
+                    },
+                    "version": 31
+                }
+            },
+            "Jumper": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1129
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 733
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 466
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1214
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 763
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 458
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Masayoshi Iimori"
+                    },
+                    "genre": {
+                        "latest": "DRUM'N'BASS"
+                    },
+                    "version": 31
+                }
+            },
+            "JUSTICE/GUILTY feat. Nana Takahashi & 709sec": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1275
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 879
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1271
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 882
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"L.E.D.\""
+                    },
+                    "genre": {
+                        "latest": "ROCKIN' DRUM & BASS"
+                    },
+                    "version": 31
+                }
+            },
+            "Mukade": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1546
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 966
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 593
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1645
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 967
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 572
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "kors k"
+                    },
+                    "genre": {
+                        "latest": "SCHRANZ"
+                    },
+                    "version": 31
+                }
+            },
+            "My Sweet Bird?": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 1065
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 784
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 432
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 1107
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 769
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 427
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "アオワイファイ feat.秋山雫"
+                    },
+                    "genre": {
+                        "latest": "J-POP"
+                    },
+                    "version": 31
+                }
+            },
+            "Shapeshifter": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1335
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 863
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 574
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1283
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 874
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 566
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Avans"
+                    },
+                    "genre": {
+                        "latest": "TECHNICAL ELECTRO"
+                    },
+                    "version": 31
+                }
+            },
+            "SOLAR ECLIPSE": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1276
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 761
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1265
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 762
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Yuta Imai Vs. BEMANI Sound Team \"Yvya\""
+                    },
+                    "genre": {
+                        "latest": "CROSSOVER"
+                    },
+                    "version": 31
+                }
+            },
+            "Speculation": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1618
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 953
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 520
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1530
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 915
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 512
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"ZAQUVA\""
+                    },
+                    "genre": {
+                        "latest": "HARDCORE TECHNO"
+                    },
+                    "version": 31
+                }
+            },
+            "Submerge Serenade": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1565
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 940
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 543
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1486
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 923
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 548
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "lapix"
+                    },
+                    "genre": {
+                        "latest": "HARDTECHNO"
+                    },
+                    "version": 31
+                }
+            },
+            "This Is Club Musik feat. 大久保紅葉": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1330
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 889
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 557
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1343
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 995
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 556
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "REMO-CON"
+                    },
+                    "genre": {
+                        "latest": "HARD HOUSE"
+                    },
+                    "version": 31
+                }
+            },
+            "Time Distortion pt.2(IIDX Edit)": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1498
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1009
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 700
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1492
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 995
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 667
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "kors k vs BEMANI Sound Team \"setup\""
+                    },
+                    "genre": {
+                        "latest": "PSYCHEDELIC TECHNO"
+                    },
+                    "version": 31
+                }
+            },
+            "TITANIUM RIDERS": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1095
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 797
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 448
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1071
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 762
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 450
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "DJ Shimamura"
+                    },
+                    "genre": {
+                        "latest": "HARDCORE RAVE"
+                    },
+                    "version": 31
+                }
+            },
+            "Tripping Jumping": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1195
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 830
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 436
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1166
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 805
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 424
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Aikapin Prod. by uno & NIActivity"
+                    },
+                    "genre": {
+                        "latest": "FUNKY BREAKS"
+                    },
+                    "version": 31
+                }
+            },
+            "20XX": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1344
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 902
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 604
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1370
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 919
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 611
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "COR!S"
+                    },
+                    "genre": {
+                        "latest": "CYBER BREAKCORE"
+                    },
+                    "version": 31
+                }
+            },
+            "アイドル": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1307
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 777
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 443
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1310
+                        }
+                    },
+                    "SPB": {
+                        "31": {
+                            "level": 1,
+                            "note": 141
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 761
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 445
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Covered by BEMANI Sound Team \"HuΣeR × wac\" feat. 佐伯伊織"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 31
+                }
+            },
+            "アタシ完全絶対正義ちゃん！": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1096
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 814
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 512
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1082
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 813
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 498
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Pizuya's Cell"
+                    },
+                    "genre": {
+                        "latest": "ROCK"
+                    },
+                    "version": 31
+                }
+            },
+            "傷つけど、愛してる。": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1037
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 692
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 437
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1052
+                        }
+                    },
+                    "SPB": {
+                        "31": {
+                            "level": 2,
+                            "note": 176
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 702
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 442
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "ツユ"
+                    },
+                    "genre": {
+                        "latest": "J-POP"
+                    },
+                    "version": 31
+                }
+            },
+            "シンデレラ": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1165
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 791
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 457
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1119
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 780
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 438
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Maozon feat. Nadia"
+                    },
+                    "genre": {
+                        "latest": "DRUM & BASS"
+                    },
+                    "version": 31
+                }
+            },
+            "センチメンタル・サマー": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 1028
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 6,
+                            "note": 669
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 3,
+                            "note": 356
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 1004
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 6,
+                            "note": 652
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 3,
+                            "note": 337
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Nhato feat. Kanae Asaba & はるまき (from ボタニカルな暮らし。)"
+                    },
+                    "genre": {
+                        "latest": "CITY DANCE POP"
+                    },
+                    "version": 31
+                }
+            },
+            "ちゅ、多様性。": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 951
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 6,
+                            "note": 583
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 3,
+                            "note": 292
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 963
+                        }
+                    },
+                    "SPB": {
+                        "31": {
+                            "level": 1,
+                            "note": 110
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 6,
+                            "note": 576
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 3,
+                            "note": 264
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "ano"
+                    },
+                    "genre": {
+                        "latest": "J-POP"
+                    },
+                    "version": 31
+                }
+            },
+            "ないないルーティン": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 931
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 676
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 3,
+                            "note": 356
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1053
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 691
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 3,
+                            "note": 298
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Len"
+                    },
+                    "genre": {
+                        "latest": "SPEED HOUSE"
+                    },
+                    "version": 31
+                }
+            },
+            "夏風邪デスコ": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1283
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 898
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 406
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1339
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 892
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 412
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "TORIENA"
+                    },
+                    "genre": {
+                        "latest": "SUMMER POP"
+                    },
+                    "version": 31
+                }
+            },
+            "寝起きヤシの木": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1376
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 901
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 520
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1411
+                        }
+                    },
+                    "SPB": {
+                        "31": {
+                            "level": 2,
+                            "note": 238
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 921
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 549
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by uno(IOSYS) feat. Chiyoko"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    },
+                    "version": 31
+                }
+            },
+            "果たせぬ約束 ft. 小林マナ": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1514
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1019
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 564
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1515
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 988
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 592
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Xceon"
+                    },
+                    "genre": {
+                        "latest": "CHINA SQUARE DANCEPOP"
+                    },
+                    "version": 31
+                }
+            },
+            "摩天楼": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 805
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 379
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 762
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 348
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Julianne"
+                    },
+                    "genre": {
+                        "latest": "VALHALLASTEP"
+                    },
+                    "version": 31
+                }
+            },
+            "夢縁": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1506
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1095
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 573
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1515
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1073
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 605
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "xi feat. Risa Yuzuki"
+                    },
+                    "genre": {
+                        "latest": "JUVENILE PIANO ROCK"
+                    },
+                    "version": 31
+                }
+            },
+            "流桜ノ門": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1099
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 829
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 515
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1075
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 804
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 510
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "tokiwa"
+                    },
+                    "genre": {
+                        "latest": "SCI-FI CHRONICLE"
+                    },
+                    "version": 31
+                }
+            },
+            "れとりば！": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 996
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 657
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 425
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 1032
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 671
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 431
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "OSTER project feat. 月ノ輪乃愛"
+                    },
+                    "genre": {
+                        "latest": "KAWAII DOGGO POPS"
+                    },
+                    "version": 31
+                }
+            }
+        }
     },
     "titleMapping": {
         "csv": {
@@ -112976,6 +114917,47 @@
             "雨のちパノラマセカイ",
             "響花水月"
         ],
-        "31": []
+        "31": [
+            "Aeterna",
+            "Bitter & Lucky",
+            "Chemical Colours",
+            "Dahlia",
+            "DAZZLE ATTACK",
+            "Deep Sea Mystery",
+            "Echoes of Sunfall",
+            "frequent",
+            "GAME ON",
+            "Get Higher",
+            "Ghost Pulse",
+            "GloriosA",
+            "Iris",
+            "Jumper",
+            "JUSTICE/GUILTY feat. Nana Takahashi & 709sec",
+            "Mukade",
+            "My Sweet Bird?",
+            "Shapeshifter",
+            "SOLAR ECLIPSE",
+            "Speculation",
+            "Submerge Serenade",
+            "This Is Club Musik feat. 大久保紅葉",
+            "Time Distortion pt.2(IIDX Edit)",
+            "TITANIUM RIDERS",
+            "Tripping Jumping",
+            "20XX",
+            "アイドル",
+            "アタシ完全絶対正義ちゃん！",
+            "傷つけど、愛してる。",
+            "シンデレラ",
+            "センチメンタル・サマー",
+            "ちゅ、多様性。",
+            "ないないルーティン",
+            "夏風邪デスコ",
+            "寝起きヤシの木",
+            "果たせぬ約束 ft. 小林マナ",
+            "摩天楼",
+            "夢縁",
+            "流桜ノ門",
+            "れとりば！"
+        ]
     }
 }

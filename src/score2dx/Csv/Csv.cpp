@@ -9,16 +9,10 @@
 #include <string_view>
 #include <sstream>
 
-#include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/Common/SmartEnum.hxx"
-#include "ies/StdUtil/Find.hxx"
 #include "ies/StdUtil/MapApply.hxx"
-#include "ies/String/SplitString.hpp"
-#include "ies/Time/TimeUtilFormat.hxx"
+#include "ies/Time/ScopeTimePrinter.hxx"
 
-#include "nlohmann/json.hpp"
-
-#include "score2dx/Core/ScopeProfiler.hxx"
 #include "score2dx/Csv/CsvColumn.hpp"
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Iidx/Version.hpp"
@@ -56,7 +50,7 @@ Csv(const std::string &csvPath,
     bool verbose,
     bool checkWithDatabase)
 {
-    ScopeProfiler<std::chrono::milliseconds> profiler{"CSV construct"};
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"CSV construct"};
 
     //'' default name [IIDX ID]_[sp|dp]_score.csv
     //'' e.g. 5483-7391_dp_score.csv
