@@ -1,7 +1,10 @@
 # Changelog of score2dx
 
-- 4.3.0 [Ongoing]:
-    - Upgrade DB to 31000.
+- 5.0.0 [Ongoing]:
+    - Upgrade to IIDX 31.
+    - Upgrade DB to 31040.
+    - DB format upgrade to 4.0.0.
+        - Remove "version" in "info".
     - Adjust clang-tidy config.
 
 - 4.2.0 [2023-10-30]:
