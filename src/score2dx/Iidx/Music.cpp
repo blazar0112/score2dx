@@ -3,6 +3,8 @@
 #include <iostream>
 #include <set>
 
+#include "fmt/core.h"
+
 #include "ies/Common/AdjacentArrayRange.hxx"
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/Find.hxx"
@@ -88,7 +90,7 @@ AddAvailability(StyleDifficulty styleDifficulty,
             {
                 if (versionIndex>=verTable.size())
                 {
-                    throw std::runtime_error("versionIndex out of bound.");
+                    throw std::runtime_error(fmt::format("Music::AddAvailabilityversion(): Index [{}] out of bound.", versionIndex));
                 }
 
                 auto &availability = verTable[versionIndex];

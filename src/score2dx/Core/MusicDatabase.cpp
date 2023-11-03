@@ -7,15 +7,13 @@
 #include "ies/Common/AdjacentArrayRange.hxx"
 #include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/Find.hxx"
-#include "ies/StdUtil/FormatString.hxx"
 #include "ies/String/RecursiveReplace.hpp"
+#include "ies/Time/ScopeTimePrinter.hxx"
 #include "ies/Time/TimeUtilFormat.hxx"
 
-#include "score2dx/Core/CheckedParse.hxx"
 #include "score2dx/Iidx/Version.hpp"
 
 namespace fs = std::filesystem;
-namespace s2Time = ies::Time;
 
 namespace
 {
@@ -39,7 +37,8 @@ MusicDatabase()
 {
     try
     {
-        auto begin = s2Time::Now();
+        ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"Load music database"};
+        auto begin = ies::Time::Now();
 
         {
             const std::string usingDbFilename{"table/usingDB.txt"};
@@ -67,7 +66,7 @@ MusicDatabase()
             throw std::runtime_error("cannot find music table: "+mDatabaseFilename);
         }
         databaseFile >> mDatabase;
-        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Read Json");
+        ies::Time::Print<std::chrono::milliseconds>(ies::Time::CountNs(begin), "Read Json");
 
         auto versionCount = VersionNames.size();
         mAllTimeMusics.resize(versionCount);
@@ -153,11 +152,10 @@ MusicDatabase()
                       << " is not same as ID.\n";
         }
 
-        auto stageBegin = s2Time::Now();
-        GenerateActiveVersions(GetFirstSupportDateTimeVersionIndex());
-        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(stageBegin), "GenerateActiveVersions");
-
-        s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Load music database");
+        {
+            ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"GenerateActiveVersions"};
+            GenerateActiveVersions(GetFirstSupportDateTimeVersionIndex());
+        }
     }
     catch (const std::exception &e)
     {
@@ -468,9 +466,8 @@ MusicDatabase::
 CheckValidity()
 const
 {
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"Check DB validity"};
     std::cout << "Check DB validity...\n";
-
-    auto begin = s2Time::Now();
 
     IntRange levelRange{1, MaxLevel+1};
 
@@ -687,7 +684,7 @@ const
         }
     }
 
-    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "Check DB validity");
+
     std::cout << "Check DB validity done.\n";
 }
 
@@ -752,6 +749,7 @@ UpgradeMusicDatabase(const std::string &currentFilename,
 
     Json nextDb;
     nextDb["#meta"] = db["#meta"];
+    nextDb["#meta"]["count"] = ToMusicIdString(ToMusicId(nextVersion, 0));
     nextDb["#meta"]["version"] = nextVersionStr;
 
     nextDb["csMusicTable"] = db["csMusicTable"];

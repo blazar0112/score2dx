@@ -151,6 +151,11 @@ set_target_properties(regression PROPERTIES CXX_STANDARD 20)
 target_compile_options(regression PUBLIC ${COMMON_FLAGS})
 target_link_libraries(regression PRIVATE score2dx fmt::fmt-header-only nlohmann_json::nlohmann_json)
 
+add_executable(upgrade_db app/upgrade_database.cpp)
+set_target_properties(upgrade_db PROPERTIES CXX_STANDARD 20)
+target_compile_options(upgrade_db PUBLIC ${COMMON_FLAGS})
+target_link_libraries(upgrade_db PRIVATE score2dx fmt::fmt-header-only nlohmann_json::nlohmann_json)
+
 # Install
 include(GenerateExportHeader)
 generate_export_header(score2dx EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/exports/score2dx/score2dx_export.h)

@@ -90,7 +90,7 @@ std::size_t
 ToMusicId(std::size_t versionIndex,
           std::size_t musicIndex)
 {
-    return versionIndex*1000+musicIndex;
+    return versionIndex*MusicIdPerVersion+musicIndex;
 }
 
 std::pair<std::size_t, std::size_t>

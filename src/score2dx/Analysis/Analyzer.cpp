@@ -2,15 +2,11 @@
 
 #include <iostream>
 
-#include "ies/Common/IntegralRangeUsing.hpp"
 #include "ies/StdUtil/Find.hxx"
-#include "ies/Time/TimeUtilFormat.hxx"
+#include "ies/Time/ScopeTimePrinter.hxx"
 
-#include "score2dx/Core/ScopeProfiler.hxx"
 #include "score2dx/Iidx/Version.hpp"
 #include "score2dx/Score/ScoreLevel.hpp"
-
-namespace s2Time = ies::Time;
 
 namespace score2dx
 {
@@ -47,7 +43,7 @@ Analyzer::
 Analyze(const PlayerScore &playerScore)
 const
 {
-    ScopeProfiler<std::chrono::milliseconds> profiler{"Analyze"};
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"Analyze"};
 
     ScoreAnalysis analysis;
     analysis.CareerRecordPtr = std::make_unique<CareerRecord>(mActiveVersionIndex);
@@ -220,7 +216,7 @@ AnalyzeActivity(const PlayerScore &playerScore,
                 const std::string &endDateTime)
 const
 {
-    auto begin = s2Time::Now();
+    ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"AnalyzeActivity"};
 
     ActivityAnalysis activityAnalysis;
     activityAnalysis.DateTimeRange[ies::RangeSide::Begin] = beginDateTime;
@@ -327,7 +323,6 @@ const
         }
     }
 
-    s2Time::Print<std::chrono::milliseconds>(s2Time::CountNs(begin), "AnalyzeActivity");
     return activityAnalysis;
 }
 
