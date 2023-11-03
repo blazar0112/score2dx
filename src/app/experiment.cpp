@@ -27,7 +27,7 @@ main(int argc, char* argv[])
         score2dx::Core core;
 
         //auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391)", false, true);
-        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391)", false, false);
+        auto succeeded = core.LoadDirectory(R"(E:\project_document\score2dx\5483-7391_31)", false, false);
         if (!succeeded)
         {
             std::cout << "Load directory failed.\n";
