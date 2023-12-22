@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "31048",
-        "lastUpdateEvent": "「WORLD TOURISM」BPL S3 TOURISM EXTRA part1～part8 2023-11-02",
-        "lastUpdateNewMusic": "Sirius",
+        "count": "31059",
+        "lastUpdateEvent": "「マイポリスデザイナー」2023-12-08",
+        "lastUpdateNewMusic": "Vermilion Carol",
         "score2dx": "4.0.0",
         "version": "31"
     },
@@ -108752,6 +108752,12 @@
             "Dahlia": {
                 "availableVersions": "31",
                 "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1600
+                        }
+                    },
                     "DPH": {
                         "31": {
                             "level": 10,
@@ -108762,6 +108768,12 @@
                         "31": {
                             "level": 6,
                             "note": 694
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1617
                         }
                     },
                     "SPH": {
@@ -108936,6 +108948,12 @@
             "frequent": {
                 "availableVersions": "31",
                 "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1821
+                        }
+                    },
                     "DPH": {
                         "31": {
                             "level": 10,
@@ -108946,6 +108964,12 @@
                         "31": {
                             "level": 5,
                             "note": 655
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1900
                         }
                     },
                     "SPH": {
@@ -108973,6 +108997,12 @@
             "GAME ON": {
                 "availableVersions": "31",
                 "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1592
+                        }
+                    },
                     "DPH": {
                         "31": {
                             "level": 10,
@@ -108983,6 +109013,12 @@
                         "31": {
                             "level": 7,
                             "note": 656
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1386
                         }
                     },
                     "SPH": {
@@ -109059,6 +109095,12 @@
             "Ghost Pulse": {
                 "availableVersions": "31",
                 "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1420
+                        }
+                    },
                     "DPH": {
                         "31": {
                             "level": 9,
@@ -109069,6 +109111,12 @@
                         "31": {
                             "level": 6,
                             "note": 517
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1409
                         }
                     },
                     "SPH": {
@@ -109243,6 +109291,12 @@
             "JUSTICE/GUILTY feat. Nana Takahashi & 709sec.": {
                 "availableVersions": "31",
                 "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1909
+                        }
+                    },
                     "DPH": {
                         "31": {
                             "level": 10,
@@ -109253,6 +109307,12 @@
                         "31": {
                             "level": 7,
                             "note": 879
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1959
                         }
                     },
                     "SPH": {
@@ -109427,6 +109487,12 @@
             "SOLAR ECLIPSE": {
                 "availableVersions": "31",
                 "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1901
+                        }
+                    },
                     "DPH": {
                         "31": {
                             "level": 10,
@@ -109437,6 +109503,12 @@
                         "31": {
                             "level": 7,
                             "note": 761
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1893
                         }
                     },
                     "SPH": {
@@ -110321,6 +110393,12 @@
             "摩天楼": {
                 "availableVersions": "31",
                 "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1316
+                        }
+                    },
                     "DPH": {
                         "31": {
                             "level": 9,
@@ -110331,6 +110409,12 @@
                         "31": {
                             "level": 4,
                             "note": 379
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1309
                         }
                     },
                     "SPH": {
@@ -110891,6 +110975,563 @@
                     },
                     "genre": {
                         "latest": "COLOUR BASS"
+                    }
+                }
+            },
+            "終焔のClaudia": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1394
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1015
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 698
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1406
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1014
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 719
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "二代目朱雀"
+                    },
+                    "genre": {
+                        "latest": "HARD RENAISSANCE"
+                    }
+                }
+            },
+            "灼熱Beach Side Bunny (かめりあ's \"Summertime D'n'B\" Remix)": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1634
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1017
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 561
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1647
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1001
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 543
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by かめりあ"
+                    },
+                    "genre": {
+                        "latest": "BROKEN SAMBA DRUM'N'BASS"
+                    }
+                }
+            },
+            "可愛くてごめん": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 1103
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 717
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 3,
+                            "note": 325
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 1133
+                        }
+                    },
+                    "SPB": {
+                        "31": {
+                            "level": 1,
+                            "note": 143
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 703
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 3,
+                            "note": 314
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by MK feat. 紫咲ほたる"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    }
+                }
+            },
+            "デビルじゃないもん": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1005
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 694
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 424
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1054
+                        }
+                    },
+                    "SPB": {
+                        "31": {
+                            "level": 2,
+                            "note": 174
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 695
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 421
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by BlackY feat. Risa Yuzuki"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    }
+                }
+            },
+            "フォニイ": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1556
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 992
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 620
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1454
+                        }
+                    },
+                    "SPB": {
+                        "31": {
+                            "level": 3,
+                            "note": 316
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1011
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 614
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by Pizuya's Cell"
+                    },
+                    "genre": {
+                        "latest": "IIDX EDITION"
+                    }
+                }
+            },
+            "Psychedelic Intelligence": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1450
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 975
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 641
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1448
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 960
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 636
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"Sota Fujimori\""
+                    },
+                    "genre": {
+                        "latest": "PSYCHEDELIC"
+                    }
+                }
+            },
+            "ZEROIN ON THE LIGHT": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1350
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 884
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 574
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1345
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 887
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 567
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "SOUND HOLIC Vs. ZYTOKINE feat. Nana Takahashi"
+                    },
+                    "genre": {
+                        "latest": "COLD BEAT"
+                    }
+                }
+            },
+            "INHERITANCE": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1376
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 896
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 552
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1432
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 913
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 553
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Zekk"
+                    },
+                    "genre": {
+                        "latest": "TRANCE CORE"
+                    }
+                }
+            },
+            "winkle 2 winkle": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1381
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 920
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 529
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1408
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 954
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 535
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Ryu☆ ft.NU-KO"
+                    },
+                    "genre": {
+                        "latest": "EURODANCE SPEED"
+                    }
+                }
+            },
+            "Out of Control": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1649
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1200
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 598
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1598
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1178
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 592
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "CANVAS feat. Quimär"
+                    },
+                    "genre": {
+                        "latest": "FREEFORM ARTCORE"
+                    }
+                }
+            },
+            "Vermilion Carol": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1773
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1210
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 700
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1837
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1139
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 694
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "OSTER project"
+                    },
+                    "genre": {
+                        "latest": "GOTHIC PIANO TRANCE"
                     }
                 }
             }
@@ -113295,7 +113936,18 @@
             "i-ii",
             "Get Wicked",
             "Red Determination",
-            "Sirius"
+            "Sirius",
+            "終焔のClaudia",
+            "灼熱Beach Side Bunny (かめりあ's \"Summertime D'n'B\" Remix)",
+            "可愛くてごめん",
+            "デビルじゃないもん",
+            "フォニイ",
+            "Psychedelic Intelligence",
+            "ZEROIN ON THE LIGHT",
+            "INHERITANCE",
+            "winkle 2 winkle",
+            "Out of Control",
+            "Vermilion Carol"
         ]
     }
 }
