@@ -118,7 +118,7 @@ const
                 {
                     if (versionIndex!=mActiveVersionIndex)
                     {
-                        auto& musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
+                        auto& musicScores = versionScoreTable.GetMusicScores(versionIndex);
                         if (!musicScores.empty())
                         {
                             auto bestMusicScoreIt = musicScores.rbegin();
@@ -130,7 +130,7 @@ const
                     }
                     else
                     {
-                        auto& musicScores = versionScoreTable.GetMusicScores(versionIndex, chartPlayStyle);
+                        auto& musicScores = versionScoreTable.GetMusicScores(versionIndex);
                         auto& records = versionRecords[versionIndex];
                         records.reserve(musicScores.size());
                         for (auto& [dateTime, musicScore] : musicScores)
@@ -286,7 +286,7 @@ const
             std::string previousDateTime;
             for (auto scoreVersionIndex : GetSupportScoreVersionRange())
             {
-                for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, chartPlayStyle))
+                for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex))
                 {
                     if (dateTime>=versionBeginDateTime && dateTime<beginDateTime)
                     {
@@ -378,7 +378,7 @@ const
     auto &versionBeginDateTime = versionDateTimeRange.Get(ies::RangeSide::Begin);
     for (auto scoreVersionIndex : containingAvailableVersionRange)
     {
-        for (auto &[recordDateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, playStyle))
+        for (auto &[recordDateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex))
         {
             auto* chartScorePtr = musicScore.GetChartScore(difficulty);
             if (!chartScorePtr) { continue; }

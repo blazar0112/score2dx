@@ -133,7 +133,7 @@ main(int argc, char* argv[])
                     auto &versionScoreTable = findVersionScoreTable.value()->second;
                     for (auto scoreVersionIndex : score2dx::GetSupportScoreVersionRange())
                     {
-                        for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, playStyle))
+                        for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex))
                         {
                             auto* chartScorePtr = musicScore.GetChartScore(difficulty);
                             if (!chartScorePtr) { continue; }

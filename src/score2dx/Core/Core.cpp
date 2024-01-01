@@ -269,7 +269,7 @@ const
 
             for (auto scoreVersionIndex : GetSupportScoreVersionRange())
             {
-                for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, playStyle))
+                for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex))
                 {
                     if (dateTime>lastDateTime)
                     {

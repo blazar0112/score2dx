@@ -8,17 +8,19 @@ namespace score2dx
 {
 
 PlayerScore::
-PlayerScore(const MusicDatabase &musicDatabase, const std::string &iidxId)
-:   mMusicDatabase(musicDatabase),
-    mIidxId(iidxId)
+PlayerScore(
+    const MusicDatabase& musicDatabase,
+    std::string iidxId)
+:   mMusicDatabase(musicDatabase)
+,   mIidxId(std::move(iidxId))
 {
-    if (!IsIidxId(iidxId))
+    if (!IsIidxId(mIidxId))
     {
-        throw std::runtime_error("["+iidxId+"] is not a valid IIDX ID.");
+        throw std::runtime_error("["+mIidxId+"] is not a valid IIDX ID.");
     }
 }
 
-const std::string &
+const std::string&
 PlayerScore::
 GetIidxId()
 const
@@ -28,34 +30,18 @@ const
 
 void
 PlayerScore::
-AddMusicScore(std::size_t scoreVersionIndex,
-              const MusicScore &musicScore)
+AddMusicScore(
+    std::size_t scoreVersionIndex,
+    const MusicScore& musicScore)
 {
     auto musicId = musicScore.GetMusicId();
     auto& music = mMusicDatabase.GetMusic(musicId);
     auto styleIndex = ToIndex(musicScore.GetPlayStyle());
-    auto& versionScoreTables = mStyleVersionScoreTables[styleIndex];
+    auto& versionScoreTables = mStyleAllVersionScoreTables[styleIndex];
     auto [it, flag] = versionScoreTables.emplace(musicId, music);
     auto& scoreTable = it->second;
     scoreTable.AddMusicScore(scoreVersionIndex, musicScore);
 }
-
-/*
-void
-PlayerScore::
-AddChartScore(std::size_t scoreVersionIndex,
-              std::size_t musicId,
-              PlayStyle playStyle,
-              Difficulty difficulty,
-              const std::string &dateTime,
-              const ChartScore &chartScore)
-{
-    auto& music = mMusicDatabase.GetMusic(musicId);
-    auto [it, flag] = mVersionScoreTables.emplace(musicId, music);
-    auto& scoreTable = it->second;
-    scoreTable.AddChartScore(scoreVersionIndex, dateTime, playStyle, difficulty, chartScore);
-}
-*/
 
 void
 PlayerScore::
@@ -127,14 +113,13 @@ Propagate()
 */
 }
 
-const std::map<std::size_t, VersionScoreTable> &
+const std::map<std::size_t, AllVersionScoreTable>&
 PlayerScore::
 GetVersionScoreTables(PlayStyle playStyle)
 const
 {
     auto styleIndex = ToIndex(playStyle);
-    return mStyleVersionScoreTables[styleIndex];
+    return mStyleAllVersionScoreTables[styleIndex];
 }
-
 
 }
