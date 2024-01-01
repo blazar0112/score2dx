@@ -122,7 +122,8 @@ main(int argc, char* argv[])
                     auto &playerScore = core.GetPlayerScores().at("5483-7391");
                     std::cout << "Music ["+musicDatabase.GetTitle(musicId)+"]:\n";
 
-                    auto findVersionScoreTable = ies::Find(playerScore.GetVersionScoreTables(), musicId);
+                    auto& versionTable = playerScore.GetVersionScoreTables(playStyle);
+                    auto findVersionScoreTable = ies::Find(versionTable, musicId);
                     if (!findVersionScoreTable)
                     {
                         std::cout << "No score available.\n";

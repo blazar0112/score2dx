@@ -88,7 +88,7 @@ Csv(const std::string &csvPath,
         if (verbose) { std::cout << "PlayStyle [" << ToString(mPlayStyle) << "].\n"; }
 
         //'' Map of {VersionIndex, MusicCount}.
-        std::map<std::size_t, int> versionMusicCounts;
+        std::map<std::size_t, std::size_t> versionMusicCounts;
         std::ifstream csvFile{csvPath};
         int lineCount = 0;
 
@@ -101,7 +101,7 @@ Csv(const std::string &csvPath,
 
         auto fileSize = fs::file_size(mPath);
         std::vector<char> bytes(fileSize);
-        csvFile.read(bytes.data(), fileSize);
+        csvFile.read(bytes.data(), static_cast<std::streamsize>(fileSize));
         std::string buffer(bytes.data(), bytes.size());
         std::string_view bufferView{buffer};
         auto lineView = bufferView;

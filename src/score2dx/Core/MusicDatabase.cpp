@@ -153,7 +153,7 @@ MusicDatabase()
         }
 
         {
-            ies::Time::ScopeTimePrinter<std::chrono::milliseconds> timePrinter{"GenerateActiveVersions"};
+            ies::Time::ScopeTimePrinter<std::chrono::milliseconds> genTimePrinter{"GenerateActiveVersions"};
             GenerateActiveVersions(GetFirstSupportDateTimeVersionIndex());
         }
     }

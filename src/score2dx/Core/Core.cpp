@@ -254,7 +254,7 @@ const
 
         auto &data = exportData["data"];
 
-        for (auto &[musicId, versionScoreTable] : playerScore.GetVersionScoreTables())
+        for (auto &[musicId, versionScoreTable] : playerScore.GetVersionScoreTables(playStyle))
         {
             auto &title = mMusicDatabase.GetTitle(musicId);
             auto versionIndex = ToIndexes(musicId).first;

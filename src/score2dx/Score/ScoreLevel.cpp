@@ -105,7 +105,7 @@ FindScoreLevelDiff(int note, int exScore)
     std::array<int, 18+1> keyScores{};
     for (auto i : IndexRange{0, keyScores.size()})
     {
-        auto keyScore = static_cast<int>(std::ceil(static_cast<double>(maxScore)*i/18));
+        auto keyScore = static_cast<int>(std::ceil(static_cast<double>(maxScore)*static_cast<double>(i)/18));
         keyScores[i] = keyScore;
     }
 
@@ -254,7 +254,7 @@ ToPrettyString(ScoreLevelCategory scoreLevelCategory)
         "MAX"
     };
 
-    return prettyStrings[static_cast<int>(scoreLevelCategory)];
+    return prettyStrings[ToIndex(scoreLevelCategory)];
 }
 
 ScoreLevelCategory

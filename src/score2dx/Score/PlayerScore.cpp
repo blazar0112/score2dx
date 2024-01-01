@@ -33,7 +33,9 @@ AddMusicScore(std::size_t scoreVersionIndex,
 {
     auto musicId = musicScore.GetMusicId();
     auto& music = mMusicDatabase.GetMusic(musicId);
-    auto [it, flag] = mVersionScoreTables.emplace(musicId, music);
+    auto styleIndex = ToIndex(musicScore.GetPlayStyle());
+    auto& versionScoreTables = mStyleVersionScoreTables[styleIndex];
+    auto [it, flag] = versionScoreTables.emplace(musicId, music);
     auto& scoreTable = it->second;
     scoreTable.AddMusicScore(scoreVersionIndex, musicScore);
 }
@@ -127,10 +129,11 @@ Propagate()
 
 const std::map<std::size_t, VersionScoreTable> &
 PlayerScore::
-GetVersionScoreTables()
+GetVersionScoreTables(PlayStyle playStyle)
 const
 {
-    return mVersionScoreTables;
+    auto styleIndex = ToIndex(playStyle);
+    return mStyleVersionScoreTables[styleIndex];
 }
 
 

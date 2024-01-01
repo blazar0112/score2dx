@@ -8,7 +8,7 @@
 #include "score2dx/Iidx/Definition.hpp"
 #include "score2dx/Score/ChartScore.hpp"
 #include "score2dx/Score/MusicScore.hpp"
-#include "score2dx/Score/VersionScoreTable.hpp"
+#include "score2dx/Score/AllVersionScoreTable.hpp"
 
 namespace score2dx
 {
@@ -49,15 +49,15 @@ public:
 
     //! @brief Get VersionScoreTables: Map of {MusicId, VersionScoreTable}.
         const std::map<std::size_t, VersionScoreTable> &
-        GetVersionScoreTables()
+        GetVersionScoreTables(PlayStyle playStyle)
         const;
 
 private:
     const MusicDatabase &mMusicDatabase;
     std::string mIidxId;
 
-    //! @brief Map of {MusicId, VersionScoreTable}.
-    std::map<std::size_t, VersionScoreTable> mVersionScoreTables;
+    //! @brief Array of {Index=PlayStyle, Map of {MusicId, VersionScoreTable}}.
+    std::array<std::map<std::size_t, VersionScoreTable>, PlayStyleSmartEnum::Size()> mStyleVersionScoreTables;
 
     //! @brief Progate same containing versions' score clear type.
         void

@@ -8,29 +8,29 @@ get_property(SOURCES GLOBAL PROPERTY PROP_SOURCES)
 set_property(GLOBAL PROPERTY
     PROP_SOURCES
     ${SOURCES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/AllVersionScoreTable.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ChartScore.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicScore.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/PlayerScore.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ScoreLevel.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/VersionScoreTable.cpp
 )
 
 get_property(PUBLIC_HEADERS GLOBAL PROPERTY PROP_PUBLIC_HEADERS)
 set_property(GLOBAL PROPERTY
     PROP_PUBLIC_HEADERS
     ${PUBLIC_HEADERS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/AllVersionScoreTable.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ChartScore.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MusicScore.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/PlayerScore.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ScoreLevel.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ScoreSource.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/VersionScoreTable.hpp
 )
 
 get_property(TEST_SOURCES GLOBAL PROPERTY PROP_TEST_SOURCES)
 set_property(GLOBAL PROPERTY
     PROP_TEST_SOURCES
     ${TEST_SOURCES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/AllVersionScoreTableTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ScoreLevelTest.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/VersionScoreTableTest.cpp
 )

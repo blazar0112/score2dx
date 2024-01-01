@@ -1,4 +1,4 @@
-#include "score2dx/Score/VersionScoreTable.hpp"
+#include "score2dx/Score/AllVersionScoreTable.hpp"
 
 #include <gtest/gtest.h>
 
