@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "31059",
-        "lastUpdateEvent": "「マイポリスデザイナー」2023-12-08",
-        "lastUpdateNewMusic": "Vermilion Carol",
+        "count": "31077",
+        "lastUpdateEvent": "「WORLD TOURISM」「EPOLIS OST TOURISM」2024-03-13",
+        "lastUpdateNewMusic": "Stereo Beasts",
         "score2dx": "4.0.0",
         "version": "31"
     },
@@ -12203,22 +12203,42 @@
                 }
             },
             "L'amour et la liberte": {
-                "availableVersions": "06-12",
+                "availableVersions": "06-12, 31",
                 "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1113
+                        }
+                    },
                     "DPH": {
                         "06-12": {
                             "level": 8,
                             "note": 811
+                        },
+                        "31": {
+                            "level": 8,
+                            "note": 784
                         }
                     },
                     "DPN": {
                         "06-12": {
                             "level": 5,
                             "note": 521
+                        },
+                        "31": {
+                            "level": 5,
+                            "note": 501
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1025
                         }
                     },
                     "SPH": {
-                        "06-12": {
+                        "06-12, 31": {
                             "level": 8,
                             "note": 811
                         }
@@ -12227,6 +12247,10 @@
                         "06-12": {
                             "level": 5,
                             "note": 521
+                        },
+                        "31": {
+                            "level": 5,
+                            "note": 501
                         }
                     }
                 },
@@ -19439,40 +19463,54 @@
                 }
             },
             "Logic Board": {
-                "availableVersions": "09-10, 13-15",
+                "availableVersions": "09-10, 13-15, 31",
                 "difficulty": {
                     "DPA": {
-                        "09-10, 13-15": {
+                        "13-15, 31": {
                             "level": 12,
                             "note": 1697
                         }
                     },
                     "DPH": {
-                        "09-10, 13-15": {
-                            "level": 9,
+                        "09": {
+                            "level": 7,
+                            "levelLabel": "7+",
+                            "note": 906
+                        },
+                        "10, 13-15, 31": {
+                            "level": 8,
                             "note": 906
                         }
                     },
                     "DPN": {
-                        "09-10, 13-15": {
+                        "09-10": {
+                            "level": 5,
+                            "note": 529
+                        },
+                        "13-15, 31": {
                             "level": 6,
                             "note": 529
                         }
                     },
                     "SPA": {
-                        "09-10, 13-15": {
+                        "13-15, 31": {
                             "level": 11,
                             "note": 1173
                         }
                     },
                     "SPH": {
-                        "09-10, 13-15": {
+                        "09": {
+                            "level": 7,
+                            "levelLabel": "7+",
+                            "note": 907
+                        },
+                        "10, 13-15, 31": {
                             "level": 8,
                             "note": 907
                         }
                     },
                     "SPN": {
-                        "09-10, 13-15": {
+                        "09-10, 13-15, 31": {
                             "level": 5,
                             "note": 529
                         }
@@ -19668,36 +19706,62 @@
                 }
             },
             "PARANOIA survivor MAX": {
-                "availableVersions": "09-13",
+                "availableVersions": "09-13, 31",
                 "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1091
+                        }
+                    },
                     "DPH": {
                         "09-13": {
                             "level": 7,
                             "note": 661
+                        },
+                        "31": {
+                            "level": 8,
+                            "note": 671
                         }
                     },
                     "DPN": {
                         "09-13": {
                             "level": 5,
                             "note": 448
+                        },
+                        "31": {
+                            "level": 5,
+                            "note": 485
                         }
                     },
                     "SPA": {
                         "09-13": {
                             "level": 9,
                             "note": 754
+                        },
+                        "31": {
+                            "level": 10,
+                            "note": 1092
                         }
                     },
                     "SPH": {
                         "09-13": {
                             "level": 8,
                             "note": 662
+                        },
+                        "31": {
+                            "level": 8,
+                            "note": 669
                         }
                     },
                     "SPN": {
                         "09-13": {
                             "level": 5,
                             "note": 448
+                        },
+                        "31": {
+                            "level": 5,
+                            "note": 497
                         }
                     }
                 },
@@ -60440,6 +60504,12 @@
                             "note": 978
                         }
                     },
+                    "DPL": {
+                        "31": {
+                            "level": 12,
+                            "note": 1526
+                        }
+                    },
                     "DPN": {
                         "21-31": {
                             "level": 6,
@@ -60456,6 +60526,12 @@
                         "21-31": {
                             "level": 8,
                             "note": 674
+                        }
+                    },
+                    "SPL": {
+                        "31": {
+                            "level": 12,
+                            "note": 1551
                         }
                     },
                     "SPN": {
@@ -67639,6 +67715,12 @@
                             "note": 1322
                         }
                     },
+                    "DPL": {
+                        "31": {
+                            "level": 12,
+                            "note": 2390
+                        }
+                    },
                     "DPN": {
                         "22-31": {
                             "level": 6,
@@ -67655,6 +67737,12 @@
                         "22-31": {
                             "level": 10,
                             "note": 1127
+                        }
+                    },
+                    "SPL": {
+                        "31": {
+                            "level": 12,
+                            "note": 2334
                         }
                     },
                     "SPN": {
@@ -80018,6 +80106,12 @@
                             "note": 1013
                         }
                     },
+                    "DPL": {
+                        "31": {
+                            "level": 12,
+                            "note": 2049
+                        }
+                    },
                     "DPN": {
                         "25-31": {
                             "level": 6,
@@ -80034,6 +80128,12 @@
                         "25-31": {
                             "level": 8,
                             "note": 854
+                        }
+                    },
+                    "SPL": {
+                        "31": {
+                            "level": 12,
+                            "note": 1984
                         }
                     },
                     "SPN": {
@@ -94130,6 +94230,12 @@
                             "note": 713
                         }
                     },
+                    "DPL": {
+                        "31": {
+                            "level": 11,
+                            "note": 1438
+                        }
+                    },
                     "DPN": {
                         "28-31": {
                             "level": 5,
@@ -94146,6 +94252,12 @@
                         "28-31": {
                             "level": 7,
                             "note": 661
+                        }
+                    },
+                    "SPL": {
+                        "31": {
+                            "level": 11,
+                            "note": 1461
                         }
                     },
                     "SPN": {
@@ -111534,6 +111646,888 @@
                         "latest": "GOTHIC PIANO TRANCE"
                     }
                 }
+            },
+            "ポラリスノウタ": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1086
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 773
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 445
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1141
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 833
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 437
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "ここなつ2.0"
+                    },
+                    "genre": {
+                        "latest": "FUTUREBASS"
+                    }
+                }
+            },
+            "めうめうぺったんたん！！ (ZAQUVA Remix)": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1460
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 978
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 556
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1419
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 974
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 530
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Remixed by BEMANI Sound Team \"ZAQUVA\""
+                    },
+                    "genre": {
+                        "latest": "HYPERACTIVE HELLCORE"
+                    }
+                }
+            },
+            "電子になりたい": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1001
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 715
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 446
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1017
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 729
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 425
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"HuΣeR\""
+                    },
+                    "genre": {
+                        "latest": "HYBRID DANCE MUSIC"
+                    }
+                }
+            },
+            "Too Late Snow": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 992
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 725
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 441
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 9,
+                            "note": 1014
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 720
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 404
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "movies (moimoi × Xceon × Dai.)"
+                    },
+                    "genre": {
+                        "latest": "J-DANCE POP"
+                    }
+                }
+            },
+            "out of disk space": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1289
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 948
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 546
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1305
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 998
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 565
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "TORIENA"
+                    },
+                    "genre": {
+                        "latest": "CHARGE CORE"
+                    }
+                }
+            },
+            "GLORIOUS HAMMER": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1520
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1040
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 611
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1587
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 993
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 560
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "AJURIKA"
+                    },
+                    "genre": {
+                        "latest": "DUBSTEP"
+                    }
+                }
+            },
+            "MAXIMUM CHEAT GIRL": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1787
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1166
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 653
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1842
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1133
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 628
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "かめりあ feat. ななひら"
+                    },
+                    "genre": {
+                        "latest": "MAXIMUM GAME-BREAKING HARDCORE"
+                    }
+                }
+            },
+            "Glitch N Ride": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1349
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 846
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 513
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1389
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 834
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 461
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Eagle"
+                    },
+                    "genre": {
+                        "latest": "COLOUR BASS"
+                    }
+                }
+            },
+            "Monkey Business": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1290
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 787
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 393
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1324
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 809
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 369
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "kors k"
+                    },
+                    "genre": {
+                        "latest": "HARD DANCE"
+                    }
+                }
+            },
+            "Xb10r": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1801
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1254
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 612
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1833
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1208
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 612
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "隣の庭は青い(庭師+Aoi)"
+                    },
+                    "genre": {
+                        "latest": "VOLTENIZED CORE"
+                    }
+                }
+            },
+            "Ambivalent Vermilia": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 2105
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1251
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 780
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 2132
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1248
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 783
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"二代目朱雀 feat.朱雀\""
+                    },
+                    "genre": {
+                        "latest": "HARD RENAISSANCE"
+                    }
+                }
+            },
+            "COUNTING SHEEP ft. Kanae Asaba": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1077
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 689
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 343
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1114
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 7,
+                            "note": 659
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 4,
+                            "note": 339
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Xceon"
+                    },
+                    "genre": {
+                        "latest": "SYMPHONIC DRUM'N'BASS"
+                    }
+                }
+            },
+            "雫": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1328
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1019
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 495
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1361
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 1039
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 514
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "あさき"
+                    },
+                    "genre": {
+                        "latest": "LAMENTO"
+                    }
+                }
+            },
+            "Just Gimme": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1412
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 908
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 470
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1393
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 869
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 486
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Maozon"
+                    },
+                    "genre": {
+                        "latest": "CYBER DRUMSTEP"
+                    }
+                }
+            },
+            "Sword of Vengeance": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1615
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1181
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 747
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1650
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1115
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 726
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "sky_delta"
+                    },
+                    "genre": {
+                        "latest": "HI-SPEED TECHCORE"
+                    }
+                }
+            },
+            "Million Dollar": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1759
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1035
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 663
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1762
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1028
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 599
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Dirty Androids"
+                    },
+                    "genre": {
+                        "latest": "PARTICULAR NIGHTSCAPE"
+                    }
+                }
+            },
+            "CADENZA": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 2354
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1302
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 769
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 2357
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1277
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 775
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "lapix ∞ BEMANI Sound Team \"L.E.D.\""
+                    },
+                    "genre": {
+                        "latest": "PSYCHEDELIC TRANCE"
+                    }
+                }
+            },
+            "Stereo Beasts": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1834
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1307
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 676
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1881
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1310
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 679
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "MK & RoughSketch"
+                    },
+                    "genre": {
+                        "latest": "HARD TECHNO/DOWNTEMPO"
+                    }
+                }
             }
         }
     },
@@ -111621,6 +112615,7 @@
             "Flash of love": "Flash of Love",
             "Junglist King(LONG)": "Junglist King (long)",
             "KI・SE・KI (IIDX RED EDIT)": "KI・SE・KI(IIDX RED EDIT)",
+            "L'amour et la liberté": "L'amour et la liberte",
             "LETHEBOLG 〜双神威に斬り咲けり〜": "LETHEBOLG ～双神威に斬り咲けり～",
             "LOVE AGAIN TONIGHT〜for Mellisa mix〜": "LOVE AGAIN TONIGHT～for Mellisa mix～",
             "LUV TO ME (UCCHIE'S EDITION)": "LUV TO ME(UCCHIE'S EDITION)",
@@ -113947,7 +114942,25 @@
             "INHERITANCE",
             "winkle 2 winkle",
             "Out of Control",
-            "Vermilion Carol"
+            "Vermilion Carol",
+            "ポラリスノウタ",
+            "めうめうぺったんたん！！ (ZAQUVA Remix)",
+            "電子になりたい",
+            "Too Late Snow",
+            "out of disk space",
+            "GLORIOUS HAMMER",
+            "MAXIMUM CHEAT GIRL",
+            "Glitch N Ride",
+            "Monkey Business",
+            "Xb10r",
+            "Ambivalent Vermilia",
+            "COUNTING SHEEP ft. Kanae Asaba",
+            "雫",
+            "Just Gimme",
+            "Sword of Vengeance",
+            "Million Dollar",
+            "CADENZA",
+            "Stereo Beasts"
         ]
     }
 }
