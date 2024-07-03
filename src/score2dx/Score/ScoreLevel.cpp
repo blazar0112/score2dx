@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include <algorithm>
+#include <array>
 #include <iostream>
 #include <set>
 #include <stdexcept>
@@ -264,9 +265,9 @@ FindScoreLevelCategory(int note, int exScore)
 }
 
 ScoreLevelCategory
-FindScoreLevelCategory(const ScoreLevelRange &scoreLevelRange)
+FindScoreLevelCategory(const ScoreLevelRange& scoreLevelRange)
 {
-    auto [scoreLevel, scoreRange] = scoreLevelRange;
+    auto& [scoreLevel, scoreRange] = scoreLevelRange;
 
     auto category = ScoreLevelCategory::AMinus;
     if (scoreLevel>=ScoreLevel::A)
