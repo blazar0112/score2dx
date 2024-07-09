@@ -1,8 +1,8 @@
 {
     "#meta": {
-        "count": "31093",
-        "lastUpdateEvent": "「EPOLIS SINGULARITY II」 2024-06-06",
-        "lastUpdateNewMusic": "Level 5",
+        "count": "31098",
+        "lastUpdateEvent": "「EPOLIS RESTORATION SYSTEM B & C」 2024-07-04",
+        "lastUpdateNewMusic": "Vulnerability",
         "score2dx": "4.0.0",
         "version": "31"
     },
@@ -72276,6 +72276,12 @@
                             "note": 1118
                         }
                     },
+                    "DPL": {
+                        "31": {
+                            "level": 12,
+                            "note": 1813
+                        }
+                    },
                     "DPN": {
                         "23-31": {
                             "level": 7,
@@ -72298,6 +72304,12 @@
                         "23-31": {
                             "level": 10,
                             "note": 1094
+                        }
+                    },
+                    "SPL": {
+                        "31": {
+                            "level": 12,
+                            "note": 1815
                         }
                     },
                     "SPN": {
@@ -80680,6 +80692,12 @@
                             "note": 791
                         }
                     },
+                    "DPL": {
+                        "31": {
+                            "level": 11,
+                            "note": 1492
+                        }
+                    },
                     "DPN": {
                         "25-31": {
                             "level": 4,
@@ -80696,6 +80714,12 @@
                         "25-31": {
                             "level": 8,
                             "note": 816
+                        }
+                    },
+                    "SPL": {
+                        "31": {
+                            "level": 11,
+                            "note": 1462
                         }
                     },
                     "SPN": {
@@ -113377,10 +113401,255 @@
                 },
                 "info": {
                     "artist": {
-                        "latest": "BEMANI Sound Team \"Sota F. feat. Yvya\""
+                        "latest": "Yamato"
                     },
                     "genre": {
-                        "latest": "NEO-CLASSICAL CORE"
+                        "latest": "Drumstep / Bass House / Dnb"
+                    }
+                }
+            },
+            "PILGRIM": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1359
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 772
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 470
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1381
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 870
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 494
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "crayvxn"
+                    },
+                    "genre": {
+                        "latest": "TRAP"
+                    }
+                }
+            },
+            "今宵、ロマンス横丁。": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1649
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1198
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 592
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1714
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1195
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 6,
+                            "note": 576
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "まろん feat. Rikotan"
+                    },
+                    "genre": {
+                        "latest": "和風歌謡硬核音楽"
+                    }
+                }
+            },
+            "NEEDLESS MY LOVE FOR YOU": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1301
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 835
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 512
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 10,
+                            "note": 1224
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 8,
+                            "note": 830
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 509
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "Pizuya's Cell"
+                    },
+                    "genre": {
+                        "latest": "ROCK"
+                    }
+                }
+            },
+            "CODE:2": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1730
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 903
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 551
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 11,
+                            "note": 1491
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 9,
+                            "note": 905
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 5,
+                            "note": 546
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "HEXA"
+                    },
+                    "genre": {
+                        "latest": "HARD TECHNO"
+                    }
+                }
+            },
+            "Vulnerability": {
+                "availableVersions": "31",
+                "difficulty": {
+                    "DPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1901
+                        }
+                    },
+                    "DPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1002
+                        }
+                    },
+                    "DPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 673
+                        }
+                    },
+                    "SPA": {
+                        "31": {
+                            "level": 12,
+                            "note": 1885
+                        }
+                    },
+                    "SPH": {
+                        "31": {
+                            "level": 10,
+                            "note": 1017
+                        }
+                    },
+                    "SPN": {
+                        "31": {
+                            "level": 7,
+                            "note": 673
+                        }
+                    }
+                },
+                "info": {
+                    "artist": {
+                        "latest": "BEMANI Sound Team \"ZAQUVA\""
+                    },
+                    "genre": {
+                        "latest": "VARIABLE CORE"
                     }
                 }
             }
@@ -115830,7 +116099,12 @@
             "squall",
             "BLAZING_LAZER",
             "The Last Apocalypse",
-            "Level 5"
+            "Level 5",
+            "PILGRIM",
+            "今宵、ロマンス横丁。",
+            "NEEDLESS MY LOVE FOR YOU",
+            "CODE:2",
+            "Vulnerability"
         ]
     }
 }
