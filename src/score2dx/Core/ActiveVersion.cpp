@@ -1,7 +1,5 @@
 #include "score2dx/Core/ActiveVersion.hpp"
 
-#include <iostream>
-
 #include "ies/StdUtil/Find.hxx"
 
 namespace score2dx
@@ -27,39 +25,41 @@ AddDifficulty(std::size_t musicId,
               StyleDifficulty styleDifficulty,
               const ChartInfo& chartInfo)
 {
-    if (static_cast<std::size_t>(chartInfo.Level)>=mChartIdListByLevel.size())
+    if (chartInfo.Level>MaxLevel)
     {
         throw std::runtime_error("invalid level");
     }
 
+    auto [playStyle, difficulty] = Split(styleDifficulty);
+    auto styleIndex = ToIndex(playStyle);
     auto chartId = ToChartId(musicId, styleDifficulty);
 
-    mChartIds.emplace(chartId);
-    mChartIdListByLevel[chartInfo.Level].emplace(chartId);
-
-    auto [playStyle, difficulty] = Split(styleDifficulty);
-    auto styleIndex = static_cast<std::size_t>(playStyle);
+    mStyleChartIds[styleIndex].emplace(chartId);
+    mStyleChartIdsByLevel[styleIndex][static_cast<std::size_t>(chartInfo.Level)].emplace(chartId);
     mMusicAvailableCharts[musicId][styleIndex].emplace(difficulty);
 }
 
 const std::set<std::size_t>&
 ActiveVersion::
-GetChartIdList()
+GetChartIds(PlayStyle playStyle)
 const
 {
-    return mChartIds;
+    auto styleIndex = ToIndex(playStyle);
+    return mStyleChartIds[styleIndex];
 }
 
 const std::set<std::size_t>&
 ActiveVersion::
-GetChartIdList(int level)
+GetChartIds(PlayStyle playStyle, int level)
 const
 {
-    if (static_cast<std::size_t>(level)>=mChartIdListByLevel.size())
+    if (level>MaxLevel)
     {
         throw std::runtime_error("invalid level");
     }
-    return mChartIdListByLevel[level];
+
+    auto styleIndex = ToIndex(playStyle);
+    return mStyleChartIdsByLevel[styleIndex][static_cast<std::size_t>(level)];
 }
 
 const std::set<Difficulty>&
@@ -75,7 +75,7 @@ const
     }
 
     auto& styleSortedMusicCharts = findMusicCharts.value()->second;
-    auto styleIndex = static_cast<std::size_t>(playStyle);
+    auto styleIndex = ToIndex(playStyle);
     return styleSortedMusicCharts[styleIndex];
 }
 

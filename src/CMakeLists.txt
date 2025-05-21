@@ -6,7 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # warning C5105: macro expansion producing 'defined' has undefined behavior
 #   caused by /Zc:preprocessor will expose windows header inconform to standard.
 set(COMMON_MSVC_FLAGS "/permissive-;/W4;/WX;/Zi;/Zc:__cplusplus;/Zc:preprocessor;/wd4996;/wd5105;/utf-8")
-set(COMMON_GCC_FLAGS "-pedantic;-Wall;-Wextra;-Werror;-g;-fPIC")
+set(COMMON_GCC_FLAGS "-Wall;-Wextra;-Werror;-Wpedantic;-Wshadow;-Wconversion;-Wsign-conversion;-g;-fPIC")
 
 if (MSVC)
     set(COMMON_FLAGS ${COMMON_MSVC_FLAGS})

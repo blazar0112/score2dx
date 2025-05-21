@@ -19,6 +19,7 @@ class ActiveVersion
 public:
         explicit ActiveVersion(std::size_t versionIndex);
 
+        [[nodiscard]]
         std::size_t
         GetVersionIndex()
         const;
@@ -28,15 +29,18 @@ public:
                       StyleDifficulty styleDifficulty,
                       const ChartInfo& chartInfo);
 
+        [[nodiscard]]
         const std::set<std::size_t>&
-        GetChartIdList()
+        GetChartIds(PlayStyle playStyle)
         const;
 
     //! @brief Get chart id list which level={level}.
+        [[nodiscard]]
         const std::set<std::size_t>&
-        GetChartIdList(int level)
+        GetChartIds(PlayStyle playStyle, int level)
         const;
 
+        [[nodiscard]]
         const std::set<Difficulty>&
         GetAvailableCharts(std::size_t musicId,
                            PlayStyle playStyle)
@@ -45,15 +49,22 @@ public:
 private:
     std::size_t mVersionIndex{0};
 
-    //! @brief Set of {ChartId}.
-    std::set<std::size_t> mChartIds;
+    //! @brief Array of {Index=PlayStyle, Set of {ChartId}}.
+    std::array<std::set<std::size_t>, PlayStyleSmartEnum::Size()> mStyleChartIds;
 
-    //! @brief Array of {Index=Level, ChartIdList}.
+    //! @brief Array of {Index=PlayStyle, Array of {Index=Level, ChartIdList}}.
     //! @note Level = 0 is unused.
-    std::array<std::set<std::size_t>, MaxLevel+1> mChartIdListByLevel;
+    std::array<
+        std::array<std::set<std::size_t>, MaxLevel+1>,
+        PlayStyleSmartEnum::Size()
+    > mStyleChartIdsByLevel;
 
     //! @brief Map of {MusicId, Array{Index=PlayStyle, AvailableDifficulties}}.
-    std::map<std::size_t, std::array<std::set<Difficulty>, PlayStyleSmartEnum::Size()>> mMusicAvailableCharts;
+    //! @note This design is to avoid has SP/DP both table with same musicId.
+    std::map<
+        std::size_t,
+        std::array<std::set<Difficulty>, PlayStyleSmartEnum::Size()>
+    > mMusicAvailableCharts;
 };
 
 }

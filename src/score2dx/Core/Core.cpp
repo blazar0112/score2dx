@@ -254,7 +254,7 @@ const
 
         auto &data = exportData["data"];
 
-        for (auto &[musicId, versionScoreTable] : playerScore.GetVersionScoreTables())
+        for (auto &[musicId, versionScoreTable] : playerScore.GetVersionScoreTables(playStyle))
         {
             auto &title = mMusicDatabase.GetTitle(musicId);
             auto versionIndex = ToIndexes(musicId).first;
@@ -269,7 +269,7 @@ const
 
             for (auto scoreVersionIndex : GetSupportScoreVersionRange())
             {
-                for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex, playStyle))
+                for (auto &[dateTime, musicScore] : versionScoreTable.GetMusicScores(scoreVersionIndex))
                 {
                     if (dateTime>lastDateTime)
                     {
