@@ -1,5 +1,13 @@
 # Changelog of score2dx
 
+- 5.1.1 [2025-05-23]:
+    - Update DB 32040 [2025-05-22] with removed musics, missing charts and incorrect values.
+    - 5.1.1.
+
+- 5.1.0 [2025-05-22]:
+    - Upgrade to IIDX 32.
+    - Upgrade DB to 32040.
+
 - 5.0.0 [2023-11-04]:
     - Upgrade to IIDX 31.
     - Upgrade DB to 31048.
